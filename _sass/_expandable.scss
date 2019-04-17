@@ -1,0 +1,53 @@
+@charset "utf-8";
+
+/* Some SVG graphics for triangle shapes */
+$right-triangle-svg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M 19,10 1,19 1,1 z' /></svg>";
+$down-triangle-svg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path fill='#45B29D' d='M 10,19 1,1 19,1 z' /></svg>";
+
+/* Change these to affect icon shape for expanded and UNexpanded states */
+$unexpanded-icon: $right-triangle-svg;
+$expanded-icon: $down-triangle-svg;
+
+input {
+  display: none;
+  visibility: hidden;
+}
+label.qanda {
+  color: $ci-2;
+  display: inline;
+  font-style: italic;
+}
+label.qanda:hover {
+  text-decoration: underline;
+}
+label.qanda::after {
+  content: url($unexpanded-icon);
+  display: inline;
+  padding: 0.5em;
+  vertical-align: text-top;
+}
+/* override foundation classes here */
+input[type="checkbox"] + label.qanda {
+  margin-left: 0.0rem;
+}
+section {
+  padding: 0 10px;
+}
+
+/* create 20 'slots' for Q and A on a single page */
+@for $i from 0 through 39 {
+  #qanda_expand#{$i} {
+    height: 0px;
+    overflow: hidden;
+    transition: height 0.5s;
+    box-shadow: 7px 7px 5px #979797;
+    background: $ci-2;
+    color: #FFF;
+  }
+  #qanda_toggle#{$i}:checked ~ label.qanda::after {
+    content: url($expanded-icon);
+    display: inline;
+    padding: 0.5em;
+    vertical-align: text-top;
+  }
+}

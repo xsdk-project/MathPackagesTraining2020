@@ -1,0 +1,21 @@
+# Author details
+#
+# 1. Edit information below
+# 2. Change site author in config.yml
+# 3. Change default post/page authors in config.yml
+#
+# Resource › http://blog.sorryapp.com/blogging-with-jekyll/2014/02/06/adding-authors-to-your-jekyll-site.html
+markcmiller86: # replace this with your info
+  name: "Mark C Miller"
+  siterole: "content-developer, lesson-developer"
+  uri: https://github.com/markcmiller86
+  email: "miller86@llnl.gov"
+  twitter:
+kolev1:
+  name: "Tzanio Kolev"
+  siterole: "Meshing subject matter expert"
+  uri: https://github.com/tzanio
+  email: "kolev1@llnl.gov"
+  twitter:
+
+# you can add more authors here

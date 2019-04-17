@@ -1,0 +1,7 @@
+Wait for job 1607921 to start...
+Opening interactive session to cc006.cooley
+Last login: Mon Aug  6 03:43:51 2018 from cooleylogin2.cooley.i2b.alcf.anl.gov
+]0;mcmiller@cc006:~[mcmiller@cc006 ~]$ Connection to cc006.cooley closed by remote host.
+Connection to cc006.cooley closed.
+Deleting interactive job 1607921
+Shared connection to cooley.alcf.anl.gov closed.

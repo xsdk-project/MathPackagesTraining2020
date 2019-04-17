@@ -1,0 +1,33 @@
+view 1
+<Camera>
+cam 1
+-0.383492 0.153562 -0.452289
+0.0471161 0.10795 -0.0149711
+-0.495134 -0.767321 0.407506
+0.246171
+0.246171
+perspective
+</Camera>
+<Visibility>
+gvis 1
+2
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+</Visibility>
+<Selection>
+gsel 1
+1
+0
+0
+0
+0
+0
+</Selection>

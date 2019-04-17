@@ -1,0 +1,39 @@
+view 1
+<Camera>
+cam 1
+-0.0048857 0.262069 -0.0946389
+0.0427485 0.155344 -0.022038
+-0.93729 -0.310147 0.159046
+0.0389153
+0.0389153
+perspective
+</Camera>
+<Clip Planes>
+mclip 1
+0
+0
+</Clip Planes>
+<Visibility>
+gvis 1
+2
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+</Visibility>
+<Selection>
+gsel 1
+1
+0
+0
+1
+1897
+0
+0
+</Selection>

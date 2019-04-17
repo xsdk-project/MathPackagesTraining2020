@@ -1,0 +1,1152 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Adaptive MFEM+PUMI Workflow</title>
+
+    <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/styles_feeling_responsive.css">
+
+  
+
+	<script src="http://localhost:4000/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="MFEM with PUMI Conformal Unstructured Mesh Adaptation">
+	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+	<link rel="canonical" href="http://localhost:4000/lessons/pumi/">
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Adaptive MFEM+PUMI Workflow">
+	<meta property="og:description" content="MFEM with PUMI Conformal Unstructured Mesh Adaptation">
+	<meta property="og:url" content="http://localhost:4000/lessons/pumi/">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="ATPESC 2018 Math Library Hands On Exercises">
+	
+	<meta property="article:author" content="https://www.facebook.com/phlow.media">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="phlow">
+	<meta name="twitter:creator" content="phlow">
+	<meta name="twitter:title" content="Adaptive MFEM+PUMI Workflow">
+	<meta name="twitter:description" content="MFEM with PUMI Conformal Unstructured Mesh Adaptation">
+	
+	
+
+	<link type="text/plain" rel="author" href="http://localhost:4000/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="http://localhost:4000/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="http://localhost:4000/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="http://localhost:4000/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="http://localhost:4000/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="http://localhost:4000/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="http://localhost:4000/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="http://localhost:4000/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+        
+	   <!-- MathJax Config
+                    CommonHTML: {
+                        scale: 200
+                    }
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    displayAlign: "left"
+                });
+            </script>
+            -->
+            <script type="text/javascript" async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async>
+            </script>
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    TeX: { 
+                        equationNumbers: {  autoNumber: "all"  }
+                    }
+                });
+            </script>
+        
+
+</head>
+<body id="top-of-page" class="page-fullwidth">
+        
+
+	
+	
+<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="http://localhost:4000" class="icon-tree"> ATPESC 2018 Math Library Hands On Exercises</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Nav</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/">Intro</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/about_your_day/">About Your Day</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/setup_instructions/">Setup Instructions</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/atpesc_2018_agenda/">Today&#39;s Agenda</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.alcf.anl.gov/user-guides" target="_blank">ALCF User Guides</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://hangouts.google.com/group/wuWDDdPe4mX1u0v83" target="_blank">Open Chat</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/pages/one_on_one_schedule.html">One-on-One Schedule</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://goo.gl/forms/B7UFpBvEOJbC58oJ2" target="_blank">Submit a Show Your Work</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/lessons/">Lessons</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/hand_coded_heat/">Hand Coded Heat</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/mfem_convergence/">Meshing and Discretization (MFEM)</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/pumi/">MFEM+PUMI Adaptive Workflow</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/time_integrators/">Time Integration &amp; Non-Linear Solvers</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/krylov_amg/">Krylov Solvers and Algebraic Multigrid</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/superlu_mfem/">Sparse Direct Solvers</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/adjoint/">Numerical Optimization (Adjoint)</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/obstacle_tao">Numerical Optimization</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="https://fastmath-scidac.org/software-catalog.html" target="_blank">Packages</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://mfem.org" target="_blank">MFEM</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.scorec.rpi.edu/pumi" target="_blank">PUMI</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.mcs.anl.gov/petsc/" target="_blank">PETSc</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://computation.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods" target="_blank">HYPRE</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://crd-legacy.lbl.gov/~xiaoye/SuperLU" target="_blank">SuperLU</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://www.mcs.anl.gov/research/projects/tao/tao-deprecated/index.html" target="_blank">Tao</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/contributing_guide/">Contributing</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/contributing_guide/">Contributing Guide</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/info/">Why the new theme?</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/headers/">Many Header Styles</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/design/">Many Design Options</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/documentation/">Full Documentation</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+
+	
+
+<div id="masthead">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="http://localhost:4000/" title="ATPESC 2018 Math Library Hands On Exercises – So my code will see the future">
+				<img src="http://localhost:4000/assets/img/logo.png" alt="ATPESC 2018 Math Library Hands On Exercises – So my code will see the future">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+
+	
+
+
+<div class="row t30">
+	<div class="medium-12 columns">
+		<article>
+			<header>
+				<p class="subheadline">Conformal Unstructured Mesh Adaptation for Linear Elastic Tensial Loading</p>
+				<h1>Adaptive MFEM+PUMI Workflow</h1>
+			</header>
+
+			
+			<p class="teaser">
+				MFEM with PUMI Conformal Unstructured Mesh Adaptation
+			</p>
+			
+
+			<h2 id="at-a-glance">At A Glance</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Questions</td>
+      <td>Objectives</td>
+      <td>Key Points</td>
+    </tr>
+    <tr>
+      <td>How can I define a simulation on a complex geometric model?</td>
+      <td>Demonstrate model defeaturing and mesh generation pre-processing tools</td>
+      <td>Complex models require robust pre-processing tools!</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Demonstrate the power of geometric model classification</td>
+      <td>Automated simulation tools designed for scientists and engineers working with real CAD models problem definition information must be specified on the geometric model - not the mesh.</td>
+    </tr>
+    <tr>
+      <td>How can I reliably and efficiently execute simulations?</td>
+      <td>Demonstrate an adaptive MFEM+PUMI elastic analysis</td>
+      <td>Adaptation is critical to automated, robust, and efficient simulation of simulations with transient behavior in which a static mesh defined a-priori will fail.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Before you begin, first <a href="https://goo.gl/forms/HmuX6HrT0Yfoz7ny2" target="\_blank">Open the Answers Form</a>
+in a separate browser tab/window.
+We will be entering responses to questions here that are placed throughout the
+lesson.</p>
+
+<p>The MFEM+PUMI examples are prepared for execution on Cooley at ALCF.
+Except where noted, all commands shown below should be executed in a terminal
+logged into Cooley.
+In each new terminal first prepare your environment by running the commands
+listed in the following section.</p>
+
+<p>Note, each step can be performed independently; we encourage you to go
+through them in order though.  If there are issues running the examples, or you
+wish to skip ahead you will find the execution output in the <code class="highlighter-rouge">expectedOutput</code>
+directory.</p>
+
+<h2 id="to-begin-this-lesson">To begin this lesson</h2>
+
+<ul>
+  <li>Copy the example directory to your home directory
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -aP /projects/ATPESC2018/FASTMath/HandsOnLessons/mfem-pumi-lesson ~/.
+</code></pre></div>    </div>
+  </li>
+  <li>Enter the lesson directory
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/mfem-pumi-lesson
+</code></pre></div>    </div>
+  </li>
+  <li>Setup your environment (ensures that your environment is using the <code class="highlighter-rouge">@default</code> + <code class="highlighter-rouge">+mvapich2-2.3rc1</code> dotkit pacakges)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source setup.sh
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="geometric-model-defeaturing">Geometric Model Defeaturing</h2>
+
+<p>Geometric models are often provided by design engineers and include many
+features that are not required for simulation.
+The left side of Figure 1 depicts the geometric model of a Tokamak fusion
+reactor that has multiple bolts, nuts, and brackets that have no influence on
+the frequency analysis.
+These features are removed from the Parasolid CAD model by the Simmetrix
+SimModSuite tools by calling Parasolid kernel APIs to delete the faces and
+‘heal’ the remaining hole via extensions of the bounding edges and faces.
+The right side of Figure 1 depicts the defeatured Tokamak model.
+In a model with this level of complexity that engineers and scientists running
+the simulation often must coordinate to create the `as-simulated’ model.</p>
+
+<p><a href="/lessons/pumi/antenna.png"><img src="antenna.png" width="400" /></a>
+<a href="/lessons/pumi/antenna_defeatured.png"><img src="antenna_defeatured.png" width="400" /></a></p>
+
+<p><em>Figure 1. Initial (left) and defeatured (right) Tokamak antenna geometric model</em></p>
+
+<p>For this hands-on we removed a few small faces on the RPI Formula Hybrid
+suspension upright shown in Figure 2 to illustrate a few key characteristics of
+the mesh generation procedures.</p>
+
+<p><a href="/lessons/pumi/figs/upright/all_zmin.png"><img src="figs/upright/all_zmin.png" width="400" /></a>
+<a href="/lessons/pumi/figs/upright/all_zmax.png"><img src="figs/upright/all_zmax.png" width="400" /></a></p>
+
+<p><em>Figure 2. RPI Formula Hybrid suspension upright</em></p>
+
+<p><a href="/lessons/pumi/figs/upright_defeatured/all_zmin.png"><img src="figs/upright_defeatured/all_zmin.png" width="400" /></a>
+<a href="/lessons/pumi/figs/upright_defeatured/all_zmax.png"><img src="figs/upright_defeatured/all_zmax.png" width="400" /></a></p>
+
+<p><em>Figure 3. RPI Formula Hybrid suspension upright with small faces removed</em></p>
+
+<p>In the Mesh Generation step we will generate and compare meshes of the initial
+and defeatured geometric models.</p>
+
+<h3 id="optional---run-simmodeler-to-defeature-the-upright">Optional - Run SimModeler to defeature the upright.</h3>
+<p><a href="https://www.alcf.anl.gov/user-guides/remote-visualization-cooley-using-vnc">Launch the VNC</a></p>
+
+<p>The <a href="https://xsdk-project.github.io/ATPESC2018HandsOnLessons/setup_instructions/">Setup page</a>
+has more detailed, and scripted, instructions to launch the VNC.</p>
+
+<p>Run SimModeler:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/mfem-pumi-lesson/SimModeler6.0-180525/
+./simmodeler
+</code></pre></div></div>
+
+<p>Remove a small face</p>
+<ul>
+  <li>click ‘File-&gt;Import Geometry’ and select the <code class="highlighter-rouge">upright.x_t</code> model</li>
+  <li>click the ‘Modeling’ tab</li>
+  <li>click a small geometric model face</li>
+  <li>click ‘Delete Faces and Heal’ then click ‘Apply’ to remove the face</li>
+</ul>
+
+<p>Try removing the ring inside the hub by selecting all three of its faces, clicking the
+‘+’ symbol to add them to the list, then clicking ‘Apply’.</p>
+
+<h2 id="probdefintro">Problem Definition Introduction</h2>
+
+<p>The boundary conditions, initial conditions, material parameters, etc. are
+specified on the geometric model - not the mesh.
+In the <a href="#probdef">Problem Definition Section</a> we will describe the mechanism
+that supports this and the specific boundary conditions for this problem.</p>
+
+<h2 id="mesh-generation">Mesh Generation</h2>
+
+<p>Now that we have prepared the model and defined the boundary conditions we can
+proceed with mesh generation using the Simmetrix SimModSuite library APIs.
+The mesh generation procedures are driven by size controls defined by the user
+on geometric model entities or defined within geometric primitives that
+intersect the model (e.g., cubes, spheres, cylinders, etc.).
+In this example we generate a coarse mesh using a single relative size control
+applied to the entire model.
+This control guides the generation procedures to create edges whose lengths are
+proportional, using our prescribed value, to the length of local geometric model
+features.</p>
+
+<p>The mesh generator is automated, which in the domain of mesh generation means
+that it will always produce a valid mesh while doing its best to respect the
+user specified controls.
+Note, the features of the geometric model highly dictate what mesh sizes are
+possible.
+Specifically:</p>
+<ul>
+  <li>the mesh topology must exactly respect the geometric model topology,
+i.e., each geometric model edge has a set of meshes edges classified on it
+that cover the entire model edge.</li>
+  <li>in the case of problems on curved domains, the geometry of the typical
+interpolating point mesh (even using higher-order curved elements) is
+only an approximation to the original geometric model.</li>
+</ul>
+
+<p>Once the mesh is generated we convert it, in-memory (i.e., using PUMI and
+SimModSuite APIs), to a PUMI mesh and then write the PUMI mesh to file.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle1" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle1" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1) Given the same mesh size controls (e.g., the length of mesh edges),
+    the mesh on the initial geometry will:
+    a) ... have *more* elements than the mesh of the defeatured geometric model.
+    b) ... have *less* elements than the mesh of the defeatured geometric model.
+    c) ... have the same number of elements as the mesh of the defeatured geometric model.
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand1">
+    <style>
+      #qanda_toggle1:checked ~ #qanda_expand1 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>a</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qsub -I -n 1 -t 30 -A ATPESC2018 -q training
+cd ~/mfem-pumi-lesson/meshGeneration
+# generate the mesh on the initial geometric model and create paraview vtu files
+./generate --native-model=upright.x_t upright.smd 5kg1
+./render upright.x_t 5kg1/ 5kg1_initial_vtu
+# generate the mesh on the defeatured model and create paraview vtu files
+./generate upright_defeatured_geomsim.smd 5kg1
+./render upright_defeatured_geomsim.smd 5kg1/ 5kg1_defeatured_vtu
+</code></pre></div></div>
+
+<p><a href="/lessons/pumi/figs/upright/5kg1_all_zmax.png"><img src="figs/upright/5kg1_all_zmax.png" width="400" /></a>
+<a href="/lessons/pumi/figs/upright/5kg1_all_zmin.png"><img src="figs/upright/5kg1_all_zmin.png" width="400" /></a></p>
+
+<p><em>Figure 4. Mesh of initial upright model</em></p>
+
+<p><a href="/lessons/pumi/figs/upright_defeatured/5kg1_all_zmax.png"><img src="figs/upright_defeatured/5kg1_all_zmax.png" width="400" /></a>
+<a href="/lessons/pumi/figs/upright_defeatured/5kg1_all_zmin.png"><img src="figs/upright_defeatured/5kg1_all_zmin.png" width="400" /></a></p>
+
+<p><em>Figure 5. Mesh of defeatured upright model</em></p>
+
+<h3 id="optional---visualize-the-initial-meshes">Optional - Visualize the Initial Meshes</h3>
+<p>Download the <code class="highlighter-rouge">.*vtu</code> files from
+<a href="https://github.com/xsdk-project/ATPESC2018HandsOnLessons/raw/gh-pages/_lessons/pumi/paraview.tar.gz">Here</a>, or
+use a file transfer utility (e.g., <code class="highlighter-rouge">scp</code>, <code class="highlighter-rouge">rsync</code>, <code class="highlighter-rouge">putty</code>, etc.)
+to copy the ones you generated to your local machine.</p>
+
+<hr />
+
+<p>This concludes the day time hands-on.
+In the evening you’ll have an opportunity to repeat these steps and follow two
+additional steps before running the adaptive analysis.</p>
+
+<hr />
+
+<h2 id="partitioning">Partitioning</h2>
+
+<p>Efficient parallel execution requires equally distributing the units of work among the
+processing resources while keeping communication costs low.
+The multi-level graph and recursive sectioning geometric methods are among the
+most commonly available and used methods for partitioning unstructured meshes.
+In this lesson we will exercise the multi-level graph partitioner (referred to as
+‘graph’ below) provided by the Zoltan interface and implemented by ParMETIS.
+We will then run recursive coordinate bisection (‘RCB’) and recursive inertial
+bisection (‘RIB’) to produce meshes of with the same part count (number of
+sub-domains), and compare the results.
+All three partitioners are targeting an imbalance of 5%; defined as
+the max element count on any part divided by the average element count across
+all parts.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qsub -I -n 1 -t 30 -A ATPESC2018 -q training
+cd ~/mfem-pumi-lesson/partition
+runParma=0
+isLocal=0
+render=1
+mdl=upright_defeatured_geomsim.smd
+mesh=5kg1_defeatured/
+mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_parmetis/ 4 pmetis kway $isLocal $runParma $render &amp;&gt; graph.out
+mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rcb/ 4 rcb ptn $isLocal $runParma $render &amp;&gt; rcb.out
+mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rib/ 4 rib ptn $isLocal $runParma $render &amp;&gt; rib.out
+</code></pre></div></div>
+
+<p>The entity imbalance information is listed on the lines containing <code class="highlighter-rouge">entity
+imbalance &lt;v e f r&gt;:</code>.
+The <code class="highlighter-rouge">grep</code> command to extract these lines from the outputs is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       grep 'afterSplit entity imbalance' *.out
+</code></pre></div></div>
+
+<p>The imbalance values follow the definition given above (<code class="highlighter-rouge">max count/avg count</code>);
+i.e., 5% imbalance will be listed as <code class="highlighter-rouge">1.05</code>.</p>
+
+<p>The number mesh entities that are shared with other processes is indirectly
+indicated on the lines containing <code class="highlighter-rouge">weighted TYPE &lt;tot max min avg&gt;</code> where <code class="highlighter-rouge">TYPE</code>
+is <code class="highlighter-rouge">vtx</code>, <code class="highlighter-rouge">edge</code>, or <code class="highlighter-rouge">face</code>.
+The <code class="highlighter-rouge">grep</code> command to extract these lines from the outputs is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grep 'afterSplit weighted vtx' *.out
+</code></pre></div></div>
+
+<p>If the total (<code class="highlighter-rouge">tot</code>) or average (<code class="highlighter-rouge">avg</code>) number of entities of a given TYPE is
+larger relative to another partition then that partition has more replicated
+entities.</p>
+
+<p>Given the values of the imbalance and shared entity count for each partition
+(graph, RCB, RIB) above and the content of the <code class="highlighter-rouge">[graph|rcb|rib].out</code> files,</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle2" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle2" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2) Which partition has the highest vertex imbalance?
+   a)RCB
+   b)RIB
+   c)multi-level graph
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand2">
+    <style>
+      #qanda_toggle2:checked ~ #qanda_expand2 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>c</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle3" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle3" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3) Which partition has the most mesh vertices?
+   a)RCB
+   b)RIB
+   c)multi-level graph
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand3">
+    <style>
+      #qanda_toggle3:checked ~ #qanda_expand3 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>a</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle4" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle4" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 4) Which partition has the highest element imbalance?
+    a)RCB
+    b)RIB
+    c)multi-level graph
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand4">
+    <style>
+      #qanda_toggle4:checked ~ #qanda_expand4 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>c</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>The partitioning decisions of RIB and RCB are based on the centroid of mesh
+elements while the multi-level graph partitioner is using mesh adjacency
+information (graph vertex = mesh element, graph edge = mesh face shared by
+two mesh elements).</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle5" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle5" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 5) What causes the boundaries of the RIB and RCB partitions to look jagged
+    relative to the multi-level graph partition boundaries?
+    a) the placement of the cutting plane versus the coordinates of
+    the mesh elements
+    b) the intersection of the cutting planes used by the recursive
+    sectioning procedures form angular multi-part junctions whereas the multi-level
+    graph procedures produce more rounded parts and thus smoother junctions
+    c) the multi-level graph procedure uses mesh adjacency information to reduce the
+    number of mesh faces on the partition boundaries
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand5">
+    <style>
+      #qanda_toggle5:checked ~ #qanda_expand5 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>All of the above.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p><a href="/lessons/pumi/figs/pmetis-rcb-rib.png"><img src="figs/pmetis-rcb-rib.png" width="400" /></a></p>
+
+<p><em>Figure 6. Partitions created with multi-level graph (left), RCB (middle), and RIB (right)</em></p>
+
+<h3 id="optional---visualize-the-partitioned-meshes">Optional - Visualize the Partitioned Meshes</h3>
+<p>Download the <code class="highlighter-rouge">.*vtu</code> files from
+<a href="https://github.com/xsdk-project/ATPESC2018HandsOnLessons/raw/gh-pages/_lessons/pumi/paraview.tar.gz">Here</a>, or
+use a file transfer utility (e.g., <code class="highlighter-rouge">scp</code>, <code class="highlighter-rouge">rsync</code>, <code class="highlighter-rouge">putty</code>, etc.)
+to copy the ones you generated to your local machine.</p>
+
+<h2 id="probdef">Problem Definition</h2>
+
+<p>We will define a tensile loading on the upright by applying a uniform force on
+one end (min Y face) and fixing the displacements on the other end (max Y face);
+as depicted in Figure 7.
+All other geometric model faces will be unconstrained.  No body forces are
+applied.</p>
+
+<p><a href="/lessons/pumi/figs/upright_defeatured/boundaryConditions.png"><img src="figs/upright_defeatured/boundaryConditions.png" width="400" /></a></p>
+
+<p><em>Figure 7. Boundary conditions</em></p>
+
+<p>Using geometric classification of the mesh we can define the boundary conditions
+on the geometric model without having any knowledge/consideration of the mesh.
+Geometric classification defines the equal, or greater, order association of
+mesh entities to geometric model entities.
+Specifically, a mesh region can only be classified on a geometric model region,
+a mesh face on a geometric face or region, and so on.
+Geometric classification is used throughout the set of unstructured mesh tools.
+For example, in mesh adaptation, classification (along with knowledge of the
+geometries parametric shape information) is critical for improving the meshes
+approximation to the geometric model when moving, adding, or removing mesh
+entities.
+Further reading on the use of classification is available in <a href="#refs">Beall et al. 1999
+and Ibanez 2016</a>.</p>
+
+<p>A very simple text based interface was defined for this demonstration example to
+define the two boundary conditions.
+  To specify the geometric model faces with
+the load applied we add one line with <code class="highlighter-rouge">Load</code> followed by another line with the
+number of faces with that load applied.  The geometric model face ids, one per
+line, are then listed. Using the same convention we define the fixed faces using
+the string <code class="highlighter-rouge">Dirichlet</code>, the number of listed faces, then the list of face ids.
+The boundary condition specification for this example is listed below.
+Using the geometric model classification mechanism supports creation of more
+feature-rich interfaces (command line, file, GUI).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat upright.def
+Dirichlet
+1
+43
+
+Load
+1
+344
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle6" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle6" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6) Which of the following statements are true? Specifying boundary
+   conditions on the geometric allows users to:
+   a)... change the mesh without having to modify the boundary condition definition
+   b)... specify boundary conditions that vary over the geometric model entity
+   c)... automate mesh creation and analysis execution
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand6">
+    <style>
+      #qanda_toggle6:checked ~ #qanda_expand6 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>All of the above.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<h2 id="adaptive-simulation">Adaptive Simulation</h2>
+
+<p>This problem solves a linear elasticity model on a cantilever beam.
+Specifically, we approximate the weak form of</p>
+
+<script type="math/tex; mode=display">-div(\sigma(u))=0</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">\sigma(u)=\lambda*div(u)*I+\mu*(\nabla*u+u*\nabla)</script>
+
+<p>is the stress tensor corresponding to displacement field <script type="math/tex">u</script>,
+and <script type="math/tex">\lambda=1</script> and <script type="math/tex">\mu=1</script> are the material Lame constants.</p>
+
+<p><a href="#probdef">Figure 7</a> depicts the applied boundary conditions; a fixed displacement
+<script type="math/tex">u=0</script> on the max Y face and pull force <script type="math/tex">f=1.0e-2</script> on the min Z face.
+The specification of these boundary conditions using geometric model entity
+ids is described in the <a href="#probdef">Problem Definition</a> section.</p>
+
+<p>To control the error without a-priori knowledge of solution we will run this
+example using mesh adaptation.
+The adaptive cycle:</p>
+<ul>
+  <li>solves the problem on an initial uniform coarse mesh,</li>
+  <li>estimates the discretization error,</li>
+  <li>defines an isotropic size field from the error estimate,</li>
+  <li>adapts the mesh using the size field, and</li>
+  <li>solves the problem on the adapted mesh.</li>
+</ul>
+
+<p>Multiple methods are available for error estimation (see the <a href="#refs">Further Reading</a>
+section) and the subsequent size field computation.
+In this example a patch recovery approach is used.</p>
+
+<p>Given the structure of the geometric model and the specified boundary
+conditions, we expect that the upper portion (positive Z) of the main hub
+experiences higher stresses as the lower part is much stiffer.
+Given this intuition we would expect higher error there and therefore a finer
+mesh is expected as the result of the meshAdapt.</p>
+
+<p>Run the adaptive simulation:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/mfem-pumi-lesson/analysis
+mpirun -np 2 ./pumi_upright_ex2p -p upright_defeatured_geomsim.smd -bf upright.def -m 2p5kg1/
+</code></pre></div></div>
+
+<p><a href="/lessons/pumi/figs/analysis/initialAndFinalMesh.png"><img src="figs/analysis/initialAndFinalMesh.png" width="400" /></a></p>
+
+<p>*Figure 8. Initial mesh (left) and final mesh with displacement field (right).</p>
+
+<p>The requested isotropic (same in all directions) edge length is specified
+with a scalar value at each mesh vertex.  In
+<a href="https://www.scorec.rpi.edu/REPORTS/2005-31.pdf">Section 2.1 of Li et al.</a>
+edge lengths that vary with direction, anisotropic, are specified.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle7" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle7" style="font-size:150%">
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>7) How do applications request anisotropic edge lengths from mesh adaptation procedures?
+</code></pre></div></div>
+</label>
+  <div id="qanda_expand7">
+    <style>
+      #qanda_toggle7:checked ~ #qanda_expand7 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>Using a mesh metric tensor that can be decomposed into eigen values and eigen
+            vectors that specify the length of the edges in the principle directions.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<h3 id="optional---visualize-the-analysis-results">Optional - Visualize the analysis results</h3>
+<p>Download the <code class="highlighter-rouge">.*vtu</code> files from
+<a href="https://github.com/xsdk-project/ATPESC2018HandsOnLessons/raw/gh-pages/_lessons/pumi/paraview.tar.gz">Here</a>, or
+use a file transfer utility (e.g., <code class="highlighter-rouge">scp</code>, <code class="highlighter-rouge">rsync</code>, <code class="highlighter-rouge">putty</code>, etc.)
+to copy the ones you generated to your local machine.</p>
+
+<h4 id="get-credit--points">Get Credit / Points</h4>
+
+<p>Be sure to submit a <a href="https://goo.gl/forms/B7UFpBvEOJbC58oJ2">Show Your Work</a> using the hands-on
+activity name, <code class="highlighter-rouge">PUMI_Partitioning</code> or <code class="highlighter-rouge">PUMI_Adaptive_Simulation</code>.</p>
+
+<h2 id="out-brief">Out-Brief</h2>
+
+<p>We have exercised a workflow using PUMI and MFEM software components that is
+based on a high level definition of the problem domain; the geometric model.
+The PUMI and MFEM software components exchange information on the geometric
+model, the mesh, and fields on the mesh to provide a robust and extensible set
+of functionalities that support the needs of multiple applications.</p>
+
+<h3 id="refs">Further Reading</h3>
+
+<ul>
+  <li>SCOREC tools
+    <ul>
+      <li>C. W. Smith, M. Rasquin, D. Ibanez, K. E. Jansen, and M. S. Shephard <strong>Improving Unstructured Mesh Partitions for Multiple Criteria Using Mesh Adjacencies</strong>,  SIAM Journal on Scientific Computing, 2018. DOI: 10.1137/15M1027814</li>
+      <li>D.A. Ibanez, E.S. Seol, C.W. Smith and M.S. Shephard, <strong>PUMI: Parallel Unstructured Mesh Infrastructure</strong>, ACM Transactions on Mathematical Software, 42(3): Article 17 (28 pages), 2016. DOI: 10.1145/2814935.</li>
+      <li>M. Zhou, O. Sahni, T. Xie, M.S. Shephard and K.E. Jansen, <strong>Unstructured Mesh Partition Improvement for Implicit Finite Element at Extreme Scale</strong>, Journal of Supercomputing, 59(3): 1218-1228, 2012. DOI 10.1007s11227-010-0521-0</li>
+      <li>M. Zhou, T. Xie, S. Seol, M.S. Shephard, O. Sahni and K.E. Jansen, <strong>Tools to Support Mesh Adaptation on Massively Parallel Computers</strong>, Engineering with Computers, 28(3):287-301, 2012. DOI: 10.1007s00366-011-0218-x</li>
+      <li>M. Zhou, O. Sahni, M.S. Shephard, K.D. Devine and K.E. Jansen, <strong>Controlling unstructured mesh partitions for massively parallel simulations</strong>, SIAM J. Sci. Comp., 32(6):3201-3227, 2010. DOI: 10.1137090777323</li>
+      <li>M. Zhou, O. Sahni, H.J. Kim, C.A. Figueroa, C.A. Taylor, M.S. Shephard, and K.E. Jansen, <strong>Cardiovascular Flow Simulation at Extreme Scale</strong>, Computational Mechanics, 46:71-82, 2010. DOI: 10.1007s00466-009-0450-z</li>
+    </ul>
+  </li>
+  <li>Partitioning
+    <ul>
+      <li>K. Devine, E. Boman, R. Heaphy, B. Hendrickson, and C. Vaughan, <strong>Zoltan data management services for parallel dynamic applications</strong>,  Computing in Science &amp; Engineering, Volume: 4, Issue: 2, 2002, DOI: 10.1109/5992.988653.</li>
+      <li>G. Karypis and V. Kumar, <strong>Parallel Multilevel k-way Partitioning Scheme for Irregular Graphs</strong>, SIAM Review, Vol. 41, No. 2, pp. 278 - 300, 1999, DOI: 10.1137/S0036144598334138.</li>
+    </ul>
+  </li>
+  <li>Mesh data and geometry interactions
+    <ul>
+      <li>Seol, E.S. and Shephard, M.S., <strong>Efficient distributed mesh data structure for parallel automated adaptive analysis</strong>, Engineering with Computers, 22(3-4):197-213, 2006, DOI: 10.1007s00366-006-0048-4</li>
+      <li>Beall, M.W., Walsh, J. and Shephard, M.S, <strong>A comparison of techniques for geometry access related to mesh generation</strong>, Engineering with Computers, 20(3):210-221, 2004, DOI: 10.1007s00366-004-0289-z.</li>
+      <li>Beall, M.W.. and Shephard, M.S., <strong>An Object-Oriented Framework for Reliable Numerical Simulations</strong>, Engineering with Computers, 15(1):61-72, 1999, DOI: 10.1007/s003660050005.</li>
+      <li>Beall, M.W. and Shephard, M.S., <strong>A general topology-based mesh data structure</strong>, Int. J. Numer. Meth. Engng., 40(9):1573-1596, 1997, DOI: 10.1002(SICI)1097-0207(19970515)40:9&lt;1573::AID-NME128&gt;3.0.CO;2-9.</li>
+    </ul>
+  </li>
+  <li>Adaptivity
+    <ul>
+      <li>“Aleksandr Ovcharenko, <strong>Parallel Anisotropic Mesh Adaptation with Boundary Layers</strong>, Ph.D. Dissertation, RPI, 2012”:http://www.scorec.rpi.edu/REPORTS/2012-20.pdf</li>
+      <li>Q. Lu, M.S. Shephard, S. Tendulkar and M.W. Beall, <strong>Parallel Curved Mesh Adaptation for Large Scale High-Order Finite Element Simulations</strong>, Proc. 21 Roundtable, Springer, NY, pp. 419-436, 2012, DOI 10.1007978-3-642-33573-0.</li>
+      <li>A. Ovcharenko, K. Chitale, O. Sahni, K.E. Jansen and M.S. Shephard, S. Tendulkar and M.W. Beall, <strong>Parallel Adaptive Boundary Layer Meshing for CFD Analysis</strong>, Proc. 21st International Meshing Roundtable, Springer, NY, pp. 437-455, 2012, DOI 10.1007978-3-642-33573-0</li>
+      <li>X.-J. Luo, M.S. Shephard, L.-Q. Lee and C. Ng, <strong>Moving Curved Mesh Adaption for Higher Order Finite Element Simulations</strong>, Engineering with Computers, 27(1):41-50, 2011. DOI: 10.1007/s00366-010-0179-5</li>
+      <li>O. Sahni, X.J. Luo, K.E. Jansen, M.S. Shephard, <strong>Curved Boundary Layer Meshing for Adaptive Viscous Flow Simulations</strong>, Finite Elements in Analysis and Design, 46:132-139, 2010. DOI: 10.1007/s00366-008-0095-0</li>
+      <li>Alauzet, F., Li, X., Seol, E.S. and Shephard, M.S., <strong>Parallel Anisotropic 3D Mesh Adaptation by Mesh Modification</strong>, Engineering with Computers, 21(3):247-258, 2006, DOI: 10.1007s00366-005-0009-3</li>
+      <li>Li, X., Shephard, M.S. and Beall, M.W., <strong>3-D Anisotropic Mesh Adaptation by Mesh Modifications</strong>, Comp. Meth. Appl. Mech. Engng., 194(48-49):4915-4950, 2005, doi:10.1016/j.cma.2004.11.019</li>
+      <li>Li, X., Shephard, M.S. and Beall, M.W., <strong>Accounting for curved domains in mesh adaptation</strong>, International Journal for Numerical Methods in Engineering, 58:246-276, 2003, DOI: 10.1002/nme.772</li>
+    </ul>
+  </li>
+</ul>
+
+
+                        
+                        <p><a href='../../lessons'>Back to all ATPESC 2018 Lessons</a></p>
+                        
+
+		</article>
+	</div><!-- /.medium-12.columns -->
+</div><!-- /.row -->
+
+
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              <a href="https://software-carpentry.org">Software Carpentry</a> Style Lessons for Numerical Libraries
+              <a href="http://localhost:4000/info/">More ›</a>
+              Created by <a href="https://github.com/markcmiller86">Mark C Miller</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+          <div class="small-6 medium-3 large-3 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="https://fastmath-scidac.llnl.gov" target="_blank" class="icon-home" title="FASTMath"></a></li>
+            
+              <li><a href="https://www.youtube.com/playlist?list=PLGj2a3KTwhRZKjI7pRFxQDBORsswJAdJt" target="_blank" class="icon-youtube" title="ATPESC-2017 Numerical Libaries"></a></li>
+            
+              <li><a href="https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos" target="_blank" class="icon-youtube" title="IDEAS on YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/exascaleproject" target="_blank" class="icon-twitter" title="Exascale Project on Twitter"></a></li>
+            
+            </ul>
+
+                        <a class="button left r15 tiny radius" href="https://github.com/xsdk-project/ATPESC2018HandsOnLessons/edit/gh-pages/_lessons/pumi/lesson.md">Edit This Page On GitHub</a>
+
+
+
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+    </footer>
+
+	
+
+	
+
+
+<script src="http://localhost:4000/assets/js/javascript.min.js"></script>
+
+
+
+<script>
+    $("#masthead").backstretch("http://localhost:4000/images/rf_mesh_cut2.png", {fade: 700});
+    $("#masthead-with-text").backstretch("http://localhost:4000/images/rf_mesh_cut2.png", {fade: 700});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

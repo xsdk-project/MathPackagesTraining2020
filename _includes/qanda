@@ -1,0 +1,53 @@
+{% comment %}
+*
+*   This include lets you easily create a click-able question and answer
+*
+*   You can even use markdown and <html>-tags inside a QandA but beware to use " and ' properly; for example:
+*
+*       {% include qanda question='Some Question' answer='Some Answer' %}
+*
+*   Notes:
+*
+*     1. We are using an in-line style to set the expanded box height here based on the amount of text
+*        in the answer. It would be best to know number of lines needed. But, we need to know the font height
+*        at gen-time and I didn't know how to get that easily.
+*     2. It would be easier to use the at_least liquid filter instead of the if then else to style the size
+*        of the box here but that is apparently buggy.
+*     3. We allow for a maximum of 40 questions in a lesson. That is set by the max variable in the for loop
+*        in _sass/_expandable.scss
+*     4. the qanda_id gets used on a per-page basis. So, the number is always starting from unusued/initial
+*        value of 0 and incrimenting by one.
+*
+{% endcomment %}
+<div class="qanda">
+  {% assign qanda_id = qanda_id | plus: 1 %}
+  <input id="qanda_toggle{{ qanda_id }}" type="checkbox" unchecked>
+  <label class="qanda" for="qanda_toggle{{ qanda_id }}" style="font-size:150%">{{ include.question | markdownify | remove: '<p>' | remove: '</p>' }}</label>
+  <div id="qanda_expand{{ qanda_id }}">
+    <style>
+      #qanda_toggle{{ qanda_id }}:checked ~ #qanda_expand{{ qanda_id }} {
+        {% capture text_height %}{{ include.answer | size | divided_by: 20 }}{% endcapture %}
+        {% assign text_height = text_height | plus: 0 %}
+        {% if site.handson_hide_qanda %}
+                {% assign text_height = 0 %}
+        {% endif %}
+        {% if text_height > 10 %}
+            height: {{ text_height }}vmin;
+        {% else %}
+            height: 10vmin;
+        {% endif %}
+      }
+    </style>
+    <section>
+      {% if site.handson_hide_qanda %}
+          {% if page.answers_google_form %}
+              Answer expansions are currently disabled. Go to the <a href="{{page.answers_google_form}}" target="_blank">Google Answers Form</a> for this lesson to enter your answers
+          {% else %}
+              Answer expansions are currently disabled.
+          {% endif %}
+      {% else %}
+          {{ include.answer | markdownify }}
+      {% endif %}
+    </section>
+  </div>
+</div>

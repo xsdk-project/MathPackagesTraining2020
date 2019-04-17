@@ -1,0 +1,6 @@
+* live vis
+    * ok for leaders...not practical for learners day-time hands-on
+        * might be ok for evening
+    * can give learners pre-rendered, fixed images
+* dry runs
+    -
