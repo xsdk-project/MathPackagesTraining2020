@@ -1,0 +1,15 @@
+    runame="check"
+    prec="double"
+    alpha=0.2
+    lenx=1
+    dx=0.25
+    dt=0.004
+    maxt=1000
+    bc0=0
+    bc1=1
+    ic="const(1)"
+    alg="ftcs"
+    savi=0
+    save=0
+    outi=100
+    noout=0

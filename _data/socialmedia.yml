@@ -1,0 +1,44 @@
+- name: FASTMath
+  url: https://fastmath-scidac.llnl.gov
+  class: icon-home
+  title: "FASTMath"
+
+- name: ATPESC
+  url: https://www.youtube.com/playlist?list=PLGj2a3KTwhRZKjI7pRFxQDBORsswJAdJt
+  class: icon-youtube
+  title: "ATPESC-2017 Numerical Libaries"
+
+- name: IDEAS-ECP
+  url: https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos
+  class: icon-youtube
+  title: "IDEAS on YouTube"
+
+- name: ECP 
+  url: http://twitter.com/exascaleproject
+  class: icon-twitter
+  title: "Exascale Project on Twitter"
+
+# - name: Facebook
+#   url: http://www.facebook.com/
+#   class: icon-facebook
+#   title: ""
+
+# - name: Soundcloud
+#   url: http://soundcloud.com/
+#   class: icon-soundcloud
+#   title: ""
+
+# - name: Instagram
+#   url: http://instagram.com/
+#   class: icon-instagram
+#   title: ""
+
+# - name: Pinterest
+#   url: http://www.pinterest.com/
+#   class: icon-pinterest
+#   title: ""
+
+# - name: Xing
+#   url: https://www.xing.com/profile/
+#   class: icon-xing
+#   title: Xing Profil

@@ -1,0 +1,218 @@
+@charset "UTF-8";
+/* TOC – Color Variables
+
+- Basics
+- Corporate Identity Colorpalette
+- Foundation Color Variables
+- Grey Scale
+- Topbar-Navigation
+- Footer
+- Code
+
+*/
+/* Basics
+------------------------------------------------------------------- */
+/* Corporate Identity Colorpalette
+   https://color.adobe.com/de/Flat-Design-Colors-v2-color-theme-4341903/
+------------------------------------------------------------------- */
+/*$ci-6: #A1D044;         // green*/
+/* Foundation Color Variables
+------------------------------------------------------------------- */
+/* Grey Scale
+------------------------------------------------------------------- */
+/* Topbar-Navigation
+------------------------------------------------------------------- */
+/* Footer
+------------------------------------------------------------------- */
+/* Code
+------------------------------------------------------------------- */
+/*$code-background-color: scale-color($secondary-color, $lightness: 70%);*/
+/* TOC – Typography variables
+
+Modular Scale › http://www.modularscale.com//?16,36&px&1.25&web&table
+
+- Fonts
+- Font Weight
+- Font Size Variables
+
+*/
+/* Fonts
+------------------------------------------------------------------- */
+/* Font Weight
+------------------------------------------------------------------- */
+/* Font Size Variables
+------------------------------------------------------------------- */
+/* line 56, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.font-size-h1 {
+  font-size: 2.441em;
+}
+
+/* line 57, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.font-size-h2 {
+  font-size: 1.953em;
+}
+
+/* line 58, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.font-size-h3 {
+  font-size: 1.563em;
+}
+
+/* line 59, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.font-size-h4 {
+  font-size: 1.25em;
+}
+
+/* line 60, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.font-size-h5 {
+  font-size: 1.152em;
+}
+
+/* line 62, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_02_settings_typography.scss */
+.MathJax {
+  font-size: 20.3em !important;
+}
+
+/* line 300, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-version {
+  font-family: "/5.5.0/";
+}
+
+/* line 304, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-small {
+  font-family: "/only screen/";
+  width: 0em;
+}
+
+/* line 309, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-small-only {
+  font-family: "/only screen and (max-width: 40em)/";
+  width: 0em;
+}
+
+/* line 314, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-medium {
+  font-family: "/only screen and (min-width:40.063em)/";
+  width: 40.063em;
+}
+
+/* line 319, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-medium-only {
+  font-family: "/only screen and (min-width:40.063em) and (max-width:64em)/";
+  width: 40.063em;
+}
+
+/* line 324, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-large {
+  font-family: "/only screen and (min-width:64.063em)/";
+  width: 64.063em;
+}
+
+/* line 329, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-large-only {
+  font-family: "/only screen and (min-width:64.063em) and (max-width:90em)/";
+  width: 64.063em;
+}
+
+/* line 334, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-xlarge {
+  font-family: "/only screen and (min-width:90.063em)/";
+  width: 90.063em;
+}
+
+/* line 339, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-xlarge-only {
+  font-family: "/only screen and (min-width:90.063em) and (max-width:120em)/";
+  width: 90.063em;
+}
+
+/* line 344, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-mq-xxlarge {
+  font-family: "/only screen and (min-width:120.063em)/";
+  width: 120.063em;
+}
+
+/* line 349, /Users/miller86/fastmath/atpesc17_examples/ATPESC2018HandsOnLessons/_sass/_03_settings_mixins_media_queries.scss */
+meta.foundation-data-attribute-namespace {
+  font-family: false;
+}
+
+/* line 11 */
+* {
+  display: block;
+}
+
+/* line 15 */
+:root {
+  margin: 3em;
+  background: #fdfdfd;
+  color: #8B8B8B;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* line 23 */
+channel > title {
+  text-align: center;
+  color: #6590aa;
+  font-family: "Volkhov", Georgia, Times, serif;
+  font-size: 3.6615em;
+  font-weight: bolder;
+}
+/* line 29 */
+channel > title::before {
+  content: 'RSS Feed for ';
+  font-weight: initial;
+}
+/* line 33 */
+channel > title::after {
+  content: "This RSS feed is meant to be used by RSS reader applications and websites.";
+  display: block;
+  padding: 1em;
+  background-color: #DF4949;
+  color: #fff;
+  font-family: initial;
+  font-size: initial;
+  letter-spacing: initial;
+}
+/* line 45 */
+channel > description,
+channel > link {
+  display: none;
+}
+
+/* line 51 */
+item {
+  padding: 1em 0;
+  border-bottom: 1px solid #020202;
+}
+/* line 54 */
+item:last-child {
+  border-bottom: none;
+}
+/* line 58 */
+item > title {
+  color: #00AFD7;
+  font-family: "Volkhov", Georgia, Times, serif;
+  font-size: 2.441em;
+  margin-bottom: 0.5em;
+}
+/* line 65 */
+item > link {
+  color: #334D5C;
+}
+/* line 69 */
+item > pubDate {
+  color: #A4A4A4;
+  font-size: small;
+}
+/* line 74 */
+item > description {
+  margin-top: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* line 81 */
+item > guid,
+item > category {
+  display: none;
+}

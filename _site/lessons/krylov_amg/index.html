@@ -1,0 +1,3915 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Krylov Solvers and Algebraic Multigrid</title>
+
+    <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/styles_feeling_responsive.css">
+
+  
+
+	<script src="http://localhost:4000/assets/js/modernizr.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: [ 'Lato:400,700,400italic:latin', 'Volkhov::latin' ]
+			}
+		});
+	</script>
+
+	<noscript>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic%7CVolkhov' rel='stylesheet' type='text/css'>
+	</noscript>
+
+
+	<!-- Search Engine Optimization -->
+	<meta name="description" content="At a Glance
+
+
+  
+    
+      Why multigrid over a Krylovsolver for large problems?
+      Understand multigrid concept.
+      Faster convergence,better scalability.
+    
+    
+      Why use more aggressivecoarsening for AMG?
+      Understand need for low complexities.
+      Lower memory use, faster times,but more iterations.
+    
+    
+      Why a structured solverfor a structured problem?
+      Understand importance ofsuitable data structures
+      Higher efficiency,faster solve times.
+    
+  
+
+
+The Problem Being Solved
+
+We consider the Poisson equation
+
+
+
+on a cuboid of size  with Dirichlet boundary conditions .
+
+It is discretized using central finite differences, leading to a symmetric positive matrix.
+
+Note: To begin this lesson…
+
+  Open the Answers Form
+    cd HandsOnLessons/krylov_amg
+    
+  
+
+
+The Example Source Code
+
+For the first part of the hands-on lessons we will use the executable ij. Various solver, problem and parameter options can be invoked by adding them to the command line.
+A complete set of options will be printed by typing
+./ij -help
+
+Here is an excerpt of the output of this command with all the options relevant for the hands-on lessons.
+
+Usage: ij [&amp;lt;options&amp;gt;]
+
+Choice of Problem:
+  -laplacian [&amp;lt;options&amp;gt;] : build 7pt 3D laplacian problem (default)
+  -difconv [&amp;lt;opts&amp;gt;]      : build convection-diffusion problem
+    -n &amp;lt;nx&amp;gt; &amp;lt;ny&amp;gt; &amp;lt;nz&amp;gt;    : problem size per process
+    -P &amp;lt;Px&amp;gt; &amp;lt;Py&amp;gt; &amp;lt;Pz&amp;gt;    : process topology
+    -a &amp;lt;ax&amp;gt;              : convection coefficient
+
+Choice of solver:
+   -amg                  : AMG only
+   -amgpcg               : AMG-PCG
+   -pcg                  : diagonally scaled PCG
+   -amggmres             : AMG-GMRES with restart k (default k=10)
+   -gmres                : diagonally scaled GMRES(k) (default k=10)
+   -amgbicgstab          : AMG-BiCGSTAB
+   -bicgstab             : diagonally scaled BiCGSTAB
+   -k  &amp;lt;val&amp;gt;             : dimension Krylov space for GMRES
+
+.....
+
+  -tol  &amp;lt;val&amp;gt;            : set solver convergence tolerance = val
+  -max_iter  &amp;lt;val&amp;gt;       : set max iterations 
+  -agg_nl  &amp;lt;val&amp;gt;         : set number of aggressive coarsening levels (default:0)
+  -iout &amp;lt;val&amp;gt;            : set output flag
+       0=no output    1=matrix stats
+       2=cycle stats  3=matrix &amp;amp; cycle stats
+
+  -print                 : print out the system
+
+
+Running the Example
+
+First Set of Runs (Krylov Solvers)
+
+Run the first example for a small problem of size 27000 using restarted GMRES with a Krylov space of size 10.
+./ij -n 30 30 30 -gmres
+
+
+Expected Behavior/Output
+
+You should get something that looks like this
+Running with these driver parameters:
+  solver ID    = 4
+
+    (nx, ny, nz) = (30, 30, 30)
+    (Px, Py, Pz) = (1, 1, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+    Problem size = (30 x 30 x 30)
+
+=============================================
+Generate Matrix:
+=============================================
+Spatial Operator:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+  RHS vector has unit components
+  Initial guess is 0
+=============================================
+IJ Vector Setup:
+=============================================
+RHS and Initial Guess:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+Solver: DS-GMRES
+HYPRE_GMRESGetPrecond got good precond
+=============================================
+Setup phase times:
+=============================================
+GMRES Setup:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+=============================================
+Solve phase times:
+=============================================
+GMRES Solve:
+  wall clock time = 0.270000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.270000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+GMRES Iterations = 392
+Final GMRES Relative Residual Norm = 9.915663e-09
+Total time = 0.270000
+
+
+Note the total time and the number of iterations.
+Now increase the Krylov subspace by changing input to -k to 40, and finally 75.
+
+
+  
+  
+  What do you observe about the number of iterations and times?
+
+  
+    
+    
+      
+          Number of iterations and times generally improve except for the last run, which is somewhat slower because the last iterations are more expensive. Iterations: 392, 116, 73. Times: 0.27, 0.16, 0.17.
+
+      
+    
+  
+
+
+
+  
+  
+  How many restarts were required for the last run using -k 75?
+
+  
+    
+    
+      
+          None, since the number of iterations is 73. Here full GMRES was used.
+
+      
+    
+  
+
+
+Now solve this problem using -pcg and -bicgstab.
+
+
+  
+  
+  What do you observe about the number of iterations and times for all three methods? Which method is the fastest and which one has the lowest number of iterations?
+
+  
+    
+    
+      
+          Conjugate gradient takes 74 iterations and 0.04 seconds, BiCGSTAB 51 iterations and 0.05 seconds. Conjugate gradient has the lowest time, but BiCGSTAB has the lowest number of iterations.
+
+      
+    
+  
+
+
+
+  
+  
+  Why is BiCGSTAB slower than PCG?
+
+  
+    
+    
+      
+          It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.
+
+      
+    
+  
+
+
+Now let us scale up the problem starting with a cube of size  on one process:
+mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
+
+Now we increase the problem size to a cube of size 
+by increasing the number of processes to 8 using the process topology -P 2 2 2.
+mpiexec -n 8 ./ij -n 50 50 50 -pcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time?
+
+  
+    
+    
+      
+          
+the number of iterations increases from 124 to 249, the time from 0.55 seconds to 1.46 seconds.
+
+      
+    
+  
+
+
+Second Set of Runs (Algebraic Multigrid)
+
+Now perform the previous weak scaling study using algebraic multigrid starting with
+mpiexec -n 1 ./ij -n 50 50 50 -amg -P 1 1 1
+
+followed by
+mpiexec -n 8 ./ij -n 50 50 50 -amg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          AMG solves the problem using significantly less iterations, and time increases somewhat slower.  Number of iterations: 12, 23.
+Total time: 0.51, 1.18 seconds.
+
+      
+    
+  
+
+
+Now repeat the scaling study using AMG as a preconditioner for CG:
+mpiexec -n 1 ./ij -n 50 50 50 -amgpcg -P 1 1 1
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          Using PCG preconditioned with AMG further decreases the number of iterations and solve times.  Number of iterations: 8, 11.  Total time: 0.47, 0.89 seconds.
+
+      
+    
+  
+
+
+Now let us take a look at the complexities of the last run by printing some setup statistics:
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1
+
+You should now see the following statistics:
+HYPRE_ParCSRPCGGetPrecond got good precond
+
+
+ Num MPI tasks = 8
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 8
+
+ Strength Threshold = 0.250000
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = HMIS
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1  499594  8430438  0.000     7   42  16.9  -2.581e-15   4.000e+00
+ 2  113588  5267884  0.000    18   83  46.4  -9.556e-15   5.515e+00
+ 3   14088  1099948  0.006    16  126  78.1  -2.339e-14   8.187e+00
+ 4    2585   235511  0.035    11  183  91.1  -9.932e-14   1.622e+01
+ 5     366    25888  0.193    11  181  70.7   2.032e-01   4.293e+01
+ 6      44     1228  0.634    14   44  27.9   9.754e+00   1.501e+02
+ 7       9       77  0.951     7    9   8.6   1.198e+01   3.267e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 499594   1   4   1.429e-01 4.545e-01 5.000e-01 1.000e+00
+ 1 499594 x 113588   1   4   1.330e-02 5.971e-01 2.164e-01 1.000e+00
+ 2 113588 x 14088   1   4  -1.414e-02 5.907e-01 5.709e-02 1.000e+00
+ 3 14088 x 2585    1   4  -4.890e-01 6.377e-01 2.236e-02 1.000e+00
+ 4  2585 x 366     1   4  -1.185e+01 5.049e+00 8.739e-03 1.000e+00
+ 5   366 x 44      1   4  -2.597e+00 3.480e+00 6.453e-03 1.000e+00
+ 6    44 x 9       1   4  -2.160e-01 8.605e-01 -6.059e-02 1.000e+00
+
+
+     Complexity:    grid = 1.630274
+                operator = 3.170169
+                memory = 3.837342
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1
+  Stopping Tolerance:               0.000000e+00
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     13   14     9
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+
+This output contains some statistics for the AMG preconditioner. It shows the number of levels, the average number of nonzeros in total and per row for each matrix  as well as each interpolation operator .
+It also shows the operator complexity, which is defined as the sum of the number of nonzeroes of all operators 
+divided by the number of nonzeroes of the original matrix :
+.
+It also gives the memory complexity, which is defined by
+.
+
+
+  
+  
+  What do you notice about the average number of nonzeroes per row across increasing levels?
+
+  
+    
+    
+      
+          It increases significantly  through level 4 and decreases after that. It is much larger than the original level.
+
+      
+    
+  
+
+
+
+  
+  
+  What causes this growth?
+
+  
+    
+    
+      
+          It is caused by the Galerkin product, i.e. the product of the three matrices R, A, and P.
+
+      
+    
+  
+
+
+
+  
+  
+  Is the operator complexity acceptable?
+
+  
+    
+    
+      
+          No, we would prefer a number that is closer to 1.
+
+      
+    
+  
+
+
+Now, let us see what happens if we coarsen more aggressively on the finest level:
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 1
+
+We now receive the following output for average number of nonzeroes and complexities:
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1   79110  1427282  0.000     6   33  18.0  -1.779e-14   8.805e+00
+ 2   16777   817577  0.003    12   91  48.7  -2.059e-14   1.589e+01
+ 3    2235   153557  0.031    19  132  68.7   6.580e-14   3.505e+01
+ 4     309    18445  0.193    17  160  59.7   1.255e+00   8.454e+01
+ 5      50     1530  0.612    13   50  30.6   1.521e+01   3.237e+02
+ 6       5       25  1.000     5    5   5.0   6.338e+01   3.572e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 79110   1   9   2.646e-02 9.722e-01 2.778e-01 1.000e+00
+ 1 79110 x 16777   1   4   7.709e-03 1.000e+00 2.709e-01 1.000e+00
+ 2 16777 x 2235    1   4   2.289e-03 7.928e-01 5.909e-02 1.000e+00
+ 3  2235 x 309     1   4  -6.673e-02 5.759e-01 4.594e-02 1.000e+00
+ 4   309 x 50      1   4  -6.269e-01 3.959e-01 2.948e-02 1.000e+00
+ 5    50 x 5       1   4  -1.443e-01 1.083e-01 -4.496e-02 1.000e+00
+
+
+     Complexity:    grid = 1.098486
+                operator = 1.348475
+                memory = 1.700654
+
+As you can see, the number of levels, the number of nonzeroes per rows and the complexities have decreased.
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations increases (17 vs. 11), but total time is less (0.69 vs 0.89)
+
+      
+    
+  
+
+
+Now let us use aggressive coarsening in the first two levels.
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 2
+
+
+
+  
+  
+  What happens to complexities, number of iterations and total time?
+
+  
+    
+    
+      
+          Complexities decrease further to 1.22, but the number of iterations is increasing to 26 and total time increases as well. Choosing to aggressively coarsen on the second level does not lead to further time savings, but gives further memory savings. If achieving the shortest time is the objective, coarsen aggressively on the second level is not adviced.
+
+      
+    
+  
+
+
+So far, we achieved the best overall time to solve a Poisson problem on a cube of size  using conjugate gradient preconditioned with AMG with one level of aggressive coarsening.
+
+How would a structured solver perform on this problem?
+We now use the driver for the structured interface, which will also give various input options by typing
+./struct -help
+
+
+To run the structured solver PFMG for this problem type
+mpiexec -n 8 ./struct -n 50 50 50 -P 2 2 2 -pfmg
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 35, but the total time is less (0.36)
+
+      
+    
+  
+
+
+Now run it as a preconditioner for conjugate gradient.
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 14, but the total time is less (0.24)
+
+      
+    
+  
+
+
+To get even better total time, now run the non-Galerkin version.
+
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations remains 14, but the total time is less (0.21)
+
+      
+    
+  
+
+
+Evening exercises
+
+We now consider the diffusion-convection equation
+
+
+
+on a cuboid with Dirichlet boundary conditions.
+
+The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
+For  we just get the Poisson equation, but when  we get a nonsymmetric linear system.
+
+Now let us apply Krylov solvers to the convection-diffusion equation with , starting with conjugate gradient.
+
+./ij -n 50 50 50 -difconv -a 10 -pcg
+
+
+
+  
+  
+  What do you observe? Why?
+
+  
+    
+    
+      
+          PCG fails, because the linear system is nonsymmetric.
+
+      
+    
+  
+
+
+Now try GMRES(20), BiCGSTAB, and AMG with and without aggressive coarsening.
+./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
+
+./ij -n 50 50 50 -difconv -a 10 -bicgstab
+
+./ij -n 50 50 50 -difconv -a 10 -amg
+
+./ij -n 50 50 50 -difconv -a 10 -amg -agg_nl 1
+
+
+
+  
+  
+  What do you observe? Order the solvers in the order of slowest to fastest solver for this problem!
+
+  
+    
+    
+      
+          BiCGSTAB, GMRES and AMG with or without aggressive coarsening solve the problem. The order slowest to fastest for this problem is: GMRES(20), AMG, BiCGSTAB, AMG with aggressive coarsening.
+
+      
+    
+  
+
+
+Let us solve the problem using structured multigrid solvers.
+./struct -n 50 50 50 -a 10 -pfmg
+
+./struct -n 50 50 50 -a 10 -pfmg -rap 1
+
+./struct -n 50 50 50 -a 10 -pfmggmres
+
+./struct -n 50 50 50 -a 10 -pfmggmres -rap 1
+
+
+
+  
+  
+  What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.
+
+  
+    
+    
+      
+          The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.
+
+      
+    
+  
+
+
+We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
+Let us begin with a grid-aligned anisotropy.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
+
+
+
+  
+  
+  What do you observe?
+
+  
+    
+    
+      
+          The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.
+
+      
+    
+  
+
+
+Now let us rotate the anisotropy by 45 degrees.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
+
+
+
+  
+  
+  Does the result change? What is the order of the solvers?
+
+  
+    
+    
+      
+          The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.
+
+      
+    
+  
+
+
+Let us now scale up the problem.
+mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+
+
+  
+  
+  How do the numbers of iterations change?
+
+  
+    
+    
+      
+          They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.
+
+      
+    
+  
+
+
+Let us now rotate the anisotropy by 30 degrees.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
+
+
+
+  
+  
+  Is the convergence affected by the change in angle?
+
+  
+    
+    
+      
+          This problem is harder. The number of iterations increases to 15.
+
+      
+    
+  
+
+
+Let us now coarsen more aggressively.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
+
+
+
+  
+  
+  Does this improve convergence and time?
+
+  
+    
+    
+      
+          No. Both get worse. The number of iterations increases to 34 and the time goes up.
+
+      
+    
+  
+
+
+Let us investigate the operator complexities:
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
+
+
+
+  
+  
+  What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?
+
+  
+    
+    
+      
+          The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.
+
+      
+    
+  
+
+
+Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.
+
+Out-Brief
+
+We experimented with several Krylov solvers, GMRES, conjugate gradient and BiCGSTAB, and observed the effect of increasing the size of the Krylov space for restarted GMRES. We investigated why multigrid methods are preferable over generic solvers like conjugate gradient for large suitable PDE problems.
+Additional improvements can be achieved when using them as preconditioners for Krylov solvers like conjugate gradient.
+For unstructured multigrid solvers, it is important to keep complexities low, since large complexities lead to slow solve times and require much memory.
+For structured problems, solvers that take advantage of the structure of the problem are more efficient than unstructured solvers.
+
+Further Reading
+
+To learn more about algebraic multigrid, see
+An Introduction to Algebraic Multigrid
+
+More information on hypre , including documentation and further publications, can be found here">
+	<meta name="google-site-verification" content="Vk0IOJ2jwG_qEoG7fuEXYqv0m2rLa8P778Fi_GrsgEQ">
+	<meta name="msvalidate.01" content="0FB4C028ABCF07C908C54386ABD2D97F" >
+	
+	<link rel="author" href="https://plus.google.com/u/0/118311555303973066167">
+	
+	
+	<link rel="canonical" href="http://localhost:4000/lessons/krylov_amg/">
+
+
+	<!-- Facebook Open Graph -->
+	<meta property="og:title" content="Krylov Solvers and Algebraic Multigrid">
+	<meta property="og:description" content="At a Glance
+
+
+  
+    
+      Why multigrid over a Krylovsolver for large problems?
+      Understand multigrid concept.
+      Faster convergence,better scalability.
+    
+    
+      Why use more aggressivecoarsening for AMG?
+      Understand need for low complexities.
+      Lower memory use, faster times,but more iterations.
+    
+    
+      Why a structured solverfor a structured problem?
+      Understand importance ofsuitable data structures
+      Higher efficiency,faster solve times.
+    
+  
+
+
+The Problem Being Solved
+
+We consider the Poisson equation
+
+
+
+on a cuboid of size  with Dirichlet boundary conditions .
+
+It is discretized using central finite differences, leading to a symmetric positive matrix.
+
+Note: To begin this lesson…
+
+  Open the Answers Form
+    cd HandsOnLessons/krylov_amg
+    
+  
+
+
+The Example Source Code
+
+For the first part of the hands-on lessons we will use the executable ij. Various solver, problem and parameter options can be invoked by adding them to the command line.
+A complete set of options will be printed by typing
+./ij -help
+
+Here is an excerpt of the output of this command with all the options relevant for the hands-on lessons.
+
+Usage: ij [&amp;lt;options&amp;gt;]
+
+Choice of Problem:
+  -laplacian [&amp;lt;options&amp;gt;] : build 7pt 3D laplacian problem (default)
+  -difconv [&amp;lt;opts&amp;gt;]      : build convection-diffusion problem
+    -n &amp;lt;nx&amp;gt; &amp;lt;ny&amp;gt; &amp;lt;nz&amp;gt;    : problem size per process
+    -P &amp;lt;Px&amp;gt; &amp;lt;Py&amp;gt; &amp;lt;Pz&amp;gt;    : process topology
+    -a &amp;lt;ax&amp;gt;              : convection coefficient
+
+Choice of solver:
+   -amg                  : AMG only
+   -amgpcg               : AMG-PCG
+   -pcg                  : diagonally scaled PCG
+   -amggmres             : AMG-GMRES with restart k (default k=10)
+   -gmres                : diagonally scaled GMRES(k) (default k=10)
+   -amgbicgstab          : AMG-BiCGSTAB
+   -bicgstab             : diagonally scaled BiCGSTAB
+   -k  &amp;lt;val&amp;gt;             : dimension Krylov space for GMRES
+
+.....
+
+  -tol  &amp;lt;val&amp;gt;            : set solver convergence tolerance = val
+  -max_iter  &amp;lt;val&amp;gt;       : set max iterations 
+  -agg_nl  &amp;lt;val&amp;gt;         : set number of aggressive coarsening levels (default:0)
+  -iout &amp;lt;val&amp;gt;            : set output flag
+       0=no output    1=matrix stats
+       2=cycle stats  3=matrix &amp;amp; cycle stats
+
+  -print                 : print out the system
+
+
+Running the Example
+
+First Set of Runs (Krylov Solvers)
+
+Run the first example for a small problem of size 27000 using restarted GMRES with a Krylov space of size 10.
+./ij -n 30 30 30 -gmres
+
+
+Expected Behavior/Output
+
+You should get something that looks like this
+Running with these driver parameters:
+  solver ID    = 4
+
+    (nx, ny, nz) = (30, 30, 30)
+    (Px, Py, Pz) = (1, 1, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+    Problem size = (30 x 30 x 30)
+
+=============================================
+Generate Matrix:
+=============================================
+Spatial Operator:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+  RHS vector has unit components
+  Initial guess is 0
+=============================================
+IJ Vector Setup:
+=============================================
+RHS and Initial Guess:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+Solver: DS-GMRES
+HYPRE_GMRESGetPrecond got good precond
+=============================================
+Setup phase times:
+=============================================
+GMRES Setup:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+=============================================
+Solve phase times:
+=============================================
+GMRES Solve:
+  wall clock time = 0.270000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.270000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+GMRES Iterations = 392
+Final GMRES Relative Residual Norm = 9.915663e-09
+Total time = 0.270000
+
+
+Note the total time and the number of iterations.
+Now increase the Krylov subspace by changing input to -k to 40, and finally 75.
+
+
+  
+  
+  What do you observe about the number of iterations and times?
+
+  
+    
+    
+      
+          Number of iterations and times generally improve except for the last run, which is somewhat slower because the last iterations are more expensive. Iterations: 392, 116, 73. Times: 0.27, 0.16, 0.17.
+
+      
+    
+  
+
+
+
+  
+  
+  How many restarts were required for the last run using -k 75?
+
+  
+    
+    
+      
+          None, since the number of iterations is 73. Here full GMRES was used.
+
+      
+    
+  
+
+
+Now solve this problem using -pcg and -bicgstab.
+
+
+  
+  
+  What do you observe about the number of iterations and times for all three methods? Which method is the fastest and which one has the lowest number of iterations?
+
+  
+    
+    
+      
+          Conjugate gradient takes 74 iterations and 0.04 seconds, BiCGSTAB 51 iterations and 0.05 seconds. Conjugate gradient has the lowest time, but BiCGSTAB has the lowest number of iterations.
+
+      
+    
+  
+
+
+
+  
+  
+  Why is BiCGSTAB slower than PCG?
+
+  
+    
+    
+      
+          It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.
+
+      
+    
+  
+
+
+Now let us scale up the problem starting with a cube of size  on one process:
+mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
+
+Now we increase the problem size to a cube of size 
+by increasing the number of processes to 8 using the process topology -P 2 2 2.
+mpiexec -n 8 ./ij -n 50 50 50 -pcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time?
+
+  
+    
+    
+      
+          
+the number of iterations increases from 124 to 249, the time from 0.55 seconds to 1.46 seconds.
+
+      
+    
+  
+
+
+Second Set of Runs (Algebraic Multigrid)
+
+Now perform the previous weak scaling study using algebraic multigrid starting with
+mpiexec -n 1 ./ij -n 50 50 50 -amg -P 1 1 1
+
+followed by
+mpiexec -n 8 ./ij -n 50 50 50 -amg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          AMG solves the problem using significantly less iterations, and time increases somewhat slower.  Number of iterations: 12, 23.
+Total time: 0.51, 1.18 seconds.
+
+      
+    
+  
+
+
+Now repeat the scaling study using AMG as a preconditioner for CG:
+mpiexec -n 1 ./ij -n 50 50 50 -amgpcg -P 1 1 1
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          Using PCG preconditioned with AMG further decreases the number of iterations and solve times.  Number of iterations: 8, 11.  Total time: 0.47, 0.89 seconds.
+
+      
+    
+  
+
+
+Now let us take a look at the complexities of the last run by printing some setup statistics:
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1
+
+You should now see the following statistics:
+HYPRE_ParCSRPCGGetPrecond got good precond
+
+
+ Num MPI tasks = 8
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 8
+
+ Strength Threshold = 0.250000
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = HMIS
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1  499594  8430438  0.000     7   42  16.9  -2.581e-15   4.000e+00
+ 2  113588  5267884  0.000    18   83  46.4  -9.556e-15   5.515e+00
+ 3   14088  1099948  0.006    16  126  78.1  -2.339e-14   8.187e+00
+ 4    2585   235511  0.035    11  183  91.1  -9.932e-14   1.622e+01
+ 5     366    25888  0.193    11  181  70.7   2.032e-01   4.293e+01
+ 6      44     1228  0.634    14   44  27.9   9.754e+00   1.501e+02
+ 7       9       77  0.951     7    9   8.6   1.198e+01   3.267e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 499594   1   4   1.429e-01 4.545e-01 5.000e-01 1.000e+00
+ 1 499594 x 113588   1   4   1.330e-02 5.971e-01 2.164e-01 1.000e+00
+ 2 113588 x 14088   1   4  -1.414e-02 5.907e-01 5.709e-02 1.000e+00
+ 3 14088 x 2585    1   4  -4.890e-01 6.377e-01 2.236e-02 1.000e+00
+ 4  2585 x 366     1   4  -1.185e+01 5.049e+00 8.739e-03 1.000e+00
+ 5   366 x 44      1   4  -2.597e+00 3.480e+00 6.453e-03 1.000e+00
+ 6    44 x 9       1   4  -2.160e-01 8.605e-01 -6.059e-02 1.000e+00
+
+
+     Complexity:    grid = 1.630274
+                operator = 3.170169
+                memory = 3.837342
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1
+  Stopping Tolerance:               0.000000e+00
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     13   14     9
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+
+This output contains some statistics for the AMG preconditioner. It shows the number of levels, the average number of nonzeros in total and per row for each matrix  as well as each interpolation operator .
+It also shows the operator complexity, which is defined as the sum of the number of nonzeroes of all operators 
+divided by the number of nonzeroes of the original matrix :
+.
+It also gives the memory complexity, which is defined by
+.
+
+
+  
+  
+  What do you notice about the average number of nonzeroes per row across increasing levels?
+
+  
+    
+    
+      
+          It increases significantly  through level 4 and decreases after that. It is much larger than the original level.
+
+      
+    
+  
+
+
+
+  
+  
+  What causes this growth?
+
+  
+    
+    
+      
+          It is caused by the Galerkin product, i.e. the product of the three matrices R, A, and P.
+
+      
+    
+  
+
+
+
+  
+  
+  Is the operator complexity acceptable?
+
+  
+    
+    
+      
+          No, we would prefer a number that is closer to 1.
+
+      
+    
+  
+
+
+Now, let us see what happens if we coarsen more aggressively on the finest level:
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 1
+
+We now receive the following output for average number of nonzeroes and complexities:
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1   79110  1427282  0.000     6   33  18.0  -1.779e-14   8.805e+00
+ 2   16777   817577  0.003    12   91  48.7  -2.059e-14   1.589e+01
+ 3    2235   153557  0.031    19  132  68.7   6.580e-14   3.505e+01
+ 4     309    18445  0.193    17  160  59.7   1.255e+00   8.454e+01
+ 5      50     1530  0.612    13   50  30.6   1.521e+01   3.237e+02
+ 6       5       25  1.000     5    5   5.0   6.338e+01   3.572e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 79110   1   9   2.646e-02 9.722e-01 2.778e-01 1.000e+00
+ 1 79110 x 16777   1   4   7.709e-03 1.000e+00 2.709e-01 1.000e+00
+ 2 16777 x 2235    1   4   2.289e-03 7.928e-01 5.909e-02 1.000e+00
+ 3  2235 x 309     1   4  -6.673e-02 5.759e-01 4.594e-02 1.000e+00
+ 4   309 x 50      1   4  -6.269e-01 3.959e-01 2.948e-02 1.000e+00
+ 5    50 x 5       1   4  -1.443e-01 1.083e-01 -4.496e-02 1.000e+00
+
+
+     Complexity:    grid = 1.098486
+                operator = 1.348475
+                memory = 1.700654
+
+As you can see, the number of levels, the number of nonzeroes per rows and the complexities have decreased.
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations increases (17 vs. 11), but total time is less (0.69 vs 0.89)
+
+      
+    
+  
+
+
+Now let us use aggressive coarsening in the first two levels.
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 2
+
+
+
+  
+  
+  What happens to complexities, number of iterations and total time?
+
+  
+    
+    
+      
+          Complexities decrease further to 1.22, but the number of iterations is increasing to 26 and total time increases as well. Choosing to aggressively coarsen on the second level does not lead to further time savings, but gives further memory savings. If achieving the shortest time is the objective, coarsen aggressively on the second level is not adviced.
+
+      
+    
+  
+
+
+So far, we achieved the best overall time to solve a Poisson problem on a cube of size  using conjugate gradient preconditioned with AMG with one level of aggressive coarsening.
+
+How would a structured solver perform on this problem?
+We now use the driver for the structured interface, which will also give various input options by typing
+./struct -help
+
+
+To run the structured solver PFMG for this problem type
+mpiexec -n 8 ./struct -n 50 50 50 -P 2 2 2 -pfmg
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 35, but the total time is less (0.36)
+
+      
+    
+  
+
+
+Now run it as a preconditioner for conjugate gradient.
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 14, but the total time is less (0.24)
+
+      
+    
+  
+
+
+To get even better total time, now run the non-Galerkin version.
+
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations remains 14, but the total time is less (0.21)
+
+      
+    
+  
+
+
+Evening exercises
+
+We now consider the diffusion-convection equation
+
+
+
+on a cuboid with Dirichlet boundary conditions.
+
+The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
+For  we just get the Poisson equation, but when  we get a nonsymmetric linear system.
+
+Now let us apply Krylov solvers to the convection-diffusion equation with , starting with conjugate gradient.
+
+./ij -n 50 50 50 -difconv -a 10 -pcg
+
+
+
+  
+  
+  What do you observe? Why?
+
+  
+    
+    
+      
+          PCG fails, because the linear system is nonsymmetric.
+
+      
+    
+  
+
+
+Now try GMRES(20), BiCGSTAB, and AMG with and without aggressive coarsening.
+./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
+
+./ij -n 50 50 50 -difconv -a 10 -bicgstab
+
+./ij -n 50 50 50 -difconv -a 10 -amg
+
+./ij -n 50 50 50 -difconv -a 10 -amg -agg_nl 1
+
+
+
+  
+  
+  What do you observe? Order the solvers in the order of slowest to fastest solver for this problem!
+
+  
+    
+    
+      
+          BiCGSTAB, GMRES and AMG with or without aggressive coarsening solve the problem. The order slowest to fastest for this problem is: GMRES(20), AMG, BiCGSTAB, AMG with aggressive coarsening.
+
+      
+    
+  
+
+
+Let us solve the problem using structured multigrid solvers.
+./struct -n 50 50 50 -a 10 -pfmg
+
+./struct -n 50 50 50 -a 10 -pfmg -rap 1
+
+./struct -n 50 50 50 -a 10 -pfmggmres
+
+./struct -n 50 50 50 -a 10 -pfmggmres -rap 1
+
+
+
+  
+  
+  What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.
+
+  
+    
+    
+      
+          The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.
+
+      
+    
+  
+
+
+We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
+Let us begin with a grid-aligned anisotropy.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
+
+
+
+  
+  
+  What do you observe?
+
+  
+    
+    
+      
+          The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.
+
+      
+    
+  
+
+
+Now let us rotate the anisotropy by 45 degrees.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
+
+
+
+  
+  
+  Does the result change? What is the order of the solvers?
+
+  
+    
+    
+      
+          The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.
+
+      
+    
+  
+
+
+Let us now scale up the problem.
+mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+
+
+  
+  
+  How do the numbers of iterations change?
+
+  
+    
+    
+      
+          They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.
+
+      
+    
+  
+
+
+Let us now rotate the anisotropy by 30 degrees.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
+
+
+
+  
+  
+  Is the convergence affected by the change in angle?
+
+  
+    
+    
+      
+          This problem is harder. The number of iterations increases to 15.
+
+      
+    
+  
+
+
+Let us now coarsen more aggressively.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
+
+
+
+  
+  
+  Does this improve convergence and time?
+
+  
+    
+    
+      
+          No. Both get worse. The number of iterations increases to 34 and the time goes up.
+
+      
+    
+  
+
+
+Let us investigate the operator complexities:
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
+
+
+
+  
+  
+  What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?
+
+  
+    
+    
+      
+          The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.
+
+      
+    
+  
+
+
+Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.
+
+Out-Brief
+
+We experimented with several Krylov solvers, GMRES, conjugate gradient and BiCGSTAB, and observed the effect of increasing the size of the Krylov space for restarted GMRES. We investigated why multigrid methods are preferable over generic solvers like conjugate gradient for large suitable PDE problems.
+Additional improvements can be achieved when using them as preconditioners for Krylov solvers like conjugate gradient.
+For unstructured multigrid solvers, it is important to keep complexities low, since large complexities lead to slow solve times and require much memory.
+For structured problems, solvers that take advantage of the structure of the problem are more efficient than unstructured solvers.
+
+Further Reading
+
+To learn more about algebraic multigrid, see
+An Introduction to Algebraic Multigrid
+
+More information on hypre , including documentation and further publications, can be found here">
+	<meta property="og:url" content="http://localhost:4000/lessons/krylov_amg/">
+	<meta property="og:locale" content="en_EN">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="ATPESC 2018 Math Library Hands On Exercises">
+	
+	<meta property="article:author" content="https://www.facebook.com/phlow.media">
+
+
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="phlow">
+	<meta name="twitter:creator" content="phlow">
+	<meta name="twitter:title" content="Krylov Solvers and Algebraic Multigrid">
+	<meta name="twitter:description" content="At a Glance
+
+
+  
+    
+      Why multigrid over a Krylovsolver for large problems?
+      Understand multigrid concept.
+      Faster convergence,better scalability.
+    
+    
+      Why use more aggressivecoarsening for AMG?
+      Understand need for low complexities.
+      Lower memory use, faster times,but more iterations.
+    
+    
+      Why a structured solverfor a structured problem?
+      Understand importance ofsuitable data structures
+      Higher efficiency,faster solve times.
+    
+  
+
+
+The Problem Being Solved
+
+We consider the Poisson equation
+
+
+
+on a cuboid of size  with Dirichlet boundary conditions .
+
+It is discretized using central finite differences, leading to a symmetric positive matrix.
+
+Note: To begin this lesson…
+
+  Open the Answers Form
+    cd HandsOnLessons/krylov_amg
+    
+  
+
+
+The Example Source Code
+
+For the first part of the hands-on lessons we will use the executable ij. Various solver, problem and parameter options can be invoked by adding them to the command line.
+A complete set of options will be printed by typing
+./ij -help
+
+Here is an excerpt of the output of this command with all the options relevant for the hands-on lessons.
+
+Usage: ij [&amp;lt;options&amp;gt;]
+
+Choice of Problem:
+  -laplacian [&amp;lt;options&amp;gt;] : build 7pt 3D laplacian problem (default)
+  -difconv [&amp;lt;opts&amp;gt;]      : build convection-diffusion problem
+    -n &amp;lt;nx&amp;gt; &amp;lt;ny&amp;gt; &amp;lt;nz&amp;gt;    : problem size per process
+    -P &amp;lt;Px&amp;gt; &amp;lt;Py&amp;gt; &amp;lt;Pz&amp;gt;    : process topology
+    -a &amp;lt;ax&amp;gt;              : convection coefficient
+
+Choice of solver:
+   -amg                  : AMG only
+   -amgpcg               : AMG-PCG
+   -pcg                  : diagonally scaled PCG
+   -amggmres             : AMG-GMRES with restart k (default k=10)
+   -gmres                : diagonally scaled GMRES(k) (default k=10)
+   -amgbicgstab          : AMG-BiCGSTAB
+   -bicgstab             : diagonally scaled BiCGSTAB
+   -k  &amp;lt;val&amp;gt;             : dimension Krylov space for GMRES
+
+.....
+
+  -tol  &amp;lt;val&amp;gt;            : set solver convergence tolerance = val
+  -max_iter  &amp;lt;val&amp;gt;       : set max iterations 
+  -agg_nl  &amp;lt;val&amp;gt;         : set number of aggressive coarsening levels (default:0)
+  -iout &amp;lt;val&amp;gt;            : set output flag
+       0=no output    1=matrix stats
+       2=cycle stats  3=matrix &amp;amp; cycle stats
+
+  -print                 : print out the system
+
+
+Running the Example
+
+First Set of Runs (Krylov Solvers)
+
+Run the first example for a small problem of size 27000 using restarted GMRES with a Krylov space of size 10.
+./ij -n 30 30 30 -gmres
+
+
+Expected Behavior/Output
+
+You should get something that looks like this
+Running with these driver parameters:
+  solver ID    = 4
+
+    (nx, ny, nz) = (30, 30, 30)
+    (Px, Py, Pz) = (1, 1, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+    Problem size = (30 x 30 x 30)
+
+=============================================
+Generate Matrix:
+=============================================
+Spatial Operator:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+  RHS vector has unit components
+  Initial guess is 0
+=============================================
+IJ Vector Setup:
+=============================================
+RHS and Initial Guess:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+Solver: DS-GMRES
+HYPRE_GMRESGetPrecond got good precond
+=============================================
+Setup phase times:
+=============================================
+GMRES Setup:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+=============================================
+Solve phase times:
+=============================================
+GMRES Solve:
+  wall clock time = 0.270000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.270000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+GMRES Iterations = 392
+Final GMRES Relative Residual Norm = 9.915663e-09
+Total time = 0.270000
+
+
+Note the total time and the number of iterations.
+Now increase the Krylov subspace by changing input to -k to 40, and finally 75.
+
+
+  
+  
+  What do you observe about the number of iterations and times?
+
+  
+    
+    
+      
+          Number of iterations and times generally improve except for the last run, which is somewhat slower because the last iterations are more expensive. Iterations: 392, 116, 73. Times: 0.27, 0.16, 0.17.
+
+      
+    
+  
+
+
+
+  
+  
+  How many restarts were required for the last run using -k 75?
+
+  
+    
+    
+      
+          None, since the number of iterations is 73. Here full GMRES was used.
+
+      
+    
+  
+
+
+Now solve this problem using -pcg and -bicgstab.
+
+
+  
+  
+  What do you observe about the number of iterations and times for all three methods? Which method is the fastest and which one has the lowest number of iterations?
+
+  
+    
+    
+      
+          Conjugate gradient takes 74 iterations and 0.04 seconds, BiCGSTAB 51 iterations and 0.05 seconds. Conjugate gradient has the lowest time, but BiCGSTAB has the lowest number of iterations.
+
+      
+    
+  
+
+
+
+  
+  
+  Why is BiCGSTAB slower than PCG?
+
+  
+    
+    
+      
+          It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.
+
+      
+    
+  
+
+
+Now let us scale up the problem starting with a cube of size  on one process:
+mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
+
+Now we increase the problem size to a cube of size 
+by increasing the number of processes to 8 using the process topology -P 2 2 2.
+mpiexec -n 8 ./ij -n 50 50 50 -pcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time?
+
+  
+    
+    
+      
+          
+the number of iterations increases from 124 to 249, the time from 0.55 seconds to 1.46 seconds.
+
+      
+    
+  
+
+
+Second Set of Runs (Algebraic Multigrid)
+
+Now perform the previous weak scaling study using algebraic multigrid starting with
+mpiexec -n 1 ./ij -n 50 50 50 -amg -P 1 1 1
+
+followed by
+mpiexec -n 8 ./ij -n 50 50 50 -amg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          AMG solves the problem using significantly less iterations, and time increases somewhat slower.  Number of iterations: 12, 23.
+Total time: 0.51, 1.18 seconds.
+
+      
+    
+  
+
+
+Now repeat the scaling study using AMG as a preconditioner for CG:
+mpiexec -n 1 ./ij -n 50 50 50 -amgpcg -P 1 1 1
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2
+
+
+
+  
+  
+  What happens to convergence and solve time now?
+
+  
+    
+    
+      
+          Using PCG preconditioned with AMG further decreases the number of iterations and solve times.  Number of iterations: 8, 11.  Total time: 0.47, 0.89 seconds.
+
+      
+    
+  
+
+
+Now let us take a look at the complexities of the last run by printing some setup statistics:
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1
+
+You should now see the following statistics:
+HYPRE_ParCSRPCGGetPrecond got good precond
+
+
+ Num MPI tasks = 8
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 8
+
+ Strength Threshold = 0.250000
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = HMIS
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1  499594  8430438  0.000     7   42  16.9  -2.581e-15   4.000e+00
+ 2  113588  5267884  0.000    18   83  46.4  -9.556e-15   5.515e+00
+ 3   14088  1099948  0.006    16  126  78.1  -2.339e-14   8.187e+00
+ 4    2585   235511  0.035    11  183  91.1  -9.932e-14   1.622e+01
+ 5     366    25888  0.193    11  181  70.7   2.032e-01   4.293e+01
+ 6      44     1228  0.634    14   44  27.9   9.754e+00   1.501e+02
+ 7       9       77  0.951     7    9   8.6   1.198e+01   3.267e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 499594   1   4   1.429e-01 4.545e-01 5.000e-01 1.000e+00
+ 1 499594 x 113588   1   4   1.330e-02 5.971e-01 2.164e-01 1.000e+00
+ 2 113588 x 14088   1   4  -1.414e-02 5.907e-01 5.709e-02 1.000e+00
+ 3 14088 x 2585    1   4  -4.890e-01 6.377e-01 2.236e-02 1.000e+00
+ 4  2585 x 366     1   4  -1.185e+01 5.049e+00 8.739e-03 1.000e+00
+ 5   366 x 44      1   4  -2.597e+00 3.480e+00 6.453e-03 1.000e+00
+ 6    44 x 9       1   4  -2.160e-01 8.605e-01 -6.059e-02 1.000e+00
+
+
+     Complexity:    grid = 1.630274
+                operator = 3.170169
+                memory = 3.837342
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1
+  Stopping Tolerance:               0.000000e+00
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     13   14     9
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+
+This output contains some statistics for the AMG preconditioner. It shows the number of levels, the average number of nonzeros in total and per row for each matrix  as well as each interpolation operator .
+It also shows the operator complexity, which is defined as the sum of the number of nonzeroes of all operators 
+divided by the number of nonzeroes of the original matrix :
+.
+It also gives the memory complexity, which is defined by
+.
+
+
+  
+  
+  What do you notice about the average number of nonzeroes per row across increasing levels?
+
+  
+    
+    
+      
+          It increases significantly  through level 4 and decreases after that. It is much larger than the original level.
+
+      
+    
+  
+
+
+
+  
+  
+  What causes this growth?
+
+  
+    
+    
+      
+          It is caused by the Galerkin product, i.e. the product of the three matrices R, A, and P.
+
+      
+    
+  
+
+
+
+  
+  
+  Is the operator complexity acceptable?
+
+  
+    
+    
+      
+          No, we would prefer a number that is closer to 1.
+
+      
+    
+  
+
+
+Now, let us see what happens if we coarsen more aggressively on the finest level:
+
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 1
+
+We now receive the following output for average number of nonzeroes and complexities:
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1   79110  1427282  0.000     6   33  18.0  -1.779e-14   8.805e+00
+ 2   16777   817577  0.003    12   91  48.7  -2.059e-14   1.589e+01
+ 3    2235   153557  0.031    19  132  68.7   6.580e-14   3.505e+01
+ 4     309    18445  0.193    17  160  59.7   1.255e+00   8.454e+01
+ 5      50     1530  0.612    13   50  30.6   1.521e+01   3.237e+02
+ 6       5       25  1.000     5    5   5.0   6.338e+01   3.572e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 79110   1   9   2.646e-02 9.722e-01 2.778e-01 1.000e+00
+ 1 79110 x 16777   1   4   7.709e-03 1.000e+00 2.709e-01 1.000e+00
+ 2 16777 x 2235    1   4   2.289e-03 7.928e-01 5.909e-02 1.000e+00
+ 3  2235 x 309     1   4  -6.673e-02 5.759e-01 4.594e-02 1.000e+00
+ 4   309 x 50      1   4  -6.269e-01 3.959e-01 2.948e-02 1.000e+00
+ 5    50 x 5       1   4  -1.443e-01 1.083e-01 -4.496e-02 1.000e+00
+
+
+     Complexity:    grid = 1.098486
+                operator = 1.348475
+                memory = 1.700654
+
+As you can see, the number of levels, the number of nonzeroes per rows and the complexities have decreased.
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations increases (17 vs. 11), but total time is less (0.69 vs 0.89)
+
+      
+    
+  
+
+
+Now let us use aggressive coarsening in the first two levels.
+mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 2
+
+
+
+  
+  
+  What happens to complexities, number of iterations and total time?
+
+  
+    
+    
+      
+          Complexities decrease further to 1.22, but the number of iterations is increasing to 26 and total time increases as well. Choosing to aggressively coarsen on the second level does not lead to further time savings, but gives further memory savings. If achieving the shortest time is the objective, coarsen aggressively on the second level is not adviced.
+
+      
+    
+  
+
+
+So far, we achieved the best overall time to solve a Poisson problem on a cube of size  using conjugate gradient preconditioned with AMG with one level of aggressive coarsening.
+
+How would a structured solver perform on this problem?
+We now use the driver for the structured interface, which will also give various input options by typing
+./struct -help
+
+
+To run the structured solver PFMG for this problem type
+mpiexec -n 8 ./struct -n 50 50 50 -P 2 2 2 -pfmg
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 35, but the total time is less (0.36)
+
+      
+    
+  
+
+
+Now run it as a preconditioner for conjugate gradient.
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations 14, but the total time is less (0.24)
+
+      
+    
+  
+
+
+To get even better total time, now run the non-Galerkin version.
+
+mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
+
+
+
+  
+  
+  How does the number of iterations and the time change?
+
+  
+    
+    
+      
+          The number of iterations remains 14, but the total time is less (0.21)
+
+      
+    
+  
+
+
+Evening exercises
+
+We now consider the diffusion-convection equation
+
+
+
+on a cuboid with Dirichlet boundary conditions.
+
+The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
+For  we just get the Poisson equation, but when  we get a nonsymmetric linear system.
+
+Now let us apply Krylov solvers to the convection-diffusion equation with , starting with conjugate gradient.
+
+./ij -n 50 50 50 -difconv -a 10 -pcg
+
+
+
+  
+  
+  What do you observe? Why?
+
+  
+    
+    
+      
+          PCG fails, because the linear system is nonsymmetric.
+
+      
+    
+  
+
+
+Now try GMRES(20), BiCGSTAB, and AMG with and without aggressive coarsening.
+./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
+
+./ij -n 50 50 50 -difconv -a 10 -bicgstab
+
+./ij -n 50 50 50 -difconv -a 10 -amg
+
+./ij -n 50 50 50 -difconv -a 10 -amg -agg_nl 1
+
+
+
+  
+  
+  What do you observe? Order the solvers in the order of slowest to fastest solver for this problem!
+
+  
+    
+    
+      
+          BiCGSTAB, GMRES and AMG with or without aggressive coarsening solve the problem. The order slowest to fastest for this problem is: GMRES(20), AMG, BiCGSTAB, AMG with aggressive coarsening.
+
+      
+    
+  
+
+
+Let us solve the problem using structured multigrid solvers.
+./struct -n 50 50 50 -a 10 -pfmg
+
+./struct -n 50 50 50 -a 10 -pfmg -rap 1
+
+./struct -n 50 50 50 -a 10 -pfmggmres
+
+./struct -n 50 50 50 -a 10 -pfmggmres -rap 1
+
+
+
+  
+  
+  What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.
+
+  
+    
+    
+      
+          The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.
+
+      
+    
+  
+
+
+We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
+Let us begin with a grid-aligned anisotropy.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
+
+
+
+  
+  
+  What do you observe?
+
+  
+    
+    
+      
+          The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.
+
+      
+    
+  
+
+
+Now let us rotate the anisotropy by 45 degrees.
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
+
+
+
+  
+  
+  Does the result change? What is the order of the solvers?
+
+  
+    
+    
+      
+          The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.
+
+      
+    
+  
+
+
+Let us now scale up the problem.
+mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+
+
+
+  
+  
+  How do the numbers of iterations change?
+
+  
+    
+    
+      
+          They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.
+
+      
+    
+  
+
+
+Let us now rotate the anisotropy by 30 degrees.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
+
+
+
+  
+  
+  Is the convergence affected by the change in angle?
+
+  
+    
+    
+      
+          This problem is harder. The number of iterations increases to 15.
+
+      
+    
+  
+
+
+Let us now coarsen more aggressively.
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
+
+
+
+  
+  
+  Does this improve convergence and time?
+
+  
+    
+    
+      
+          No. Both get worse. The number of iterations increases to 34 and the time goes up.
+
+      
+    
+  
+
+
+Let us investigate the operator complexities:
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
+
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
+
+
+
+  
+  
+  What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?
+
+  
+    
+    
+      
+          The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.
+
+      
+    
+  
+
+
+Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.
+
+Out-Brief
+
+We experimented with several Krylov solvers, GMRES, conjugate gradient and BiCGSTAB, and observed the effect of increasing the size of the Krylov space for restarted GMRES. We investigated why multigrid methods are preferable over generic solvers like conjugate gradient for large suitable PDE problems.
+Additional improvements can be achieved when using them as preconditioners for Krylov solvers like conjugate gradient.
+For unstructured multigrid solvers, it is important to keep complexities low, since large complexities lead to slow solve times and require much memory.
+For structured problems, solvers that take advantage of the structure of the problem are more efficient than unstructured solvers.
+
+Further Reading
+
+To learn more about algebraic multigrid, see
+An Introduction to Algebraic Multigrid
+
+More information on hypre , including documentation and further publications, can be found here">
+	
+	
+
+	<link type="text/plain" rel="author" href="http://localhost:4000/humans.txt">
+
+	
+
+	
+
+	<link rel="icon" sizes="32x32" href="http://localhost:4000/assets/img/favicon-32x32.png">
+
+	<link rel="icon" sizes="192x192" href="http://localhost:4000/assets/img/touch-icon-192x192.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="http://localhost:4000/assets/img/apple-touch-icon-180x180-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="http://localhost:4000/assets/img/apple-touch-icon-152x152-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/assets/img/apple-touch-icon-144x144-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="http://localhost:4000/assets/img/apple-touch-icon-120x120-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/assets/img/apple-touch-icon-114x114-precomposed.png">
+
+	
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="http://localhost:4000/assets/img/apple-touch-icon-76x76-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/assets/img/apple-touch-icon-72x72-precomposed.png">
+
+	<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/assets/img/apple-touch-icon-precomposed.png">	
+
+	<meta name="msapplication-TileImage" content="http://localhost:4000/assets/img/msapplication_tileimage.png">
+
+	<meta name="msapplication-TileColor" content="#fabb00">
+
+
+	
+
+        
+	   <!-- MathJax Config
+                    CommonHTML: {
+                        scale: 200
+                    }
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    displayAlign: "left"
+                });
+            </script>
+            -->
+            <script type="text/javascript" async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async>
+            </script>
+            <script type="text/x-mathjax-config">
+                MathJax.Hub.Config({
+                    TeX: { 
+                        equationNumbers: {  autoNumber: "all"  }
+                    }
+                });
+            </script>
+        
+
+</head>
+<body id="top-of-page" class="page-fullwidth">
+        
+
+	
+	
+<div id="navigation" class="sticky">
+  <nav class="top-bar" role="navigation" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+      <h1 class="show-for-small-only"><a href="http://localhost:4000" class="icon-tree"> ATPESC 2018 Math Library Hands On Exercises</a></h1>
+    </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Nav</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+
+      <ul class="right">
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+              
+
+              
+
+          
+          
+        
+        
+      </ul>
+
+      <ul class="left">
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/">Intro</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/about_your_day/">About Your Day</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/setup_instructions/">Setup Instructions</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/atpesc_2018_agenda/">Today&#39;s Agenda</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.alcf.anl.gov/user-guides" target="_blank">ALCF User Guides</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://hangouts.google.com/group/wuWDDdPe4mX1u0v83" target="_blank">Open Chat</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/pages/one_on_one_schedule.html">One-on-One Schedule</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://goo.gl/forms/B7UFpBvEOJbC58oJ2" target="_blank">Submit a Show Your Work</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/lessons/">Lessons</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/hand_coded_heat/">Hand Coded Heat</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/mfem_convergence/">Meshing and Discretization (MFEM)</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/pumi/">MFEM+PUMI Adaptive Workflow</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/time_integrators/">Time Integration &amp; Non-Linear Solvers</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/krylov_amg/">Krylov Solvers and Algebraic Multigrid</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/superlu_mfem/">Sparse Direct Solvers</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/adjoint/">Numerical Optimization (Adjoint)</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/lessons/obstacle_tao">Numerical Optimization</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="https://fastmath-scidac.org/software-catalog.html" target="_blank">Packages</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://mfem.org" target="_blank">MFEM</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.scorec.rpi.edu/pumi" target="_blank">PUMI</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://www.mcs.anl.gov/petsc/" target="_blank">PETSc</a></li>
+                    
+
+                      
+
+                      <li><a  href="https://computation.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods" target="_blank">HYPRE</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://crd-legacy.lbl.gov/~xiaoye/SuperLU" target="_blank">SuperLU</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://www.mcs.anl.gov/research/projects/tao/tao-deprecated/index.html" target="_blank">Tao</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+              
+
+              
+
+          
+          
+
+            
+            
+
+              <li class="has-dropdown">
+                <a  href="http://localhost:4000/contributing_guide/">Contributing</a>
+
+                  <ul class="dropdown">
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/contributing_guide/">Contributing Guide</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/info/">Why the new theme?</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/headers/">Many Header Styles</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/design/">Many Design Options</a></li>
+                    
+
+                      
+
+                      <li><a  href="http://localhost:4000/documentation/">Full Documentation</a></li>
+                    
+                  </ul>
+
+              </li>
+              <li class="divider"></li>
+            
+          
+        
+        
+      </ul>
+    </section>
+  </nav>
+</div><!-- /#navigation -->
+
+	
+
+	
+
+<div id="masthead">
+	<div class="row">
+		<div class="small-12 columns">
+			<a id="logo" href="http://localhost:4000/" title="ATPESC 2018 Math Library Hands On Exercises – So my code will see the future">
+				<img src="http://localhost:4000/assets/img/logo.png" alt="ATPESC 2018 Math Library Hands On Exercises – So my code will see the future">
+			</a>
+		</div><!-- /.small-12.columns -->
+	</div><!-- /.row -->
+</div><!-- /#masthead -->
+
+
+
+
+
+
+
+
+
+
+	
+
+
+<div class="row t30">
+	<div class="medium-12 columns">
+		<article>
+			<header>
+				<p class="subheadline">Demonstrate utility of multigrid</p>
+				<h1>Krylov Solvers and Algebraic Multigrid</h1>
+			</header>
+
+			
+
+			<h2 id="at-a-glance">At a Glance</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Why multigrid over a Krylov<br />solver for large problems?</td>
+      <td>Understand multigrid concept.</td>
+      <td>Faster convergence,<br />better scalability.</td>
+    </tr>
+    <tr>
+      <td>Why use more aggressive<br />coarsening for AMG?</td>
+      <td>Understand need for low complexities.</td>
+      <td>Lower memory use, faster times,<br />but more iterations.</td>
+    </tr>
+    <tr>
+      <td>Why a structured solver<br />for a structured problem?</td>
+      <td>Understand importance of<br />suitable data structures</td>
+      <td>Higher efficiency,<br />faster solve times.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="the-problem-being-solved">The Problem Being Solved</h2>
+
+<p>We consider the Poisson equation</p>
+
+<script type="math/tex; mode=display">-\Delta u = f</script>
+
+<p>on a cuboid of size <script type="math/tex">n_x \times n_y \times n_z</script> with Dirichlet boundary conditions <script type="math/tex">u = 0</script>.</p>
+
+<p>It is discretized using central finite differences, leading to a symmetric positive matrix.</p>
+
+<p><strong>Note:</strong> To begin this lesson…</p>
+<ul>
+  <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeZAaguErZ-VTtzQSeYfkrpkck_ki2-OZ1uIbLRXjc6NW8-gg/viewform?usp=sf_link">Open the Answers Form</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd HandsOnLessons/krylov_amg
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="the-example-source-code">The Example Source Code</h2>
+
+<p>For the first part of the hands-on lessons we will use the executable ij. Various solver, problem and parameter options can be invoked by adding them to the command line.
+A complete set of options will be printed by typing</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -help
+</code></pre></div></div>
+<p>Here is an excerpt of the output of this command with all the options relevant for the hands-on lessons.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: ij [&lt;options&gt;]
+
+Choice of Problem:
+  -laplacian [&lt;options&gt;] : build 7pt 3D laplacian problem (default)
+  -difconv [&lt;opts&gt;]      : build convection-diffusion problem
+    -n &lt;nx&gt; &lt;ny&gt; &lt;nz&gt;    : problem size per process
+    -P &lt;Px&gt; &lt;Py&gt; &lt;Pz&gt;    : process topology
+    -a &lt;ax&gt;              : convection coefficient
+
+Choice of solver:
+   -amg                  : AMG only
+   -amgpcg               : AMG-PCG
+   -pcg                  : diagonally scaled PCG
+   -amggmres             : AMG-GMRES with restart k (default k=10)
+   -gmres                : diagonally scaled GMRES(k) (default k=10)
+   -amgbicgstab          : AMG-BiCGSTAB
+   -bicgstab             : diagonally scaled BiCGSTAB
+   -k  &lt;val&gt;             : dimension Krylov space for GMRES
+
+.....
+
+  -tol  &lt;val&gt;            : set solver convergence tolerance = val
+  -max_iter  &lt;val&gt;       : set max iterations 
+  -agg_nl  &lt;val&gt;         : set number of aggressive coarsening levels (default:0)
+  -iout &lt;val&gt;            : set output flag
+       0=no output    1=matrix stats
+       2=cycle stats  3=matrix &amp; cycle stats
+
+  -print                 : print out the system
+</code></pre></div></div>
+
+<h2 id="running-the-example">Running the Example</h2>
+
+<h3 id="first-set-of-runs-krylov-solvers">First Set of Runs (Krylov Solvers)</h3>
+
+<p>Run the first example for a small problem of size 27000 using restarted GMRES with a Krylov space of size 10.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 30 30 30 -gmres
+</code></pre></div></div>
+
+<h4 id="expected-behavioroutput">Expected Behavior/Output</h4>
+
+<p>You should get something that looks like this</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Running with these driver parameters:
+  solver ID    = 4
+
+    (nx, ny, nz) = (30, 30, 30)
+    (Px, Py, Pz) = (1, 1, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+    Problem size = (30 x 30 x 30)
+
+=============================================
+Generate Matrix:
+=============================================
+Spatial Operator:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+  RHS vector has unit components
+  Initial guess is 0
+=============================================
+IJ Vector Setup:
+=============================================
+RHS and Initial Guess:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+Solver: DS-GMRES
+HYPRE_GMRESGetPrecond got good precond
+=============================================
+Setup phase times:
+=============================================
+GMRES Setup:
+  wall clock time = 0.000000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.000000 seconds
+  cpu MFLOPS      = 0.000000
+
+=============================================
+Solve phase times:
+=============================================
+GMRES Solve:
+  wall clock time = 0.270000 seconds
+  wall MFLOPS     = 0.000000
+  cpu clock time  = 0.270000 seconds
+  cpu MFLOPS      = 0.000000
+
+
+GMRES Iterations = 392
+Final GMRES Relative Residual Norm = 9.915663e-09
+Total time = 0.270000
+</code></pre></div></div>
+
+<p>Note the total time and the number of iterations.
+Now increase the Krylov subspace by changing input to -k to 40, and finally 75.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle1" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle1" style="font-size:150%">What do you observe about the number of iterations and times?
+</label>
+  <div id="qanda_expand1">
+    <style>
+      #qanda_toggle1:checked ~ #qanda_expand1 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>Number of iterations and times generally improve except for the last run, which is somewhat slower because the last iterations are more expensive. Iterations: 392, 116, 73. Times: 0.27, 0.16, 0.17.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle2" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle2" style="font-size:150%">How many restarts were required for the last run using -k 75?
+</label>
+  <div id="qanda_expand2">
+    <style>
+      #qanda_toggle2:checked ~ #qanda_expand2 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>None, since the number of iterations is 73. Here full GMRES was used.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now solve this problem using -pcg and -bicgstab.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle3" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle3" style="font-size:150%">What do you observe about the number of iterations and times for all three methods? Which method is the fastest and which one has the lowest number of iterations?
+</label>
+  <div id="qanda_expand3">
+    <style>
+      #qanda_toggle3:checked ~ #qanda_expand3 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>Conjugate gradient takes 74 iterations and 0.04 seconds, BiCGSTAB 51 iterations and 0.05 seconds. Conjugate gradient has the lowest time, but BiCGSTAB has the lowest number of iterations.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle4" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle4" style="font-size:150%">Why is BiCGSTAB slower than PCG?
+</label>
+  <div id="qanda_expand4">
+    <style>
+      #qanda_toggle4:checked ~ #qanda_expand4 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now let us scale up the problem starting with a cube of size <script type="math/tex">50 \times 50 \times 50</script> on one process:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
+</code></pre></div></div>
+<p>Now we increase the problem size to a cube of size <script type="math/tex">100 \times 100 \times 100</script>
+by increasing the number of processes to 8 using the process topology -P 2 2 2.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -pcg -P 2 2 2
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle5" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle5" style="font-size:150%">What happens to convergence and solve time?
+</label>
+  <div id="qanda_expand5">
+    <style>
+      #qanda_toggle5:checked ~ #qanda_expand5 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          
+<p>the number of iterations increases from 124 to 249, the time from 0.55 seconds to 1.46 seconds.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<h3 id="second-set-of-runs-algebraic-multigrid">Second Set of Runs (Algebraic Multigrid)</h3>
+
+<p>Now perform the previous weak scaling study using algebraic multigrid starting with</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 1 ./ij -n 50 50 50 -amg -P 1 1 1
+</code></pre></div></div>
+<p>followed by</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -amg -P 2 2 2
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle6" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle6" style="font-size:150%">What happens to convergence and solve time now?
+</label>
+  <div id="qanda_expand6">
+    <style>
+      #qanda_toggle6:checked ~ #qanda_expand6 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>AMG solves the problem using significantly less iterations, and time increases somewhat slower.  Number of iterations: 12, 23.
+Total time: 0.51, 1.18 seconds.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now repeat the scaling study using AMG as a preconditioner for CG:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 1 ./ij -n 50 50 50 -amgpcg -P 1 1 1
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle7" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle7" style="font-size:150%">What happens to convergence and solve time now?
+</label>
+  <div id="qanda_expand7">
+    <style>
+      #qanda_toggle7:checked ~ #qanda_expand7 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>Using PCG preconditioned with AMG further decreases the number of iterations and solve times.  Number of iterations: 8, 11.  Total time: 0.47, 0.89 seconds.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now let us take a look at the complexities of the last run by printing some setup statistics:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1
+</code></pre></div></div>
+<p>You should now see the following statistics:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HYPRE_ParCSRPCGGetPrecond got good precond
+
+
+ Num MPI tasks = 8
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 8
+
+ Strength Threshold = 0.250000
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = HMIS
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1  499594  8430438  0.000     7   42  16.9  -2.581e-15   4.000e+00
+ 2  113588  5267884  0.000    18   83  46.4  -9.556e-15   5.515e+00
+ 3   14088  1099948  0.006    16  126  78.1  -2.339e-14   8.187e+00
+ 4    2585   235511  0.035    11  183  91.1  -9.932e-14   1.622e+01
+ 5     366    25888  0.193    11  181  70.7   2.032e-01   4.293e+01
+ 6      44     1228  0.634    14   44  27.9   9.754e+00   1.501e+02
+ 7       9       77  0.951     7    9   8.6   1.198e+01   3.267e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 499594   1   4   1.429e-01 4.545e-01 5.000e-01 1.000e+00
+ 1 499594 x 113588   1   4   1.330e-02 5.971e-01 2.164e-01 1.000e+00
+ 2 113588 x 14088   1   4  -1.414e-02 5.907e-01 5.709e-02 1.000e+00
+ 3 14088 x 2585    1   4  -4.890e-01 6.377e-01 2.236e-02 1.000e+00
+ 4  2585 x 366     1   4  -1.185e+01 5.049e+00 8.739e-03 1.000e+00
+ 5   366 x 44      1   4  -2.597e+00 3.480e+00 6.453e-03 1.000e+00
+ 6    44 x 9       1   4  -2.160e-01 8.605e-01 -6.059e-02 1.000e+00
+
+
+     Complexity:    grid = 1.630274
+                operator = 3.170169
+                memory = 3.837342
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1
+  Stopping Tolerance:               0.000000e+00
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     13   14     9
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+</code></pre></div></div>
+<p>This output contains some statistics for the AMG preconditioner. It shows the number of levels, the average number of nonzeros in total and per row for each matrix <script type="math/tex">A_i</script> as well as each interpolation operator <script type="math/tex">P_i</script>.
+It also shows the operator complexity, which is defined as the sum of the number of nonzeroes of all operators <script type="math/tex">A_i</script>
+divided by the number of nonzeroes of the original matrix <script type="math/tex">A</script>:
+<script type="math/tex">\frac{\sum_i^L {nnz(A_i)}}{nnz(A)}</script>.
+It also gives the memory complexity, which is defined by
+<script type="math/tex">\frac{\sum_i^L {nnz(A_i + P_i)}}{nnz(A)}</script>.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle8" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle8" style="font-size:150%">What do you notice about the average number of nonzeroes per row across increasing levels?
+</label>
+  <div id="qanda_expand8">
+    <style>
+      #qanda_toggle8:checked ~ #qanda_expand8 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>It increases significantly  through level 4 and decreases after that. It is much larger than the original level.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle9" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle9" style="font-size:150%">What causes this growth?
+</label>
+  <div id="qanda_expand9">
+    <style>
+      #qanda_toggle9:checked ~ #qanda_expand9 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>It is caused by the Galerkin product, i.e. the product of the three matrices R, A, and P.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle10" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle10" style="font-size:150%">Is the operator complexity acceptable?
+</label>
+  <div id="qanda_expand10">
+    <style>
+      #qanda_toggle10:checked ~ #qanda_expand10 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>No, we would prefer a number that is closer to 1.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now, let us see what happens if we coarsen more aggressively on the finest level:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 1
+</code></pre></div></div>
+<p>We now receive the following output for average number of nonzeroes and complexities:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Operator Matrix Information:
+
+            nonzero         entries per row        row sums
+lev   rows  entries  sparse  min  max   avg       min         max
+===================================================================
+ 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
+ 1   79110  1427282  0.000     6   33  18.0  -1.779e-14   8.805e+00
+ 2   16777   817577  0.003    12   91  48.7  -2.059e-14   1.589e+01
+ 3    2235   153557  0.031    19  132  68.7   6.580e-14   3.505e+01
+ 4     309    18445  0.193    17  160  59.7   1.255e+00   8.454e+01
+ 5      50     1530  0.612    13   50  30.6   1.521e+01   3.237e+02
+ 6       5       25  1.000     5    5   5.0   6.338e+01   3.572e+02
+
+
+Interpolation Matrix Information:
+                 entries/row    min     max         row sums
+lev  rows cols    min max     weight   weight     min       max
+=================================================================
+ 0 1000000 x 79110   1   9   2.646e-02 9.722e-01 2.778e-01 1.000e+00
+ 1 79110 x 16777   1   4   7.709e-03 1.000e+00 2.709e-01 1.000e+00
+ 2 16777 x 2235    1   4   2.289e-03 7.928e-01 5.909e-02 1.000e+00
+ 3  2235 x 309     1   4  -6.673e-02 5.759e-01 4.594e-02 1.000e+00
+ 4   309 x 50      1   4  -6.269e-01 3.959e-01 2.948e-02 1.000e+00
+ 5    50 x 5       1   4  -1.443e-01 1.083e-01 -4.496e-02 1.000e+00
+
+
+     Complexity:    grid = 1.098486
+                operator = 1.348475
+                memory = 1.700654
+</code></pre></div></div>
+<p>As you can see, the number of levels, the number of nonzeroes per rows and the complexities have decreased.</p>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle11" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle11" style="font-size:150%">How does the number of iterations and the time change?
+</label>
+  <div id="qanda_expand11">
+    <style>
+      #qanda_toggle11:checked ~ #qanda_expand11 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The number of iterations increases (17 vs. 11), but total time is less (0.69 vs 0.89)</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now let us use aggressive coarsening in the first two levels.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 2
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle12" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle12" style="font-size:150%">What happens to complexities, number of iterations and total time?
+</label>
+  <div id="qanda_expand12">
+    <style>
+      #qanda_toggle12:checked ~ #qanda_expand12 {
+        
+        
+        
+        
+            height: 17vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>Complexities decrease further to 1.22, but the number of iterations is increasing to 26 and total time increases as well. Choosing to aggressively coarsen on the second level does not lead to further time savings, but gives further memory savings. If achieving the shortest time is the objective, coarsen aggressively on the second level is not adviced.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>So far, we achieved the best overall time to solve a Poisson problem on a cube of size <script type="math/tex">100 \times 100 \times</script> using conjugate gradient preconditioned with AMG with one level of aggressive coarsening.</p>
+
+<p>How would a structured solver perform on this problem?
+We now use the driver for the structured interface, which will also give various input options by typing</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./struct -help
+</code></pre></div></div>
+
+<p>To run the structured solver PFMG for this problem type</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./struct -n 50 50 50 -P 2 2 2 -pfmg
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle13" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle13" style="font-size:150%">How does the number of iterations and the time change?
+</label>
+  <div id="qanda_expand13">
+    <style>
+      #qanda_toggle13:checked ~ #qanda_expand13 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The number of iterations 35, but the total time is less (0.36)</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now run it as a preconditioner for conjugate gradient.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle14" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle14" style="font-size:150%">How does the number of iterations and the time change?
+</label>
+  <div id="qanda_expand14">
+    <style>
+      #qanda_toggle14:checked ~ #qanda_expand14 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The number of iterations 14, but the total time is less (0.24)</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>To get even better total time, now run the non-Galerkin version.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle15" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle15" style="font-size:150%">How does the number of iterations and the time change?
+</label>
+  <div id="qanda_expand15">
+    <style>
+      #qanda_toggle15:checked ~ #qanda_expand15 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The number of iterations remains 14, but the total time is less (0.21)</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<h3 id="evening-exercises">Evening exercises</h3>
+
+<p>We now consider the diffusion-convection equation</p>
+
+<script type="math/tex; mode=display">-\Delta u + a \nabla \cdot u = f</script>
+
+<p>on a cuboid with Dirichlet boundary conditions.</p>
+
+<p>The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
+For <script type="math/tex">a = 0</script> we just get the Poisson equation, but when <script type="math/tex">a > 0</script> we get a nonsymmetric linear system.</p>
+
+<p>Now let us apply Krylov solvers to the convection-diffusion equation with <script type="math/tex">a=10</script>, starting with conjugate gradient.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 50 50 50 -difconv -a 10 -pcg
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle16" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle16" style="font-size:150%">What do you observe? Why?
+</label>
+  <div id="qanda_expand16">
+    <style>
+      #qanda_toggle16:checked ~ #qanda_expand16 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>PCG fails, because the linear system is nonsymmetric.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now try GMRES(20), BiCGSTAB, and AMG with and without aggressive coarsening.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 50 50 50 -difconv -a 10 -bicgstab
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 50 50 50 -difconv -a 10 -amg
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -n 50 50 50 -difconv -a 10 -amg -agg_nl 1
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle17" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle17" style="font-size:150%">What do you observe? Order the solvers in the order of slowest to fastest solver for this problem!
+</label>
+  <div id="qanda_expand17">
+    <style>
+      #qanda_toggle17:checked ~ #qanda_expand17 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>BiCGSTAB, GMRES and AMG with or without aggressive coarsening solve the problem. The order slowest to fastest for this problem is: GMRES(20), AMG, BiCGSTAB, AMG with aggressive coarsening.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Let us solve the problem using structured multigrid solvers.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./struct -n 50 50 50 -a 10 -pfmg
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./struct -n 50 50 50 -a 10 -pfmg -rap 1
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./struct -n 50 50 50 -a 10 -pfmggmres
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./struct -n 50 50 50 -a 10 -pfmggmres -rap 1
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle18" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle18" style="font-size:150%">What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.
+</label>
+  <div id="qanda_expand18">
+    <style>
+      #qanda_toggle18:checked ~ #qanda_expand18 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
+Let us begin with a grid-aligned anisotropy.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle19" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle19" style="font-size:150%">What do you observe?
+</label>
+  <div id="qanda_expand19">
+    <style>
+      #qanda_toggle19:checked ~ #qanda_expand19 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Now let us rotate the anisotropy by 45 degrees.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle20" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle20" style="font-size:150%">Does the result change? What is the order of the solvers?
+</label>
+  <div id="qanda_expand20">
+    <style>
+      #qanda_toggle20:checked ~ #qanda_expand20 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Let us now scale up the problem.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle21" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle21" style="font-size:150%">How do the numbers of iterations change?
+</label>
+  <div id="qanda_expand21">
+    <style>
+      #qanda_toggle21:checked ~ #qanda_expand21 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Let us now rotate the anisotropy by 30 degrees.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle22" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle22" style="font-size:150%">Is the convergence affected by the change in angle?
+</label>
+  <div id="qanda_expand22">
+    <style>
+      #qanda_toggle22:checked ~ #qanda_expand22 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>This problem is harder. The number of iterations increases to 15.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Let us now coarsen more aggressively.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle23" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle23" style="font-size:150%">Does this improve convergence and time?
+</label>
+  <div id="qanda_expand23">
+    <style>
+      #qanda_toggle23:checked ~ #qanda_expand23 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>No. Both get worse. The number of iterations increases to 34 and the time goes up.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Let us investigate the operator complexities:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
+</code></pre></div></div>
+
+<div class="qanda">
+  
+  <input id="qanda_toggle24" type="checkbox" unchecked="" />
+  <label class="qanda" for="qanda_toggle24" style="font-size:150%">What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?
+</label>
+  <div id="qanda_expand24">
+    <style>
+      #qanda_toggle24:checked ~ #qanda_expand24 {
+        
+        
+        
+        
+            height: 10vmin;
+        
+      }
+    </style>
+    <section>
+      
+          <p>The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.</p>
+
+      
+    </section>
+  </div>
+</div>
+
+<p>Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.</p>
+
+<h2 id="out-brief">Out-Brief</h2>
+
+<p>We experimented with several Krylov solvers, GMRES, conjugate gradient and BiCGSTAB, and observed the effect of increasing the size of the Krylov space for restarted GMRES. We investigated why multigrid methods are preferable over generic solvers like conjugate gradient for large suitable PDE problems.
+Additional improvements can be achieved when using them as preconditioners for Krylov solvers like conjugate gradient.
+For unstructured multigrid solvers, it is important to keep complexities low, since large complexities lead to slow solve times and require much memory.
+For structured problems, solvers that take advantage of the structure of the problem are more efficient than unstructured solvers.</p>
+
+<h3 id="further-reading">Further Reading</h3>
+
+<p>To learn more about algebraic multigrid, see
+<a href="https://computation.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods/CiSE_2006_amg_220851.pdf">An Introduction to Algebraic Multigrid</a></p>
+
+<p>More information on hypre , including documentation and further publications, can be found <a href="http://www.llnl.gov/CASC/hypre">here</a></p>
+
+
+                        
+                        <p><a href='../../lessons'>Back to all ATPESC 2018 Lessons</a></p>
+                        
+
+		</article>
+	</div><!-- /.medium-12.columns -->
+</div><!-- /.row -->
+
+
+
+
+	
+	    <div id="up-to-top" class="row">
+      <div class="small-12 columns" style="text-align: right;">
+        <a class="iconfont" href="#top-of-page">&#xf108;</a>
+      </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <footer id="footer-content" class="bg-grau">
+      <div id="footer">
+        <div class="row">
+          <div class="medium-6 large-5 columns">
+            <h5 class="shadow-black">About This Site</h5>
+
+            <p class="shadow-black">
+              <a href="https://software-carpentry.org">Software Carpentry</a> Style Lessons for Numerical Libraries
+              <a href="http://localhost:4000/info/">More ›</a>
+              Created by <a href="https://github.com/markcmiller86">Mark C Miller</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>
+            </p>
+          </div><!-- /.large-6.columns -->
+
+          <div class="small-6 medium-3 large-3 columns">
+            <ul class="inline-list social-icons">
+            
+              <li><a href="https://fastmath-scidac.llnl.gov" target="_blank" class="icon-home" title="FASTMath"></a></li>
+            
+              <li><a href="https://www.youtube.com/playlist?list=PLGj2a3KTwhRZKjI7pRFxQDBORsswJAdJt" target="_blank" class="icon-youtube" title="ATPESC-2017 Numerical Libaries"></a></li>
+            
+              <li><a href="https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos" target="_blank" class="icon-youtube" title="IDEAS on YouTube"></a></li>
+            
+              <li><a href="http://twitter.com/exascaleproject" target="_blank" class="icon-twitter" title="Exascale Project on Twitter"></a></li>
+            
+            </ul>
+
+                        <a class="button left r15 tiny radius" href="https://github.com/xsdk-project/ATPESC2018HandsOnLessons/edit/gh-pages/_lessons/krylov_amg/lesson.md">Edit This Page On GitHub</a>
+
+
+
+          </div><!-- /.large-3.columns -->
+        </div><!-- /.row -->
+
+      </div><!-- /#footer -->
+
+    </footer>
+
+	
+
+	
+
+
+<script src="http://localhost:4000/assets/js/javascript.min.js"></script>
+
+
+
+<script>
+    $("#masthead").backstretch("http://localhost:4000/images/AMG-hypre.png", {fade: 700});
+    $("#masthead-with-text").backstretch("http://localhost:4000/images/AMG-hypre.png", {fade: 700});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

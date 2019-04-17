@@ -1,0 +1,45 @@
+{
+  "dsets": {
+    "main": {
+      "cycle": 23,
+      "domains": 1,
+      "fields": {
+        "v": {
+          "path": "elas_000023/v.%06d",
+          "tags": {
+            "assoc": "nodes",
+            "comps": "2",
+            "lod": "3"
+          }
+        },
+        "w": {
+          "path": "elas_000023/w.%06d",
+          "tags": {
+            "assoc": "nodes",
+            "comps": "1",
+            "lod": "3"
+          }
+        },
+        "x": {
+          "path": "elas_000023/x.%06d",
+          "tags": {
+            "assoc": "nodes",
+            "comps": "2",
+            "lod": "3"
+          }
+        }
+      },
+      "mesh": {
+        "format": "0",
+        "path": "elas_000023/mesh.%06d",
+        "tags": {
+          "max_lods": "32",
+          "spatial_dim": "2",
+          "topo_dim": "2"
+        }
+      },
+      "time": 69,
+      "time_step": 0
+    }
+  }
+}
