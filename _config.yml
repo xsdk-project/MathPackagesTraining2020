@@ -8,13 +8,13 @@
 #                                                 /____/
 #
 # Title of your website
-title: 'ATPESC 2018 Math Library Hands On Exercises'
+title: 'ATPESC 2019 Math Packages Training'
 
 # The slogan describes your website and is used on homepage in <title> and other important places
 slogan: 'So my code will see the future'
 
 # The description is used on homepage and in the footer to quickly describe your website. Use a maximum of 150 characters for SEO-purposes.
-description: '<a href="https://software-carpentry.org">Software Carpentry</a> Style Lessons for Numerical Libraries'
+description: '<a href="https://software-carpentry.org">Software Carpentry</a> Style Lessons for Math Packages'
 
 # The credits show up in the includes/_footer.html – It would be nice of you to leave a link to Phlow or Feeling Responsive as a thank you :)
 credits: 'Created by <a href="https://github.com/markcmiller86">Mark C Miller</a> with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> based on <a href="http://phlow.github.io/feeling-responsive/">Feeling Responsive</a>.</p>'
@@ -26,8 +26,8 @@ author: markcmiller86
 # This URL is the main address for absolute links. Don't include a slash at the end.
 #
 url: 'https://xsdk-project.github.io'
-baseurl: '/ATPESC2018HandsOnLessons'
-handson_install_root: '/projects/ATPESC2018/FASTMath'
+baseurl: '/MathPackagesTraining'
+handson_install_root: '/projects/ATPESC2019/MathPackagesTraining'
 handson_root: 'HandsOnLessons'
 audience: ['public', 'private']
 #audience: ['public']
@@ -37,7 +37,7 @@ handson_hide_qanda: false
 
 # This is for the editing function in _/includes/improve_content
 # Leave it empty if your site is not on GitHub/GitHub Pages
-improve_content: https://github.com/xsdk-project/ATPESC2018HandsOnLessons/edit/gh-pages
+improve_content: https://github.com/xsdk-project/MathPackagesTraining/edit/gh-pages
 
 # This URL points directly to the images directory making
 # things easier to link to images in posts and templates. It needs a slash at the end.
@@ -45,7 +45,7 @@ improve_content: https://github.com/xsdk-project/ATPESC2018HandsOnLessons/edit/g
 # Example: <img src="{{ site.urlimg }}{{ post.image.title }}" />
 # Markdown-Example for posts ![Image Text]({{ site.urlimg }}image.jpg)
 #
-urlimg: 'https://xsdk-project.github.io/ATPESC2018HandsOnLessons/images/'
+urlimg: 'https://xsdk-project.github.io/MathPackagesTraining/images/'
 
 # Logo size is 600x80 pixels
 logo: "logo.png"
