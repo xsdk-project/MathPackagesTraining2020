@@ -15,6 +15,8 @@ update_solution_ftcs(
     if (r > 0.5) return false; 
 
     // FTCS update algorithm
+    for (int i = 1; i < n-1; i++)
+        uk1[i] = r*uk0[i+1] + (1-2*r)*uk0[i] + r*uk0[i-1];
 
     // enforce boundary conditions
     uk1[0  ] = bc0;

@@ -7,19 +7,16 @@
 layout: frontpage
 widget1:
   title: "Open</br>Source"
-  url: 'https://fastmath-scidac.llnl.gov/software-catalog.html'
   text: '<a href="https://www.exascaleproject.org"><ul><li>Numerically Rigorous.</li><li>Community Adopted.</li><li>Extremely Scalable.</li><li>Performance Portable.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal1"><img src="images/ecp_fastmath.png" width="302" height="182" alt=""/></a>'
+  video: '<a href="#" data-reveal-id="videoModal1"></a>'
 widget2:
   title: "Ease of Use</br>&nbsp;"
-  url: 'https://xsdk.info'
   text: '<a href="http://spack.io"><ul><li>Easy Download.</li><li>Easy Configure & Install.</li><li>Easy Dependencies.</li><li>Easy Update.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal2"><img src="images/xsdk_logo5.png" width="302" height="150" alt=""/></a>'
+  video: '<a href="#" data-reveal-id="videoModal2"></a>'
 widget3:
   title: "Enhanced</br>Productivity"
-  url: 'https://bssw.io'
   text: '<a href="https://ideas-productivity.org"><ul><li>Development Resources.</li><li>Shared Know-How.</li><li>Common Tools.</li><li>Training.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal3"><img src="images/ideas_bssw.png" width="302" height="182" alt=""/></a>'
+  video: '<a href="#" data-reveal-id="videoModal3"></a>'
 #
 # Use the call for action to show a button on the frontpage
 #
@@ -36,7 +33,7 @@ callforaction:
   style: alert
 permalink: /index.html
 header:
- image_fullwidth: "shared_values_project_logos_banner.jpg"
+  image_fullwidth: "shared_values_project_logos_banner2.png"
 #
 # This is a nasty hack to make the navigation highlight
 # this page as active in the topbar navigation
