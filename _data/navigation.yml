@@ -27,8 +27,6 @@
     url: "/lessons/hand_coded_heat/"
   - title: "Meshing and Discretization (AMReX)"
     url: "/lessons/lesson_template/"
-  - title: "Time Integration & Non-Linear Solvers (PETSc)"
-    url: "/lessons/time_integrators/petsc"
   - title: "Time Integration & Non-Linear Solvers (SUNDIALS)"
     url: "/lessons/time_integrators/sundials"
   - title: "Krylov Solvers and Algebraic Multigrid"
