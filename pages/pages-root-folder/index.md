@@ -14,6 +14,7 @@ widget2:
   text: '<a href="http://spack.io"><ul><li>Easy Download.</li><li>Easy Configure & Install.</li><li>Easy Dependencies.</li><li>Easy Update.</li></ul></a>'
   video: '<a href="#" data-reveal-id="videoModal2"></a>'
 widget3:
+  url: https://silo.llnl.gov
   title: "Enhanced</br>Productivity"
   text: '<a href="https://ideas-productivity.org"><ul><li>Development Resources.</li><li>Shared Know-How.</li><li>Common Tools.</li><li>Training.</li></ul></a>'
   video: '<a href="#" data-reveal-id="videoModal3"></a>'
@@ -54,7 +55,7 @@ of various packages, while [xSDK](https://xsdk.info) and [Spack](https://spack.i
 [//]: # (Because div elements themselves don't render, this stuff produces no output)
 [//]: # (but does provide the target for the video links)
 
-<div id="videoModal1" class="reveal-modal large" data-reveal="">
+<div name="videoModal1" class="reveal-modal large" data-reveal="">
   <div class="flex-video widescreen vimeo" style="display: block;">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/LBfxK59byxU?start=19" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
