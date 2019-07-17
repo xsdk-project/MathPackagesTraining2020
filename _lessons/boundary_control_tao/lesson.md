@@ -6,7 +6,6 @@ teaser: "Leveraging interoperability between PETSc/TAO and AMReX"
 permalink: "lessons/boundary_control_tao/"
 use_math: true
 lesson: true
-youtube: "https://youtu.be/E-8lbX5Wi1I"
 header:
  image_fullwidth: "xsdk_logo_wide.png"
 ---
@@ -22,8 +21,8 @@ header:
 **Note:** To run the application in this lesson
 ```
 cd {{site.handson_root}}/boundary_control_tao
-make boundary-control
-./boundary-control -tao_monitor -tao_view
+make
+./main -tao_monitor -tao_view
 ```
 
 ## Brief Introduction to PDE-Constrained Optimization
@@ -82,11 +81,10 @@ $$
 \end{pmatrix},
 $$
 
-which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The step is then globalized using a line search or a trust region framework in order to avoid stationary points that are not the minimum.
+which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The step is then globalized using a line search or a trust region framework in order to avoid stationary points that are not the minimum. This approach converges the PDE states simultaneously with the optimization variables. This means that the PDE solution 
+and the optimization are tightly coupled and the PDE constraint is not satisfied at intermediate steps.
 
-Since second-order information is often not available or expensive to compute, a popular approach is to adopt a [quasi-Newton][1] approach where the action of the Hessian is approximated using the Secant equation. In this lecture, we will use the [Broyden-Fletcher-Goldfarb-Shanno (BFGS)][2] method that efficiently generates positive-definite approximations. For more information on quasi-Newton methods, we refer the reader to [_Numerical Optimization_ by Jorge Nocedal and Stephen Wright][3].
-
-The reduced-space version of the above problem solves the KKT system with the following steps:
+The reduced-space variant of the above problem solves the KKT system with the following steps:
 
 1. Solve $$\nabla_\lambda \mathcal{L} = R(p, u) = 0$$ at each new $$p$$ for $$u(p)$$. This is called the "state solution", i.e.: calculating the PDE state at $$p$$.
 
@@ -94,7 +92,62 @@ The reduced-space version of the above problem solves the KKT system with the fo
 
 3. Substitute $$p$$, $$u(p)$$ and $$\lambda(p, u)$$ into $$\nabla_p \mathcal{L}$$ and solve $$\nabla_{p}^2 \mathcal{L} \Delta p = -\nabla_p \mathcal{L}$$ for the step direction $$\Delta p$$.
 
-Note that the reduced-space steps avoid the computation of second derivative information in $$\nabla_{pu}^2 \mathcal{L}$$ and $$\nabla_{uu}^2 \mathcal{L}$$.
+Note that the reduced-space steps avoid the computation of second derivative information in $$\nabla_{pu}^2 \mathcal{L}$$ and $$\nabla_{uu}^2 \mathcal{L}$$. Additionally, the PDE solver and the optimization algorithm are decoupled from each other. This comes at the cost of performing a full PDE solution for every objective function evaluation.
+
+## Using TAO
+
+Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. It is primarily intended for continuous gradient-based optimization, and supports PDE-constrained problems using the reduced-space formulation.
+
+Below is a TAO main file template that can be adapted to any PDE-constrained problem:
+
+```c
+#include "petsc.h"
+
+typedef struct {
+  int n; /* number of optimization variables */
+} AppCtx;
+
+PetscErrorCode FormFunctionGradient(Tao tao, Vec P, PetscReal *fcn,Vec G,void *ptr)
+{
+  PetscErrorCode ierr;
+  AppCtx *user = (AppCtx*)ptr;
+
+  /* Compute objective function and store in fcn */
+  /* 1. Compute the states U(P) for the given P vector (i.e.: solve the PDE) */
+  /* 2. Use P and U(P) to compute the objective function */
+
+  /* Compute gradient and store in G */
+  /* 1. Solve the adjoint system for the adjoint variables lambda(P, U(P)) */
+  /* 2. Compute the gradient G = \nabla_p f using P, U(P), lambda(P, U(P)) */
+
+  return 0;
+}
+
+int main(int argc, char *argv[])
+{
+  PetscErrorCode ierr;
+  AppCtx user;
+  Tao tao;
+
+  /* Initialize problem and set sizes */
+
+  ierr = PetscInitialize( &argc, &argv,(char *)0,help );if (ierr) return ierr;
+  ierr = VecCreateMPI(PETSC_COMM_WORLD, user.n, &X);CHKERRQ(ierr);
+  ierr = VecSet(X, 0.0);CHKERRQ(ierr);
+
+  ierr = TaoCreate(PETSC_COMM_WORLD, &tao);CHKERRQ(ierr);
+  ierr = TaoSetType(tao, TAOBQNLS);CHKERRQ(ierr);
+  ierr = TaoSetInitialVector(tao, X);CHKERRQ(ierr);
+  ierr = TaoSetObjectiveAndGradientRoutine(tao, FormFunctionGradient, (void*) &user);CHKERRQ(ierr);
+  ierr = TaoSetFromOptions(tao);CHKERRQ(ierr);
+  ierr = TaoSolve(tao);CHKERRQ(ierr);
+
+  ierr = VecDestroy(&X);CHKERRQ(ierr);
+  ierr = TaoDestroy(&tao);CHKERRQ(ierr);
+  ierr = PetscFinalize();
+```
+
+TAO calls the user-provided ``FormFunctionGradient()`` routine whenever the optimization algorithm needs to evaluate the objective and its gradient. The ``AppCtx`` structure contains any data the user has to preserve and propagate through for these computations.
 
 ## Example Problem: Boundary Control with the Poisson Equation
 
@@ -153,23 +206,13 @@ $$\frac{d f}{d p} = \frac{\partial f}{\partial p} + \left(\frac{\partial R}{\par
 
 Note that the total derivative notation is $$\frac{d}{dp}(\cdot)$$ and includes indirect sensitivities that come through the governing equations. In this problem, the partial derivative of the objective w.r.t the optimization variables, denoted by $$\frac{\partial}{\partial p}(\cdot)$$, is zero because $$p$$ does not directly appear in the objective function.
 
-### PDE and Adjoint Solutions with AMReX
+### Implementation with AMReX
 
-### Optimization Solution with TAO
 
-```c
-ierr = TaoCreate(PETSC_COMM_WORLD, &tao);CHKERRQ(ierr);
-ierr = TaoSetType(tao, TAOBQNLS);CHKERRQ(ierr);
-ierr = TaoSetInitialVector(tao, X);CHKERRQ(ierr);
-ierr = TaoSetObjectiveAndGradientRoutine(tao, FormFunctionGradient, (void*) &user);CHKERRQ(ierr);
-ierr = TaoSetMonitor(tao, Monitor, &user, NULL);CHKERRQ(ierr);
-ierr = TaoSetFromOptions(tao);CHKERRQ(ierr);
-ierr = TaoSolve(tao);CHKERRQ(ierr);
-```
-
-Note that these operations must be preceded by `PetscInitialize()` and `PetscFinalize()` must be called after the solution is computed and all PETSc objects are destroyed.
 
 ### Results
+
+
 
 ## Further Reading
 
