@@ -13,7 +13,7 @@ header:
 ## At a Glance
 
 |Questions|Objectives|Key Points|
-|How does the choice of<br>explicit, implicit or IMEX impact step size.|Compare performance of explicit<br>, implicit and IMEX methods at step<br>sizes near the stability limit.|Time integration considerations<br>play a role in time to solution.|
+|How does the choice of<br>explicit, implicit or IMEX impact step size.|Compare performance of explicit,<br> implicit and IMEX methods at step<br>sizes near the stability limit.|Time integration considerations<br>play a role in time to solution.|
 |What is the impact of an<br>adaptive time integrator?|Compare fixed and adaptive time<br>integration techniques.|The SUNDIALS package has robust<br>and flexible methods for time integration.|
 |How does time integration<br>order impact cost?|Observe impact of order<br>on time to solution/flop<br>and number of steps.|In well-designed packages, changing<br>between methods does not require significant effort.|
 |Observe quadratic convergence <br> of Newton's method| Observe mesh independent convergence <br> of Newton's method |||
@@ -23,6 +23,7 @@ header:
 ```bash
 cd {{site.handson_root}}/time_integrators/sundials
 make
+source {{site.handson_root}}/time_integrators/sundials/source_cooley_plotfile_tools.sh
 ```
 
 ## The problem being solved
@@ -154,14 +155,89 @@ standard tasks:
 4. Reports the overall solver statistics and cleans up.
 
 
-
 ### Linear stability
+
+Run the first hands-on code using its default parameters (note that
+this uses a mesh size of $256^2$ and fixed time step size of 1.0),
+```bash
+./HandsOn1.exe inputs-1
+```
+and compare the final result against a stored reference solution,
+```bash
+fcompare.gnu.ex plt00001/ reference_solution/
+```
+Notice that the computed solution error is rather small.
+
+Now re-run this hands-on code using a larger time step size of 100.0,
+```bash
+./HandsOn1.exe inputs-1 fixed_dt=100.0
+```
+_see how much faster the code ran!_  However, now check the accuracy
+of the computed solution,
+```bash
+fcompare.gnu.ex plt00001/ reference_solution/
+```
+and note the error message `< NaN present >`.
+
+{% include qanda
+    question='What do you think happened"'
+    answer='At this mesh size, the explicit algorithm is unstable for
+    a time step size of 100, but is stable for a time step size of 1.' %}
+
+Run the code a few more times -- what is the largest stable time step
+size that you can find?
 
 
 ### Temporal adaptivity
 
+With this executable, we may switch to adaptive time-stepping (with
+the default tolerances, $rtol=10^{-4}$ and $atol=10^{-9}$) by
+specifying `fixed_dt=0`,
+```bash
+./HandsOn1.exe inputs-1 fixed_dt=0
+fcompare.gnu.ex plt00001/ reference_solution/
+```
+_note how rapidly the executable finishes, providing a solution that
+is both stable and accurate to within the specified tolerances!_
+
+Run the accompanying Python script `process_ARKStep_diags.py` to view
+some overall time adaptivity statistics and generate plots of the time
+step size history,
+```bash
+./process_ARKStep_diags.py HandsOn1_diagnostics.txt
+eog h_vs_iter.png
+```
+_notice how rapidly the adaptive time-stepper finds the CFL stability
+limit_.  Also notice that the adaptivity algorithm periodically
+attempts to increase the time step size to investigate whether this
+stability limit has changed; however, the raw percentage of these
+failed steps remains rather small.
+
+Run the code a few more times with various values of `rtol` -- how
+well does the adaptivity algorithm produce solutions within the
+desired tolerances?  How do the number of time steps change as
+different tolerances are requested?
+
+
 
 ### Integrator order and efficiency
+
+ARKode defaults to a fourth-order accurate Runge--Kutta method,
+but many others are included (with orders 2 through 8).  Alternate
+orders of accuracy may be run with the `arkode_order` option, e.g.
+```bash
+./HandsOn1.exe inputs-1 fixed_dt=0 arkode_order=8
+fcompare.gnu.ex plt00001/ reference_solution/
+```
+_note the dramatic decrease in overall time steps (1149 vs 642), but
+the accompanying increase in total RHS evaluations (7227 vs 9402)._
+Although higher-order methods may indeed utilize larger step sizes
+(both for accuracy and frequently stability), those come at
+the cost of increased work per step.
+
+Run the code a few more times with various values of `arkode_order`
+for a fixed value of `rtol` -- what is the most "efficient" overall
+method for this problem at this tolerance?
 
 
 
