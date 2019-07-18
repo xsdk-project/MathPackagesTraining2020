@@ -72,39 +72,48 @@ with the `--help` argument for any of these executables, e.g.
 **(update these)**
 
 ```bash
-./hands-on-1.exe  --help
+./HandsOn1.exe help=1
+MPI initialized with 1 MPI processes
+AMReX (19.07) initialized
 
-Usage: ./HandsOn1.exe [options] ...
+Usage: HandsOn1.exe [fname] [options]
 Options:
-   -h, --help
-	Print this help message and exit.
-   -m <string>, --mesh <string>, current value: ../../../data/periodic-hexagon.mesh
-	Mesh file to use.
-   -p <int>, --problem <int>, current value: 0
-	Problem setup to use. See options in velocity_function().
-   -rs <int>, --refine-serial <int>, current value: 2
-	Number of times to refine the mesh uniformly in serial.
-   -rp <int>, --refine-parallel <int>, current value: 0
-	Number of times to refine the mesh uniformly in parallel.
-   -o <int>, --order <int>, current value: 3
-	Order (degree) of the finite elements.
-   -s <int>, --ode-solver <int>, current value: 4
-	ODE solver: 1 - Forward Euler,
-	            2 - RK2 SSP, 3 - RK3 SSP, 4 - RK4, 6 - RK6.
-   -tf <double>, --t-final <double>, current value: 10
-	Final time; start time is 0.
-   -dt <double>, --time-step <double>, current value: 0.01
-	Time step.
-   -vis, --visualization, -no-vis, --no-visualization, current option: --visualization
-	Enable or disable GLVis visualization.
-   -visit, --visit-datafiles, -no-visit, --no-visit-datafiles, current option: --visit-datafiles
-	Save data files for VisIt (visit.llnl.gov) visualization.
-   -vs <int>, --visualization-steps <int>, current value: 50
-	Visualize every n-th timestep.
-   -usestep, --usestep, -no-step, --no-step, current option: --usestep
-	Use the Step() or Run() method to solve the ODE system.
-   -implicit, --implicit, -no-implicit, --no-implicit, current option: --no-implicit
-	Use or not an implicit method in ARKode to solve the ODE system.
+  help=1
+    Print this help message and exit.
+  plot_int=<int>
+    enable (1) or disable (0) plots [default=0].
+  arkode_order=<int>
+    ARKStep method order [default=4].
+  fixed_dt=<float>
+    use a fixed time step size (if value > 0.0) [default=-1.0].
+  rtol=<float>
+    relative tolerance for time step adaptivity [default=1e-4].
+  atol=<float>
+    absolute tolerance for time step adaptivity [default=1e-9].
+  tfinal=<float>
+    final integration time [default=1e4].
+  dtout=<float>
+    time between outputs [default=tfinal].
+  max_steps=<int>
+    maximum number of internal steps between outputs [default=10000].
+  write_diag=<int>
+    output ARKStep time step adaptivity diagnostics to a file [default=1].
+  n_cell=<int>
+    number of cells on each side of the square domain [default=256].
+  max_grid_size=<int>
+    max size of boxes in box array [default=64].
+  advCoeffx=<float>
+    advection speed in the x-direction [default=5e-4].
+  advCoeffy=<float>
+    advection speed in the y-direction [default=2.5e-4].
+  diffCoeffx=<float>
+    diffusion coefficient in the x-direction [default=1e-6].
+  diffCoeffy=<float>
+    diffusion coefficient in the y-direction [default=1e-6].
+
+If a file name 'fname' is provided, it will be parsed for each of the above
+options.  If an option is specified in both the input file and on the
+command line, then the command line option takes precedence.
 ```
 
 
