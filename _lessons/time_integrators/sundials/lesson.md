@@ -77,7 +77,7 @@ We will break apart our investigation of this problem into the following three p
 You can get help on all the command-line options to these applications
 with the `help=1` argument for any of these executables, e.g.
 
-```bash
+```
 ./HandsOn1.exe help=1
 MPI initialized with 1 MPI processes
 AMReX (19.07) initialized
@@ -609,6 +609,7 @@ upload evidence of your completed solutions.
 ### Further Reading
 
 [ARKode Manual -- PDF](https://computation.llnl.gov/sites/default/files/public/ark_guide.pdf)
+
 [ARKode Manual -- HTML](http://runge.math.smu.edu/arkode_dev/doc/guide/build/html/index.html)
 
 [1]: https://computation.llnl.gov/projects/sundials
