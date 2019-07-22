@@ -122,6 +122,7 @@ options.  If an option is specified in both the input file and on the
 command line, then the command line option takes precedence.
 ```
 
+----
 
 ## Hands-on lesson 1 -- Explicit time integration (`HandsOn1.exe`)
 
@@ -275,6 +276,7 @@ for a fixed value of `rtol` -- what is the most "efficient" overall
 method for this problem at this tolerance?
 
 
+----
 
 ## Hands-on lesson 2 -- Implicit / IMEX time integration (`HandsOn2.exe`)
 
@@ -446,6 +448,7 @@ time -- can you find an unstable step size?
     expect different stability limitations.' %}
 
 
+----
 
 ## Hands-on lesson 3 -- Preconditioning (`HandsOn3.exe`)
 
@@ -537,6 +540,7 @@ scalability and efficiency of both the un-preconditioned and
 preconditioned versions of this hands-on lesson.
 
 
+----
 
 ## Out-Brief
 
