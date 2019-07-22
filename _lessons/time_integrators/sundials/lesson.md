@@ -15,9 +15,9 @@ header:
 |Questions|Objectives|Key Points|
 |How does the choice of explicit, implicit<br>or IMEX method impact step size?|Compare performance of explicit,<br>implicit and IMEX methods at step<br>sizes near the stability limit.|The time integration type must<br>be chosen to match the problem.|
 |What is the impact of an<br>adaptive time integrator?|Compare fixed and adaptive time<br>integration techniques.|Adaptive temporal integration can provide<br>robust and reliable solutions at<br>a fraction of the cost.|
-|How does time integration<br>order impact cost?|Observe impact of order on time<br>to solution and number of steps.|In well-designed packages, changing<br>integration order is simple, allowing investigation<br>of optimal methods for a given problem.|
-|How does the type of nonlinear<br>solver affect robustness/scalability|Compare Newton and accelerated<br>fixed-point nonlinear solvers<br>for implicit and IMEX time integration methods.|Newton methods require more work-per step,<br>but may be necessary for stiff problems.|
-|What is the role and benefit of preconditioning?|Compare implicit and IMEX time<br>integration methods both with<br>and without preconditioning.|Preconditioning may be overkill for small/simple<br> problems, but is critical for scalability.|
+|How does time integration<br>order impact cost?|Observe impact of order on time<br>to solution and number of steps.|In well-designed packages, changing<br>integration order is simple, allowing<br>investigation of optimal methods for<br>a given problem.|
+|How does the type of nonlinear<br>solver affect robustness/scalability|Compare Newton and accelerated<br>fixed-point nonlinear solvers<br>for implicit and IMEX time<br>integration methods.|Newton methods require more work<br>per step, but may be necessary for<br>stiff problems.|
+|What is the role and benefit of<br>preconditioning?|Compare implicit and IMEX time<br>integration methods both with<br>and without preconditioning.|Preconditioning may be overkill for<br>small/simple problems, but is critical<br>for scalability.|
 
 **Note:** To begin this lesson...
 
@@ -59,7 +59,7 @@ times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
 |:---:|:---:|:---:|:---:|
-|[<img src="advection-diffusion-u0.png" width="250">](advection-diffusion-u0.png)|[<img src="advection-diffusion-u1000.png" width="250">](advection-diffusion-u1000.png)|[<img src="advection-diffusion-u2000.png" width="250">](advection-diffusion-u2000.png)|[<img src="advection-diffusion-u3000.png" width="250">](advection-diffusion-u3000.png)|
+|[<img src="advection-diffusion-u0.png" width="200">](advection-diffusion-u0.png)|[<img src="advection-diffusion-u1000.png" width="200">](advection-diffusion-u1000.png)|[<img src="advection-diffusion-u2000.png" width="200">](advection-diffusion-u2000.png)|[<img src="advection-diffusion-u3000.png" width="200">](advection-diffusion-u3000.png)|
 
 We will break apart our investigation of this problem into the following three phases:
 
