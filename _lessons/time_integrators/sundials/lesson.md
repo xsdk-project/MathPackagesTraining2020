@@ -602,8 +602,8 @@ interested, you may do multiple).
    this is added?
 
 When you are done, be sure to submit a [Show Your Work](https://goo.gl/forms/B7UFpBvEOJbC58oJ2)
-using the hands-on activity name _Time Integrators Scalability_ and
-upload evidence of your completed solutions.
+using the hands-on activity name _Time Integrators_ and upload
+evidence of your completed solutions.
 
 
 ### Further Reading
