@@ -13,29 +13,31 @@ header:
 ## At a Glance
 
 |Questions|Objectives|Key Points|
-|How does the choice of explicit, implicit<br>or IMEX method impact step size?|Compare performance of explicit,<br>implicit and IMEX methods at step<br>sizes near the stability limit.|The time integration type must<br>be chosen to match the problem.|
+|How does the choice of an explicit, implicit<br>or IMEX method impact step size?|Compare the performance of explicit,<br>implicit and IMEX methods at step<br>sizes near the stability limit.|The time integration type must<br>be chosen to match the problem.|
 |What is the impact of an<br>adaptive time integrator?|Compare fixed and adaptive time<br>integration techniques.|Adaptive temporal integration can provide<br>robust and reliable solutions at<br>a fraction of the cost.|
-|How does time integration<br>order impact cost?|Observe impact of order on time<br>to solution and number of steps.|In well-designed packages, changing<br>integration order is simple, allowing<br>investigation of optimal methods for<br>a given problem.|
-|How does the type of nonlinear<br>solver affect robustness/scalability|Compare Newton and accelerated<br>fixed-point nonlinear solvers<br>for implicit and IMEX time<br>integration methods.|Newton methods require more work<br>per step, but may be necessary for<br>stiff problems.|
+|How does the order of the<br>time integration method<br>impact cost?|Observe the impact of method<br>order on time to solution and number of steps.|In well-designed packages, changing<br>integration order is simple, allowing<br>investigation of optimal methods for<br>a given problem.|
+|How does the type of nonlinear<br>solver affect robustness/scalability?|Compare Newton and accelerated<br>fixed-point nonlinear solvers<br>for implicit and IMEX time<br>integration methods.|Newton methods require more work<br>per step, but may be necessary for<br>stiff problems.|
 |What is the role and benefit of<br>preconditioning?|Compare implicit and IMEX time<br>integration methods both with<br>and without preconditioning.|Preconditioning may be overkill for<br>small/simple problems, but is critical<br>for scalability.|
 
 **Note:** To begin this lesson...
 
 ```bash
 cd {{site.handson_root}}/time_integrators/sundials
-make
 source source_cooley_plotfile_tools.sh
 ```
+(note: you should be able to recompile these executables with a simple
+`make`.
+
 
 ## The problem being solved
 
 The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
-and [HandsOn3.cpp][5]) use a finite volume spatial discretization from
+and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
 [AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
 SUNDIALS' ARKode package for one-step time integration methods, to
 demonstrate the use of [SUNDIALS][1] in both serial and parallel for
 more robust and flexible control over _time integration_
-(e.g. discretization in time) of PDEs.
+(e.g., discretization in time) of PDEs.
 
 These applications have been designed to solve a scalar-valued
 advection-diffusion equation for chemical transport in 2 dimensions:
@@ -49,7 +51,7 @@ given initial condition.  The spatial domain is $$(x,y) \in
 [-1,1]^2$$, and the time domain is $$t \in (0,10^4]$$.
 
 Here, all the runs solve a problem on a periodic, cell-centered,
-uniform mesh with an initial 'bump':
+uniform mesh with an initial Gaussian bump:
 
 $$u_0(x,y) = \frac{10}{\sqrt{2\pi}} e^{-50(x^2+y^2)}$$
 
@@ -75,7 +77,7 @@ We will break apart our investigation of this problem into the following three p
 ### Getting Help
 
 You can get help on all the command-line options to these applications
-with the `help=1` argument for any of these executables, e.g.
+with the `help=1` argument for any of these executables, e.g.,
 
 ```
 ./HandsOn1.exe help=1
@@ -260,7 +262,7 @@ different tolerances are requested?
 
 ARKode defaults to a fourth-order accurate Runge--Kutta method,
 but many others are included (with orders 2 through 8).  Alternate
-orders of accuracy may be run with the `arkode_order` option, e.g.
+orders of accuracy may be run with the `arkode_order` option, e.g.,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=0 arkode_order=8
 fcompare.gnu.ex plt00001/ reference_solution/
@@ -298,16 +300,16 @@ e. Implicit-explicit partitioning
 Open the file `HandsOn2.cpp`.  This is nearly identical to
 `HandsOn1.cpp` from the first lesson, with all relevant changes
 indicated by the comment `***** UPDATED FROM HandsOn1 *****`.
-Specific changes include:
+Specific changes in `ComputeSolutionARK` include:
 
-* Specifies either `ComputeRhsAdvDiff()` as the *implicit*
-  portion of the ODE, or specification of the two subset routines
-  `ComputeRhsAdv()` and `ComputeRhsDiff()` as an IMEX splitting of the
+* Specifies either `ComputeRhsAdvDiff()` as the ODE right-hand side
+  (*fully implicit* integration), or specifies two routines
+  `ComputeRhsAdv()` and `ComputeRhsDiff()` for an IMEX splitting of the
   ODE right-hand side.  By default, the problem is run in
-  fully-implicit mode.
+  fully implicit mode.
 
 * When using the default inexact Newton nonlinear solver for implicit
-  stage calculations, this creates and attaches an un-preconditioned
+  stage calculations, it creates and attaches an un-preconditioned
   GMRES iterative linear solver for solution of each Newton linear
   system.
 
@@ -471,7 +473,7 @@ In `shared/Utilities.cpp`, focus on the two routines
 These routines employ a scalable geometric multigrid solver for the
 diffusion portion of the problem, $$\nabla \cdot ( D \nabla u )$$,
 i.e., this should be a perfect preconditioner when running in IMEX
-mode, or as an approximate preconditioner when running a fully
+mode, and is an approximate preconditioner when running a fully
 implicit formulation of the problem.  The file `HandsOn2.cpp` is
 nearly identical to the previous versions (with relevant changes
 indicated by the comment `***** UPDATED FROM HandsOn2 *****`), except
@@ -568,7 +570,7 @@ related to time integration and nonlinear solvers:
 We note that our use of _adaptivity_ here was confined to the
 _discretization_ of time. Other lessons here demonstrate the
 advantages _adaptation_ can play in the _discretization_ of _space_
-(e.g. meshing).
+(e.g., meshing).
 
 We further note that we have barely scratched the surface of linear
 solver algorithms; while GMRES with geometric multigrid
@@ -588,16 +590,19 @@ Each of the following tasks are independent of one another.  Choose
 one to explore in detail during this evening session (or if
 interested, you may do multiple).
 
-1. Examine the explicit stability boundary for `HandsOn1.exe` as the
-   mesh size `n_cell` is changed to 256 and 512.  Do the same for
-   `HandsOn2.exe` when running in IMEX mode (with explicit advection).
+1. (10 points) Examine the explicit stability boundary for
+   `HandsOn1.exe` as the mesh size `n_cell` is changed to 256 and 512.
+   Do the same for `HandsOn2.exe` when running in IMEX mode (with
+   explicit advection).
 
-2. Explore the weak scalability of the fully implicit versions of
-   `HandsOn2.exe` and `HandsOn3.exe` from say 1..36 MPI tasks, using a
-   base grid of $$128^2$$ per MPI task.  Produce a weak scaling plot
-   with these results.
+2. (5 points) Explore the weak scalability of the fully implicit
+   version of `HandsOn3.exe` both with and without preconditioning.
+   Here, use from 1 to 36 MPI tasks, with a base grid of $$128^2$$ per
+   MPI task.  It is recommended that you use the batch queue instead
+   of running interactively. Produce a weak scaling plot with these
+   results.
 
-3. Add a simple 'reaction' term to the problem, e.g.
+3. (10 points) Add a simple 'reaction' term to the problem, e.g.
 
    $$\frac{\partial u}{\partial t} + \vec{a} \cdot \nabla u -  \nabla \cdot ( D \nabla u ) = -u^2$$
 
