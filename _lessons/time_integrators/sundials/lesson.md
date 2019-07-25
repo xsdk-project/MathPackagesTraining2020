@@ -28,6 +28,11 @@ source source_cooley_plotfile_tools.sh
 (note: you should be able to recompile these executables with a simple
 `make`.
 
+Also, if you do not already have the `anaconda3-4.0.0` SoftEnv module
+loaded, please do so now,
+```bash
+soft add +anaconda3-4.0.0
+```
 
 ## The problem being solved
 
