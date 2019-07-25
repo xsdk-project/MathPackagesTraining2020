@@ -10,7 +10,7 @@ lesson: true
 header:
  image_fullwidth: "theta.png"
 ---
-## At a Glance
+## At a glance
 
 |Questions|Objectives|Key Points|
 |How does the choice of an explicit, implicit<br>or IMEX method impact step size?|Compare the performance of explicit,<br>implicit and IMEX methods at step<br>sizes near the stability limit.|The time integration type must<br>be chosen to match the problem.|
@@ -74,7 +74,7 @@ We will break apart our investigation of this problem into the following three p
 3. Preconditioning (`HandsOn3.exe`)
 
 
-### Getting Help
+### Getting help
 
 You can get help on all the command-line options to these applications
 with the `help=1` argument for any of these executables, e.g.,
@@ -122,6 +122,17 @@ Options:
 If a file name 'fname' is provided, it will be parsed for each of the above
 options.  If an option is specified in both the input file and on the
 command line, then the command line option takes precedence.
+```
+
+----
+
+
+### Cleaning up
+
+At any time, you can remove all of the solution output files and ARKode
+temporal adaptivity diagnostics files with the command
+```
+make pltclean
 ```
 
 ----
@@ -202,7 +213,7 @@ this uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 and compare the final result against a stored reference solution (on a
 $$128^2$$ grid),
 ```bash
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 Notice that the computed solution error is rather small.
 
@@ -213,7 +224,7 @@ Now re-run this hands-on code using a larger time step size of 100.0,
 _see how much faster the code ran!_  However, now check the accuracy
 of the computed solution,
 ```bash
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 and note the reported error of $$10^{98}$$.
 
@@ -233,7 +244,7 @@ the default tolerances, $$rtol=10^{-4}$$ and $$atol=10^{-9}$$) by
 specifying `fixed_dt=0`,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=0
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 _note how rapidly the executable finishes, providing a solution that
 is both stable and accurate to within the specified tolerances!_
@@ -243,7 +254,7 @@ some overall time adaptivity statistics and generate plots of the time
 step size history,
 ```bash
 ./process_ARKStep_diags.py HandsOn1_diagnostics.txt
-eog h_vs_iter.png
+display h_vs_iter.png
 ```
 _notice how rapidly the adaptive time-stepper finds the CFL stability
 limit_.  Also notice that the adaptivity algorithm periodically
@@ -261,14 +272,15 @@ different tolerances are requested?
 ### Integrator order and efficiency
 
 ARKode defaults to a fourth-order accurate Runge--Kutta method,
-but many others are included (with orders 2 through 8).  Alternate
-orders of accuracy may be run with the `arkode_order` option, e.g.,
+but many others are included (explicit methods have available orders 2
+through 8).  Alternate orders of accuracy may be run with the
+`arkode_order` option, e.g.,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=0 arkode_order=8
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 _note the dramatic decrease in overall time steps (457 vs 258), but
-the accompanying increase in total RHS evaluations (2875 vs 3773)._
+the accompanying increase in total RHS evaluations (2865 vs 3773)._
 Although higher-order methods may indeed utilize larger step sizes
 (both for accuracy and frequently stability), those come at
 the cost of increased work per step.
@@ -323,7 +335,7 @@ Run the second hands-on code using its default parameters (note that
 this also uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 ```bash
 ./HandsOn2.exe inputs-2
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 _note that this takes significantly longer than `HandsOn1.exe` with
 the same time step size_
@@ -331,7 +343,7 @@ the same time step size_
 Now re-run using the larger time step size of 100.0,
 ```bash
 ./HandsOn2.exe inputs-2 fixed_dt=100.0
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 _again this version runs much more quickly, but now the results are usable!_
 
@@ -358,8 +370,9 @@ $$atol=10^{-9}$$) by specifying `fixed_dt=0`,
 Compute the solution error, and determine the adaptive time-stepping
 statistics as before,
 ```bash
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ./process_ARKStep_diags.py HandsOn2_diagnostics.txt
+display h_vs_iter.png
 ```
 How does that average step size for this tolerance compare against the
 average step size of `HandsOn1.exe` for the same tolerances?
@@ -385,27 +398,30 @@ than the fully explicit approach when loose tolerances (e.g.,
 As mentioned above, `HandsOn2.exe` defaults to solving implicit stages
 using an inexact Newton nonlinear solver.  We may switch this
 nonlinear solver algorithm to an accelerated fixed-point nonlinear
-solver (with the default acceleration subspace size, `nls_fp_iter=5`)
-by specifying `nls_method=1`,
+solver (with the default acceleration subspace size, `nls_fp_iter=3`)
+by specifying `nls_method=1`; since fixed-point methods typically
+converge more slowly than Newton-based methods, we will also increase
+the allowed number of nonlinear iterations by specifying `nls_max_iter=20`,
 ```bash
-./HandsOn2.exe inputs-2 nls_method=1 fixed_dt=0
-fcompare.gnu.ex plt00001/ reference_solution/
+./HandsOn2.exe inputs-2 fixed_dt=0 nls_method=1 nls_max_iter=20
+fcompare.ex plt00001/ reference_solution/
 ```
 How do the total number of implicit RHS function calls, solution
 accuracy, number of time steps, and total runtime compare against an
 identical run using the inexact Newton nonlinear solver?
 
 {% include qanda
-    question='Why is it that the total number of RHS function calls is
-    no longer an ideal predictor of overall solver performance?'
+    question='When using an implicit method, why is it that the total
+    number of RHS function calls is no longer an ideal predictor of
+    overall solver performance?'
     answer='Since the inexact Newton and accelerated fixed-point
     solvers use different internal algorithms (linear algebra, vs
     "acceleration"), the per-iteration costs of these methods vary
     substantially.' %}
 
-Run the code a few more times with various values of `nls_fp_acc` to
-determine whether there is a more 'optimal' value of the acceleration
-subspace size for this problem.
+Run the code a few more times with various values of `nls_fp_acc`
+(e.g., 0 through 6) to determine whether there is a more 'optimal'
+value of the acceleration subspace size for this problem.
 
 
 
@@ -417,13 +433,13 @@ $$\vec{a} \cdot \nabla u$$ treated explicitly by specifying
 `rhs_adv=2`,
 ```bash
 ./HandsOn2.exe inputs-2 rhs_adv=2
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
-For comparison, run an identical test but with fully-implicit
+For comparison, re-run an identical test but with fully-implicit
 treatment,
 ```bash
 ./HandsOn2.exe inputs-2
-fcompare.gnu.ex plt00001/ reference_solution/
+fcompare.ex plt00001/ reference_solution/
 ```
 Do you notice any efficiency or accuracy differences between fully
 implicit and IMEX formulations with these fixed time-step tests?
@@ -437,12 +453,12 @@ implicit and IMEX formulations with these fixed time-step tests?
     ARK-IMEX methods to always evalute `Fi` more often than `Fe`.' %}
 
 Now that we again have an explicit portion of the problem, we should
-expect the time step size to be CFL-limited.  Run the code a few times
-with various time step sizes, checking the overall solution error each
-time -- can you find an unstable step size?
+expect the time step size to be CFL-limited.  Run the IMEX version a few times
+with various fixed time step sizes (the `fixed_dt` argument), checking
+the overall solution error each time -- can you find an unstable step size?
 
 {% include qanda
-    question='Why is the stability limit larger than for
+    question='Why is the maximum stable step size larger than for
     `HandsOn1.exe`?'
     answer='Since diffusion is now treated implicitly, the CFL-limited
     step size is now determined only by the advection terms.  As these
@@ -544,7 +560,7 @@ preconditioned versions of this hands-on lesson.
 
 ----
 
-## Out-Brief
+## Out-brief
 
 We have used AMReX and SUNDIALS as a demonstration vehicle for
 illustrating the value of robust time integration methods in numerical
@@ -568,23 +584,22 @@ related to time integration and nonlinear solvers:
 4. the choice of IMEX partitioning in time discretization.
 
 We note that our use of _adaptivity_ here was confined to the
-_discretization_ of time. Other lessons here demonstrate the
-advantages _adaptation_ can play in the _discretization_ of _space_
-(e.g., meshing).
+_time discretization_ only. Other lessons here demonstrate the
+advantages of spatial adaptation as well (e.g., AMR).
 
 We further note that we have barely scratched the surface of linear
 solver algorithms; while GMRES with geometric multigrid
-preconditioning remain top choices for large-scale applications, other
-lessons here will focus on alternatives that can work even when these
-methods fail.
+preconditioning remains a top choice of many large-scale applications,
+other lessons here will focus on alternatives that can work for much
+broader classes of problems.
 
-Finally, it is worth reminding the learner that the application
-demonstrated here can be run on much larger spatial meshes and
-parallel architectures than those tested here.
+Finally, we note that the application demonstrated here can be run on
+much larger spatial meshes and parallel architectures than those
+tested here.
 
 ----
 
-## Evening Hands On Session
+## Evening hands-on session
 
 Each of the following tasks are independent of one another.  Choose
 one to explore in detail during this evening session (or if
@@ -593,13 +608,16 @@ interested, you may do multiple).
 1. (10 points) Examine the explicit stability boundary for
    `HandsOn1.exe` as the mesh size `n_cell` is changed to 256 and 512.
    Do the same for `HandsOn2.exe` when running in IMEX mode (with
-   explicit advection).
+   explicit advection).  Determine whether the stability boundaries
+   for these problems are $$\Delta t_n \propto \Delta x$$ or
+   $$\Delta t_n \propto \Delta x^2$$.
 
-2. (5 points) Explore the weak scalability of the fully implicit
-   version of `HandsOn3.exe` both with and without preconditioning.
-   Here, use from 1 to 36 MPI tasks, with a base grid of $$128^2$$ per
-   MPI task.  It is recommended that you use the batch queue instead
-   of running interactively. Produce a weak scaling plot with these
+2. (5 points) Explore the weak scalability of `HandsOn3.exe` both with
+   and without preconditioning.  Here, use from 1 to 36 MPI tasks,
+   with a base grid of $$128^2$$ per MPI task, and retain the default
+   temporal adaptivity.  The choice of IMEX vs fully implicit is
+   yours.  It is recommended that you use the batch queue instead of
+   running interactively. Produce a weak scaling plot with these
    results.
 
 3. (10 points) Add a simple 'reaction' term to the problem, e.g.
@@ -615,7 +633,7 @@ using the hands-on activity name _Time Integrators_ and upload
 evidence of your completed solutions.
 
 
-### Further Reading
+### Further reading
 
 [ARKode Manual -- PDF](https://computation.llnl.gov/sites/default/files/public/ark_guide.pdf)
 
