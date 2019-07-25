@@ -66,7 +66,7 @@ times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
 |:---:|:---:|:---:|:---:|
-|[<img src="sundials/advection-diffusion-u0.png" width="200">](advection-diffusion-u0.png)|[<img src="advection-diffusion-u1000.png" width="200">](advection-diffusion-u1000.png)|[<img src="advection-diffusion-u2000.png" width="200">](advection-diffusion-u2000.png)|[<img src="advection-diffusion-u3000.png" width="200">](advection-diffusion-u3000.png)|
+|[<img src="advection-diffusion-u0.png" width="200">](advection-diffusion-u0.png)|[<img src="advection-diffusion-u1000.png" width="200">](advection-diffusion-u1000.png)|[<img src="advection-diffusion-u2000.png" width="200">](advection-diffusion-u2000.png)|[<img src="advection-diffusion-u3000.png" width="200">](advection-diffusion-u3000.png)|
 
 We will break apart our investigation of this problem into the following three phases:
 
