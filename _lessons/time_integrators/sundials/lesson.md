@@ -156,56 +156,58 @@ c. Adaptive time-stepping
 d. Time integrator order of accuracy
 
 
-### Source code (problem specification)
+### Problem specification
 
-Open the files `shared/NVector_Multifab.h` and
-`shared/NVector_Multifab.cpp` -- these provide a thin wrapper for the
-native AMReX `MultiFab` data structure so that SUNDIALS can think of
-it as a "vector," and perform standard algebraic operations on the
-native AMReX data:
+There are essentially only three steps required to use SUNDIALS with
+an existing simulation code:
 
-* clone a vector to create work arrays
+1. Create a thin `N_Vector` wrapper for your existing data structures,
+   so that SUNDIALS can think of them as "vectors," and perform
+   standard algebraic operations directly on your data:
 
-* linear combination: $$\vec{z} \gets a\vec{x} + b\vec{y}$$
+   * clone a vector to create work arrays
 
-* fill with constant: $$z_i \gets c, \; i=0,\ldots,N-1$$
+   * linear combination: $$\vec{z} \gets a\vec{x} + b\vec{y}$$
 
-* componentwise multiplication: $$\vec{z} \gets \vec{x} .* \vec{y}$$
+   * fill with constant: $$z_i \gets c, \; i=0,\ldots,N-1$$
 
-* vector scale: $$\vec{z} \gets c \vec{x}$$
+   * componentwise multiplication: $$\vec{z} \gets \vec{x} .* \vec{y}$$
 
-* norm and inner-product computations: $$\|\vec{x}\|_\infty$$,
-  $$\left<\vec{x},\vec{y}\right>$$, etc.
+   * vector scale: $$\vec{z} \gets c \vec{x}$$
 
-* ...
+   * norm and inner-product computations: $$\|\vec{x}\|_\infty$$,
+     $$\left<\vec{x},\vec{y}\right>$$, etc.
 
-Now open the files `shared/Utilities.cpp` and `HandsOn1.cpp`.
+   * ...
 
-Starting on line 147, the file `shared/Utilities.cpp` defines a
-function
-```C
-int ComputeRhsAdvDiff(Real t, N_Vector nv_sol, N_Vector nv_rhs, void* data)
-```
-that computes the problem-defining ODE right-hand side function on the
-`NVector_Multifab` data, $$f(t,u) = -\vec{a} \cdot \nabla u + \nabla
-\cdot ( D \nabla u )$$.
+   An example of this for the native AMReX `MultiFab` data structure
+   may be found in [shared/NVector_Multifab.h][6] and [shared/NVector_Multifab.cpp][7].
 
-The file `HandsOn1.cpp` does a number of standard tasks:
+2. Create a function that computes the problem-defining ODE right-hand
+   side function on your `N_Vector` data (or for KINSOL, the
+   problem-defining nonlinear residual function).  Here, we implement the
+   advection-diffusion right-hand side function, $$f(t,u) = -\vec{a}
+   \cdot \nabla u + \nabla \cdot ( D \nabla u )$$ in
+   ```C
+   int ComputeRhsAdvDiff(Real t, N_Vector nv_sol, N_Vector nv_rhs, void* data)
+   ```
+   found in the file [shared/Utilities.cpp][8].
 
-1. Creates and fills a `NVector_Multifab` for the initial conditions,
-   $$u_0(x,y)$$ vector (in the function `DoProblem()`, starting on
-   line 305)
+3. Use SUNDIALS to integrate your ODE/DAE or solve your nonlinear
+   system:
 
-2. Creates the time integrator memory structure, and sets desired
-   options (in the function `ComputeSolutionARK()`, starting on line
-   36) -- here, the integrator is handed both the initial condition
-   vector $$u_0(x,y)$$ and the ODE right-hand side function
-   $$f(t,u)$$.
+   1. Create and fills a `N_Vector` for your initial conditions,
+      $$u_0(x,y)$$ or initial guess to the nonlinear solve.  In our
+      example this is done [here][9].
 
-3. Evolves the problem over a series of time sub-intervals, storing
-   the solutions as requested.
+   2. Create the time integrator memory structure, providing both the
+      initial condition vector $$u_0(x,y)$$ and the problem-defining
+      function $$f(t,u)$$. In our example, these are done [here][10].
 
-4. Reports the overall solver statistics and cleans up.
+   3. Call the SUNDIALS solver to evolve the problem over a series of
+      time sub-intervals, or to solve the nonlinear problem.  Our
+      example does this in a loop [here][11].
+
 
 
 ### Linear stability
@@ -312,26 +314,37 @@ d. Newton vs accelerated fixed-point nonlinear solver
 e. Implicit-explicit partitioning
 
 
-### Source code (specification of algebraic solvers)
+### Specification of algebraic solvers
 
-Open the file `HandsOn2.cpp`.  This is nearly identical to
-`HandsOn1.cpp` from the first lesson, with all relevant changes
-indicated by the comment `***** UPDATED FROM HandsOn1 *****`.
-Specific changes in `ComputeSolutionARK` include:
+Once your code is set up to run an explicit method, it is not
+difficult to switch to an implicit or IMEX solver.  All of the
+relevant changes for this in our examples today are in the file
+[HandsOn2.cpp][4], and are indicated by the comment
+`***** UPDATED FROM HandsOn1 *****`. The main steps are:
 
-* Specifies either `ComputeRhsAdvDiff()` as the ODE right-hand side
-  (*fully implicit* integration), or specifies two routines
-  `ComputeRhsAdv()` and `ComputeRhsDiff()` for an IMEX splitting of the
-  ODE right-hand side.  By default, the problem is run in
-  fully implicit mode.
+1. Move specification of the ODE right-hand side function to the
+   *implicit* argument when creating the integrator, or supply
+   separate routines that should be used for the IMEX splitting of the
+   ODE right-hand side.
 
-* When using the default inexact Newton nonlinear solver for implicit
-  stage calculations, it creates and attaches an un-preconditioned
-  GMRES iterative linear solver for solution of each Newton linear
-  system.
+   This is done [here][12] in our example, where we either supply
+   `ComputeRhsAdvDiff()` for *fully implicit* integration, or
+   specifies two routines `ComputeRhsAdv()` and `ComputeRhsDiff()` for
+   an IMEX splitting of the ODE right-hand side.
 
-* Or if requested, it creates and attaches an accelerated
-  fixed-point nonlinear solver for implicit stage calculations.
+2. To use the default Newton nonlinear solver, you must specify which
+   linear solver module should be used to solve the inner linear
+   systems of equations.
+
+   In our example, we create and attach an un-preconditioned GMRES
+   iterative linear solver for this purpose [here][13].
+
+3. Alternately, you may select an alternate nonlinear solver module to
+   use instead of Newton.
+
+   In our example, if requested we attach an accelerated fixed-point
+   nonlinear solver (with no inner linear solver needed) [here][14].
+
 
 
 ### Linear stability revisited
@@ -484,38 +497,47 @@ b. Performance for IMEX time integrators
 c. Performance for fully implicit time integrators
 
 
-
-### Source code (preconditioner specification)
-
-Open the files `shared/Utilities.cpp` and `HandsOn3.cpp`.
-
-In `shared/Utilities.cpp`, focus on the two routines
-`precondition_setup` and `precondition_solve` starting on line 322.
-These routines employ a scalable geometric multigrid solver for the
-diffusion portion of the problem, $$\nabla \cdot ( D \nabla u )$$,
-i.e., this should be a perfect preconditioner when running in IMEX
-mode, and is an approximate preconditioner when running a fully
-implicit formulation of the problem.  The file `HandsOn2.cpp` is
-nearly identical to the previous versions (with relevant changes
-indicated by the comment `***** UPDATED FROM HandsOn2 *****`), except
-that:
-
-* when creating the GMRES linear solver, it can configure GMRES
-  to use left preconditioning (if requested), and
-
-* if preconditioning is requested, it attaches the
-  `precondition_setup` and `precondition_solve` routines to the time
-  integrator.
-
-Also, the default run parameters for `HandsOn3.exe` differ somewhat
-from before:
+The file `HandsOn3.cpp` is nearly identical to the previous versions
+(with relevant changes indicated by the comment `***** UPDATED FROM
+HandsOn2 *****`).  We note, however, that it's default parameters
+differ slightly from the previous versions:
 
 * it defaults to adaptive time-stepping (with the same default
   tolerances)
 
 * it defaults to IMEX mode, with advection treated explicitly
 
-* it defaults to using the preconditioner.
+* it defaults to using the preconditioner (discussed below).
+
+
+### Preconditioner specification
+
+Perhaps the most challenging (and most critical) component for a
+scalable implicit or IMEX time integrator is the creation of an
+effective, efficient, and scalable preconditioner to accelerate the
+iterative linear solvers (more on this by the next speakers).  This
+requires three steps:
+
+1. Create preconditioner "setup" and "solve" routines that prepare any
+   data structures necessary to perform preconditioning (called
+   infrequently) and apply the preconditioner (called frequently),
+   respectively.
+
+   Here, we create the routines [`precondition_setup`][15] and
+   [`preconditioner_solve`][16], that employ a scalable geometric
+   multigrid solver for only the diffusion portion of the problem,
+   $$\nabla \cdot ( D \nabla u )$$.  This should be a perfect
+   preconditioner when running in IMEX mode, but will only be
+   approximate when running a fully implicit formulation of the
+   problem.
+
+2. Supply the preconditioning routines to the integrator.
+
+   In our example, when creating the GMRES linear solver, we notify it
+   to use left preconditioning [here][17].  We then attach the
+   `precondition_setup` and `precondition_solve` routines to the
+   integrator [here][18].
+
 
 
 ### Performance with IMEX integration
@@ -649,3 +671,16 @@ evidence of your completed solutions.
 [3]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp
 [4]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn2.cpp
 [5]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn3.cpp
+[6]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/shared/NVector_Multifab.h#L34
+[7]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/shared/NVector_Multifab.cpp
+[8]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/shared/Utilities.cpp#L147
+[9]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp#L350
+[10]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp#L66
+[11]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp#L97
+[12]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn2.cpp#L76
+[13]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn2.cpp#L110
+[14]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn2.cpp#L118
+[15]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/shared/Utilities.cpp#L322
+[16]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/shared/Utilities.cpp#L329
+[17]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn3.cpp#L117
+[18]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn3.cpp#L129
