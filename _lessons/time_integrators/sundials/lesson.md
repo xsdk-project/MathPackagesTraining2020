@@ -233,7 +233,9 @@ $$128^2$$ grid),
 ```bash
 fcompare.ex plt00001/ reference_solution/
 ```
-Notice that the computed solution error is rather small.
+Notice that the computed solution error is rather small (since the
+solution has magnitude $$\mathcal{O}(1)$$, errors should be less than
+0.1).
 
 Now re-run this hands-on code using a larger time step size of 100.0,
 ```bash
