@@ -60,9 +60,18 @@ uniform mesh with an initial Gaussian bump:
 
 $$u_0(x,y) = \frac{10}{\sqrt{2\pi}} e^{-50(x^2+y^2)}$$
 
-Snapshots of the solution for advection vector $$\vec{a}=\left[\begin{array}{ll} 0.0005 & 0.00025\end{array}\right]$$ and
-diffusion coefficient matrix $$D = \left[\begin{array}{cc} 10^{-6} & 0 \\ 0 & 10^{-6}\end{array}\right]$$ at the
-times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
+This problem could be used to model the transport of a pollutant that
+is released into a flow field, where one wants to determine both where
+the pollutant ends up, and when it has diffused sufficiently to be of
+no further harm.
+
+Snapshots of the solution for advection [flow] vector and diffusion
+coefficient matrix
+
+$$\vec{a}=\left[\begin{array}{ll} 0.0005 & 0.00025\end{array}\right],
+\qquad D = \left[\begin{array}{cc} 10^{-6} & 0 \\ 0 & 10^{-6}\end{array}\right]$$
+
+at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
 |:---:|:---:|:---:|:---:|
