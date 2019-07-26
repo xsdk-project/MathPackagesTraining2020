@@ -65,12 +65,10 @@ is released into a flow field, where one wants to determine both where
 the pollutant ends up, and when it has diffused sufficiently to be of
 no further harm.
 
-Snapshots of the solution for advection [flow] vector and diffusion
-coefficient matrix
-
-$$\vec{a}=\left[\begin{array}{ll} 0.0005 & 0.00025\end{array}\right],
-\qquad D = \left[\begin{array}{cc} 10^{-6} & 0 \\ 0 & 10^{-6}\end{array}\right]$$
-
+Snapshots of the solution for advection [flow] vector
+$$\vec{a}=\left[ 0.0005\, 0.00025\right]$$,
+and diffusion coefficient matrix
+$$D = diag\left(\, \left[10^{-6}\, 10^{-6}\right]\,\right)$$
 at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
