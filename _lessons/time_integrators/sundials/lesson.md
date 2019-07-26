@@ -39,7 +39,7 @@ soft add +anaconda3-4.0.0
 The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
 and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
 [AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
-SUNDIALS' ARKode package for one-step time integration methods, to
+SUNDIALS' [ARKode][0] package for one-step time integration methods, to
 demonstrate the use of [SUNDIALS][1] in both serial and parallel for
 more robust and flexible control over _time integration_
 (e.g., discretization in time) of PDEs.
@@ -66,9 +66,9 @@ the pollutant ends up, and when it has diffused sufficiently to be of
 no further harm.
 
 Snapshots of the solution for advection [flow] vector
-$$\vec{a}=\left[ 0.0005\, 0.00025\right]$$,
+$$\vec{a}=\left[ 0.0005,\, 0.00025\right]$$,
 and diffusion coefficient matrix
-$$D = diag\left(\, \left[10^{-6}\, 10^{-6}\right]\,\right)$$
+$$D = \operatorname{diag}\left(\, \left[10^{-6},\, 10^{-6}\right]\,\right)$$
 at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4 below:
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
@@ -677,6 +677,7 @@ evidence of your completed solutions.
 
 [ARKode Manual -- HTML](http://runge.math.smu.edu/arkode_dev/doc/guide/build/html/index.html)
 
+[0]: http://faculty.smu.edu/reynolds/ARKode
 [1]: https://computation.llnl.gov/projects/sundials
 [2]: https://amrex-codes.github.io/amrex
 [3]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp
