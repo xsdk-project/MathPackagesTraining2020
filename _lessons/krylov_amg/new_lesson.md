@@ -281,7 +281,6 @@ We can strengthen the preconditioner by increasing the number of symmetric Gauss
 
 Switch "relaxation: sweeps" to 3 and rerun.
 
-
 Now, we will check whether we have created a scalable solver strategy.
 Record the number of iterations for different problem sizes by running
 ```
@@ -338,7 +337,7 @@ The relevant timer to look at is "Belos: PseudoBlockCGSolMgr total solve time".
 (You might want to run this more than once in case you are experiencing some system noise.)
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
-There are two ways of using Gauss-Seidel whilst keeping the preconditioner symmetric:
+There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
 you can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
 Make the required changes in the input file and compare the timings with the Jacobi case.
@@ -347,14 +346,63 @@ Make the required changes in the input file and compare the timings with the Jac
 
 {% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
+{% include qanda question='Try increasing the number of MPI ranks.  What happens ?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
+
+Another common smoother is a matrix polynomial, specifically, a Chebyshev polynomial.  This type smoother has certain advantages over relaxation methods
+like Jacobi or Gauss-Seidel.  First, Chebyshev will have better convergence properties than Jacobi.  Second, the Chebyshev computational kernel is a
+sparse matrix-vector multiply (SpMV), which is invariant with respect to the number of processes.
+In contrast, virtually all parallel Gauss-Seidel implementations are actually block Jacobi.  Each block
+is the set of matrix rows local to a process, and Gauss-Seidel is applied only to the local block.
+Third, the SpMV kernel is easily parallelizable, whereas Gauss-Seidel has limited inherent parallelism.
+
+Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on one MPI rank.
+```
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+```
+Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on 10 MPI ranks.
+```
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+```
+
+{% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
+{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank 
+receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
+the number of MPI processes due its use of the SpMV kernel.' %}
+
 Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
 Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
 
-### Set 4 - Krylov solver, parallel multigrid preconditioner and performance optimisations
+### Set 4 - Setting the aggregation threshold parameter
+
+We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.  This anisotropy could be due to the nature of 
+the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
+
+Run the following two problems.
+
+```
+./MueLu_Stratimikos.exe --nx=50 --ny=50
+./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
+```
+
+{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 12 iterations.  The second problem fails to
+converge.'%}
+
+The first problem solves a 2D Laplace matrix with a 5-point stencil, with x and y points equidistant.
+The second problem solves a 2D Laplace matrix with a 5-point stencil.  In the underlying mesh, elements are distorted so that their x-dimension is 10 times as large as their
+y-dimension.
+
+Now rerun the second problem, but modifying the aggregation threshold parameter in the input deck to have a value of 0.02.
+
+{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid solver
+recovers convergence.'%}
+
+### Set 5 - Krylov solver, parallel multigrid preconditioner and performance optimizations
 
 So far, we have run all problems in serial.
-Running the same problem in paralllel using MPI is as simple as running
+Running the same problem in parallel using MPI is as simple as running
 ```
 mpiexec -n 12 ./MueLu_Stratimikos.exe
 ```
@@ -414,7 +462,7 @@ Problems which have more non-zeros per row (e.g. in higher spatial dimension) ca
 MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
 This code can be enabled at runtime by setting the parameter "use kokkos refactor" to true.
 Cooley has two GPUs per node.
-Try re-runing with the refactor option set.
+Try re-running with the refactor option set.
 
 ---
 
