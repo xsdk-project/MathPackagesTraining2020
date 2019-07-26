@@ -190,13 +190,17 @@ an existing simulation code:
    * ...
 
    An example of this for the native AMReX `MultiFab` data structure
-   may be found in [shared/NVector_Multifab.h][6] and [shared/NVector_Multifab.cpp][7].
+   may be found in the files [shared/NVector_Multifab.h][6] and
+   [shared/NVector_Multifab.cpp][7].
 
 2. Create a function that computes the problem-defining ODE right-hand
    side function on your `N_Vector` data (or for KINSOL, the
    problem-defining nonlinear residual function).  Here, we implement the
-   advection-diffusion right-hand side function, $$f(t,u) = -\vec{a}
-   \cdot \nabla u + \nabla \cdot ( D \nabla u )$$ in
+   advection-diffusion right-hand side function,
+
+   $$f(t,u) = -\vec{a} \cdot \nabla u + \nabla \cdot ( D \nabla u )$$
+
+   in
    ```C
    int ComputeRhsAdvDiff(Real t, N_Vector nv_sol, N_Vector nv_rhs, void* data)
    ```
@@ -205,9 +209,9 @@ an existing simulation code:
 3. Use SUNDIALS to integrate your ODE/DAE or solve your nonlinear
    system:
 
-   1. Create and fills a `N_Vector` for your initial conditions,
-      $$u_0(x,y)$$ or initial guess to the nonlinear solve.  In our
-      example this is done [here][9].
+   1. Instantiate and fill an `N_Vector` for your initial conditions,
+      $$u_0(x,y)$$ or your initial guess to the nonlinear solve.  In
+      our example this is done [here][9].
 
    2. Create the time integrator memory structure, providing both the
       initial condition vector $$u_0(x,y)$$ and the problem-defining
@@ -532,8 +536,8 @@ requires three steps:
    infrequently) and apply the preconditioner (called frequently),
    respectively.
 
-   Here, we create the routines [`precondition_setup`][15] and
-   [`preconditioner_solve`][16], that employ a scalable geometric
+   Here, we create the routines [precondition_setup][15] and
+   [preconditioner_solve][16], that employ a scalable geometric
    multigrid solver for only the diffusion portion of the problem,
    $$\nabla \cdot ( D \nabla u )$$.  This should be a perfect
    preconditioner when running in IMEX mode, but will only be
