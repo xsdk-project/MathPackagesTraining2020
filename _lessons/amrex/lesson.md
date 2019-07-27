@@ -20,10 +20,18 @@ results?
 
 ### The Equation and the Discretization
 
-Now let's consider scalar advection with a specified time-dependent velocity field.  In this
-example we'll be using AMR.
+```
+Mesh data only
+AMR with subcycling
+```
 
-This algorithm should also look familiar to you -- in each time step we construct fluxes and use them to update the solution.
+Let's consider scalar advection with a specified time-dependent velocity field.  In this example we'll be using AMR.
+
+This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
+
+Having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
+
+At each level:
 ```fortran
   ! Do a conservative update
   do    j = lo(2),hi(2)
@@ -35,9 +43,8 @@ This algorithm should also look familiar to you -- in each time step we construc
   enddo
 ```
 
-Here the construction of the fluxes is a little more complicated, and because we are going to use AMR, we
-must save the fluxes at each level so that we can use them in a refluxing operation. The subcycling in time
-algorithm, which we haven't really had time to talk about, looks like
+If "timeStep(lev,...)" advances the solution at level "lev" then
+the subcycling in time algorithm looks like:
 ```C++
     if (lev < finest_level)
     {
@@ -115,14 +122,47 @@ and again visualize the results.
 Cut cell / embedded boundary representation of obstacles
 Linear solver
 Particle advection in fluid flow
-...
+```
+
+[Gif Animations](macproj.gif)
+
+The executable has been built already: main2d.gnu.MPI.ex
+
+To run it in serial, 
+
+```
+./main2d.gnu.MPI.ex inputs
+```
+
+To run it in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+```
 
 ## Example: AMReX-Pachinko
 
 ```
 Cut cell / embedded boundary representation of obstacles
 Particle-wall collisions
-...
+```
+[Gif Animations](pachinko.gif)
+
+In this example we freeze the obstacles but can change the initial particle locations.
+
+The executable has been built already: main2d.gnu.MPI.ex
+
+To run it in serial, 
+
+```
+./main2d.gnu.MPI.ex inputs
+```
+
+To run it in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+```
 
 ### Further Reading
 
