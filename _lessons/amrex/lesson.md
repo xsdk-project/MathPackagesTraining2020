@@ -16,8 +16,6 @@ How do I 'turn on' AMR?   | Understand minimum specs for AMR    | When the algor
 How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.
 results?
 ```
-
-
 ## Example: Multi-Level Advection
 
 ### The Equation and the Discretization
@@ -111,9 +109,26 @@ and again visualize the results.
 |:---:|:---:|
 |[<img src = "phi_adv_ref.0.jpg" width ="300">](phi_adv_ref.0.jpg)|[<img src = "phi_adv_ref.60.jpg" width ="300">](phi_adv_ref.60.jpg)
 
+## Example: "Off to the Races"
+
+```
+Cut cell / embedded boundary representation of obstacles
+Linear solver
+Particle advection in fluid flow
+...
+
+## Example: AMReX-Pachinko
+
+```
+Cut cell / embedded boundary representation of obstacles
+Particle-wall collisions
+...
+
 ### Further Reading
 
-Learn more about AMReX [here](https://www.github.com/AMReX-codes/amrex) and take a look at the Users Guide in Docs.
+Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex) and take a look at the Users Guide in Docs.
+
+Look at the AMReX documentation/tutorials [here](https://amrex-codes.github.io/amrex/)
 
 <!-- Insert space, horizontal line, and link to HandsOnLesson table -->
 
