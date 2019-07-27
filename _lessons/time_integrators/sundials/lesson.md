@@ -13,11 +13,11 @@ header:
 ## At a glance
 
 |Questions|Objectives|Key Points|
-|How does the choice of an explicit, implicit<br>or IMEX method impact step size?|Compare the performance of explicit,<br>implicit and IMEX methods at step<br>sizes near the stability limit.|The time integration type must<br>be chosen to match the problem.|
-|What is the impact of an<br>adaptive time integrator?|Compare fixed and adaptive time<br>integration techniques.|Adaptive temporal integration can provide<br>robust and reliable solutions at<br>a fraction of the cost.|
-|How does the order of the<br>time integration method<br>impact cost?|Observe the impact of method<br>order on time to solution and number of steps.|In well-designed packages, changing<br>integration order is simple, allowing<br>investigation of optimal methods for<br>a given problem.|
-|How does the type of nonlinear<br>solver affect robustness/scalability?|Compare Newton and accelerated<br>fixed-point nonlinear solvers<br>for implicit and IMEX time<br>integration methods.|Newton methods require more work<br>per step, but may be necessary for<br>stiff problems.|
-|What is the role and benefit of<br>preconditioning?|Compare implicit and IMEX time<br>integration methods both with<br>and without preconditioning.|Preconditioning may be overkill for<br>small/simple problems, but is critical<br>for scalability.|
+|How do explicit, implicit or IMEX<br>methods impact step size?|Compare methods at step sizes<br>near the stability limit.|Choose time integration method<br>to match the problem.|
+|What is the impact of an<br>*adaptive* technique?|Compare fixed and adaptive techniques.|Adaptive techniques can be robust<br>reliable and reduce computational cost.|
+|How does integration *order*<br>impact cost?|Observe impact of order on time<br>to solution and number of steps.|Changing integration order is simple<br>allowing optimization for a given problem.|
+|How does the nonlinear solver<br>affect robustness/scalability?|Compare different solvers<br>with implicit and IMEX methods.|Some methods require more work<br>but are necessary for certain problems.|
+|What is the role and benefit of<br>preconditioning?|Compare integration methods with<br>and without preconditioning.|Preconditioning is critical for scalability.|
 
 **Note:** To begin this lesson...
 
