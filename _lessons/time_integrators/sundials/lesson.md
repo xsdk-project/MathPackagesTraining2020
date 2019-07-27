@@ -73,7 +73,7 @@ at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4
 
 |Figure 1|Figure 2|Figure 3|Figure 4|
 |:---:|:---:|:---:|:---:|
-|[![](advection-diffusion-u0.png)](sundials/advection-diffusion-u0.png)|[![](advection-diffusion-u1000.png)](advection-diffusion-u1000.png)|[![](advection-diffusion-u2000.png)](advection-diffusion-u2000.png)|[![](advection-diffusion-u3000.png)](advection-diffusion-u3000.png)|
+|[![](advection-diffusion-u0.png)](sundials/advection-diffusion-u0.png)|[![](advection-diffusion-u1000.png)](sundials/advection-diffusion-u1000.png)|[![](advection-diffusion-u2000.png)](sundials/advection-diffusion-u2000.png)|[![](advection-diffusion-u3000.png)](sundials/advection-diffusion-u3000.png)|
 
 We will break apart our investigation of this problem into the following three phases:
 
