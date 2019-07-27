@@ -36,16 +36,15 @@ soft add +anaconda3-4.0.0
 
 ## The problem being solved
 
-The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
-and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
-[AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
-SUNDIALS' [ARKode][0] package for one-step time integration methods, to
-demonstrate the use of [SUNDIALS][1] in both serial and parallel for
-more robust and flexible control over _time integration_
-(e.g., discretization in time) of PDEs.
+In this problem, we model the transport of a pollutant that
+has been released into a flow in a two dimensional domain.
+We want to determine both where the pollutant goes, and when it
+has diffused sufficiently to be of no further harm.
 
-These applications have been designed to solve a scalar-valued
-advection-diffusion equation for chemical transport in 2 dimensions:
+[![Problem Setup ::](sundials_amrex_setup.png)](sundials/sundials_amrex_setup.png)
+
+This is an example of a scalar-valued advection-diffusion problem for
+chemical transport. The governing equation is: 
 
 $$\frac{\partial u}{\partial t} + \vec{a} \cdot \nabla u -  \nabla \cdot ( D \nabla u ) = 0$$
 
@@ -55,15 +54,19 @@ anisotropic diffusion coefficients, and $$u(t=0,x,y)=u_0(x,y)$$ is a
 given initial condition.  The spatial domain is $$(x,y) \in
 [-1,1]^2$$, and the time domain is $$t \in (0,10^4]$$.
 
-Here, all the runs solve a problem on a periodic, cell-centered,
+## The Application Models
+The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
+and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
+[AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
+SUNDIALS' [ARKode][0] package for one-step time integration methods, to
+demonstrate the use of [SUNDIALS][1] in both serial and parallel for
+more robust and flexible control over _time integration_
+(e.g., discretization in time) of PDEs.
+
+All the runs solve a problem on a periodic, cell-centered,
 uniform mesh with an initial Gaussian bump:
 
 $$u_0(x,y) = \frac{10}{\sqrt{2\pi}} e^{-50(x^2+y^2)}$$
-
-This problem could be used to model the transport of a pollutant that
-is released into a flow field, where one wants to determine both where
-the pollutant ends up, and when it has diffused sufficiently to be of
-no further harm.
 
 Snapshots of the solution for advection [flow] vector
 $$\vec{a}=\left[ 0.0005,\, 0.00025\right]$$,
