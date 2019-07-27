@@ -30,7 +30,7 @@
   - title: "Time Integration & Non-Linear Solvers (SUNDIALS)"
     url: "/lessons/time_integrators/sundials"
   - title: "Krylov Solvers and Algebraic Multigrid"
-    url: "/lessons/lesson_template/"
+    url: "/lessons/krylov_amg/"
   - title: "Numerical Optimization (Adjoint)"
     url: "/lessons/adjoint/"
   - title: "Putting It All Together"
