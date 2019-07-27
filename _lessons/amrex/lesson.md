@@ -124,7 +124,7 @@ Linear solver
 Particle advection in fluid flow
 ```
 
-[Gif Animations](macproj.gif)
+[Animation](macproj.gif)
 
 The executable has been built already: main2d.gnu.MPI.ex
 
@@ -146,7 +146,7 @@ mpirun -n 4 ./main2d.gnu.MPI.ex inputs
 Cut cell / embedded boundary representation of obstacles
 Particle-wall collisions
 ```
-[Gif Animations](pachinko.gif)
+[Animation](pachinko.gif)
 
 In this example we freeze the obstacles but can change the initial particle locations.
 
