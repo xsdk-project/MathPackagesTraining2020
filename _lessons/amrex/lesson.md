@@ -311,7 +311,11 @@ the particle work?' answer='Use a cost function based on number of particles ins
 2) In the "Off to the Races" example, what is the configuration of obstacles in which the 
    first particle reaches the end-line in the shortest time?
 
-3) In the Pachinko example, how well can I control the final distribution of particles 
+3) In the "Off to the Races" example, would a different linear solver be faster?   
+   Try by setting USE_HYPRE = TRUE in the GNUmakefile (you'll need to re-make the executable)
+   and add "use_hypre = 1"  to the command line
+
+4) In the Pachinko example, how well can I control the final distribution of particles 
    from the initial particle positions?
 
 ### Further Reading
