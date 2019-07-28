@@ -31,7 +31,8 @@
 
 .. math:: \frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0
 
-Let's consider scalar advection with a specified time-dependent velocity field.  In this example we'll be using AMR.
+Let's consider scalar advection with a specified time-dependent triply periodic velocity field.  
+In this example we'll be using AMR.
 
 This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
 
@@ -81,6 +82,24 @@ main2d.gnu.MPI.ex -- the executable
 inputs_2d -- the inputs file
 ```
 
+The following parameters can be set at run-time -- these are currently set in the inputs
+file but you can also set them on the command line.  
+
+```
+amr.max_time       =  2.0                # the final time (if max_time < max_steps * time_step)
+
+amr.max_steps      = 1000000             # the maximum number of steps (if max_steps * time_step < max_time))
+
+amr.n_cell         =  64   64   64       # number of cells at the coarsest AMR level in each coordinate direction
+
+amr. max_grid_size = 16                  # the maximum number of cells in any direction in a single grid
+
+amr.plot_int       = 10                  # frequency of writing plotfiles
+
+adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
+
+```
+
 The inputs file currently has
 
 ```
@@ -95,32 +114,6 @@ The grid here is a cube consisting of 64 x 64 cells, consisting of 4 subgrids ea
 of size 32x32 cells.  The problem is periodic in the x-direction and not in the y-direction.
 This problem happens to be set-up to have homogeneous Neumann boundary conditions when not periodic.
 
-Let's try running this 2-d problem with no refinement
-
-```
-./main2d.gnu.MPI.ex inputs_2d amr.max_level=0
-```
-
-To see the 2-d solution, use Visit to look at plt00000 and plt00060, for example.
-You should see something like this (though these pictures are
-made using a different visualization program.)
-
-|Time Step 0|Time Step 60|
-|:---:|:---:|
-|[<img src = "phi_adv_noref.0.jpg" width ="300">](phi_adv_noref.0.jpg)|[<img src = "phi_adv_noref.60.jpg" width ="300">](phi_adv_noref.60.jpg)
-
-## Now let's turn on AMR.
-
-Let's now run with
-```
-./main2d.gnu.MPI.ex inputs_2d amr.max_level=2
-```
-
-and again visualize the results.  
-
-|Time Step 0|Time Step 60|
-|:---:|:---:|
-|[<img src = "phi_adv_ref.0.jpg" width ="300">](phi_adv_ref.0.jpg)|[<img src = "phi_adv_ref.60.jpg" width ="300">](phi_adv_ref.60.jpg)
 
 ## Example: "Off to the Races"
 
