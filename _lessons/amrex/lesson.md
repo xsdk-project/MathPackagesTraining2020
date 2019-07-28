@@ -283,6 +283,11 @@ That took 1.145916707 seconds.
 {% include qanda question='Why might it be important to have n_cell be a power of 2 in the "Race" example
 but not in the "Pachinko" example?' answer='In the "Race" example we use multigrid to solve for the flow field.'%}
 
+{% include qanda question='How do I build an AMReX-based code in 2D vs 3D?' answer='set DIM=2 vs DIM=3 in the GNUmakefile'%}
+
+{% include qanda question='How different is the Pachinko code itself for 2D vs 3D?'
+answer='Not very!  Search for the test on AMREX_SPACEDIM in the source files to see how few lines are different.'%}
+
 ### Further Reading
 
 Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
