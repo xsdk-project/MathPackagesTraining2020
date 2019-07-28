@@ -5,24 +5,28 @@
 
 
 ```
-Questions                 |Objectives                           |Key Points
---------------------------|----------- -------------------------|--------------------------
-How do I start to use     | Understand easy set-up              | It's not hard to get started
-AMReX?                    |                                     |
-                          |                                     |
-How do I 'turn on' AMR?   | Understand minimum specs for AMR    | When the algorithm is correctly designed
-                          |                                     | and implemented, AMR 'just works'
-                          |                                     |
-How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.
++---------------------------+-------------------------------------+------------------------------------------+
+| Questions                 | Objectives                          | Key Points                               |
++---------------------------+----------- -------------------------+------------------------------------------+
+| What can I do with AMReX? | Understand that "AMR" means more    | AMR + EB + Particles                     |
+|                           | than just "traditional AMR"         |                                          |
+|                           |                                     |                                          |
+| How do I get started?     | Understand easy set-up              | It's not hard to get started             |
+|                           |                                     |                                          |
+| How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.  |
++---------------------------+-------------------------------------+------------------------------------------+
 results?
 ```
-## Example: Multi-Level Advection
+## Example: Multi-Level Scalar Advection
 
 ### The Equation and the Discretization
 
 ```
-Mesh data only
-AMR with subcycling
++--------------------------+----------------------------------------+
+| Capabilties              | Capabilities                           |
++--------------------------+----------------------------------------+
+| Mesh data                | Dynamic AMR                            |
++--------------------------+----------------------------------------+
 ```
 
 Let's consider scalar advection with a specified time-dependent velocity field.  In this example we'll be using AMR.
@@ -119,12 +123,14 @@ and again visualize the results.
 ## Example: "Off to the Races"
 
 ```
-Cut cell / embedded boundary representation of obstacles
-Linear solver
-Particle advection in fluid flow
++--------------------------+-------------------------------------+------------------------------------------+
+| Capabilties              | Capabilities                        | Capabilities                             |
++--------------------------+-------------------------------------+------------------------------------------+
+| Mesh data with EB        | Linear Solvers (Multigrid)          | Tracer Particles                         |
++--------------------------+-------------------------------------+------------------------------------------+
 ```
 
-[Animation](macproj.gif)
+[Sample solution](macproj.gif)
 
 The executable has been built already: main2d.gnu.MPI.ex
 
@@ -201,10 +207,14 @@ We have a winner...and the winning time is 1.431
 ## Example: AMReX-Pachinko
 
 ```
-Cut cell / embedded boundary representation of obstacles
-Particle-wall collisions
++--------------------------+--------------------------------------------------------------------------------+
+| Capabilties              | Capabilities                                                                   | 
++--------------------------+--------------------------------------------------------------------------------+
+| EB for obstacles         | Particle-obstacle and particle-wall collisions                                 |
++--------------------------+-------------------------------------+------------------------------------------+
 ```
-[Animation](pachinko.gif)
+
+[Sample solution](pachinko.gif)
 
 In this example we freeze the obstacles but can change the initial particle locations.
 
