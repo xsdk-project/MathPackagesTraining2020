@@ -216,22 +216,30 @@ We have a winner...and the winning time is 1.431
 
 In this example we freeze the obstacles but can change the initial particle locations.
 
-The executable has been built already: main2d.gnu.MPI.ex
+The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
 
-To run it in serial, 
+Note that in this specific example the problem is the same in both 2d and 3d since we assume the 
+particles never move in the z-direction.
 
-```
-./main2d.gnu.MPI.ex inputs
-```
-
-To run it in parallel, for example on 4 ranks:
+To run in serial, 
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+./main2d.gnu.MPI.ex inputs_2d
+or
+./main3d.gnu.MPI.ex inputs_3d
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs
-file but you can also set them on the command line.  
+To run in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d
+or
+mpirun -n 4 ./main3d.gnu.MPI.ex inputs_3d
+```
+
+The following parameters can be set at run-time -- these are currently set in the inputs_2d
+file but you can also set them on the command line.  In this specific example we use only 4
+cells in the z-direction (if in 3-d) regardless of n_cell.
 
 ```
 n_cell = 125                             # number of cells in x-direction; we double this in the y-direction
@@ -249,7 +257,7 @@ max_steps = 100000                       # the maximum number of steps (if max_s
 
 For example, 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs initial_tracer_file=my_file
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d initial_tracer_file=my_file
 ```
 
 will read the particles from a file called "my_file"
@@ -257,8 +265,6 @@ will read the particles from a file called "my_file"
 The output from your run should look something like this:
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs
-
 ********************************************************************
  Let's advect the particles ...
    We'll print a dot every 10 time steps.
