@@ -14,8 +14,8 @@
 | How do I get started?     | Understand easy set-up              | It's not hard to get started             |
 |                           |                                     |                                          |
 | How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.  |
+| results?                  |                                     |                                          |
 +---------------------------+-------------------------------------+------------------------------------------+
-results?
 ```
 ## Example: Multi-Level Scalar Advection
 
@@ -23,11 +23,13 @@ results?
 
 ```
 +--------------------------+----------------------------------------+
-| Capabilties              | Capabilities                           |
+| Capabilties              |                                        |
 +--------------------------+----------------------------------------+
-| Mesh data                | Dynamic AMR                            |
+| Mesh data                | Dynamic AMR with subcycling            |
 +--------------------------+----------------------------------------+
 ```
+
+.. math:: \frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0
 
 Let's consider scalar advection with a specified time-dependent velocity field.  In this example we'll be using AMR.
 
@@ -124,7 +126,7 @@ and again visualize the results.
 
 ```
 +--------------------------+-------------------------------------+------------------------------------------+
-| Capabilties              | Capabilities                        | Capabilities                             |
+| Capabilties              |                                     |                                          |
 +--------------------------+-------------------------------------+------------------------------------------+
 | Mesh data with EB        | Linear Solvers (Multigrid)          | Tracer Particles                         |
 +--------------------------+-------------------------------------+------------------------------------------+
@@ -220,7 +222,7 @@ We have a winner...and the winning time is 1.431
 
 ```
 +--------------------------+--------------------------------------------------------------------------------+
-| Capabilties              | Capabilities                                                                   | 
+| Capabilties              |                                                                                | 
 +--------------------------+--------------------------------------------------------------------------------+
 | EB for obstacles         | Particle-obstacle and particle-wall collisions                                 |
 +--------------------------+-------------------------------------+------------------------------------------+
