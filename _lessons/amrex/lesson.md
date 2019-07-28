@@ -287,6 +287,16 @@ That took 1.145916707 seconds.
 ********************************************************************
 ```
 
+To visualize the Pachinko results with yt, 
+```
+1) make sure you are using a bash shell
+2) type "make movie"
+3) visualize the animated gif "pachinko.gif"
+```
+
+To visualize the Pachinko results with paraview, follow the commands here:
+[Paraview instructions](amrx-pachinko.pdf)
+
 ### Follow-up Questions
 
 {% include qanda question='Why might it be important to have n_cell be a power of 2 in the "Race" example
