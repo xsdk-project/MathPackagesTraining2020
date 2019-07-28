@@ -285,6 +285,9 @@ but not in the "Pachinko" example?' answer='In the "Race" example we use multigr
 
 {% include qanda question='How do I build an AMReX-based code in 2D vs 3D?' answer='set DIM=2 vs DIM=3 in the GNUmakefile'%}
 
+{% include qanda question='How do I build a serial version vs a parallel version of an AMReX-based code?'
+answer='if you set USE_MPI=TRUE in the GNUmakefile then you can run in serial or parallel.'%}
+
 {% include qanda question='How different is the Pachinko code itself for 2D vs 3D?'
 answer='Not very!  Search for the test on AMREX_SPACEDIM in the source files to see how few lines are different.'%}
 
