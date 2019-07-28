@@ -166,6 +166,18 @@ max_steps = 10000                        # the maximum number of steps (if max_s
 obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
 ```
 
+For example, 
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs obstacles = 1 3 4 5 6 8
+```
+
+will run the problem with only six obstacles -- see 
+
+[Numbering](numbering.png)
+
+to see the numbering scheme.
+
+
 The output from your run should look something like this:
 
 ```
