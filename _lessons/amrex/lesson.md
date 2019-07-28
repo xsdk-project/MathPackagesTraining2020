@@ -31,8 +31,8 @@
 
 .. math:: \frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0
 
-Let's consider scalar advection with a specified time-dependent triply periodic velocity field.  
-In this example we'll be using AMR.
+Let's consider scalar advection with a specified time-dependent velocity field.
+In this example we'll be using AMR to resolve the scalar field.
 
 This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
 
@@ -212,9 +212,15 @@ We have a winner...and the winning time is 1.431
 +--------------------------+-------------------------------------+------------------------------------------+
 ```
 
+In this example particles accelerate downward with gravity and bounce off the side walls and off the solid obstacles.
+There is no fluid but we still sort the particles according to our spatial decomposition of the domain.
+
 [Sample solution](pachinko.gif)
 
-In this example we freeze the obstacles but can change the initial particle locations.
+[Sample domain decomposition](domain.png)
+
+For now we freeze the obstacles (although if you look in the code it's not hard to figure out
+how to change them!) but we can change the initial particle locations at run-time.
 
 The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
 
