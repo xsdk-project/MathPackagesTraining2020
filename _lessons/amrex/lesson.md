@@ -160,6 +160,44 @@ max_steps = 10000                        # the maximum number of steps (if max_s
 obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
 ```
 
+The output from your run should look something like this:
+
+```
+********************************************************************
+ You specified 9 objects in the domain: 0 1 2 3 4 5 6 7 8
+ ********************************************************************
+
+********************************************************************
+ First let's project the initial velocity to find
+   the flow field around the obstacles ...
+********************************************************************
+
+
+********************************************************************
+ Done!  Now let's advect the particles ...
+********************************************************************
+
+Timestep 0, Time = 0.001 and leading particle now at 0.101179325
+Timestep 100, Time = 0.101 and leading particle now at 0.2444506795
+Timestep 200, Time = 0.201 and leading particle now at 0.4330191808
+Timestep 300, Time = 0.301 and leading particle now at 0.5611955983
+Timestep 400, Time = 0.401 and leading particle now at 0.7422046938
+Timestep 500, Time = 0.501 and leading particle now at 0.8955689091
+Timestep 600, Time = 0.601 and leading particle now at 1.044585496
+Timestep 700, Time = 0.701 and leading particle now at 1.225885881
+Timestep 800, Time = 0.801 and leading particle now at 1.34851225
+Timestep 900, Time = 0.901 and leading particle now at 1.45538891
+Timestep 1000, Time = 1.001 and leading particle now at 1.558181566
+Timestep 1100, Time = 1.101 and leading particle now at 1.659474158
+Timestep 1200, Time = 1.201 and leading particle now at 1.760129699
+Timestep 1300, Time = 1.301 and leading particle now at 1.860489498
+Timestep 1400, Time = 1.401 and leading particle now at 1.960718531
+
+********************************************************************
+We have a winner...and the winning time is 1.431
+********************************************************************
+```
+
 ## Example: AMReX-Pachinko
 
 ```
@@ -207,6 +245,24 @@ mpirun -n 4 ./main2d.gnu.MPI.ex inputs initial_tracer_file=my_file
 ```
 
 will read the particles from a file called "my_file"
+
+The output from your run should look something like this:
+
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+
+********************************************************************
+ Let's advect the particles ...
+   We'll print a dot every 10 time steps.
+********************************************************************
+
+.............................................................................................................................................................................................................................................................................................................
+
+********************************************************************
+We've finished moving the particles to time 3
+That took 1.145916707 seconds.
+********************************************************************
+```
 
 ### Follow-up Questions
 
