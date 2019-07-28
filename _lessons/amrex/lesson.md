@@ -295,7 +295,7 @@ To visualize the Pachinko results with yt,
 ```
 
 To visualize the Pachinko results with paraview, follow the commands here:
-[Paraview instructions](amrx-pachinko.pdf)
+[Paraview instructions](amrex-pachinko.pdf)
 
 ### Follow-up Questions
 
