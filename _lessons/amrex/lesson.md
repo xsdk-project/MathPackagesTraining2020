@@ -92,27 +92,18 @@ amr.max_steps      = 1000000             # the maximum number of steps (if max_s
 
 amr.n_cell         =  64   64   64       # number of cells at the coarsest AMR level in each coordinate direction
 
-amr. max_grid_size = 16                  # the maximum number of cells in any direction in a single grid
+amr. max_grid_size = 32                  # the maximum number of cells in any direction in a single grid
 
 amr.plot_int       = 10                  # frequency of writing plotfiles
+
+adv.cfl            = 0.7                 # cfl number to be used for computing the time step
 
 adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
 
 ```
 
-The inputs file currently has
-
-```
-max_step = 120
-amr.n_cell = 64 64
-amr.max_grid_size = 32
-amr.plot_int = 10
-
-```
-
-The grid here is a cube consisting of 64 x 64 cells, consisting of 4 subgrids each
-of size 32x32 cells.  The problem is periodic in the x-direction and not in the y-direction.
-This problem happens to be set-up to have homogeneous Neumann boundary conditions when not periodic.
+The base grid here is a cube consisting of 64 x 64 cells, consisting of 4 subgrids each
+of size 32x32 cells.  The problem is periodic in both the x-direction and y-direction.
 
 
 ## Example: "Off to the Races"
