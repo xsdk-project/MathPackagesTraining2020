@@ -215,12 +215,15 @@ We have a winner...and the winning time is 1.431
 In this example particles accelerate downward with gravity and bounce off the side walls and off the solid obstacles.
 There is no fluid but we still sort the particles according to our spatial decomposition of the domain.
 
-[Sample solution](pachinko.gif)
+This particular domain decomposition results from using a z-order space-filling curve with 
+the number of cells per grid as the cost function.
 
 [Sample domain decomposition](domain.png)
 
 For now we freeze the obstacles (although if you look in the code it's not hard to figure out
 how to change them!) but we can change the initial particle locations at run-time.
+
+[Sample solution](pachinko.gif)
 
 The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
 
@@ -296,6 +299,20 @@ answer='if you set USE_MPI=TRUE in the GNUmakefile then you can run in serial or
 
 {% include qanda question='How different is the Pachinko code itself for 2D vs 3D?'
 answer='Not very!  Search for the test on AMREX_SPACEDIM in the source files to see how few lines are different.'%}
+
+{% include qanda question='How could I make the parallel decomposition in the Pachinko example load balance
+the particle work?' answer='Use a cost function based on number of particles instead of number of grid cells.'%}
+
+### Suggested Evening Activities
+
+1) In the "AMR 101" example, could I use what I learned in the SUNDIALS exercises to improve the accuracy 
+   of the time-stepping?
+
+2) In the "Off to the Races" example, what is the configuration of obstacles in which the 
+   first particle reaches the end-line in the shortest time?
+
+3) In the Pachinko example, how well can I control the final distribution of particles 
+   from the initial particle positions?
 
 ### Further Reading
 
