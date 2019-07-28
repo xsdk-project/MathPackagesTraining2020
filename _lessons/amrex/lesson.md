@@ -299,6 +299,8 @@ Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
 
 Look at the AMReX documentation/tutorials [here](https://amrex-codes.github.io/amrex/)
 
+Read the Journal of Open Source Software (JOSS) paper [here](http://joss.theoj.org/papers/10.21105/joss.01370)
+
 <!-- Insert space, horizontal line, and link to HandsOnLesson table -->
 
 &nbsp;
