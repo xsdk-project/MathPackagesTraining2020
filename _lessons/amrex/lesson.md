@@ -140,6 +140,26 @@ To run it in parallel, for example on 4 ranks:
 mpirun -n 4 ./main2d.gnu.MPI.ex inputs
 ```
 
+The following parameters can be set at run-time -- these are currently set in the inputs
+file but you can also set them on the command line.  
+
+```
+n_cell = 128                             # number of cells in x-direction; we double this in the y-direction
+max_grid_size = 64                       # the maximum number of cells in any direction in a single grid
+
+plot_int = 10                            # frequency of writing plotfiles
+
+initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+
+time_step = 0.001                        # we advance the particles with a fixed time step of this size
+
+max_time = 10.0                          # the final time (if max_time < max_steps * time_step)
+
+max_steps = 10000                        # the maximum number of steps (if max_steps * time_step < max_time))
+
+obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
+```
+
 ## Example: AMReX-Pachinko
 
 ```
@@ -164,9 +184,38 @@ To run it in parallel, for example on 4 ranks:
 mpirun -n 4 ./main2d.gnu.MPI.ex inputs
 ```
 
+The following parameters can be set at run-time -- these are currently set in the inputs
+file but you can also set them on the command line.  
+
+```
+n_cell = 125                             # number of cells in x-direction; we double this in the y-direction
+max_grid_size = 25                       # the maximum number of cells in any direction in a single grid
+
+plot_int = 10                            # frequency of writing plotfiles
+
+initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+
+time_step = 0.001                        # we take a fixed time step of this size
+
+max_time  = 3.0                          # the final time (if max_time < max_steps * time_step)
+max_steps = 100000                       # the maximum number of steps (if max_steps * time_step < max_time))
+```
+
+For example, 
+```
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs initial_tracer_file=my_file
+```
+
+will read the particles from a file called "my_file"
+
+### Follow-up Questions
+
+{% include qanda question='Why might it be important to have n_cell be a power of 2 in the "Race" example
+but not in the "Pachinko" example?' answer='In the "Race" example we use multigrid to solve for the flow field.'%}
+
 ### Further Reading
 
-Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex) and take a look at the Users Guide in Docs.
+Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
 
 Look at the AMReX documentation/tutorials [here](https://amrex-codes.github.io/amrex/)
 
