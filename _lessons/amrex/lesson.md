@@ -10,8 +10,6 @@ header:
  image_fullwidth: "amrex_warpx2.png"
 ---
 
-# AMReX -- a block-structured Adaptive Mesh Refinement (AMR) framework
-
 ## At a Glance
 <!-- (Expected # minutes to complete) %% temporarily omit -->
 
