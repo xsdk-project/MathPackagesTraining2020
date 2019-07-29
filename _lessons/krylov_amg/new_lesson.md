@@ -390,9 +390,7 @@ Run the following two examples.
 {% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 9 iterations.  The second
 problem converges in 46 iterations.'%}
 
-%The first problem solves a 2D Laplace matrix with a 5-point stencil, with x and y points equidistant.
-%The second problem solves a 2D Laplace matrix with a 5-point stencil.  In the underlying mesh, elements are distorted so that their x-dimension is 10 times as large as their y-dimension.
-The first example solves a Poisson equation discretized on a regular $50\times 50$ mesh with square elements.
+The first example solves a Poisson equation discretized on a regular $50\times 50$ mesh with square elements (x and y points equidistant).
 The second example solves a Poisson equation discretized on a regular $50\times 50$ mesh, but each element has an x-dimension 10 times greater than its
 y-dimension.
 
