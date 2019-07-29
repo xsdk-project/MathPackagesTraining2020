@@ -1,3 +1,15 @@
+---
+layout: page-fullwidth
+title: "AMReX"
+subheadline: "A Block Structured Adaptive Mesh Refinement Framework"
+teaser: "What can I do with AMReX..."
+permalink: "lessons/amrex/"
+use_math: true
+lesson: true
+header:
+ image_fullwidth: "amrex_warpx2.png"
+---
+
 # AMReX -- a block-structured Adaptive Mesh Refinement (AMR) framework
 
 ## At a Glance
