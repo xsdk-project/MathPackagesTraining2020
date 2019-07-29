@@ -69,11 +69,12 @@ the subcycling in time algorithm looks like:
 
 ### Running the Problem
 
-Copy the directory AMReX_Advection from PATH_TO_AMREX_ADVECTION
+```
+cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
+```
 
 In this directory you'll see
 
-```
 main2d.gnu.MPI.ex -- the executable
 inputs_2d -- the inputs file
 ```
@@ -110,6 +111,12 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 +--------------------------+-------------------------------------+------------------------------------------+
 | Mesh data with EB        | Linear Solvers (Multigrid)          | Tracer Particles                         |
 +--------------------------+-------------------------------------+------------------------------------------+
+```
+
+Now 
+
+```
+cd HandsOnLessons/amrex/AMReX_EB_MacProj
 ```
 
 [Sample solution](macproj.gif)
@@ -199,6 +206,12 @@ We have a winner...and the winning time is 1.431
 ```
 
 ## Example: AMReX-Pachinko
+
+Now 
+
+```
+cd HandsOnLessons/amrex/AMReX_EB_Pachinko
+```
 
 ```
 +--------------------------+--------------------------------------------------------------------------------+
