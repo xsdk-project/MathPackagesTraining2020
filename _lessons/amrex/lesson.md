@@ -15,33 +15,19 @@ header:
 ## At a Glance
 <!-- (Expected # minutes to complete) %% temporarily omit -->
 
+|Questions|Objectives|Key Points|
+|What can I do with AMReX?|Understand that "AMR" means more<br>than just "traditional AMR"|AMR + EB + Particles|
+|How do I get started?|Understand easy set-up|It's not hard to get started|
+|How do I visualize AMR results|Use Visit for AMR results|Visualization tools exist for AMR data.|
 
-```
-+---------------------------+-------------------------------------+------------------------------------------+
-| Questions                 | Objectives                          | Key Points                               |
-+---------------------------+----------- -------------------------+------------------------------------------+
-| What can I do with AMReX? | Understand that "AMR" means more    | AMR + EB + Particles                     |
-|                           | than just "traditional AMR"         |                                          |
-|                           |                                     |                                          |
-| How do I get started?     | Understand easy set-up              | It's not hard to get started             |
-|                           |                                     |                                          |
-| How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.  |
-| results?                  |                                     |                                          |
-+---------------------------+-------------------------------------+------------------------------------------+
-```
 ## Example: Multi-Level Scalar Advection
 
 ### The Equation and the Discretization
 
-```
-+--------------------------+----------------------------------------+
-| Capabilties              |                                        |
-+--------------------------+----------------------------------------+
-| Mesh data                | Dynamic AMR with subcycling            |
-+--------------------------+----------------------------------------+
-```
+|Capabilties|xxx|
+|Mesh data|Dynamic AMR with subcycling|
 
-.. math:: \frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0
+$$\frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0$$
 
 Let's consider scalar advection with a specified time-dependent velocity field.
 In this example we'll be using AMR to resolve the scalar field.
