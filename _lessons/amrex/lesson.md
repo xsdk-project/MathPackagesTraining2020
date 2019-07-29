@@ -112,7 +112,7 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 +--------------------------+-------------------------------------+------------------------------------------+
 ```
 
-[Sample solution](macproj.gif)
+![Sample solution](macproj.gif)
 
 The executable has been built already: main2d.gnu.MPI.ex
 
@@ -155,7 +155,7 @@ mpirun -n 4 ./main2d.gnu.MPI.ex inputs obstacles = 1 3 4 5 6 8
 
 will run the problem with only six obstacles -- see 
 
-[Numbering](numbering.png)
+![Numbering](numbering.png)
 
 to see the numbering scheme.
 
@@ -214,12 +214,12 @@ There is no fluid but we still sort the particles according to our spatial decom
 This particular domain decomposition results from using a z-order space-filling curve with 
 the number of cells per grid as the cost function.
 
-[Sample domain decomposition](domain.png)
+![Sample domain decomposition](domain.png)
 
 For now we freeze the obstacles (although if you look in the code it's not hard to figure out
 how to change them!) but we can change the initial particle locations at run-time.
 
-[Sample solution](pachinko.gif)
+![Sample solution](pachinko.gif)
 
 The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
 
@@ -295,19 +295,18 @@ To visualize the Pachinko results with paraview, follow the commands here:
 
 ### Follow-up Questions
 
-{% include qanda question='Why might it be important to have n_cell be a power of 2 in the "Race" example
-but not in the "Pachinko" example?' answer='In the "Race" example we use multigrid to solve for the flow field.'%}
-
-{% include qanda question='How do I build an AMReX-based code in 2D vs 3D?' answer='set DIM=2 vs DIM=3 in the GNUmakefile'%}
-
-{% include qanda question='How do I build a serial version vs a parallel version of an AMReX-based code?'
-answer='if you set USE_MPI=TRUE in the GNUmakefile then you can run in serial or parallel.'%}
-
-{% include qanda question='How different is the Pachinko code itself for 2D vs 3D?'
-answer='Not very!  Search for the test on AMREX_SPACEDIM in the source files to see how few lines are different.'%}
-
-{% include qanda question='How could I make the parallel decomposition in the Pachinko example load balance
-the particle work?' answer='Use a cost function based on number of particles instead of number of grid cells.'%}
+1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
+but not in the "Pachinko" example?
+  * In the "Race" example we use multigrid to solve for the flow field.
+2. How do I build an AMReX-based code in 2D vs 3D?
+  * set `DIM=2` vs `DIM=3` in the `GNUmakefile`
+3. How do I build a serial version vs a parallel version of an AMReX-based code?
+  * If you set `USE_MPI=TRUE` in the `GNUmakefile` then you can run in serial or parallel.
+4. How different is the Pachinko code itself for 2D vs 3D?
+  * Not very!  Search for the test on `AMREX_SPACEDIM` in the source files to see how few lines are different.
+5. How could I make the parallel decomposition in the Pachinko example load balance
+the particle work?
+  * Use a cost function based on number of particles instead of number of grid cells.
 
 ### Suggested Evening Activities
 
