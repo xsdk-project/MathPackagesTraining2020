@@ -77,7 +77,6 @@ In this directory you'll see
 
 main2d.gnu.MPI.ex -- the executable
 inputs_2d -- the inputs file
-```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
 file but you can also set them on the command line.  
