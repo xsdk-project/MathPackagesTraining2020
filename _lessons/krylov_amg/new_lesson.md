@@ -380,24 +380,26 @@ Choosing a smoother that is quite expensive and strong can result in a small num
 We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.  This anisotropy could be due to the nature of 
 the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
 
-Run the following two problems.
+Run the following two examples.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 12 iterations.  The second problem fails to
-converge.'%}
+{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 9 iterations.  The second
+problem converges in 46 iterations.'%}
 
-The first problem solves a 2D Laplace matrix with a 5-point stencil, with x and y points equidistant.
-The second problem solves a 2D Laplace matrix with a 5-point stencil.  In the underlying mesh, elements are distorted so that their x-dimension is 10 times as large as their
+%The first problem solves a 2D Laplace matrix with a 5-point stencil, with x and y points equidistant.
+%The second problem solves a 2D Laplace matrix with a 5-point stencil.  In the underlying mesh, elements are distorted so that their x-dimension is 10 times as large as their y-dimension.
+The first example solves a Poisson equation discretized on a regular $50\times 50$ mesh with square elements.
+The second example solves a Poisson equation discretized on a regular $50\times 50$ mesh, but each element has an x-dimension 10 times greater than its
 y-dimension.
 
-Now rerun the second problem, but modifying the aggregation threshold parameter in the input deck to have a value of 0.02.
+Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
-{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid solver
-recovers convergence.'%}
+{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
+solver converges in 9 iterations.'%}
 
 ### Set 5 - Krylov solver, parallel multigrid preconditioner and performance optimizations
 
