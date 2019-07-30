@@ -27,31 +27,29 @@ header:
 
 ### The Problem
 
-Consider a drop of dye (we'll call this $$\phi$$) in a thin incompressible fluid that is spinning 
+Consider a drop of dye (we'll define $$\phi$$ to be the concentration of dye) 
+in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
-"passive" tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
+passive tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
 this as two-dimensional motion.
 
-In other words, we want to solve for $$\phi(x,y,t)$$ by solving
+In other words, we want to solve for $$\phi(x,y,t)$$ by evolving 
 
 $$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
 
-where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
+in time ($$t$$), where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
 
-$$\psi(i,j) = \sin(\pi x)^2 * sin(\pi y)^2  \cos (\pi time / 2) / \pi $$
+$$\psi(i,j) = \sin^2(\pi x) * \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
 
 and defining
 
-$$u = -\frac{\partial \psi}{\partial y}$$
+$$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
 
-and
+In this example we'll be using AMR to resolve the scalar field since the location of the dye is
+what we care most about.
 
-$$v = \frac{\partial \psi}{\partial x}$$
-
-In this example we'll be using AMR to resolve the scalar field.
-
-To update the solution at each level, we call an advance routine that computes fluxes on each face,
-and differences the fluxes to create the update to phi.  In this example the update happens in a Fortran
+To update the solution at each level, we call an advance routine that computes fluxes ($${\bf u} \phi$$)
+on each face, and differences the fluxes to create the update to phi.  In this example the update happens in a Fortran
 subroutine that operates on one grid of data at a time.  Here "lo()" and "hi()" are the bounds of the
 one grid we are operating on, not of the entire domain.
 
@@ -70,8 +68,8 @@ At each level:
   enddo
 ```
 
-If "timeStep(lev,...)" advances the solution at level "lev" then
-the subcycling in time algorithm looks like:
+If "timeStep(lev,...)" is the routine that creates the fluxes and advances the solution at level "lev",
+ then the subcycling in time algorithm looks like:
 ```C++
     if (lev < finest_level)
     {
@@ -91,6 +89,9 @@ the subcycling in time algorithm looks like:
     }
 ```
 
+Note that if "nsubsteps" is greater than 1, we are "subcycling" in time, ie using a smaller dt at
+the finer levels.
+
 ### Running the Code
 
 ```
@@ -99,10 +100,25 @@ cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
 
 In this directory you'll see
 
-main2d.ex -- the executable
-inputs_2d -- the inputs file
+```
+main2d.ex -- the executable -- this has been built with MPI 
 
-The following parameters can be set at run-time -- these are currently set in the inputs
+inputs_2d -- an inputs file
+```
+
+To run in serial, 
+
+```
+./main2d.ex inputs_2d
+```
+
+To run in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main2d.ex inputs_2d
+```
+
+The following parameters can be set at run-time -- these are currently set in the inputs_2d
 file but you can also set them on the command line.  
 
 ```
@@ -122,9 +138,30 @@ adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
 
 ```
 
-The base grid here is a cube consisting of 64 x 64 cells, consisting of 4 subgrids each
-of size 32x32 cells.  The problem is periodic in both the x-direction and y-direction.
+The base grid here is a square of 64 x 64 cells, made up of 4 subgrids each of size 32x32 cells.  
+The problem is periodic in both the x-direction and y-direction.
 
+We have hard-wired the code here to refine based on the magnitude of $$\phi$$.    Here we set the 
+threshhold level by level.  If $$\phi > 1.01$$ then we want to refine at least once; if $$\phi > 1.1$$ we
+want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we want even more refinement.
+
+### Visualizing the Results
+
+After you run the code you will have a series of plotfiles.  To visualize these we will use the
+Visit package.
+
+INSTRUCTIONS HERE
+
+### Topics to Explore
+
+* How does the load balancing distribute grids to MPI processes?   
+  (You will want to visualize the "proc" variable in the plotfile)
+
+* Is time to solution faster with subcycling or without?  Did the solution change at all?
+  (Note we print the total time to solution at the end of the screen output of each run)
+
+* What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
+  (You can edit these in inputs_2d)  
 
 ## Example: "Off to the Races"
 
@@ -156,25 +193,32 @@ How many cylinders should you use, and where should you put them?
 
 ### Running the code
 
-
 ```
 cd HandsOnLessons/amrex/AMReX_EB_MacProj
 ```
 
 ![Sample solution](macproj.gif)
 
-The executable has been built already: main3d.ex
-
-To run it in serial, 
+In this directory you'll see
 
 ```
-./main3d.ex inputs
+main3d.ex -- the executable -- this has been built with MPI 
+
+inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+
+tracer_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
-To run it in parallel, for example on 4 ranks:
+To run in serial, 
 
 ```
-mpirun -n 4 ./main3d.ex inputs
+./main3d.ex inputs_3d
+```
+
+To run in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -197,17 +241,16 @@ max_steps = 10000                        # the maximum number of steps (if max_s
 obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
 ```
 
-For example, 
+We define the cylinders with this numbering scheme
+
+![Numbering](numbering.png)
+
+So, for example, 
 ```
 mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
 ```
 
-will run the problem with only six obstacles -- see 
-
-![Numbering](numbering.png)
-
-to see the numbering scheme.
-
+will run the problem with only six obstacles 
 
 The output from your run should look something like this:
 
@@ -246,6 +289,12 @@ Timestep 1400, Time = 1.401 and leading particle now at 1.960718531
 We have a winner...and the winning time is 1.431
 ********************************************************************
 ```
+
+Note that if you want to figure out which is the fastest configuration, you'll 
+need to run the code multiple times with different configurations and compare the
+"winning times."   This is a good example of how we often don't run the 
+simulation code in a "one and done" mode -- the simulation is often only one component 
+of a science investigation or design process.
 
 ## Example: AMReX-Pachinko
 
