@@ -20,12 +20,12 @@ header:
 
 ## Example: Multi-Level Scalar Advection
 
-### The Equation and the Discretization
+### The Problem
 
 |Capabilties|   |
 |Mesh data|Dynamic AMR with subcycling|
 
-Consider a drop of dye (we'll call this "$\phi$") in a thin incompressible fluid that is spinning 
+Consider a drop of dye (we'll call this $$\phi$$) in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
 "passive" tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
 this as two-dimensional motion.
@@ -34,7 +34,7 @@ In other words, we want to solve for $$\phi(x,y,t)$$ by solving
 
 $$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
 
-where the velocity $\bf{u} = (u,v)$ is a divergence-free field computed by defining
+where the velocity $$\bf{u} = (u,v)$$ is a divergence-free field computed by defining
 
 $$\psi(i,j) = \sin(\pi x)^2 * sin(\pi y)^2  \cos (\pi time / 2) / \pi $$
 
@@ -89,7 +89,7 @@ the subcycling in time algorithm looks like:
     }
 ```
 
-### Running the Problem
+### Running the Code
 
 ```
 cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
@@ -126,6 +126,8 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 
 ## Example: "Off to the Races"
 
+### The Problem
+
 Challenge: 
 
 Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $u = 1$. 
@@ -146,6 +148,9 @@ How many cylinders should you use, and where should you put them?
 
 |Capabilties|   |   |
 |Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
+
+### Running the code
+
 
 ```
 cd HandsOnLessons/amrex/AMReX_EB_MacProj
@@ -266,24 +271,35 @@ how to change them!) but we can change the initial particle locations at run-tim
 
 ![Sample solution](pachinko.gif)
 
-The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
+### The Problem
 
-Note that in this specific example the problem is the same in both 2d and 3d since we assume the 
-particles never move in the z-direction.
+Have you ever played pachinko?  A pachinko machine is like a vertical pinball machine. 
+Balls are released at the top of the "playing field", and bounce off obstacles as they fall.
+
+The object of the game is to "capture" as many balls as possible.
+
+In AMReX-Pachinko game you can release as many particles as you like at the top of the domain,
+and the balls will freeze when they hit the bottom so you can see where they landed.
+
+Your goal here is to see if you can cover the floor of the pachinko machine.
+
+(Note that this is not completely realistic -- the balls here don't feel each other so they can overlap.)
+
+### Running the Code
+
+The executable has been built already: main3d.ex 
+
+Note this is a 3d executable but we don't allow motion in the z-direction.
 
 To run in serial, 
 
 ```
-./main2d.gnu.MPI.ex inputs_2d
-or
 ./main3d.gnu.MPI.ex inputs_3d
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d
-or
 mpirun -n 4 ./main3d.gnu.MPI.ex inputs_3d
 ```
 
@@ -307,7 +323,7 @@ max_steps = 100000                       # the maximum number of steps (if max_s
 
 For example, 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d initial_tracer_file=my_file
+mpirun -n 4 ./main3d.ex inputs_3d initial_tracer_file=my_file
 ```
 
 will read the particles from a file called "my_file"
@@ -326,13 +342,6 @@ The output from your run should look something like this:
 We've finished moving the particles to time 3
 That took 1.145916707 seconds.
 ********************************************************************
-```
-
-To visualize the Pachinko results with yt, 
-```
-1) make sure you are using a bash shell
-2) type "make movie"
-3) visualize the animated gif "pachinko.gif"
 ```
 
 To visualize the Pachinko results with paraview, follow the commands here:
