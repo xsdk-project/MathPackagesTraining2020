@@ -355,15 +355,16 @@ the particle work?
 
 ### Suggested Evening Activities
 
-1) In the "AMR 101" example, could I use what I learned in the SUNDIALS exercises to improve the accuracy 
-   of the time-stepping?
+1) In the "AMR 101" example, what quantities could I choose as refinement criteria besides the magnitude of phi?
+   What factors determine the size and shape of the refined regions?
+
+   Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html
 
 2) In the "Off to the Races" example, what is the configuration of obstacles in which the 
    first particle reaches the end-line in the shortest time?
 
 3) In the "Off to the Races" example, would a different linear solver be faster?   
-   Try by setting USE_HYPRE = TRUE in the GNUmakefile (you'll need to re-make the executable)
-   and add "use_hypre = 1"  to the command line
+   Try adding "use_hypre = 1"  to the command line -- is this faster or slower?
 
 4) In the Pachinko example, how well can I control the final distribution of particles 
    from the initial particle positions?
