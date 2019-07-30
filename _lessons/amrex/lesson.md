@@ -27,14 +27,14 @@ header:
 
 Consider a drop of dye (we'll call this "$\phi$") in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
-"passive" tracer that is advected by the fluid velocity.  The fluid is thin enough that we think
-of this as two-dimensional motion.
+"passive" tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
+this as two-dimensional motion.
 
-We evolve $\phi$ conservatively using this evolution equation:
+In other words, we want to solve for $$\phi(x,y,t)$$ by solving
 
-$$\frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0$$
+$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
 
-where the velocity $(u,v)$ is a divergence-free field computed by defining
+where the velocity $\bf{u} = (u,v)$ is a divergence-free field computed by defining
 
 $$\psi(i,j) = \sin(\pi x)^2 * sin(\pi y)^2  \cos (\pi time / 2) / \pi $$
 
@@ -48,9 +48,13 @@ $$v = \frac{\partial \psi}{\partial x}$$
 
 In this example we'll be using AMR to resolve the scalar field.
 
-This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
+To update the solution at each level, we call an advance routine that computes fluxes on each face,
+and differences the fluxes to create the update to phi.  In this example the update happens in a Fortran
+subroutine that operates on one grid of data at a time.  Here "lo()" and "hi()" are the bounds of the
+one grid we are operating on, not of the entire domain.
 
-Having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
+Knowing how to synchronize the solution at coarse/fine boundaries is essential in an AMR algorithm;
+here having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
 
 At each level:
 ```fortran
