@@ -397,10 +397,22 @@ The first example solves a Poisson equation discretized on a regular $$50\times 
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
 $$y$$-dimension.
 
+We can plot the aggregates that MueLu generated:
+![Aggregates::](muelu-noDrop.png)
+(If you want to reproduce this, have a look at the parameter "aggregation: export visualization data".)
+
+We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
+This leads to bad convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
+
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
 solver converges in 7 iterations.'%}
+
+Again, we plot the resulting aggregates:
+![Aggregates with dropping enabled::](muelu-drop.png)
+
+We can see that the aggregates are now entirely aligned with the $$y$$-direction.
 
 ---
 
