@@ -77,13 +77,11 @@ Usage: ./MueLu_Stratimikos.exe [options]
 Solvers (such as CG and GMRES) and preconditioners (such as Jacobi, Gauss-Seidel and multigrid) are configured via parameter files.
 
 Trilinos supports both XML and YAML files.
-Depending on what format you prefer, you will be modifying `stratimikos_ParameterList.xml` or `stratimikos_ParameterList.yaml`.
+In what follows, we will be modifying modifying `stratimikos_ParameterList.xml` to explore a variety of solvers and preconditioners.
 
-By default, the XML input file is read.
-If you prefer YAML, the input file needs to be specified on the command line using the `--yaml` flag:
-```
-./MueLu_Stratimikos.exe --yaml=stratimikos_ParameterList.yaml
-```
+By default, the XML file `stratimikos_ParameterList.xml` is read.
+If you want to keep track of your changes and work with different input files, this default can be overridden with `--xml=another-file.xml`.
+
 
 ## Running the Example
 
@@ -236,7 +234,7 @@ We observe the following:
 
 #### Question and Answer Boxes
 
-Modify the input file (XML or YAML) to use the conjugate gradient method.
+Modify the input file to use the conjugate gradient method.
 The "Solver Type" parameter to use is "Pseudo Block CG".
 Rerun.
 
@@ -272,8 +270,6 @@ Moreover, have a look at the configuration for Ifpack2.
   </ParameterList>
 </ParameterList>
 ```
-(We show the lines from the input XML, the YAML file looks similar.)
-
 This means that a single sweep of Gauss-Seidel is used.
 
 Rerun the code.
@@ -457,7 +453,6 @@ What you should observe is that the preconditioner significantly cuts down on th
 
 ### Evening Activity 2 - Krylov solver, parallel multigrid preconditioner and performance optimizations
 
-So far, we have run all problems in serial.
 Running the same problem in parallel using MPI is as simple as running
 ```
 mpiexec -n 12 ./MueLu_Stratimikos.exe
@@ -525,5 +520,5 @@ Try re-running with the refactor option set.
 
 The executable has the option to load the linear system and the right-hand side from MatrixMarket files, e.g.,
 ```
-./MueLu_Stratimikos.exe --matrix=poisson.m --rhs=poisson-rhs.m --coords=poisson-coords.m
+./MueLu_Stratimikos.exe --matrix=poisson-matrix.m --rhs=poisson-rhs.m --coords=poisson-coords.m
 ```
