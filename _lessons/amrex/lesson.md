@@ -34,7 +34,7 @@ In other words, we want to solve for $$\phi(x,y,t)$$ by solving
 
 $$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
 
-where the velocity $$\bf{u} = (u,v)$$ is a divergence-free field computed by defining
+where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
 
 $$\psi(i,j) = \sin(\pi x)^2 * sin(\pi y)^2  \cos (\pi time / 2) / \pi $$
 
@@ -126,13 +126,21 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 
 ## Example: "Off to the Races"
 
+### What Features Are We Using
+
+* Mesh data with EB 
+* Linear solvers (multigrid)
+* Tracer 
+|Capabilties|   |   |
+|Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
+
 ### The Problem
 
 Challenge: 
 
-Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $u = 1$. 
+Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $$u = 1$$. 
 
-If there are no obstacles in the channel, the fluid will flow with speed $1$ from left to right.
+If there are no obstacles in the channel, the fluid will flow with speed 1 from left to right.
 
 If you place obstacles in the channel, the fluid must flow around them.
 
@@ -145,9 +153,6 @@ You can use particles released near the inflow to measure the fastest configurat
 
 How many cylinders should you use, and where should you put them?
 
-
-|Capabilties|   |   |
-|Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
 
 ### Running the code
 
@@ -244,32 +249,8 @@ We have a winner...and the winning time is 1.431
 
 ## Example: AMReX-Pachinko
 
-Now 
-
-```
-cd HandsOnLessons/amrex/AMReX_EB_Pachinko
-```
-
-```
-+--------------------------+--------------------------------------------------------------------------------+
-| Capabilties              |                                                                                | 
-+--------------------------+--------------------------------------------------------------------------------+
-| EB for obstacles         | Particle-obstacle and particle-wall collisions                                 |
-+--------------------------+-------------------------------------+------------------------------------------+
-```
-
-In this example particles accelerate downward with gravity and bounce off the side walls and off the solid obstacles.
-There is no fluid but we still sort the particles according to our spatial decomposition of the domain.
-
-This particular domain decomposition results from using a z-order space-filling curve with 
-the number of cells per grid as the cost function.
-
-![Sample domain decomposition](domain.png)
-
-For now we freeze the obstacles (although if you look in the code it's not hard to figure out
-how to change them!) but we can change the initial particle locations at run-time.
-
-![Sample solution](pachinko.gif)
+| Capabilties      |   |
+| EB for obstacles | Particle-obstacle and particle-wall collisions  |
 
 ### The Problem
 
@@ -286,6 +267,23 @@ Your goal here is to see if you can cover the floor of the pachinko machine.
 (Note that this is not completely realistic -- the balls here don't feel each other so they can overlap.)
 
 ### Running the Code
+
+```
+cd HandsOnLessons/amrex/AMReX_EB_Pachinko
+```
+
+In this example there is no fluid (or other variable stored on the mesh)
+but we still sort the particles according to our spatial decomposition of the domain.
+
+This particular domain decomposition results from using a z-order space-filling curve with 
+the number of cells per grid as the cost function.
+
+![Sample domain decomposition](domain.png)
+
+For now we freeze the obstacles (although if you look in the code it's not hard to figure out
+how to change them!) but we can change the initial particle locations at run-time.
+
+![Sample solution](pachinko.gif)
 
 The executable has been built already: main3d.ex 
 
