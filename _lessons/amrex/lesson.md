@@ -20,10 +20,12 @@ header:
 
 ## Example: Multi-Level Scalar Advection
 
-### The Problem
+### What Features Are We Using
 
-|Capabilties|   |
-|Mesh data|Dynamic AMR with subcycling|
+* Mesh data 
+* Dynamic AMR with subcycling
+
+### The Problem
 
 Consider a drop of dye (we'll call this $$\phi$$) in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
@@ -130,9 +132,7 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 
 * Mesh data with EB 
 * Linear solvers (multigrid)
-* Tracer 
-|Capabilties|   |   |
-|Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
+* Tracer Particles
 
 ### The Problem
 
@@ -249,12 +249,17 @@ We have a winner...and the winning time is 1.431
 
 ## Example: AMReX-Pachinko
 
-| Capabilties      |   |
-| EB for obstacles | Particle-obstacle and particle-wall collisions  |
+### What Features Are We Using
+
+* EB for obstacles 
+* Particle-obstacle and particle-wall collisions 
 
 ### The Problem
 
-Have you ever played pachinko?  A pachinko machine is like a vertical pinball machine. 
+Have you ever played pachinko?  
+
+A pachinko machine is like a vertical pinball machine. 
+
 Balls are released at the top of the "playing field", and bounce off obstacles as they fall.
 
 The object of the game is to "capture" as many balls as possible.
