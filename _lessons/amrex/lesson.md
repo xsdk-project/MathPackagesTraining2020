@@ -425,8 +425,8 @@ the particle work?
 ### Suggested Evening Activities
 
 1. In the "AMR 101" example, 
-   * what quantities could I choose as refinement criteria besides the magnitude of phi?
-   * what factors besides the refinement criteria define the size and shape of the grids?
+  * what quantities could I choose as refinement criteria besides the magnitude of phi?
+  * what factors besides the refinement criteria define the size and shape of the grids?
     ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
 
 2. In the "Off to the Races" example, 
