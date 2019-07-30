@@ -296,6 +296,13 @@ need to run the code multiple times with different configurations and compare th
 simulation code in a "one and done" mode -- the simulation is often only one component 
 of a science investigation or design process.
 
+### Visualizing the Results
+
+We'll use Paraview to visualize the results for this example. 
+
+Follow the commands here:
+[Paraview instructions](paraview-races.pdf)
+
 ## Example: AMReX-Pachinko
 
 ### What Features Are We Using
@@ -407,7 +414,7 @@ That took 1.145916707 seconds.
 Again we'll use Paraview to visualize the results. 
 
 Follow the commands here:
-[Paraview instructions](amrex-pachinko.pdf)
+[Paraview instructions](paraview-pachinko.pdf)
 
 ### Follow-up Questions
 
