@@ -245,6 +245,14 @@ Rerun.
 
 {% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements.' %}
 
+In order to check the last answer, run with CG and GMRES using
+```
+/usr/bin/time -v ./MueLu_Stratimikos.exe --matrixType=Laplace3D
+```
+and compare the "Maximum resident set size".
+
+IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
+
 ---
 
 ### Set 2 - Krylov solver, simple preconditioners
@@ -349,19 +357,19 @@ In contrast, virtually all parallel Gauss-Seidel implementations are actually bl
 is the set of matrix rows local to a process, and Gauss-Seidel is applied only to the local block.
 Third, the SpMV kernel is easily parallelizable, whereas Gauss-Seidel has limited inherent parallelism.
 
-Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on one MPI rank.
+First, we compare the performance of symmetric Gauss-Seidel on one MPI rank with the performance on 10 MPI ranks.
 ```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
-Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on 10 MPI ranks.
+Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
-{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank 
+{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
 receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
 the number of MPI processes due its use of the SpMV kernel.' %}
 
@@ -372,8 +380,8 @@ Choosing a smoother that is quite expensive and strong can result in a small num
 
 ### Set 4 - Setting the aggregation threshold parameter
 
-We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.  This anisotropy could be due to the nature of 
-the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
+We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.
+This anisotropy could be due to the nature of the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
 
 Run the following two examples.
 
@@ -382,8 +390,8 @@ Run the following two examples.
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 9 iterations.  The second
-problem converges in 46 iterations.'%}
+{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+problem converges in 22 iterations.'%}
 
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
@@ -392,7 +400,7 @@ $$y$$-dimension.
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
-solver converges in 9 iterations.'%}
+solver converges in 7 iterations.'%}
 
 ---
 
