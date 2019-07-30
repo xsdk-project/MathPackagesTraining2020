@@ -293,7 +293,7 @@ Record the number of iterations for different problem sizes by running
 
 {% include qanda question='Is the solver scalable?' answer='No, the number of iterations increases with the problem size.' %}
 
-The number of iterations taken by CG scales with the square root of the condition number $\kappa(PA)$ of the preconditioned system, where $P$ is the preconditioner.
+The number of iterations taken by CG scales with the square root of the condition number $$\kappa(PA)$$ of the preconditioned system, where $$P$$ is the preconditioner.
 
 {% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='The condition number is proportional to the number of unknowns.' %}
 
@@ -391,9 +391,9 @@ Run the following two examples.
 {% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 9 iterations.  The second
 problem converges in 46 iterations.'%}
 
-The first example solves a Poisson equation discretized on a regular $50\times 50$ mesh with square elements (x and y points equidistant).
-The second example solves a Poisson equation discretized on a regular $50\times 50$ mesh, but each element has an x-dimension 10 times greater than its
-y-dimension.
+The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
+The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
+$$y$$-dimension.
 
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
