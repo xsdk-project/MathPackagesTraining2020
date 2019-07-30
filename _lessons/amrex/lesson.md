@@ -343,10 +343,10 @@ inputs_3d            -- domain size, size of grids, how many time steps, which o
 initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
-In this example there is no fluid (or other variable stored on the mesh)
+In this example there is no fluid (or other variable) stored on the mesh
 but we still sort the particles according to our spatial decomposition of the domain.
 If we run in parallel with 4 processors, we see the domain decomposition below -- this results
-z-order space-filling curve with the number of cells per grid as the cost function.
+from using a z-order space-filling curve with the number of cells per grid as the cost function.
 
 ![Sample solution](pachinko.gif) <!-- .element height="20%" width="20%" -->
 
