@@ -99,7 +99,7 @@ cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
 
 In this directory you'll see
 
-main2d.gnu.MPI.ex -- the executable
+main2d.ex -- the executable
 inputs_2d -- the inputs file
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -163,18 +163,18 @@ cd HandsOnLessons/amrex/AMReX_EB_MacProj
 
 ![Sample solution](macproj.gif)
 
-The executable has been built already: main2d.gnu.MPI.ex
+The executable has been built already: main3d.ex
 
 To run it in serial, 
 
 ```
-./main2d.gnu.MPI.ex inputs
+./main3d.ex inputs
 ```
 
 To run it in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+mpirun -n 4 ./main3d.ex inputs
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -186,7 +186,7 @@ max_grid_size = 64                       # the maximum number of cells in any di
 
 plot_int = 10                            # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+initial_tracer_file = tracers_file_3d    # name of file where we specify the input positions of the particles
 
 time_step = 0.001                        # we advance the particles with a fixed time step of this size
 
@@ -199,7 +199,7 @@ obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles
 
 For example, 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs obstacles = 1 3 4 5 6 8
+mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
 ```
 
 will run the problem with only six obstacles -- see 
@@ -297,16 +297,16 @@ Note this is a 3d executable but we don't allow motion in the z-direction.
 To run in serial, 
 
 ```
-./main3d.gnu.MPI.ex inputs_3d
+./main3d.ex inputs_3d
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main3d.gnu.MPI.ex inputs_3d
+mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_2d
+The following parameters can be set at run-time -- these are currently set in the inputs_3d
 file but you can also set them on the command line.  In this specific example we use only 4
 cells in the z-direction (if in 3-d) regardless of n_cell.
 
@@ -316,7 +316,7 @@ max_grid_size = 25                       # the maximum number of cells in any di
 
 plot_int = 10                            # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+initial_tracer_file = tracers_file_3d    # name of file where we specify the input positions of the particles
 
 time_step = 0.001                        # we take a fixed time step of this size
 
