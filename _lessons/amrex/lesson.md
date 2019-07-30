@@ -25,9 +25,27 @@ header:
 |Capabilties|   |
 |Mesh data|Dynamic AMR with subcycling|
 
+Consider a drop of dye (we'll call this "$\phi$") in a thin incompressible fluid that is spinning 
+clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
+"passive" tracer that is advected by the fluid velocity.  The fluid is thin enough that we think
+of this as two-dimensional motion.
+
+We evolve $\phi$ conservatively using this evolution equation:
+
 $$\frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0$$
 
-Let's consider scalar advection with a specified time-dependent velocity field.
+where the velocity $(u,v)$ is a divergence-free field computed by defining
+
+$$\psi(i,j) = \sin(\pi x)^2 * sin(\pi y)^2  \cos (\pi time / 2) / \pi $$
+
+and defining
+
+$$u = -\frac{\partial \psi}{\partial y}$$
+
+and
+
+$$v = \frac{\partial \psi}{\partial x}$$
+
 In this example we'll be using AMR to resolve the scalar field.
 
 This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
@@ -103,6 +121,24 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 
 
 ## Example: "Off to the Races"
+
+Challenge: 
+
+Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $u = 1$. 
+
+If there are no obstacles in the channel, the fluid will flow with speed $1$ from left to right.
+
+If you place obstacles in the channel, the fluid must flow around them.
+
+Suppose your goal is to accelerate the fluid so that a tracer released near the inflow reaches the right side
+as fast as possible.
+
+You are given nine cylinders that you can place (or not) at specified locations.
+
+You can use particles released near the inflow to measure the fastest configuration.
+
+How many cylinders should you use, and where should you put them?
+
 
 |Capabilties|   |   |
 |Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
