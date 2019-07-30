@@ -1,22 +1,28 @@
 ---
 layout: page-fullwidth
 title: "Krylov Solvers and Algebraic Multigrid"
-subheadline: "Demonstrate utility of multigrid"
+subheadline: ""
 permalink: "lessons/krylov_amg/"
 use_math: true
 lesson: true
-youtube: "https://youtu.be/9cfmu_JLqzg"
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSeZAaguErZ-VTtzQSeYfkrpkck_ki2-OZ1uIbLRXjc6NW8-gg/viewform?usp=sf_link"
+answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link"
 header:
- image_fullwidth: "AMG-hypre.png"
+ image_fullwidth: "summit_and_sierra.png"
 ---
 
 ## At a Glance
 
-|Why multigrid over a Krylov<br>solver for large problems?|Understand multigrid concept.|Faster convergence,<br>better scalability.|
-|Why use more aggressive<br>coarsening for AMG?|Understand need for low complexities.|Lower memory use, faster times,<br>but more iterations.|
-|Why a structured solver<br>for a structured problem?|Understand importance of<br>suitable data structures|Higher efficiency,<br>faster solve times.|
+|Questions|Objectives|Key Points|
+|How do we choose a suitable Krylov solver?|Know when to use CG or GMRES.|CG works for spd matrix and preconditioner. GMRES works for unsymmetric systems, but requires more memory.|
+|How do we choose a preconditioner?|Know common sparse preconditioners.|As the size of the linear system grows, most iterative methods will require increasing number of iterations.|
+|How can we improve efficiency of the solver?|Understand the basic components of multigrid.|For certain common problem classes, multigrid methods require a constant number of iterations and constant work per unknown.|
 
+### To begin this lesson
+
+* [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"}
+```
+cd {{site.handson_root}}/krylov_amg
+```
 
 ## The Problem Being Solved
 
@@ -24,469 +30,495 @@ We consider the Poisson equation
 
 $$-\Delta u = f$$
 
-on a cuboid of size $$n_x \times n_y \times n_z$$ with Dirichlet boundary conditions $$u = 0$$.
+on a square mesh of size $$n_x \times n_y$$ with Dirichlet boundary conditions $$u = 0$$.
 
-It is discretized using central finite differences, leading to a symmetric positive matrix.
-
-**Note:** To begin this lesson...
-* [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSeZAaguErZ-VTtzQSeYfkrpkck_ki2-OZ1uIbLRXjc6NW8-gg/viewform?usp=sf_link)
-```
-cd {{site.handson_root}}/krylov_amg
-```
-
+It is discretized using central finite differences, leading to a symmetric positive (spd) matrix.
 
 ## The Example Source Code
 
-For the first part of the hands-on lessons we will use the executable ij. Various solver, problem and parameter options can be invoked by adding them to the command line.
+For this lesson, we will be using the executable `MueLu_Stratimikos.exe` from the MueLu package of Trilinos which allows us to test a variety of solvers and preconditioners.
+
+WHERE WILL THE EXECUTABLE BE LOCATED?
+
+For the first part of the lesson, we will be running on a single MPI rank, so no need to ask for a massive allocation.
+
+The executable takes several command line arguments that influence the linear system that is generated on the fly or read in from file.
 A complete set of options will be printed by typing
 ```
-./ij -help
+./MueLu_Stratimikos.exe --help
 ```
-Here is an excerpt of the output of this command with all the options relevant for the hands-on lessons.
-
+The most important ones are:
 ```
-Usage: ij [<options>]
-
-Choice of Problem:
-  -laplacian [<options>] : build 7pt 3D laplacian problem (default)
-  -difconv [<opts>]      : build convection-diffusion problem
-    -n <nx> <ny> <nz>    : problem size per process
-    -P <Px> <Py> <Pz>    : process topology
-    -a <ax>              : convection coefficient
-
-Choice of solver:
-   -amg                  : AMG only
-   -amgpcg               : AMG-PCG
-   -pcg                  : diagonally scaled PCG
-   -amggmres             : AMG-GMRES with restart k (default k=10)
-   -gmres                : diagonally scaled GMRES(k) (default k=10)
-   -amgbicgstab          : AMG-BiCGSTAB
-   -bicgstab             : diagonally scaled BiCGSTAB
-   -k  <val>             : dimension Krylov space for GMRES
-
-.....
-
-  -tol  <val>            : set solver convergence tolerance = val
-  -max_iter  <val>       : set max iterations 
-  -agg_nl  <val>         : set number of aggressive coarsening levels (default:0)
-  -iout <val>            : set output flag
-       0=no output    1=matrix stats
-       2=cycle stats  3=matrix & cycle stats
-
-  -print                 : print out the system
+Usage: ./MueLu_Stratimikos.exe [options]
+  options:
+  --help                               Prints this help message
+  --nx                   int           mesh points in x-direction.
+                                       (default: --nx=100)
+  --ny                   int           mesh points in y-direction.
+                                       (default: --ny=100)
+  --nz                   int           mesh points in z-direction.
+                                       (default: --nz=100)
+  --matrixType           string        matrix type: Laplace1D, Laplace2D, Laplace3D, ...
+                                       (default: --matrixType="Laplace2D")
+  --xml                  string        read parameters from an xml file
+                                       (default: --xml="stratimikos_ParameterList.xml")
+  --yaml                 string        read parameters from a yaml file
+                                       (default: --yaml="")
+  --matrix               string        matrix data file
+                                       (default: --matrix="")
+  --rhs                  string        rhs data file
+                                       (default: --rhs="")
+  --coords               string        coordinates data file
+                                       (default: --coords="")
+  --nullspace            string        nullspace data file
+                                       (default: --nullspace="")
 ```
+
+Solvers (such as CG and GMRES) and preconditioners (such as Jacobi, Gauss-Seidel and multigrid) are configured via parameter files.
+
+Trilinos supports both XML and YAML files.
+In what follows, we will be modifying modifying `stratimikos_ParameterList.xml` to explore a variety of solvers and preconditioners.
+
+By default, the XML file `stratimikos_ParameterList.xml` is read.
+If you want to keep track of your changes and work with different input files, this default can be overridden with `--xml=another-file.xml`.
+
 
 ## Running the Example
 
-### First Set of Runs (Krylov Solvers)
+### Set 1 - Krylov solver, no preconditioner
 
-Run the first example for a small problem of size 27000 using restarted GMRES with a Krylov space of size 10.
+The default Krylov method is GMRES, and no preconditioner is used.
+Run
 ```
-./ij -n 30 30 30 -gmres
+./MueLu_Stratimikos.exe
 ```
 
 #### Expected Behavior/Output
 
-You should get something that looks like this
+You should see output like this:
+
+```
+========================================================
+Xpetra::Parameters
+ Linear algebra library: Tpetra
+Galeri::Xpetra::Parameters<int>
+ Matrix type: Laplace2D
+ Problem size: 10000 (100x100)
+Processor subdomains in x direction: 1
+Processor subdomains in y direction: 1
+Processor subdomains in z direction: -1
+========================================================
+Galeri complete.
+========================================================
+
+  *******************************************************
+  ***** Belos Iterative Solver:  Pseudo Block Gmres
+  ***** Maximum Iterations: 100
+  ***** Block Size: 1
+  ***** Residual Test:
+  *****   Test 1 : Belos::StatusTestImpResNorm<>: (2-Norm Res Vec) / (2-Norm Prec Res0), tol = 1e-08
+  *******************************************************
+  Iter   0, [ 1] :    1.000000e+00
+  Iter   1, [ 1] :    2.667840e-01
+  Iter   2, [ 1] :    9.630585e-02
+  Iter   3, [ 1] :    4.716414e-02
+  Iter   4, [ 1] :    2.601988e-02
+  Iter   5, [ 1] :    1.595708e-02
+  Iter   6, [ 1] :    1.036451e-02
+  Iter   7, [ 1] :    7.145844e-03
+  Iter   8, [ 1] :    5.142773e-03
+  Iter   9, [ 1] :    3.818838e-03
+  Iter  10, [ 1] :    2.934358e-03
+  Iter  11, [ 1] :    2.327132e-03
+  Iter  12, [ 1] :    1.887747e-03
+  Iter  13, [ 1] :    1.533947e-03
+  Iter  14, [ 1] :    1.249840e-03
+  Iter  15, [ 1] :    1.026678e-03
+  Iter  16, [ 1] :    8.508437e-04
+  Iter  17, [ 1] :    7.139002e-04
+  Iter  18, [ 1] :    6.095116e-04
+  Iter  19, [ 1] :    5.267792e-04
+  Iter  20, [ 1] :    4.605673e-04
+  Iter  21, [ 1] :    4.060881e-04
+  Iter  22, [ 1] :    3.587923e-04
+  Iter  23, [ 1] :    3.206265e-04
+  Iter  24, [ 1] :    2.881254e-04
+  Iter  25, [ 1] :    2.601520e-04
+  Iter  26, [ 1] :    2.361561e-04
+  Iter  27, [ 1] :    2.148650e-04
+  Iter  28, [ 1] :    1.962584e-04
+  Iter  29, [ 1] :    1.795979e-04
+  Iter  30, [ 1] :    1.647752e-04
+  Iter  31, [ 1] :    1.510336e-04
+  Iter  32, [ 1] :    1.381126e-04
+  Iter  33, [ 1] :    1.266867e-04
+  Iter  34, [ 1] :    1.165070e-04
+  Iter  35, [ 1] :    1.074754e-04
+  Iter  36, [ 1] :    9.948513e-05
+  Iter  37, [ 1] :    9.235956e-05
+  Iter  38, [ 1] :    8.581441e-05
+  Iter  39, [ 1] :    7.984624e-05
+  Iter  40, [ 1] :    7.453272e-05
+  Iter  41, [ 1] :    7.196591e-05
+  Iter  42, [ 1] :    6.928686e-05
+  Iter  43, [ 1] :    6.657443e-05
+  Iter  44, [ 1] :    6.387575e-05
+  Iter  45, [ 1] :    6.120425e-05
+  Iter  46, [ 1] :    5.852310e-05
+  Iter  47, [ 1] :    5.586336e-05
+  Iter  48, [ 1] :    5.324640e-05
+  Iter  49, [ 1] :    5.066589e-05
+  Iter  50, [ 1] :    4.822835e-05
+  Iter  51, [ 1] :    4.590083e-05
+  Iter  52, [ 1] :    4.361577e-05
+  Iter  53, [ 1] :    4.140468e-05
+  Iter  54, [ 1] :    3.925937e-05
+  Iter  55, [ 1] :    3.718955e-05
+  Iter  56, [ 1] :    3.519377e-05
+  Iter  57, [ 1] :    3.324371e-05
+  Iter  58, [ 1] :    3.131167e-05
+  Iter  59, [ 1] :    2.944434e-05
+  Iter  60, [ 1] :    2.768790e-05
+  Iter  61, [ 1] :    2.603053e-05
+  Iter  62, [ 1] :    2.450479e-05
+  Iter  63, [ 1] :    2.311998e-05
+  Iter  64, [ 1] :    2.185368e-05
+  Iter  65, [ 1] :    2.074036e-05
+  Iter  66, [ 1] :    1.978885e-05
+  Iter  67, [ 1] :    1.897970e-05
+  Iter  68, [ 1] :    1.828365e-05
+  Iter  69, [ 1] :    1.768024e-05
+  Iter  70, [ 1] :    1.712668e-05
+  Iter  71, [ 1] :    1.661157e-05
+  Iter  72, [ 1] :    1.612929e-05
+  Iter  73, [ 1] :    1.567208e-05
+  Iter  74, [ 1] :    1.522580e-05
+  Iter  75, [ 1] :    1.477677e-05
+  Iter  76, [ 1] :    1.430758e-05
+  Iter  77, [ 1] :    1.380182e-05
+  Iter  78, [ 1] :    1.324124e-05
+  Iter  79, [ 1] :    1.261394e-05
+  Iter  80, [ 1] :    1.194621e-05
+  Iter  81, [ 1] :    1.162435e-05
+  Iter  82, [ 1] :    1.138018e-05
+  Iter  83, [ 1] :    1.119328e-05
+  Iter  84, [ 1] :    1.100671e-05
+  Iter  85, [ 1] :    1.081077e-05
+  Iter  86, [ 1] :    1.062132e-05
+  Iter  87, [ 1] :    1.042180e-05
+  Iter  88, [ 1] :    1.022048e-05
+  Iter  89, [ 1] :    1.000587e-05
+  Iter  90, [ 1] :    9.782121e-06
+  Iter  91, [ 1] :    9.553433e-06
+  Iter  92, [ 1] :    9.324356e-06
+  Iter  93, [ 1] :    9.093214e-06
+  Iter  94, [ 1] :    8.863016e-06
+  Iter  95, [ 1] :    8.625018e-06
+  Iter  96, [ 1] :    8.370087e-06
+  Iter  97, [ 1] :    8.095293e-06
+  Iter  98, [ 1] :    7.810039e-06
+  Iter  99, [ 1] :    7.515709e-06
+  Iter 100, [ 1] :    7.221948e-06
+  Passed.......OR Combination ->
+    Failed.......Number of Iterations = 100 == 100
+    Unconverged..(2-Norm Res Vec) / (2-Norm Prec Res0)
+                 residual [ 0 ] = 7.22195e-06 > 1e-08
 ```
-Running with these driver parameters:
-  solver ID    = 4
 
-    (nx, ny, nz) = (30, 30, 30)
-    (Px, Py, Pz) = (1, 1, 1)
-    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+#### Examining Results
 
-    Problem size = (30 x 30 x 30)
+We observe the following:
+- We constructed a 2D Laplace problem on a square mesh of 100 x 100 nodes, resulting in a linear system of 10000 unknowns.
+- We have set two termination criteria for the solve: 100 iterations or a reduction of the residual norm by 8 orders of magnitude.
+- The solve failed, since we reached 100 iterations, but only reduced the residual norm by a factor of 7e-06.
 
-=============================================
-Generate Matrix:
-=============================================
-Spatial Operator:
-  wall clock time = 0.000000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 0.000000 seconds
-  cpu MFLOPS      = 0.000000
+#### Question and Answer Boxes
 
-  RHS vector has unit components
-  Initial guess is 0
-=============================================
-IJ Vector Setup:
-=============================================
-RHS and Initial Guess:
-  wall clock time = 0.000000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 0.000000 seconds
-  cpu MFLOPS      = 0.000000
+Modify the input file to use the conjugate gradient method.
+The "Solver Type" parameter to use is "Pseudo Block CG".
+Rerun.
 
-Solver: DS-GMRES
-HYPRE_GMRESGetPrecond got good precond
-=============================================
-Setup phase times:
-=============================================
-GMRES Setup:
-  wall clock time = 0.000000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 0.000000 seconds
-  cpu MFLOPS      = 0.000000
+{% include qanda question='Do you see any significant changes in convergence behavior?' answer='No' %}
 
-=============================================
-Solve phase times:
-=============================================
-GMRES Solve:
-  wall clock time = 0.270000 seconds
-  wall MFLOPS     = 0.000000
-  cpu clock time  = 0.270000 seconds
-  cpu MFLOPS      = 0.000000
+{% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements.' %}
 
-
-GMRES Iterations = 392
-Final GMRES Relative Residual Norm = 9.915663e-09
-Total time = 0.270000
+In order to check the last answer, run with CG and GMRES using
 ```
-
-Note the total time and the number of iterations.
-Now increase the Krylov subspace by changing input to -k to 40, and finally 75.
+/usr/bin/time -v ./MueLu_Stratimikos.exe --matrixType=Laplace3D
+```
+and compare the "Maximum resident set size".
 
-{% include qanda question='What do you observe about the number of iterations and times?' answer='Number of iterations and times generally improve except for the last run, which is somewhat slower because the last iterations are more expensive. Iterations: 392, 116, 73. Times: 0.27, 0.16, 0.17.' %}
+IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
 
-{% include qanda question='How many restarts were required for the last run using -k 75?'  answer='None, since the number of iterations is 73. Here full GMRES was used.'%}
+---
 
-Now solve this problem using -pcg and -bicgstab.
+### Set 2 - Krylov solver, simple preconditioners
 
-{% include qanda question='What do you observe about the number of iterations and times for all three methods? Which method is the fastest and which one has the lowest number of iterations?' answer='Conjugate gradient takes 74 iterations and 0.04 seconds, BiCGSTAB 51 iterations and 0.05 seconds. Conjugate gradient has the lowest time, but BiCGSTAB has the lowest number of iterations.' %}
+We now explore some simple (and quite generic) options for preconditioning the problem.
 
-{% include qanda question='Why is BiCGSTAB slower than PCG?' answer='It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.' %}
+By default, the "Preconditioner Type" parameter was set to "None", meaning no preconditioning.
+Use "Ifpack2" instead.
+(Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.)
 
-Now let us scale up the problem starting with a cube of size $$50 \times 50 \times 50$$ on one process:
-```
-mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
-```
-Now we increase the problem size to a cube of size $$100 \times 100 \times 100$$
-by increasing the number of processes to 8 using the process topology -P 2 2 2.
+Moreover, have a look at the configuration for Ifpack2.
 ```
-mpiexec -n 8 ./ij -n 50 50 50 -pcg -P 2 2 2
+<ParameterList name="Ifpack2">
+  <Parameter name="Prec Type" type="string" value="relaxation"/>
+  <ParameterList name="Ifpack2 Settings">
+    <Parameter name="relaxation: type" type="string" value="Gauss-Seidel"/>
+    <Parameter name="relaxation: sweeps" type="int" value="1"/>
+  </ParameterList>
+</ParameterList>
 ```
-{% include qanda question='What happens to convergence and solve time?' answer='
-the number of iterations increases from 124 to 249, the time from 0.55 seconds to 1.46 seconds.' %}
+This means that a single sweep of Gauss-Seidel is used.
 
+Rerun the code.
 
+{% include qanda question='Why did the solve become even worse?' answer='Gauss-Seidel is an unsymmetric preconditioner, but CG needs a symmetric one!' %}
 
-### Second Set of Runs (Algebraic Multigrid)
+Switch the "relaxation: type" from "Gauss-Seidel" to "Symmetric Gauss-Seidel".
+This corresponds to one forward and one backward sweep of Gauss-Seidel.
 
-Now perform the previous weak scaling study using algebraic multigrid starting with
-```
-mpiexec -n 1 ./ij -n 50 50 50 -amg -P 1 1 1
-```
-followed by
-```
-mpiexec -n 8 ./ij -n 50 50 50 -amg -P 2 2 2
-```
+Rerun to verify that the solver is now converging.
 
-{% include qanda question='What happens to convergence and solve time now?' answer='AMG solves the problem using significantly less iterations, and time increases somewhat slower.  Number of iterations: 12, 23.
-Total time: 0.51, 1.18 seconds.' %}
+We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
 
-Now repeat the scaling study using AMG as a preconditioner for CG:
-```
-mpiexec -n 1 ./ij -n 50 50 50 -amgpcg -P 1 1 1
-```
-```
-mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2
-```
-{% include qanda question='What happens to convergence and solve time now?' answer='Using PCG preconditioned with AMG further decreases the number of iterations and solve times.  Number of iterations: 8, 11.  Total time: 0.47, 0.89 seconds.' %}
+Switch "relaxation: sweeps" to 3 and rerun.
 
-Now let us take a look at the complexities of the last run by printing some setup statistics:
-```
-mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1
+Now, we will check whether we have created a scalable solver strategy.
+Record the number of iterations for different problem sizes by running
 ```
-You should now see the following statistics:
+./MueLu_Stratimikos.exe --nx=50 --ny=50
+./MueLu_Stratimikos.exe --nx=100 --ny=100
+./MueLu_Stratimikos.exe --nx=200 --ny=200
 ```
-HYPRE_ParCSRPCGGetPrecond got good precond
-
-
- Num MPI tasks = 8
-
- Num OpenMP threads = 1
-
-
-BoomerAMG SETUP PARAMETERS:
-
- Max levels = 25
- Num levels = 8
-
- Strength Threshold = 0.250000
- Interpolation Truncation Factor = 0.000000
- Maximum Row Sum Threshold for Dependency Weakening = 1.000000
-
- Coarsening Type = HMIS
- measures are determined locally
-
+(This means that we are running the same 2D Laplace problem as above, but on meshes of size 50x50, etc.)
 
- No global partition option chosen.
+{% include qanda question='Is the solver scalable?' answer='No, the number of iterations increases with the problem size.' %}
 
- Interpolation = extended+i interpolation
+The number of iterations taken by CG scales with the square root of the condition number $$\kappa(PA)$$ of the preconditioned system, where $$P$$ is the preconditioner.
 
-Operator Matrix Information:
+{% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='The condition number is proportional to the number of unknowns.' %}
 
-            nonzero         entries per row        row sums
-lev   rows  entries  sparse  min  max   avg       min         max
-===================================================================
- 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
- 1  499594  8430438  0.000     7   42  16.9  -2.581e-15   4.000e+00
- 2  113588  5267884  0.000    18   83  46.4  -9.556e-15   5.515e+00
- 3   14088  1099948  0.006    16  126  78.1  -2.339e-14   8.187e+00
- 4    2585   235511  0.035    11  183  91.1  -9.932e-14   1.622e+01
- 5     366    25888  0.193    11  181  70.7   2.032e-01   4.293e+01
- 6      44     1228  0.634    14   44  27.9   9.754e+00   1.501e+02
- 7       9       77  0.951     7    9   8.6   1.198e+01   3.267e+02
+---
 
+### Set 3 - Krylov solver, multigrid preconditioner
 
-Interpolation Matrix Information:
-                 entries/row    min     max         row sums
-lev  rows cols    min max     weight   weight     min       max
-=================================================================
- 0 1000000 x 499594   1   4   1.429e-01 4.545e-01 5.000e-01 1.000e+00
- 1 499594 x 113588   1   4   1.330e-02 5.971e-01 2.164e-01 1.000e+00
- 2 113588 x 14088   1   4  -1.414e-02 5.907e-01 5.709e-02 1.000e+00
- 3 14088 x 2585    1   4  -4.890e-01 6.377e-01 2.236e-02 1.000e+00
- 4  2585 x 366     1   4  -1.185e+01 5.049e+00 8.739e-03 1.000e+00
- 5   366 x 44      1   4  -2.597e+00 3.480e+00 6.453e-03 1.000e+00
- 6    44 x 9       1   4  -2.160e-01 8.605e-01 -6.059e-02 1.000e+00
+The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
+We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-
-     Complexity:    grid = 1.630274
-                operator = 3.170169
-                memory = 3.837342
-
-
-
-
-BoomerAMG SOLVER PARAMETERS:
-
-  Maximum number of cycles:         1
-  Stopping Tolerance:               0.000000e+00
-  Cycle type (1 = V, 2 = W, etc.):  1
-
-  Relaxation Parameters:
-   Visiting Grid:                     down   up  coarse
-            Number of sweeps:            1    1     1
-   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     13   14     9
-   Point types, partial sweeps (1=C, -1=F):
-                  Pre-CG relaxation (down):   0
-                   Post-CG relaxation (up):   0
-                             Coarsest grid:   0
-
+Switch the "Preconditioner Type" to "MueLu", which is an algebraic multigrid package in Trilinos, and run
 ```
-This output contains some statistics for the AMG preconditioner. It shows the number of levels, the average number of nonzeros in total and per row for each matrix $$A_i$$ as well as each interpolation operator $$P_i$$.
-It also shows the operator complexity, which is defined as the sum of the number of nonzeroes of all operators $$A_i$$
-divided by the number of nonzeroes of the original matrix $$A$$:
-$$\frac{\sum_i^L {nnz(A_i)}}{nnz(A)}$$.
-It also gives the memory complexity, which is defined by
-$$\frac{\sum_i^L {nnz(A_i + P_i)}}{nnz(A)}$$.
+./MueLu_Stratimikos.exe --nx=50 --ny=50
+./MueLu_Stratimikos.exe --nx=100 --ny=100
+./MueLu_Stratimikos.exe --nx=200 --ny=200
+```
 
-{% include qanda question='What do you notice about the average number of nonzeroes per row across increasing levels?' answer='It increases significantly  through level 4 and decreases after that. It is much larger than the original level.'
- %}
+{% include qanda question='Is the solver scalable?' answer='Yes, the number of iterations stays more or less constant as we increase the problem size.' %}
 
-{% include qanda question='What causes this growth?' answer='It is caused by the Galerkin product, i.e. the product of the three matrices R, A, and P.'
- %}
-{% include qanda question='Is the operator complexity acceptable?' answer='No, we would prefer a number that is closer to 1.'  %}
+The cost of a single mat-vec scales with the number of unknowns because the number of entries per row is bounded and small.
+Since the number of iterations is constant, we (experimentally) have verified that multigrid has optimal complexity.
+This means that any changes that we will make from here on can only lead to a constant factor improvement.
 
-Now, let us see what happens if we coarsen more aggressively on the finest level:
+The first adjustment that we want to make is to select different smoothers.
+This involves the following trade-off: Using a better smoother will reduce the number of iterations, but might involve more computation.
 
-```
-mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 1
+By default, we use a single sweep of Jacobi smoothing, which is very cheap.
+
+First, we run
 ```
-We now receive the following output for average number of nonzeroes and complexities:
+./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000
 ```
-Operator Matrix Information:
+to display timing information on a large enough problem.
+The relevant timer to look at is "Belos: PseudoBlockCGSolMgr total solve time".
+(You might want to run this more than once in case you are experiencing some system noise.)
 
-            nonzero         entries per row        row sums
-lev   rows  entries  sparse  min  max   avg       min         max
-===================================================================
- 0 1000000  6940000  0.000     4    7   6.9   0.000e+00   3.000e+00
- 1   79110  1427282  0.000     6   33  18.0  -1.779e-14   8.805e+00
- 2   16777   817577  0.003    12   91  48.7  -2.059e-14   1.589e+01
- 3    2235   153557  0.031    19  132  68.7   6.580e-14   3.505e+01
- 4     309    18445  0.193    17  160  59.7   1.255e+00   8.454e+01
- 5      50     1530  0.612    13   50  30.6   1.521e+01   3.237e+02
- 6       5       25  1.000     5    5   5.0   6.338e+01   3.572e+02
+We know that Gauss-Seidel is a better smoother than Jacobi.
+There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
+you can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
+Make the required changes in the input file and compare the timings with the Jacobi case.
 
-Interpolation Matrix Information:
-                 entries/row    min     max         row sums
-lev  rows cols    min max     weight   weight     min       max
-=================================================================
- 0 1000000 x 79110   1   9   2.646e-02 9.722e-01 2.778e-01 1.000e+00
- 1 79110 x 16777   1   4   7.709e-03 1.000e+00 2.709e-01 1.000e+00
- 2 16777 x 2235    1   4   2.289e-03 7.928e-01 5.909e-02 1.000e+00
- 3  2235 x 309     1   4  -6.673e-02 5.759e-01 4.594e-02 1.000e+00
- 4   309 x 50      1   4  -6.269e-01 3.959e-01 2.948e-02 1.000e+00
- 5    50 x 5       1   4  -1.443e-01 1.083e-01 -4.496e-02 1.000e+00
+{% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations an time-to-solution are reduced.' %}
 
+{% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
-     Complexity:    grid = 1.098486
-                operator = 1.348475
-                memory = 1.700654
-```
-As you can see, the number of levels, the number of nonzeroes per rows and the complexities have decreased.
-{% include qanda question='How does the number of iterations and the time change?' answer='The number of iterations increases (17 vs. 11), but total time is less (0.69 vs 0.89)'  %}
-
-Now let us use aggressive coarsening in the first two levels.
-```
-mpiexec -n 8 ./ij -n 50 50 50 -amgpcg -P 2 2 2 -iout 1 -agg_nl 2
-```
-{% include qanda question='What happens to complexities, number of iterations and total time?' answer='Complexities decrease further to 1.22, but the number of iterations is increasing to 26 and total time increases as well. Choosing to aggressively coarsen on the second level does not lead to further time savings, but gives further memory savings. If achieving the shortest time is the objective, coarsen aggressively on the second level is not adviced.'  %}
-
-So far, we achieved the best overall time to solve a Poisson problem on a cube of size $$100 \times 100 \times$$ using conjugate gradient preconditioned with AMG with one level of aggressive coarsening.
-
-How would a structured solver perform on this problem?
-We now use the driver for the structured interface, which will also give various input options by typing
-```
-./struct -help
-```
+{% include qanda question='Try increasing the number of MPI ranks.  What happens ?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
-To run the structured solver PFMG for this problem type
-```
-mpiexec -n 8 ./struct -n 50 50 50 -P 2 2 2 -pfmg
-```
-{% include qanda question='How does the number of iterations and the time change?' answer='The number of iterations 35, but the total time is less (0.36)'  %}
+Another common smoother is a matrix polynomial, specifically, a Chebyshev polynomial.  This type smoother has certain advantages over relaxation methods
+like Jacobi or Gauss-Seidel.  First, Chebyshev will have better convergence properties than Jacobi.  Second, the Chebyshev computational kernel is a
+sparse matrix-vector multiply (SpMV), which is invariant with respect to the number of processes.
+In contrast, virtually all parallel Gauss-Seidel implementations are actually block Jacobi.  Each block
+is the set of matrix rows local to a process, and Gauss-Seidel is applied only to the local block.
+Third, the SpMV kernel is easily parallelizable, whereas Gauss-Seidel has limited inherent parallelism.
 
-Now run it as a preconditioner for conjugate gradient.
+First, we compare the performance of symmetric Gauss-Seidel on one MPI rank with the performance on 10 MPI ranks.
 ```
-mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
-{% include qanda question='How does the number of iterations and the time change?' answer='The number of iterations 14, but the total time is less (0.24)'  %}
-
-To get even better total time, now run the non-Galerkin version.
-
+Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
-mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
-{% include qanda question='How does the number of iterations and the time change?' answer='The number of iterations remains 14, but the total time is less (0.21)'  %}
 
+{% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
+{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
+receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
+the number of MPI processes due its use of the SpMV kernel.' %}
 
-### Evening exercises
+Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
+Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
-We now consider the diffusion-convection equation
+---
 
-$$-\Delta u + a \nabla \cdot u = f$$
+### Set 4 - Setting the aggregation threshold parameter
 
-on a cuboid with Dirichlet boundary conditions.
+We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.
+This anisotropy could be due to the nature of the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
 
-The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
-For $$a = 0$$ we just get the Poisson equation, but when $$a > 0$$ we get a nonsymmetric linear system.
+Run the following two examples.
 
-Now let us apply Krylov solvers to the convection-diffusion equation with $$a=10$$, starting with conjugate gradient.
-
-```
-./ij -n 50 50 50 -difconv -a 10 -pcg
-```
-{% include qanda question='What do you observe? Why?' answer='PCG fails, because the linear system is nonsymmetric.' %}
-
-Now try GMRES(20), BiCGSTAB, and AMG with and without aggressive coarsening.
-```
-./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
-```
-```
-./ij -n 50 50 50 -difconv -a 10 -bicgstab
-```
-```
-./ij -n 50 50 50 -difconv -a 10 -amg
-```
-```
-./ij -n 50 50 50 -difconv -a 10 -amg -agg_nl 1
-```
-{% include qanda question='What do you observe? Order the solvers in the order of slowest to fastest solver for this problem!' answer='BiCGSTAB, GMRES and AMG with or without aggressive coarsening solve the problem. The order slowest to fastest for this problem is: GMRES(20), AMG, BiCGSTAB, AMG with aggressive coarsening.' %}
-
-Let us solve the problem using structured multigrid solvers.
-```
-./struct -n 50 50 50 -a 10 -pfmg
-```
-```
-./struct -n 50 50 50 -a 10 -pfmg -rap 1
-```
-```
-./struct -n 50 50 50 -a 10 -pfmggmres
-```
-```
-./struct -n 50 50 50 -a 10 -pfmggmres -rap 1
-```
-
-{% include qanda question='What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.' answer='The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.' %}
-
-We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
-Let us begin with a grid-aligned anisotropy.
 ```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+./MueLu_Stratimikos.exe --nx=50 --ny=50
+./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
-```
-{% include qanda question='What do you observe?' answer='The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.' %}
 
-Now let us rotate the anisotropy by 45 degrees.
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
-```
+{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+problem converges in 22 iterations.'%}
 
-{% include qanda question='Does the result change? What is the order of the solvers?' answer='The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.' %}
+The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
+The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
+$$y$$-dimension.
 
-Let us now scale up the problem.
-```
-mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
+We can plot the aggregates that MueLu generated:
+![Aggregates::](muelu-noDrop.png)
+(If you want to reproduce this, have a look at the parameter "aggregation: export visualization data".)
 
-{% include qanda question='How do the numbers of iterations change?' answer='They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.' %}
+We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
+This leads to bad convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
 
-Let us now rotate the anisotropy by 30 degrees.
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
-```
-{% include qanda question='Is the convergence affected by the change in angle?' answer='This problem is harder. The number of iterations increases to 15.' %}
+Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
-Let us now coarsen more aggressively.
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
-```
-{% include qanda question='Does this improve convergence and time?' answer='No. Both get worse. The number of iterations increases to 34 and the time goes up.' %}
+{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
+solver converges in 7 iterations.'%}
 
-Let us investigate the operator complexities:
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
-```
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
-```
+Again, we plot the resulting aggregates:
+![Aggregates with dropping enabled::](muelu-drop.png)
 
-{% include qanda question='What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?' answer='The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.' %}
+We can see that the aggregates are now entirely aligned with the $$y$$-direction.
 
-Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.
+---
 
 ## Out-Brief
 
-We experimented with several Krylov solvers, GMRES, conjugate gradient and BiCGSTAB, and observed the effect of increasing the size of the Krylov space for restarted GMRES. We investigated why multigrid methods are preferable over generic solvers like conjugate gradient for large suitable PDE problems.
-Additional improvements can be achieved when using them as preconditioners for Krylov solvers like conjugate gradient.
-For unstructured multigrid solvers, it is important to keep complexities low, since large complexities lead to slow solve times and require much memory.
-For structured problems, solvers that take advantage of the structure of the problem are more efficient than unstructured solvers.
+In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
 
+A good choice of solver and preconditioner will depend significantly on the problem that needs to be solved, and are often the topic of active research.
+
+- CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
+  (Trilinos has many more specialized Krylov solvers.
+  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
+
+- One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
+
+- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
+
+---
 
 ### Further Reading
 
-To learn more about algebraic multigrid, see
-[An Introduction to Algebraic Multigrid](https://computation.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods/CiSE_2006_amg_220851.pdf)
+[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
+Please feel free to submit questions, feature requests and bug reports to the issue tracker.
 
-More information on hypre , including documentation and further publications, can be found [here](http://www.llnl.gov/CASC/hypre)
+[MueLu webpage](https://trilinos.github.io/muelu.html)
+
+[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
+
+[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
+
+[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
+
+---
+
+### Evening Activity 1
+
+You can compare the scaling results from Set 2 to the case when no preconditioner is used.
+You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
+
+What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
+
+---
+
+### Evening Activity 2 - Krylov solver, parallel multigrid preconditioner and performance optimizations
+
+Running the same problem in parallel using MPI is as simple as running
+```
+mpiexec -n 12 ./MueLu_Stratimikos.exe
+```
+(Each node of Cooley has 2 sockets of 6 cores each, so you still only need a single node for this to work.)
+
+In the output, you should find a summary of the multigrid hierarchy:
+```
+--------------------------------------------------------------------------------
+---                            Multigrid Summary                             ---
+--------------------------------------------------------------------------------
+Number of levels    = 3
+Operator complexity = 1.41
+Smoother complexity = 1.59
+Cycle type          = V
+
+level  rows   nnz    nnz/row  c ratio  procs
+  0  10000  49600  4.96                  12
+  1  1792   17428  9.73     5.58         12
+  2  220    3110   14.14    8.15         12
+
+```
+We see that our multigrid has 3 levels, the coarsest of which has only 220 unknowns.
+However, this small matrix lives on all 12 ranks, which means that a multiplication which it involves very little computation per MPI rank, but a lot of communication.
+It would be better for smaller matrices to live on smaller sub-communicators.
+
+#### Repartitioning
+
+Enable the repartitioning option of MueLu by uncommenting the relevant block in the input file. (That's all the options starting with "repartitioning: ".)
+
+What this means is that based on several criteria, MueLu will try to repartition coarser level matrices onto a sub-communicator of smaller size, thereby improving the volume-to-surface ratio.
+By default, MueLu uses a partitioner from Zoltan2, a Trilinos package that provides several algorithms for partitioning, load-balancing, ordering and coloring.
+
+Rerun the code to verify that the coarsest level now only lives on a single MPI rank.
+
+
+#### Other types of multigrid hierarchies
+
+By default, MueLu builds a so-called "smoothed aggregation" multigrid preconditioner.
+What this means is that in order to build coarser matrices, connected unknowns are grouped into aggregates.
+A tentative prolongation operator is formed, which preserves a pre-defined near-nullspace.
+(In the case of our Poisson equation, that's the constant function.)
+In order to obtain provable scalability, this operator is smoothed using a single step of Jacobi to obtain the final prolongator.
+This implies, however, that the prolongator contains more non-zeros than the tentative prolongator.
+Switching the parameter "multigrid algorithm" to "unsmoothed" skips the smoothing step and uses the tentative prolongator directly.
+
+Compare timings for "sa" and "unsmoothed".
+{% include qanda question='Can you see an improvement?' answer='No, both iteration count and time-to-solution actually increase.' %}
+
+{% include qanda question='Looking at the respective multigrid summaries, can you observe a reduction of non-zeros (nnz)?' answer='Yes, the number of nonzeros is reduced.' %}
+
+The reason for the above observation is that the number of unknowns is not reduced significantly enough to offset the deteriorated convergence properties.
+Problems which have more non-zeros per row (e.g. in higher spatial dimension) can benefit more from this change.
+
+#### MueLu on next-generation platforms
+
+MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
+This code can be enabled at runtime by setting the parameter "use kokkos refactor" to true.
+Cooley has two GPUs per node.
+Try re-running with the refactor option set.
+
+---
+
+### Running your own problem
+
+The executable has the option to load the linear system and the right-hand side from MatrixMarket files, e.g.,
+```
+./MueLu_Stratimikos.exe --matrix=poisson-matrix.m --rhs=poisson-rhs.m --coords=poisson-coords.m
+```
