@@ -357,6 +357,8 @@ initial_particles_3d file.
 
 ![Sample solution](pachinko.gif)
 
+![Sample solution](animation.gif)
+
 To run in serial, 
 
 ```
