@@ -245,6 +245,14 @@ Rerun.
 
 {% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements.' %}
 
+In order to check the last answer, run with CG and GMRES using
+```
+/usr/bin/time -v ./MueLu_Stratimikos.exe --matrixType=Laplace3D
+```
+and compare the "Maximum resident set size".
+
+IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
+
 ---
 
 ### Set 2 - Krylov solver, simple preconditioners
