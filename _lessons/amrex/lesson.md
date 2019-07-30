@@ -355,9 +355,7 @@ For now we freeze the obstacles (although if you look in the code it's not hard 
 how to change them!) but we can change the initial particle locations at run-time by editing the
 initial_particles_3d file.
 
-![Sample solution](pachinko.gif)
-
-![Sample solution](animation.gif)
+![Sample solution](pachinko.gif) <!-- .element height="50%" width="50%" -->
 
 To run in serial, 
 
