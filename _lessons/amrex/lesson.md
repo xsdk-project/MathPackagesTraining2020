@@ -329,9 +329,9 @@ cd HandsOnLessons/amrex/AMReX_EB_Pachinko
 In this directory you'll see
 
 ```
-main3d.ex -- the executable -- this has been built with MPI 
+main3d.ex            -- the executable -- this has been built with MPI 
 
-inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+inputs_3d            -- domain size, size of grids, how many time steps, which obstacles...
 
 initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
 ```
@@ -362,9 +362,8 @@ To run in parallel, for example on 4 ranks:
 mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_3d
-file but you can also set them on the command line.  In this specific example we use only 4
-cells in the z-direction (if in 3-d) regardless of n_cell.
+The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
+In this specific example we use only 4 cells in the z-direction regardless of n_cell.
 
 ```
 n_cell = 125                          # number of cells in x-direction; we double this in the y-direction
@@ -380,7 +379,7 @@ max_time  = 3.0                       # the final time (if max_time < max_steps 
 max_steps = 100000                    # the maximum number of steps (if max_steps * time_step < max_time))
 ```
 
-For example, 
+You can also set values on the command line; for example,
 ```
 mpirun -n 4 ./main3d.ex inputs_3d particle_file=my_file
 ```
@@ -425,22 +424,22 @@ the particle work?
 
 ### Suggested Evening Activities
 
-1) In the "AMR 101" example, 
-       * what quantities could I choose as refinement criteria besides the magnitude of phi?
-       * what factors besides the refinement criteria define the size and shape of the grids?
-        ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
+1. In the "AMR 101" example, 
+   * what quantities could I choose as refinement criteria besides the magnitude of phi?
+   * what factors besides the refinement criteria define the size and shape of the grids?
+    ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
 
-2) In the "Off to the Races" example, 
-      * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
-      * does making the grid finer make the particles not get "stuck" on the obstacles?
-      * would a different linear solver be faster?
+2. In the "Off to the Races" example, 
+  * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
+  * does making the grid finer make the particles not get "stuck" on the obstacles?
+  * would a different linear solver be faster?
         ( Hint: try adding "use_hypre = 1" to the inputs_3d file )
 
-4) In the Pachinko example, 
-     * how well can I control the final distribution of particles from the initial particle positions?
-     * if I made the number of grids in the domain be different, how would that change the domain decomposition?
-     * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
-       have a way of doing that? 
+3. In the Pachinko example, 
+ * how well can I control the final distribution of particles from the initial particle positions?
+ * if I made the number of grids in the domain be different, how would that change the domain decomposition?
+ * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
+   have a way of doing that? 
 
 ### Further Reading
 
