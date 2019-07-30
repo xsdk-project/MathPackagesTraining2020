@@ -2,7 +2,7 @@
 layout: page-fullwidth
 title: "AMReX"
 subheadline: "A Block Structured Adaptive Mesh Refinement Framework"
-teaser: "What can I do with AMReX..."
+teaser: "Not your grandmother's AMR...!"
 permalink: "lessons/amrex/"
 use_math: true
 lesson: true
@@ -16,13 +16,13 @@ header:
 |Questions|Objectives|Key Points|
 |What can I do with AMReX?|Understand that "AMR" means more<br>than just "traditional AMR"|AMR + EB + Particles|
 |How do I get started?|Understand easy set-up|It's not hard to get started|
-|How do I visualize AMR results|Use Visit for AMR results|Visualization tools exist for AMR data.|
+|How do I visualize AMR results?|Use Visit and Paraview for AMReX vis|Visualization tools exist for AMR data.|
 
 ## Example: Multi-Level Scalar Advection
 
 ### The Equation and the Discretization
 
-|Capabilties|xxx|
+|Capabilties|   |
 |Mesh data|Dynamic AMR with subcycling|
 
 $$\frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0$$
@@ -104,15 +104,8 @@ of size 32x32 cells.  The problem is periodic in both the x-direction and y-dire
 
 ## Example: "Off to the Races"
 
-```
-+--------------------------+-------------------------------------+------------------------------------------+
-| Capabilties              |                                     |                                          |
-+--------------------------+-------------------------------------+------------------------------------------+
-| Mesh data with EB        | Linear Solvers (Multigrid)          | Tracer Particles                         |
-+--------------------------+-------------------------------------+------------------------------------------+
-```
-
-Now 
+|Capabilties|   |   |
+|Mesh data with EB| Linear Solvers (Multigrid)          | Tracer Particles                         |
 
 ```
 cd HandsOnLessons/amrex/AMReX_EB_MacProj
