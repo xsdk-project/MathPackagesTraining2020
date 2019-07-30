@@ -206,7 +206,7 @@ main3d.ex -- the executable -- this has been built with MPI
 
 inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
 
-tracer_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
+particle_file       -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
 To run in serial, 
@@ -230,7 +230,7 @@ max_grid_size = 64                       # the maximum number of cells in any di
 
 plot_int = 10                            # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_3d    # name of file where we specify the input positions of the particles
+particle_file = initial_particles_3d     # name of file where we specify the input positions of the particles
 
 time_step = 0.001                        # we advance the particles with a fixed time step of this size
 
@@ -313,7 +313,7 @@ Balls are released at the top of the "playing field", and bounce off obstacles a
 
 The object of the game is to "capture" as many balls as possible.
 
-In AMReX-Pachinko game you can release as many particles as you like at the top of the domain,
+In the AMReX-Pachinko game you can release as many particles as you like at the top of the domain,
 and the balls will freeze when they hit the bottom so you can see where they landed.
 
 Your goal here is to see if you can cover the floor of the pachinko machine.
@@ -326,6 +326,16 @@ Your goal here is to see if you can cover the floor of the pachinko machine.
 cd HandsOnLessons/amrex/AMReX_EB_Pachinko
 ```
 
+In this directory you'll see
+
+```
+main3d.ex -- the executable -- this has been built with MPI 
+
+inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+
+initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
+```
+
 In this example there is no fluid (or other variable stored on the mesh)
 but we still sort the particles according to our spatial decomposition of the domain.
 
@@ -335,13 +345,10 @@ the number of cells per grid as the cost function.
 ![Sample domain decomposition](domain.png)
 
 For now we freeze the obstacles (although if you look in the code it's not hard to figure out
-how to change them!) but we can change the initial particle locations at run-time.
+how to change them!) but we can change the initial particle locations at run-time by editing the
+initial_particles_3d file.
 
 ![Sample solution](pachinko.gif)
-
-The executable has been built already: main3d.ex 
-
-Note this is a 3d executable but we don't allow motion in the z-direction.
 
 To run in serial, 
 
@@ -360,22 +367,22 @@ file but you can also set them on the command line.  In this specific example we
 cells in the z-direction (if in 3-d) regardless of n_cell.
 
 ```
-n_cell = 125                             # number of cells in x-direction; we double this in the y-direction
-max_grid_size = 25                       # the maximum number of cells in any direction in a single grid
+n_cell = 125                          # number of cells in x-direction; we double this in the y-direction
+max_grid_size = 25                    # the maximum number of cells in any direction in a single grid
 
-plot_int = 10                            # frequency of writing plotfiles
+plot_int = 10                         # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_3d    # name of file where we specify the input positions of the particles
+particle_file = initial_particles_3d  # name of file where we specify the input positions of the particles
 
-time_step = 0.001                        # we take a fixed time step of this size
+time_step = 0.001                     # we take a fixed time step of this size
 
-max_time  = 3.0                          # the final time (if max_time < max_steps * time_step)
-max_steps = 100000                       # the maximum number of steps (if max_steps * time_step < max_time))
+max_time  = 3.0                       # the final time (if max_time < max_steps * time_step)
+max_steps = 100000                    # the maximum number of steps (if max_steps * time_step < max_time))
 ```
 
 For example, 
 ```
-mpirun -n 4 ./main3d.ex inputs_3d initial_tracer_file=my_file
+mpirun -n 4 ./main3d.ex inputs_3d particle_file=my_file
 ```
 
 will read the particles from a file called "my_file"
@@ -396,7 +403,11 @@ That took 1.145916707 seconds.
 ********************************************************************
 ```
 
-To visualize the Pachinko results with paraview, follow the commands here:
+### Visualizing the Results
+
+Again we'll use Paraview to visualize the results. 
+
+Follow the commands here:
 [Paraview instructions](amrex-pachinko.pdf)
 
 ### Follow-up Questions
@@ -404,31 +415,32 @@ To visualize the Pachinko results with paraview, follow the commands here:
 1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
 but not in the "Pachinko" example?
   * In the "Race" example we use multigrid to solve for the flow field.
-2. How do I build an AMReX-based code in 2D vs 3D?
-  * set `DIM=2` vs `DIM=3` in the `GNUmakefile`
-3. How do I build a serial version vs a parallel version of an AMReX-based code?
-  * If you set `USE_MPI=TRUE` in the `GNUmakefile` then you can run in serial or parallel.
-4. How different is the Pachinko code itself for 2D vs 3D?
+
+2. How different is the Pachinko code itself for 2D vs 3D?
   * Not very!  Search for the test on `AMREX_SPACEDIM` in the source files to see how few lines are different.
-5. How could I make the parallel decomposition in the Pachinko example load balance
+
+3. How could I make the parallel decomposition in the Pachinko example load balance
 the particle work?
   * Use a cost function based on number of particles instead of number of grid cells.
 
 ### Suggested Evening Activities
 
-1) In the "AMR 101" example, what quantities could I choose as refinement criteria besides the magnitude of phi?
-   What factors determine the size and shape of the refined regions?
+1) In the "AMR 101" example, 
+       * what quantities could I choose as refinement criteria besides the magnitude of phi?
+       * what factors besides the refinement criteria define the size and shape of the grids?
+        ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
 
-   Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html
+2) In the "Off to the Races" example, 
+      * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
+      * does making the grid finer make the particles not get "stuck" on the obstacles?
+      * would a different linear solver be faster?
+        ( Hint: try adding "use_hypre = 1" to the inputs_3d file )
 
-2) In the "Off to the Races" example, what is the configuration of obstacles in which the 
-   first particle reaches the end-line in the shortest time?
-
-3) In the "Off to the Races" example, would a different linear solver be faster?   
-   Try adding "use_hypre = 1"  to the command line -- is this faster or slower?
-
-4) In the Pachinko example, how well can I control the final distribution of particles 
-   from the initial particle positions?
+4) In the Pachinko example, 
+     * how well can I control the final distribution of particles from the initial particle positions?
+     * if I made the number of grids in the domain be different, how would that change the domain decomposition?
+     * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
+       have a way of doing that? 
 
 ### Further Reading
 
