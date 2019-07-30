@@ -297,13 +297,6 @@ The number of iterations taken by CG scales with the square root of the conditio
 
 {% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='The condition number is proportional to the number of unknowns.' %}
 
-#### Extra assignment
-
-If you have time, you can compare these scaling results to the case when no preconditioner is used.
-You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
-
-What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
-
 ---
 
 ### Set 3 - Krylov solver, multigrid preconditioner
@@ -375,6 +368,7 @@ the number of MPI processes due its use of the SpMV kernel.' %}
 Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
 Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
+---
 
 ### Set 4 - Setting the aggregation threshold parameter
 
@@ -400,7 +394,49 @@ Now rerun the second anisotropic example, but modifying the parameter `aggregati
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
 solver converges in 9 iterations.'%}
 
-### Set 5 - Krylov solver, parallel multigrid preconditioner and performance optimizations
+---
+
+## Out-Brief
+
+In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
+
+A good choice of solver and preconditioner will depend significantly on the problem that needs to be solved, and are often the topic of active research.
+
+- CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
+  (Trilinos has many more specialized Krylov solvers.
+  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
+
+- One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
+
+- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
+
+---
+
+### Further Reading
+
+[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
+Please feel free to submit questions, feature requests and bug reports to the issue tracker.
+
+[MueLu webpage](https://trilinos.github.io/muelu.html)
+
+[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
+
+[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
+
+[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
+
+---
+
+### Evening Activity 1
+
+You can compare the scaling results from Set 2 to the case when no preconditioner is used.
+You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
+
+What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
+
+---
+
+### Evening Activity 2 - Krylov solver, parallel multigrid preconditioner and performance optimizations
 
 So far, we have run all problems in serial.
 Running the same problem in parallel using MPI is as simple as running
@@ -457,7 +493,6 @@ Compare timings for "sa" and "unsmoothed".
 The reason for the above observation is that the number of unknowns is not reduced significantly enough to offset the deteriorated convergence properties.
 Problems which have more non-zeros per row (e.g. in higher spatial dimension) can benefit more from this change.
 
-
 #### MueLu on next-generation platforms
 
 MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
@@ -467,38 +502,9 @@ Try re-running with the refactor option set.
 
 ---
 
-## Running your own problem
+### Running your own problem
 
-The executable has the option to load the linear system and the right-hand side from a matrix market files:
+The executable has the option to load the linear system and the right-hand side from MatrixMarket files, e.g.,
 ```
 ./MueLu_Stratimikos.exe --matrix=poisson.m --rhs=poisson-rhs.m --coords=poisson-coords.m
 ```
-
-
-## Out-Brief
-
-In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
-
-A good choice of solver and preconditioner will depend significantly on the problem that needs to be solved, and are often the topic of active research.
-
-- CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
-  (Trilinos has many more specialized Krylov solvers.
-  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
-
-- One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
-
-- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
-
-
-### Further Reading
-
-[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
-Please feel free to submit questions, feature requests and bug reports to the issue tracker.
-
-[MueLu webpage](https://trilinos.github.io/muelu.html)
-
-[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
-
-[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
-
-[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
