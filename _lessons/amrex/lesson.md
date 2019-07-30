@@ -345,17 +345,14 @@ initial_particles_3d -- initial particle locations  (this name is given in the i
 
 In this example there is no fluid (or other variable stored on the mesh)
 but we still sort the particles according to our spatial decomposition of the domain.
+If we run in parallel with 4 processors, we see the domain decomposition below -- this results
+z-order space-filling curve with the number of cells per grid as the cost function.
 
-This particular domain decomposition results from using a z-order space-filling curve with 
-the number of cells per grid as the cost function.
-
-![Sample domain decomposition](domain.png)
+![Sample solution](pachinko.gif) <!-- .element height="20%" width="20%" -->
 
 For now we freeze the obstacles (although if you look in the code it's not hard to figure out
 how to change them!) but we can change the initial particle locations at run-time by editing the
 initial_particles_3d file.
-
-![Sample solution](pachinko.gif) <!-- .element height="20%" width="20%" -->
 
 To run in serial, 
 
