@@ -1,42 +1,60 @@
-# AMReX -- a block-structured Adaptive Mesh Refinement (AMR) framework
+---
+layout: page-fullwidth
+title: "AMReX"
+subheadline: "A Block Structured Adaptive Mesh Refinement Framework"
+teaser: "Not your grandmother's AMR...!"
+permalink: "lessons/amrex/"
+use_math: true
+lesson: true
+header:
+ image_fullwidth: "amrex_warpx2.png"
+---
 
 ## At a Glance
 <!-- (Expected # minutes to complete) %% temporarily omit -->
 
+|Questions|Objectives|Key Points|
+|What can I do with AMReX?|Understand that "AMR" means more<br>than just "traditional AMR"|AMR + EB + Particles|
+|How do I get started?|Understand easy set-up|It's not hard to get started|
+|How do I visualize AMR results?|Use Visit and Paraview for AMReX vis|Visualization tools exist for AMR data.|
 
-```
-+---------------------------+-------------------------------------+------------------------------------------+
-| Questions                 | Objectives                          | Key Points                               |
-+---------------------------+----------- -------------------------+------------------------------------------+
-| What can I do with AMReX? | Understand that "AMR" means more    | AMR + EB + Particles                     |
-|                           | than just "traditional AMR"         |                                          |
-|                           |                                     |                                          |
-| How do I get started?     | Understand easy set-up              | It's not hard to get started             |
-|                           |                                     |                                          |
-| How do I visualize AMR    | Use Visit for AMR results           | Visualization tools exist for AMR data.  |
-| results?                  |                                     |                                          |
-+---------------------------+-------------------------------------+------------------------------------------+
-```
 ## Example: Multi-Level Scalar Advection
 
-### The Equation and the Discretization
+### What Features Are We Using
 
-```
-+--------------------------+----------------------------------------+
-| Capabilties              |                                        |
-+--------------------------+----------------------------------------+
-| Mesh data                | Dynamic AMR with subcycling            |
-+--------------------------+----------------------------------------+
-```
+* Mesh data 
+* Dynamic AMR with subcycling
 
-.. math:: \frac{\partial \phi}{\partial t} + \nabla \cdot (u \phi)  = 0
+### The Problem
 
-Let's consider scalar advection with a specified time-dependent velocity field.
-In this example we'll be using AMR to resolve the scalar field.
+Consider a drop of dye (we'll define $$\phi$$ to be the concentration of dye) 
+in a thin incompressible fluid that is spinning 
+clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
+passive tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
+this as two-dimensional motion.
 
-This algorithm may look familiar -- in each time step we construct fluxes and use them to update the solution.
+In other words, we want to solve for $$\phi(x,y,t)$$ by evolving 
 
-Having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
+$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
+
+in time ($$t$$), where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
+
+$$\psi(i,j) = \sin^2(\pi x) * \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
+
+and defining
+
+$$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
+
+In this example we'll be using AMR to resolve the scalar field since the location of the dye is
+what we care most about.
+
+To update the solution at each level, we call an advance routine that computes fluxes ($${\bf u} \phi$$)
+on each face, and differences the fluxes to create the update to phi.  In this example the update happens in a Fortran
+subroutine that operates on one grid of data at a time.  Here "lo()" and "hi()" are the bounds of the
+one grid we are operating on, not of the entire domain.
+
+Knowing how to synchronize the solution at coarse/fine boundaries is essential in an AMR algorithm;
+here having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
 
 At each level:
 ```fortran
@@ -50,8 +68,8 @@ At each level:
   enddo
 ```
 
-If "timeStep(lev,...)" advances the solution at level "lev" then
-the subcycling in time algorithm looks like:
+If "timeStep(lev,...)" is the routine that creates the fluxes and advances the solution at level "lev",
+ then the subcycling in time algorithm looks like:
 ```C++
     if (lev < finest_level)
     {
@@ -71,18 +89,36 @@ the subcycling in time algorithm looks like:
     }
 ```
 
-### Running the Problem
+Note that if "nsubsteps" is greater than 1, we are "subcycling" in time, ie using a smaller dt at
+the finer levels.
 
-Copy the directory AMReX_Advection from PATH_TO_AMREX_ADVECTION
+### Running the Code
+
+```
+cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
+```
 
 In this directory you'll see
 
 ```
-main2d.gnu.MPI.ex -- the executable
-inputs_2d -- the inputs file
+main2d.ex -- the executable -- this has been built with MPI 
+
+inputs_2d -- an inputs file
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs
+To run in serial, 
+
+```
+./main2d.ex inputs_2d
+```
+
+To run in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main2d.ex inputs_2d
+```
+
+The following parameters can be set at run-time -- these are currently set in the inputs_2d
 file but you can also set them on the command line.  
 
 ```
@@ -102,34 +138,87 @@ adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
 
 ```
 
-The base grid here is a cube consisting of 64 x 64 cells, consisting of 4 subgrids each
-of size 32x32 cells.  The problem is periodic in both the x-direction and y-direction.
+The base grid here is a square of 64 x 64 cells, made up of 4 subgrids each of size 32x32 cells.  
+The problem is periodic in both the x-direction and y-direction.
 
+We have hard-wired the code here to refine based on the magnitude of $$\phi$$.    Here we set the 
+threshhold level by level.  If $$\phi > 1.01$$ then we want to refine at least once; if $$\phi > 1.1$$ we
+want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we want even more refinement.
+
+### Visualizing the Results
+
+After you run the code you will have a series of plotfiles.  To visualize these we will use the
+Visit package.
+
+INSTRUCTIONS HERE
+
+### Topics to Explore
+
+* How does the load balancing distribute grids to MPI processes?   
+  (You will want to visualize the "proc" variable in the plotfile)
+
+* Is time to solution faster with subcycling or without?  Did the solution change at all?
+  (Note we print the total time to solution at the end of the screen output of each run)
+
+* What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
+  (You can edit these in inputs_2d)  
 
 ## Example: "Off to the Races"
 
+### What Features Are We Using
+
+* Mesh data with EB 
+* Linear solvers (multigrid)
+* Tracer Particles
+
+### The Problem
+
+Challenge: 
+
+Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $$u = 1$$. 
+
+If there are no obstacles in the channel, the fluid will flow with speed 1 from left to right.
+
+If you place obstacles in the channel, the fluid must flow around them.
+
+Suppose your goal is to accelerate the fluid so that a tracer released near the inflow reaches the right side
+as fast as possible.
+
+You are given nine cylinders that you can place (or not) at specified locations.
+
+You can use particles released near the inflow to measure the fastest configuration.
+
+How many cylinders should you use, and where should you put them?
+
+
+### Running the code
+
 ```
-+--------------------------+-------------------------------------+------------------------------------------+
-| Capabilties              |                                     |                                          |
-+--------------------------+-------------------------------------+------------------------------------------+
-| Mesh data with EB        | Linear Solvers (Multigrid)          | Tracer Particles                         |
-+--------------------------+-------------------------------------+------------------------------------------+
+cd HandsOnLessons/amrex/AMReX_EB_MacProj
 ```
 
-[Sample solution](macproj.gif)
+![Sample solution](macproj.gif)
 
-The executable has been built already: main2d.gnu.MPI.ex
-
-To run it in serial, 
+In this directory you'll see
 
 ```
-./main2d.gnu.MPI.ex inputs
+main3d.ex -- the executable -- this has been built with MPI 
+
+inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+
+particle_file       -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
-To run it in parallel, for example on 4 ranks:
+To run in serial, 
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+./main3d.ex inputs_3d
+```
+
+To run in parallel, for example on 4 ranks:
+
+```
+mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -141,7 +230,7 @@ max_grid_size = 64                       # the maximum number of cells in any di
 
 plot_int = 10                            # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+particle_file = initial_particles_3d     # name of file where we specify the input positions of the particles
 
 time_step = 0.001                        # we advance the particles with a fixed time step of this size
 
@@ -152,17 +241,16 @@ max_steps = 10000                        # the maximum number of steps (if max_s
 obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
 ```
 
-For example, 
+We define the cylinders with this numbering scheme
+
+![Numbering](numbering.png)
+
+So, for example, 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs obstacles = 1 3 4 5 6 8
+mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
 ```
 
-will run the problem with only six obstacles -- see 
-
-[Numbering](numbering.png)
-
-to see the numbering scheme.
-
+will run the problem with only six obstacles 
 
 The output from your run should look something like this:
 
@@ -202,71 +290,102 @@ We have a winner...and the winning time is 1.431
 ********************************************************************
 ```
 
+Note that if you want to figure out which is the fastest configuration, you'll 
+need to run the code multiple times with different configurations and compare the
+"winning times."   This is a good example of how we often don't run the 
+simulation code in a "one and done" mode -- the simulation is often only one component 
+of a science investigation or design process.
+
+### Visualizing the Results
+
+We'll use Paraview to visualize the results for this example. 
+
+Follow the commands here:
+[Paraview instructions](paraview-races.pdf)
+
 ## Example: AMReX-Pachinko
 
+### What Features Are We Using
+
+* EB for obstacles 
+* Particle-obstacle and particle-wall collisions 
+
+### The Problem
+
+Have you ever played pachinko?  
+
+A pachinko machine is like a vertical pinball machine. 
+
+Balls are released at the top of the "playing field", and bounce off obstacles as they fall.
+
+The object of the game is to "capture" as many balls as possible.
+
+In the AMReX-Pachinko game you can release as many particles as you like at the top of the domain,
+and the balls will freeze when they hit the bottom so you can see where they landed.
+
+Your goal here is to see if you can cover the floor of the pachinko machine.
+
+(Note that this is not completely realistic -- the balls here don't feel each other so they can overlap.)
+
+### Running the Code
+
 ```
-+--------------------------+--------------------------------------------------------------------------------+
-| Capabilties              |                                                                                | 
-+--------------------------+--------------------------------------------------------------------------------+
-| EB for obstacles         | Particle-obstacle and particle-wall collisions                                 |
-+--------------------------+-------------------------------------+------------------------------------------+
+cd HandsOnLessons/amrex/AMReX_EB_Pachinko
 ```
 
-In this example particles accelerate downward with gravity and bounce off the side walls and off the solid obstacles.
-There is no fluid but we still sort the particles according to our spatial decomposition of the domain.
+In this directory you'll see
 
-This particular domain decomposition results from using a z-order space-filling curve with 
-the number of cells per grid as the cost function.
+```
+main3d.ex            -- the executable -- this has been built with MPI 
 
-[Sample domain decomposition](domain.png)
+inputs_3d            -- domain size, size of grids, how many time steps, which obstacles...
+
+initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
+```
+
+In this example there is no fluid (or other variable) stored on the mesh
+but we still sort the particles according to our spatial decomposition of the domain.
+If we run in parallel with 4 processors, we see the domain decomposition below -- this results
+from using a z-order space-filling curve with the number of cells per grid as the cost function.
+
+![Sample solution](pachinko.gif) <!-- .element height="20%" width="20%" -->
 
 For now we freeze the obstacles (although if you look in the code it's not hard to figure out
-how to change them!) but we can change the initial particle locations at run-time.
-
-[Sample solution](pachinko.gif)
-
-The executables have been built already: main2d.gnu.MPI.ex and main3d.gnu.MPI.ex
-
-Note that in this specific example the problem is the same in both 2d and 3d since we assume the 
-particles never move in the z-direction.
+how to change them!) but we can change the initial particle locations at run-time by editing the
+initial_particles_3d file.
 
 To run in serial, 
 
 ```
-./main2d.gnu.MPI.ex inputs_2d
-or
-./main3d.gnu.MPI.ex inputs_3d
+./main3d.ex inputs_3d
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d
-or
-mpirun -n 4 ./main3d.gnu.MPI.ex inputs_3d
+mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_2d
-file but you can also set them on the command line.  In this specific example we use only 4
-cells in the z-direction (if in 3-d) regardless of n_cell.
+The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
+In this specific example we use only 4 cells in the z-direction regardless of n_cell.
 
 ```
-n_cell = 125                             # number of cells in x-direction; we double this in the y-direction
-max_grid_size = 25                       # the maximum number of cells in any direction in a single grid
+n_cell = 125                          # number of cells in x-direction; we double this in the y-direction
+max_grid_size = 25                    # the maximum number of cells in any direction in a single grid
 
-plot_int = 10                            # frequency of writing plotfiles
+plot_int = 10                         # frequency of writing plotfiles
 
-initial_tracer_file = tracers_file_2d    # name of file where we specify the input positions of the particles
+particle_file = initial_particles_3d  # name of file where we specify the input positions of the particles
 
-time_step = 0.001                        # we take a fixed time step of this size
+time_step = 0.001                     # we take a fixed time step of this size
 
-max_time  = 3.0                          # the final time (if max_time < max_steps * time_step)
-max_steps = 100000                       # the maximum number of steps (if max_steps * time_step < max_time))
+max_time  = 3.0                       # the final time (if max_time < max_steps * time_step)
+max_steps = 100000                    # the maximum number of steps (if max_steps * time_step < max_time))
 ```
 
-For example, 
+You can also set values on the command line; for example,
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs_2d initial_tracer_file=my_file
+mpirun -n 4 ./main3d.ex inputs_3d particle_file=my_file
 ```
 
 will read the particles from a file called "my_file"
@@ -287,46 +406,44 @@ That took 1.145916707 seconds.
 ********************************************************************
 ```
 
-To visualize the Pachinko results with yt, 
-```
-1) make sure you are using a bash shell
-2) type "make movie"
-3) visualize the animated gif "pachinko.gif"
-```
+### Visualizing the Results
 
-To visualize the Pachinko results with paraview, follow the commands here:
-[Paraview instructions](amrex-pachinko.pdf)
+Again we'll use Paraview to visualize the results. 
+
+Follow the commands here:
+[Paraview instructions](paraview-pachinko.pdf)
 
 ### Follow-up Questions
 
-{% include qanda question='Why might it be important to have n_cell be a power of 2 in the "Race" example
-but not in the "Pachinko" example?' answer='In the "Race" example we use multigrid to solve for the flow field.'%}
+1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
+but not in the "Pachinko" example?
+  * In the "Race" example we use multigrid to solve for the flow field.
 
-{% include qanda question='How do I build an AMReX-based code in 2D vs 3D?' answer='set DIM=2 vs DIM=3 in the GNUmakefile'%}
+2. How different is the Pachinko code itself for 2D vs 3D?
+  * Not very!  Search for the test on `AMREX_SPACEDIM` in the source files to see how few lines are different.
 
-{% include qanda question='How do I build a serial version vs a parallel version of an AMReX-based code?'
-answer='if you set USE_MPI=TRUE in the GNUmakefile then you can run in serial or parallel.'%}
-
-{% include qanda question='How different is the Pachinko code itself for 2D vs 3D?'
-answer='Not very!  Search for the test on AMREX_SPACEDIM in the source files to see how few lines are different.'%}
-
-{% include qanda question='How could I make the parallel decomposition in the Pachinko example load balance
-the particle work?' answer='Use a cost function based on number of particles instead of number of grid cells.'%}
+3. How could I make the parallel decomposition in the Pachinko example load balance
+the particle work?
+  * Use a cost function based on number of particles instead of number of grid cells.
 
 ### Suggested Evening Activities
 
-1) In the "AMR 101" example, could I use what I learned in the SUNDIALS exercises to improve the accuracy 
-   of the time-stepping?
+1. In the "AMR 101" example, 
+  * what quantities could I choose as refinement criteria besides the magnitude of phi?
+  * what factors besides the refinement criteria define the size and shape of the grids?
+    ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
 
-2) In the "Off to the Races" example, what is the configuration of obstacles in which the 
-   first particle reaches the end-line in the shortest time?
+2. In the "Off to the Races" example, 
+  * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
+  * does making the grid finer make the particles not get "stuck" on the obstacles?
+  * would a different linear solver be faster?
+        ( Hint: try adding "use_hypre = 1" to the inputs_3d file )
 
-3) In the "Off to the Races" example, would a different linear solver be faster?   
-   Try by setting USE_HYPRE = TRUE in the GNUmakefile (you'll need to re-make the executable)
-   and add "use_hypre = 1"  to the command line
-
-4) In the Pachinko example, how well can I control the final distribution of particles 
-   from the initial particle positions?
+3. In the Pachinko example, 
+ * how well can I control the final distribution of particles from the initial particle positions?
+ * if I made the number of grids in the domain be different, how would that change the domain decomposition?
+ * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
+   have a way of doing that? 
 
 ### Further Reading
 

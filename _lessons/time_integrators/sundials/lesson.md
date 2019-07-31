@@ -16,7 +16,7 @@ header:
 |How do explicit, implicit or IMEX<br>methods impact step size?|Compare methods at step sizes<br>near the stability limit.|Choose time integration method<br>to match the problem.|
 |What is the impact of an<br>*adaptive* technique?|Compare fixed and adaptive techniques.|Adaptive techniques can be robust<br>reliable and reduce computational cost.|
 |How does integration *order*<br>impact cost?|Observe impact of order on time<br>to solution and number of steps.|Changing integration order is simple<br>allowing optimization for a given problem.|
-|How does the nonlinear solver<br>affect robustness/scalability?|Compare different solvers<br>with implicit and IMEX methods.|Some methods require more work<br>but are necessary for certain problems.|
+|How does the nonlinear solver<br>affect robustness/scalability?|Compare different solvers<br>with implicit and IMEX methods.|Some methods require more work<br>but are more robust and scalable.|
 |What is the role and benefit of<br>preconditioning?|Compare integration methods with<br>and without preconditioning.|Preconditioning is critical for scalability.|
 
 **Note:** To begin this lesson...
@@ -26,7 +26,7 @@ cd {{site.handson_root}}/time_integrators/sundials
 source source_cooley_plotfile_tools.sh
 ```
 (note: you should be able to recompile these executables with a simple
-`make`.
+`make`)
 
 Also, if you do not already have the `anaconda3-4.0.0` SoftEnv module
 loaded, please do so now,
@@ -44,13 +44,13 @@ has diffused sufficiently to be of no further harm.
 [![Problem Setup ::](sundials_amrex_setup.png)](sundials/sundials_amrex_setup.png)
 
 This is an example of a scalar-valued advection-diffusion problem for
-chemical transport. The governing equation is: 
+chemical transport. The governing equation is:
 
 $$\frac{\partial u}{\partial t} + \vec{a} \cdot \nabla u -  \nabla \cdot ( D \nabla u ) = 0$$
 
 where $$u = u(t,x,y)$$ is the chemical concentration, $$\vec{a}$$ is
 the advection vector, $$D$$ is a diagonal matrix containing
-anisotropic diffusion coefficients, and $$u(t=0,x,y)=u_0(x,y)$$ is a
+anisotropic diffusion coefficients, and $$u(0,x,y)=u_0(x,y)$$ is a
 given initial condition.  The spatial domain is $$(x,y) \in
 [-1,1]^2$$, and the time domain is $$t \in (0,10^4]$$.
 
@@ -139,7 +139,6 @@ options.  If an option is specified in both the input file and on the
 command line, then the command line option takes precedence.
 ```
 
-----
 
 
 ### Cleaning up

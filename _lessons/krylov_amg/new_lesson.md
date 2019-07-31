@@ -14,8 +14,8 @@ header:
 
 |Questions|Objectives|Key Points|
 |How do we choose a suitable Krylov solver?|Know when to use CG or GMRES.|CG works for spd matrix and preconditioner. GMRES works for unsymmetric systems, but requires more memory.|
-|How do we choose a preconditioner?|Objective #2||
-|How can we improve efficiency of the solver?|Objective #3|Key point #3|
+|How do we choose a preconditioner?|Know common sparse preconditioners.|As the size of the linear system grows, most iterative methods will require increasing number of iterations.|
+|How can we improve efficiency of the solver?|Understand the basic components of multigrid.|For certain common problem classes, multigrid methods require a constant number of iterations and constant work per unknown.|
 
 ### To begin this lesson
 
@@ -77,13 +77,11 @@ Usage: ./MueLu_Stratimikos.exe [options]
 Solvers (such as CG and GMRES) and preconditioners (such as Jacobi, Gauss-Seidel and multigrid) are configured via parameter files.
 
 Trilinos supports both XML and YAML files.
-Depending on what format you prefer, you will be modifying `stratimikos_ParameterList.xml` or `stratimikos_ParameterList.yaml`.
+In what follows, we will be modifying modifying `stratimikos_ParameterList.xml` to explore a variety of solvers and preconditioners.
 
-By default, the XML input file is read.
-If you prefer YAML, the input file needs to be specified on the command line using the `--yaml` flag:
-```
-./MueLu_Stratimikos.exe --yaml=stratimikos_ParameterList.yaml
-```
+By default, the XML file `stratimikos_ParameterList.xml` is read.
+If you want to keep track of your changes and work with different input files, this default can be overridden with `--xml=another-file.xml`.
+
 
 ## Running the Example
 
@@ -236,13 +234,21 @@ We observe the following:
 
 #### Question and Answer Boxes
 
-Modify the input file (XML or YAML) to use the conjugate gradient method.
+Modify the input file to use the conjugate gradient method.
 The "Solver Type" parameter to use is "Pseudo Block CG".
 Rerun.
 
 {% include qanda question='Do you see any significant changes in convergence behavior?' answer='No' %}
 
 {% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements.' %}
+
+In order to check the last answer, run with CG and GMRES using
+```
+/usr/bin/time -v ./MueLu_Stratimikos.exe --matrixType=Laplace3D
+```
+and compare the "Maximum resident set size".
+
+IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
 
 ---
 
@@ -264,8 +270,6 @@ Moreover, have a look at the configuration for Ifpack2.
   </ParameterList>
 </ParameterList>
 ```
-(We show the lines from the input XML, the YAML file looks similar.)
-
 This means that a single sweep of Gauss-Seidel is used.
 
 Rerun the code.
@@ -292,16 +296,9 @@ Record the number of iterations for different problem sizes by running
 
 {% include qanda question='Is the solver scalable?' answer='No, the number of iterations increases with the problem size.' %}
 
-The number of iterations taken by CG scales with the square root of the condition number $\kappa(PA)$ of the preconditioned system, where $P$ is the preconditioner.
+The number of iterations taken by CG scales with the square root of the condition number $$\kappa(PA)$$ of the preconditioned system, where $$P$$ is the preconditioner.
 
 {% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='The condition number is proportional to the number of unknowns.' %}
-
-#### Extra assignment
-
-If you have time, you can compare these scaling results to the case when no preconditioner is used.
-You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
-
-What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
 
 ---
 
@@ -355,53 +352,107 @@ In contrast, virtually all parallel Gauss-Seidel implementations are actually bl
 is the set of matrix rows local to a process, and Gauss-Seidel is applied only to the local block.
 Third, the SpMV kernel is easily parallelizable, whereas Gauss-Seidel has limited inherent parallelism.
 
-Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on one MPI rank.
+First, we compare the performance of symmetric Gauss-Seidel on one MPI rank with the performance on 10 MPI ranks.
 ```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
-Compare the performance of a symmetric Gauss-Seidel smoother versus a Chebyshev smoother on 10 MPI ranks.
+Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=sgs.xml
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --nx=10 --ny=10 --nz=10 --matrixType=Laplace3D --xml=chebyshev.xml
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
-{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank 
+{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
 receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
 the number of MPI processes due its use of the SpMV kernel.' %}
 
 Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
 Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
+---
 
 ### Set 4 - Setting the aggregation threshold parameter
 
-We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.  This anisotropy could be due to the nature of 
-the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
+We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.
+This anisotropy could be due to the nature of the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
 
-Run the following two problems.
+Run the following two examples.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 12 iterations.  The second problem fails to
-converge.'%}
+{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+problem converges in 22 iterations.'%}
 
-The first problem solves a 2D Laplace matrix with a 5-point stencil, with x and y points equidistant.
-The second problem solves a 2D Laplace matrix with a 5-point stencil.  In the underlying mesh, elements are distorted so that their x-dimension is 10 times as large as their
-y-dimension.
+The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
+The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
+$$y$$-dimension.
 
-Now rerun the second problem, but modifying the aggregation threshold parameter in the input deck to have a value of 0.02.
+We can plot the aggregates that MueLu generated:
+![Aggregates::](muelu-noDrop.png)
+(If you want to reproduce this, have a look at the parameter "aggregation: export visualization data".)
 
-{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid solver
-recovers convergence.'%}
+We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
+This leads to bad convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
 
-### Set 5 - Krylov solver, parallel multigrid preconditioner and performance optimizations
+Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
-So far, we have run all problems in serial.
+{% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
+solver converges in 7 iterations.'%}
+
+Again, we plot the resulting aggregates:
+![Aggregates with dropping enabled::](muelu-drop.png)
+
+We can see that the aggregates are now entirely aligned with the $$y$$-direction.
+
+---
+
+## Out-Brief
+
+In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
+
+A good choice of solver and preconditioner will depend significantly on the problem that needs to be solved, and are often the topic of active research.
+
+- CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
+  (Trilinos has many more specialized Krylov solvers.
+  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
+
+- One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
+
+- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
+
+---
+
+### Further Reading
+
+[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
+Please feel free to submit questions, feature requests and bug reports to the issue tracker.
+
+[MueLu webpage](https://trilinos.github.io/muelu.html)
+
+[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
+
+[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
+
+[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
+
+---
+
+### Evening Activity 1
+
+You can compare the scaling results from Set 2 to the case when no preconditioner is used.
+You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
+
+What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
+
+---
+
+### Evening Activity 2 - Krylov solver, parallel multigrid preconditioner and performance optimizations
+
 Running the same problem in parallel using MPI is as simple as running
 ```
 mpiexec -n 12 ./MueLu_Stratimikos.exe
@@ -456,7 +507,6 @@ Compare timings for "sa" and "unsmoothed".
 The reason for the above observation is that the number of unknowns is not reduced significantly enough to offset the deteriorated convergence properties.
 Problems which have more non-zeros per row (e.g. in higher spatial dimension) can benefit more from this change.
 
-
 #### MueLu on next-generation platforms
 
 MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
@@ -466,38 +516,9 @@ Try re-running with the refactor option set.
 
 ---
 
-## Running your own problem
+### Running your own problem
 
-The executable has the option to load the linear system and the right-hand side from a matrix market files:
+The executable has the option to load the linear system and the right-hand side from MatrixMarket files, e.g.,
 ```
-./MueLu_Stratimikos.exe --matrix=poisson.m --rhs=poisson-rhs.m --coords=poisson-coords.m
+./MueLu_Stratimikos.exe --matrix=poisson-matrix.m --rhs=poisson-rhs.m --coords=poisson-coords.m
 ```
-
-
-## Out-Brief
-
-In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
-
-A good choice of solver and preconditioner will depend significantly on the problem that needs to be solved, and are often the topic of active research.
-
-- CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
-  (Trilinos has many more specialized Krylov solvers.
-  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
-
-- One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
-
-- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
-
-
-### Further Reading
-
-[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
-Please feel free to submit questions, feature requests and bug reports to the issue tracker.
-
-[MueLu webpage](https://trilinos.github.io/muelu.html)
-
-[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
-
-[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
-
-[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)

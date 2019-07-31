@@ -10,6 +10,7 @@ answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSdoyXOL4UCe4_p0Sh
 youtube: "https://youtu.be/e9rhMXN-bpM"
 header:
  image_fullwidth: "Differential-Equations-e1509686869201.png"
+
 ---
 
 ## At a Glance
