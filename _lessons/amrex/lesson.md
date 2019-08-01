@@ -300,8 +300,70 @@ of a science investigation or design process.
 
 We'll use Paraview to visualize the results for this example. 
 
+There are three types of data from the simulation that we want to load:
+
+1) the EB representation of the cylinders
+2) the flow field
+3) the particle motion
+
+Because the EB data and mesh data don't change, we want to load these separately from the particles.
+
+Instructions to visualize the EB represenation of the cylinders:
+
+```
+1. Start paraview
+2. File --> Open ... select "eb.pvtp" (highlight it then click OK) 
+3. Click green Apply button 
+```
+
+You should see cylinders with their axes in the z-direction.
+
+Now to add the mesh field:
+
+```
+1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and double click on "plt.."
+2. In the "Files of type:" window at the bottom select "All Files(*)"
+3. Now highlight "Header" and click OK
+4. You now have to select "VisitBoxlib3DReader" from the drop-down menu titled "Open Data With..." -- then click OK
+5.  Click green Apply button 
+```
+
+This will display an outline of the grids (boxes)
+
+```
+6. With "Header" highlighted in the "Pipeline Browser" menu,
+   click on "proc" and "vel" in the "Cell Arrays" menu 
+7. Click green Apply button
+8. Click on the "slice" icon -- three to the right of the calculator.
+This will create "Slice 1" in the Pipeline Browser which will be highlighted.
+9. Click on "Z Normal"
+10. Unclick the "Show Plane" button
+11. Click green Apply button
+12. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
+(We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
+```
+
+Now to load the particles:
+
+```
+1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and highlight "plt.." then click OK
+2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
+3. Click the "glyph" button (6 to the right of the calculator)
+4. Under "Glyph Source" select "Sphere" instead of "Arrow"
+5. Set "Radius" to 0.01 
+6. Under "Scale" further down Set "Scale Factor" to 1 
+7. Under "Glyph Mode" "Masking" select "All Points" rather than "Uniform Spatial Distribution"
+8.  Click green Apply button 
+```
+
+You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
+
+For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
+change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
+if you have run with 4 processes then you will see the particles displayed with different colors.
+
 Follow the commands here:
-[Paraview instructions](paraview-races.pdf)
+![Paraview instructions](paraview-races.pdf)
 
 ## Example: AMReX-Pachinko
 
