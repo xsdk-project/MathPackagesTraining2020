@@ -405,7 +405,7 @@ Choosing a smoother that is quite expensive and strong can result in a small num
 
 In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
 or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns. A technical
-definition of a weak matrix connection $$a_{ij}$$ is $$|a_{ij}|$$  $$|a_{ij}| < \epsilon \sqrt{(|a_{ii} a_{jj}|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
+definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 
 Run the following two examples.
 
