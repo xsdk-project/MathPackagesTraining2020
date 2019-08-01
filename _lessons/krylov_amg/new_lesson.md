@@ -404,8 +404,12 @@ Choosing a smoother that is quite expensive and strong can result in a small num
 ##### Change coarsening procedure by setting the aggregation threshold parameter
 
 In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
-or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns. A technical
+or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns.
+<!--
+JHU: This won''t render properly
+A technical
 definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
+-->
 
 Run the following two examples.
 
@@ -419,7 +423,7 @@ problem converges in 22 iterations.'%}
 
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
-$$y$$-dimension.
+$$y$$-dimension.  The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$.
 
 We can plot the aggregates that MueLu generated:
 ![Aggregates::](muelu-noDrop.png)
