@@ -39,7 +39,7 @@ $$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
 
 in time ($$t$$), where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
 
-$$\psi(i,j) = \sin^2(\pi x) * \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
+$$\psi(i,j) = \sin^2(\pi x) \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
 
 and defining
 
@@ -223,8 +223,7 @@ To run in parallel, for example on 4 ranks:
 mpirun -n 4 ./main3d.ex inputs_3d
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs
-file but you can also set them on the command line.  
+The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
 
 ```
 n_cell = 128                             # number of cells in x-direction; we double this in the y-direction
@@ -247,7 +246,8 @@ We define the cylinders with this numbering scheme
 
 ![Numbering](numbering.png)
 
-So, for example, 
+You can also set the parameters on the command line; for example,  
+
 ```
 mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
 ```
@@ -341,7 +341,7 @@ This will display an outline of the grids (boxes)
 4. Click on "Z Normal"
 5. Unclick the "Show Plane" button
 6. Click green Apply button
-7. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
+7. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "vel"
 (We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
 ```
 
@@ -352,17 +352,19 @@ Now to load the particles:
    then click OK
 2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
 3. Click the "glyph" button (6 to the right of the calculator)
-4. Under "Glyph Source" select "Sphere" instead of "Arrow"
-5. Set "Radius" to 0.01 
-6. Under "Scale" further down Set "Scale Factor" to 1 
-7. Under "Glyph Mode" "Masking" select "All Points" rather than "Uniform Spatial Distribution"
+4. Under "Glyph Source" 
+   * select "Sphere" instead of "Arrow"
+   * set "Radius" to 0.01
+6. Under "Scale" (down below "Glyph Source") set "Scale Factor" to 1 
+7. Under "Masking" (down below "Scale") change "Glyph Mode" from "Uniform Spatial Distribution"
+   to "All Points" 
 8.  Click green Apply button 
 ```
 
 You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
 
 For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
-change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
+change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
 
 Also note -- if you want to clean up your run directory before doing another run, you can
@@ -507,14 +509,14 @@ This will display an outline of the grids (boxes)
 
 ```
 1. With "Header" highlighted in the "Pipeline Browser" menu,
-   click on "proc" and "vel" in the "Cell Arrays" menu 
+   click on "proc" in the "Cell Arrays" menu 
 2. Click green Apply button
 3. Click on the "slice" icon -- three to the right of the calculator.
    This will create "Slice 1" in the Pipeline Browser which will be highlighted.
 4. Click on "Z Normal"
 5. Unclick the "Show Plane" button
 6. Click green Apply button
-7. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
+7. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "proc"
 (We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
 ```
 
@@ -525,18 +527,20 @@ Now to load the particles:
    then click OK
 2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
 3. Click the "glyph" button (6 to the right of the calculator)
-4. Under "Glyph Source" select "Sphere" instead of "Arrow"
-5. Set "Radius" to 0.02 (or whatever you have set the particle_radius to in the inputs file
-   if you changed it)   
-6. Under "Scale" further down Set "Scale Factor" to 1 
-7. Under "Glyph Mode" "Masking" select "All Points" rather than "Uniform Spatial Distribution"
+4. Under "Glyph Source" 
+   * select "Sphere" instead of "Arrow"
+   * set "Radius" to 0.02 (or whatever you have set the particle_radius to in the inputs file
+                           if you changed it)   
+6. Under "Scale" (down below "Glyph Source") set "Scale Factor" to 1 
+7. Under "Masking" (down below "Scale") change "Glyph Mode" from "Uniform Spatial Distribution"
+   to "All Points" 
 8. Click green Apply button 
 ```
 
 You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
 
 For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
-change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
+change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
 
 Also note -- if you want to clean up your run directory before doing another run, you can
