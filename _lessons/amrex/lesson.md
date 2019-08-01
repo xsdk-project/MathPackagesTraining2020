@@ -365,6 +365,9 @@ For fun: if you want to color the particles, make sure "Glyph1" is highlighted, 
 change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
 
+Also note -- if you want to clean up your run directory before doing another run, you can
+type "make pltclean" to remove the plt* and *.png files.  
+
 ## Example: AMReX-Pachinko
 
 ### What Features Are We Using
@@ -535,6 +538,10 @@ You are now ready to play the movie!  See the "VCR-like" controls at the top. Cl
 For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
 change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
+
+Also note -- if you want to clean up your run directory before doing another run, you can
+type "make pltclean" to remove the plt* and *.png files.
+
 ### Follow-up Questions
 
 1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
