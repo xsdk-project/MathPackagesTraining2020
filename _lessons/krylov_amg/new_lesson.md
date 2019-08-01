@@ -320,6 +320,34 @@ The cost of a single mat-vec scales with the number of unknowns because the numb
 Since the number of iterations is constant, we (experimentally) have verified that multigrid has optimal complexity.
 This means that any changes that we will make from here on can only lead to a constant factor improvement.
 
+#### Understanding information about the multigrid preconditioner
+
+Let''s look a little more closely at the output from the largest example.  Rerun:
+```
+./MueLu_Stratimikos.exe --nx=200 --ny=200
+```
+The multigrid summary provides the following information:
+
+    - The number of multigrid levels created, including the linear system of interest
+    - The smoother used on each level
+    - Matrix statistics for each level (rows, number of nonzeros, number of processors)
+    - The multigrid cycle type
+    - Operator complexity  (given by the formula $$\frac{\Sigma_0^L nnz(A_i)}{nnz(A_L)}$$)
+    - Smoother complexity
+
+The operator complexity is given by the formula $$\frac{\Sigma_0^L nnz(A_i)}{nnz(A_L)}$$.
+
+{% include qanda question='How does the operator complexity help the user assess potential performance?' answer='
+The complexity gives the ratio of nonzeros in all matrices compared to the fine level matrix.  This is roughly the ratio of FLOPs required by
+a matrix-vector product performed on each matrix relative to the fine level matrix.' %}
+
+The smoother complexity is the ratio of FLOPS required by smoothers on all levels to FLOPs required by just the fine level smoother.
+
+{% include qanda question='Why might the operator complexity and smoother complexity differ?'
+answer='A smoother such as an incomplete factorization will have a much higher FLOP intensity than a matrix-vector product.' %}
+
+#### Effect of different smoothers
+
 The first adjustment that we want to make is to select different smoothers.
 This involves the following trade-off: Using a better smoother will reduce the number of iterations, but might involve more computation.
 
@@ -371,12 +399,13 @@ the number of MPI processes due its use of the SpMV kernel.' %}
 Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
 Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
----
+#### Changing the behavior of the grid transfer operators
 
-### Set 4 - Setting the aggregation threshold parameter
+##### Change coarsening procedure by setting the aggregation threshold parameter
 
-We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.
-This anisotropy could be due to the nature of the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
+In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
+or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns. A technical
+definition of a weak matrix connection $$a_{ij}$$ is $$|a_{ij} < \epsilon \sqrt{|a_{ii}||a_{jj}|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 
 Run the following two examples.
 

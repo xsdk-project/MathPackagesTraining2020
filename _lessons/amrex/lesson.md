@@ -147,6 +147,8 @@ want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we
 
 ### Visualizing the Results
 
+![Sample solution](advection.gif)
+
 After you run the code you will have a series of plotfiles.  To visualize these we will use the
 Visit package.
 
