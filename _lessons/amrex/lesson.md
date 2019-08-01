@@ -142,7 +142,7 @@ The base grid here is a square of 64 x 64 cells, made up of 4 subgrids each of s
 The problem is periodic in both the x-direction and y-direction.
 
 We have hard-wired the code here to refine based on the magnitude of $$\phi$$.    Here we set the 
-threshhold level by level.  If $$\phi > 1.01$$ then we want to refine at least once; if $$\phi > 1.1$$ we
+threshold level by level.  If $$\phi > 1.01$$ then we want to refine at least once; if $$\phi > 1.1$$ we
 want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we want even more refinement.
 
 ### Visualizing the Results
@@ -308,9 +308,9 @@ There are three types of data from the simulation that we want to load:
 2) the flow field
 3) the particle motion
 
-Because the EB data and mesh data don't change, we want to load these separately from the particles.
+Because the EB data and mesh data don't change, we load these separately from the particles.
 
-Instructions to visualize the EB represenation of the cylinders:
+Instructions to visualize the EB representation of the cylinders:
 
 ```
 1. Start paraview
@@ -333,22 +333,23 @@ Now to add the mesh field:
 This will display an outline of the grids (boxes)
 
 ```
-6. With "Header" highlighted in the "Pipeline Browser" menu,
+1. With "Header" highlighted in the "Pipeline Browser" menu,
    click on "proc" and "vel" in the "Cell Arrays" menu 
-7. Click green Apply button
-8. Click on the "slice" icon -- three to the right of the calculator.
-This will create "Slice 1" in the Pipeline Browser which will be highlighted.
-9. Click on "Z Normal"
-10. Unclick the "Show Plane" button
-11. Click green Apply button
-12. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
+2. Click green Apply button
+3. Click on the "slice" icon -- three to the right of the calculator.
+   This will create "Slice 1" in the Pipeline Browser which will be highlighted.
+4. Click on "Z Normal"
+5. Unclick the "Show Plane" button
+6. Click green Apply button
+7. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
 (We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
 ```
 
 Now to load the particles:
 
 ```
-1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and highlight "plt.." then click OK
+1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and highlight "plt.." 
+   then click OK
 2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
 3. Click the "glyph" button (6 to the right of the calculator)
 4. Under "Glyph Source" select "Sphere" instead of "Arrow"
@@ -363,9 +364,6 @@ You are now ready to play the movie!  See the "VCR-like" controls at the top. Cl
 For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
 change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
-
-Follow the commands here:
-![Paraview instructions](paraview-races.pdf)
 
 ## Example: AMReX-Pachinko
 
@@ -474,9 +472,69 @@ That took 1.145916707 seconds.
 
 Again we'll use Paraview to visualize the results. 
 
-Follow the commands here:
-[Paraview instructions](paraview-pachinko.pdf)
+Remember there are three types of data from the simulation that we want to load:
 
+1) the EB representation of the cylinders
+2) the flow field
+3) the particle motion
+
+Because the EB data and mesh data don't change, we load these separately from the particles.
+
+Instructions to visualize the EB representation of the cylinders:
+
+```
+1. Start paraview
+2. File --> Open ... select "eb.pvtp" (highlight it then click OK) 
+3. Click green Apply button 
+```
+
+You should see cylinders with their axes in the z-direction.
+
+Now to add the mesh field:
+
+```
+1. File --> Open ... make sure you are in the "AMReX_EB_Pachinko" directory and double click on "plt.."
+2. In the "Files of type:" window at the bottom select "All Files(*)"
+3. Now highlight "Header" and click OK
+4. You now have to select "VisitBoxlib3DReader" from the drop-down menu titled "Open Data With..." -- then click OK
+5.  Click green Apply button 
+```
+
+This will display an outline of the grids (boxes)
+
+```
+1. With "Header" highlighted in the "Pipeline Browser" menu,
+   click on "proc" and "vel" in the "Cell Arrays" menu 
+2. Click green Apply button
+3. Click on the "slice" icon -- three to the right of the calculator.
+   This will create "Slice 1" in the Pipeline Browser which will be highlighted.
+4. Click on "Z Normal"
+5. Unclick the "Show Plane" button
+6. Click green Apply button
+7. Change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "vel"
+(We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
+```
+
+Now to load the particles:
+
+```
+1. File --> Open ... make sure you are in the "AMReX_EB_Pachinko" directory and highlight "plt.." 
+   then click OK
+2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
+3. Click the "glyph" button (6 to the right of the calculator)
+4. Under "Glyph Source" select "Sphere" instead of "Arrow"
+5. Set "Radius" to 0.02 (or whatever you have set the particle_radius to in the inputs file
+   if you changed it)   
+6. Under "Scale" further down Set "Scale Factor" to 1 
+7. Under "Glyph Mode" "Masking" select "All Points" rather than "Uniform Spatial Distribution"
+8. Click green Apply button 
+```
+
+You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
+
+For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
+change the drop-down menu option (above the calculator row) from "VtkBlockColors" to "cpu" --
+if you have run with 4 processes then you will see the particles displayed with different colors.
 ### Follow-up Questions
 
 1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
