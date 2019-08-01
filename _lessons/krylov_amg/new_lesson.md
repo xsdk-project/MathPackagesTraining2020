@@ -399,12 +399,13 @@ the number of MPI processes due its use of the SpMV kernel.' %}
 Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
 Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
 
----
+#### Changing the behavior of the grid transfer operators
 
-### Set 4 - Setting the aggregation threshold parameter
+##### Change coarsening procedure by setting the aggregation threshold parameter
 
-We will now consider the behavior of multigrid methods when applied to problems with an underlying anistropy.
-This anisotropy could be due to the nature of the underlying partial differential equation (e.g., material coefficient variation), or to mesh stretching.
+In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
+or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns. A technical
+definition of a weak matrix connection $$a_{ij}$$ is $$|a_{ij} < \eps \sqrt{|a_ii||a_jj|}$$, where $$\eps \geq 0$$ is a user-specified value.
 
 Run the following two examples.
 
