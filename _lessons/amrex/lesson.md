@@ -305,7 +305,7 @@ We'll use Paraview to visualize the results for this example.
 There are three types of data from the simulation that we want to load:
 
 1. the EB representation of the cylinders
-2. the flow field
+2. the mesh data, which includes the velocity field and the processor ID
 3. the particle motion
 
 Because the EB data and mesh data don't change, we load these separately from the particles.
@@ -480,7 +480,7 @@ Again we'll use Paraview to visualize the results.
 Remember there are three types of data from the simulation that we want to load:
 
 1. the EB representation of the cylinders
-2. the flow field
+2. the mesh data, which includes just the processor ID for each grid
 3. the particle motion
 
 Because the EB data and mesh data don't change, we load these separately from the particles.
