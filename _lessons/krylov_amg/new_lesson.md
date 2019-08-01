@@ -424,7 +424,7 @@ problem converges in 22 iterations.'%}
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
 $$y$$-dimension.  The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
-![stencil::](anisotropic-stencil.png width="400")
+[<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
 
 A smoother like Jacobi or Gauss-Seidel works by averaging neighboring unknown''s values.  In the anisotropic case, an unknown is influenced primarily by its
 vertical neighbors.  These connections are called "strong" connections.
