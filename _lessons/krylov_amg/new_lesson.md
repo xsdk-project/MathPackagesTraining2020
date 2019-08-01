@@ -404,8 +404,12 @@ Choosing a smoother that is quite expensive and strong can result in a small num
 ##### Change coarsening procedure by setting the aggregation threshold parameter
 
 In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
-or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns. A technical
-definition of a weak matrix connection $$a_{ij}$$ is $$|a_{ij}|$$  $$|a_{ij}| < \epsilon \sqrt{(|a_{ii} a_{jj}|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
+or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns.
+<!--
+JHU: This won''t render properly
+A technical
+definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
+-->
 
 Run the following two examples.
 
@@ -419,14 +423,18 @@ problem converges in 22 iterations.'%}
 
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
-$$y$$-dimension.
+$$y$$-dimension.  The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
+[<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
+
+A smoother like Jacobi or Gauss-Seidel works by averaging neighboring unknown''s values.  In the anisotropic case, an unknown is influenced primarily by its
+vertical neighbors.  These connections are called "strong" connections.
 
 We can plot the aggregates that MueLu generated:
 ![Aggregates::](muelu-noDrop.png)
 (If you want to reproduce this, have a look at the parameter "aggregation: export visualization data".)
 
 We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
-This leads to bad convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
+This leads to poor convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
 
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
 
