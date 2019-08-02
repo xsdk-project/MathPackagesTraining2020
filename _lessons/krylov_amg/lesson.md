@@ -143,7 +143,7 @@ We observe the following:
 - The solve failed, since we reached 100 iterations, but only reduced the residual norm by a factor of 7e-06.
 
 Now, modify the input file to use the conjugate gradient method.
-The `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to use is `Pseudo Block CG`.
+<img src="arrow.png" width="30"> The `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to use is `Pseudo Block CG`.
 Rerun.
 
 {% include qanda question='Do you see any significant changes in convergence behavior?' answer='No, neither solver manages to converge in less than 100 iterations.' %}
@@ -182,21 +182,22 @@ Moreover, have a look at the configuration for Ifpack2, starting on line 74.
 ```
 This means that a single sweep of Gauss-Seidel is used.
 
-Rerun the code.
+<img src="arrow.png" width="30"> Rerun the code.
 
 {% include qanda question='Why did the solve become even worse?' answer='Gauss-Seidel is an unsymmetric preconditioner, but CG needs a symmetric one!' %}
 
 Switch the `relaxation: type` from `Gauss-Seidel` to `Symmetric Gauss-Seidel`.
 This corresponds to one forward and one backward sweep of Gauss-Seidel.
 
-Rerun to verify that the solver is now converging.
+<img src="arrow.png" width="30"> Rerun to verify that the solver is now converging.
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
 
-Switch `relaxation: sweeps` to 3, rerun and verify that the number of iterations further decreased.
+<img src="arrow.png" width="30"> Switch `relaxation: sweeps` to 3, rerun and verify that the number of iterations further decreased.
 
 Now, we will check whether we have created a scalable solver strategy.
-Record the number of iterations for different problem sizes by running
+
+<img src="arrow.png" width="30"> Record the number of iterations for different problem sizes by running
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
@@ -217,7 +218,7 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
+<img src="arrow.png" width="30"> On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
@@ -232,7 +233,9 @@ On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic mu
 
 #### Understanding information about the multigrid preconditioner
 
-Let''s look a little more closely at the output from the largest example.  Rerun:
+Let''s look a little more closely at the output from the largest example.
+
+<img src="arrow.png" width="30"> Rerun:
 ```
 ./MueLu_Stratimikos.exe --nx=200 --ny=200
 ```
@@ -267,7 +270,7 @@ This involves the following trade-off: Using a better smoother will reduce the n
 
 By default, we use a single sweep of Jacobi smoothing, which is very cheap.
 
-First, we run
+<img src="arrow.png" width="30"> First, we run
 ```
 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000
 ```
@@ -282,7 +285,7 @@ We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
 you can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
-Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
+<img src="arrow.png" width="30"> Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
 
 {% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations and time-to-solution are reduced.' %}
 
@@ -298,7 +301,7 @@ like Jacobi or Gauss-Seidel.
   - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
     e.g., coloring.
 
-Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
+<img src="arrow.png" width="30"> Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
 mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
@@ -327,7 +330,7 @@ A technical
 definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 -->
 
-Run the following two examples.
+<img src="arrow.png" width="30"> Run the following two examples.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
@@ -355,7 +358,7 @@ influenced by its vertical neighbors.  These connections are called "strong" con
 This same idea of strong connections can help guide creation of the next coarse level.   Unknowns that are strongly connected are grouped together into
 _aggregates_.  The option to control this in MueLu is `aggregation: drop tol`.
 
-Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of $$0.02$$.
+<img src="arrow.png" width="30"> Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of $$0.02$$.
 
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
 solver converges in 7 iterations.'%}
