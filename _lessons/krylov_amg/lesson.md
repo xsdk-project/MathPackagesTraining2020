@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-title: "Krylov Solvers and Algebraic Multigrid"
+title: "Krylov Solvers and Preconditioning"
 subheadline: ""
 permalink: "lessons/krylov_amg/"
 use_math: true
@@ -18,6 +18,8 @@ header:
 |How can we improve efficiency of the solver?|Understand the basic components of multigrid.|For certain common problem classes, multigrid methods require a constant number of iterations and constant work per unknown.|
 
 ### To begin this lesson
+
+<!-- Do we really want this? -->
 
 * [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"}
 ```
@@ -230,23 +232,23 @@ We observe the following:
 - We have set two termination criteria for the solve: 100 iterations or a reduction of the residual norm by 8 orders of magnitude.
 - The solve failed, since we reached 100 iterations, but only reduced the residual norm by a factor of 7e-06.
 
-#### Question and Answer Boxes
-
-Modify the input file to use the conjugate gradient method.
-The `Solver Type` parameter to use is `Pseudo Block CG`.
+Now, modify the input file to use the conjugate gradient method.
+The `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to use is `Pseudo Block CG`.
 Rerun.
 
-{% include qanda question='Do you see any significant changes in convergence behavior?' answer='No' %}
+{% include qanda question='Do you see any significant changes in convergence behavior?' answer='No, neither solver manages to converge in less than 100 iterations.' %}
 
-{% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements.' %}
+{% include qanda question='Why is it preferable to use conjugate gradients over GMRES in this case?' answer='CG has significantly lower memory requirements, since it uses a short recurrence. GMRES, on the other hand, has to keep the entire Krylov space around.' %}
 
-In order to check the last answer, run with CG and GMRES using
+You can check the last answer by comparing the approximate memory usage of CG and GMRES using
 ```
-/usr/bin/time -v ./MueLu_Stratimikos.exe --matrixType=Laplace3D
+/usr/bin/time -v ./MueLu_Stratimikos.exe --nx=1000 --ny=1000 2>&1 | grep "Maximum resident set size"
 ```
-and compare the "Maximum resident set size".
+We used a larger problem to be able to see the difference more clearly.
 
-IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
+In what follows, we will be using the CG solver.
+
+<!-- IS THERE A BETTER WAY OF CHECKING PEAK MEMORY? -->
 
 ---
 
@@ -254,11 +256,11 @@ IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
 
 We now explore some simple (and quite generic) options for preconditioning the problem.
 
-By default, the `Preconditioner Type` parameter was set to `None`, meaning no preconditioning.
+By default, the `Preconditioner Type` parameter was set to `None` on line 59, meaning no preconditioning.
 Use `Ifpack2` instead.
-(Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.)
+Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.
 
-Moreover, have a look at the configuration for Ifpack2.
+Moreover, have a look at the configuration for Ifpack2, starting on line 74.
 ```
 <ParameterList name="Ifpack2">
   <Parameter name="Prec Type" type="string" value="relaxation"/>
@@ -296,7 +298,7 @@ Record the number of iterations for different problem sizes by running
 
 The number of iterations taken by CG scales with the square root of the condition number $$\kappa(PA)$$ of the preconditioned system, where $$P$$ is the preconditioner.
 
-{% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='The condition number is proportional to the number of unknowns.' %}
+{% include qanda question='Based on the iterations you recorded, how does this condition number roughly scale with respect to the number of unknowns?' answer='In each step, the number of iterations grows by a factor of 2, and the number of unknows grows by a factor of 4. Hence the condition number is proportional to the number of unknowns.' %}
 
 ---
 
@@ -305,7 +307,7 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-Switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
+On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
@@ -314,9 +316,9 @@ Switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid pac
 
 {% include qanda question='Is the solver scalable?' answer='Yes, the number of iterations stays more or less constant as we increase the problem size.' %}
 
-The cost of a single mat-vec scales with the number of unknowns because the number of entries per row is bounded and small.
-Since the number of iterations is constant, we (experimentally) have verified that multigrid has optimal complexity.
-This means that any changes that we will make from here on can only lead to a constant factor improvement.
+<!-- The cost of a single mat-vec scales with the number of unknowns because the number of entries per row is bounded and small. -->
+<!-- Since the number of iterations is constant, we (experimentally) have verified that multigrid has optimal complexity. -->
+<!-- This means that any changes that we will make from here on can only lead to a constant factor improvement. -->
 
 #### Understanding information about the multigrid preconditioner
 
@@ -358,16 +360,18 @@ First, we run
 to display timing information on a large enough problem.
 The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
 (You might want to run this more than once in case you are experiencing some system noise.)
+Since there are quite a lot of timers, you could grep for the iteration count and the timer by appending ` | grep "\(Belos: PseudoBlockCGSolMgr total solve time\)\|\(Number of Iterations\)"` to the command.
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
 you can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
-Make the required changes in the input file and compare the timings with the Jacobi case.
+Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
 
 {% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations an time-to-solution are reduced.' %}
 
 {% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
+Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
 
 {% include qanda question='Try increasing the number of MPI ranks.  What happens ?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
@@ -416,13 +420,13 @@ Run the following two examples.
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-{% include qanda question='What do you observe?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
-problem converges in 22 iterations.'%}
-
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
 $$y$$-dimension.  The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
+
+{% include qanda question='What do you observe in the previous runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+problem converges in 22 iterations.'%}
 
 A smoother like Jacobi or Gauss-Seidel works by averaging neighboring unknown''s values.  In the anisotropic case, an unknown is influenced primarily by its
 vertical neighbors.  These connections are called "strong" connections.
@@ -434,7 +438,7 @@ We can plot the aggregates that MueLu generated:
 We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
 This leads to poor convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
 
-Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` in the input deck to have a value of 0.02.
+Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of 0.02.
 
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
 solver converges in 7 iterations.'%}
