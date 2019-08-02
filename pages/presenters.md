@@ -94,7 +94,7 @@ permalink: "/presenters/"
 ### Barry Smith
 
 |:---:|:---:|
-|![](https://avatars2.githubusercontent.com/u/512185?s=400&v=4){:width="200px"}|Key Expertise: [PETSc][petsc], [FASTMath][fastmath], [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][bs-m]<br><br>GitHub: [Profile][bs-g]|
+|![](https://avatars2.githubusercontent.com/u/512185?s=400&v=4){:width="200px"}|Key Expertise: [PETSc][petsc], [FASTMath][fastmath], [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][bs-m]<br><br>BitBucket: [Profile][bs-b]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -219,7 +219,7 @@ permalink: "/presenters/"
 [ad-g]: https://github.com/denera
 [cg-g]: https://github.com/cgcgcg
 [jh-g]: https://github.com/jhux2
-[bs-g]: https://github.com/BarrySmith
+[bs-b]: https://www.mcs.anl.gov/~bsmith
 [sl-g]: https://github.com/xiaoyeli
 [uy-g]: https://github.com/ulrikeyang
 [sh-g]: https://github.com/shuds13

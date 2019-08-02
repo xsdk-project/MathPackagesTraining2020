@@ -48,7 +48,7 @@ This protocol is necessary only during the day-time hands-on.
 If you are running a Windows laptop or Chromebook, please be prepared to pair
 with someone on OSX or Linux sitting near you or just follow the pre-tested lesson content.
 
-#### Subject Matter Expert One-on-Ones
+#### Subject Matter Expert Two-on-Ones
 We are providing a [sign-up form](https://docs.google.com/forms/d/e/1FAIpQLScO1Yqwox6cbo0frQ9tJZMAWW8O8OLfhZm6ztbbC5gBI2Wn0g/viewform?usp=sf_link)
 to arrange up to three, 20 minute two-on-one discussions with subject matter experts (SMEs)
 in the evening which you can also find under the Intro menu. If you are interested,
@@ -56,7 +56,8 @@ please sign up by 4 pm CT (end of the afternoon break). After dinner, we will pr
 schedule for evening two-on-ones.  This is a great opportunity to discuss detailed issues
 with experts in the field. You will, of course, have to decide how best to balance any
 two-on-one discussions with your evening hands-on exercise activities as these activities
-will both occur concurrently.
+will both occur concurrently. Finally, don't forget to take advantage of time during
+breaks to visit with SMEs. We are here to help and happy to talk with you.
 
 #### For Evening, Consider Working in Teams (2-4)
 For the evening hands-on exercises, we encourage participants to work in teams of 2-4.
