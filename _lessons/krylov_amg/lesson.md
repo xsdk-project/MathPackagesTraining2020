@@ -353,14 +353,6 @@ In the second anisotropic case, the smoothing is primarily
 influenced by its vertical neighbors.  These connections are called "strong" connections.
 
 This same idea of strong connections can help guide creation of the next coarse level by determining how unknowns are grouped together.
-<!--
-We can plot the aggregates that MueLu generated:
-![Aggregates::](muelu-noDrop.png)
-(If you want to reproduce this, have a look at the parameter `aggregation: export visualization data`.)
-
-We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
-This leads to poor convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
--->
 
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of 0.02.
 
