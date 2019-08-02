@@ -332,10 +332,14 @@ The multigrid summary provides the following information:
     - The smoother used on each level
     - Matrix statistics for each level (rows, number of nonzeros, number of processors)
     - The multigrid cycle type
-    - Operator complexity  (given by the formula $$\frac{\Sigma_0^L nnz(A_i)}{nnz(A_L)}$$)
+    - Operator complexity
     - Smoother complexity
 
-The operator complexity is given by the formula $$\frac{\Sigma_0^L nnz(A_i)}{nnz(A_L)}$$.
+The operator complexity is given by the formula
+
+$$\frac{\Sigma_0^L nnz(A_i)}{nnz(A_0)},$$
+
+where $$A_0$$ is the fine level matrix.
 
 {% include qanda question='How does the operator complexity help the user assess potential performance?' answer='
 The complexity gives the ratio of nonzeros in all matrices compared to the fine level matrix.  This is roughly the ratio of FLOPs required by
