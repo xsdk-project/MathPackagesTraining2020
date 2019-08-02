@@ -45,8 +45,8 @@
     url: "https://amrex-codes.github.io/amrex/"
   - title: "SUNDIALS"
     url: "https://computation.llnl.gov/projects/sundials"
-  - title: "Trilinos"
-    url: "https://trilinos.github.io"
+  - title: "Trilinos/MeuLu"
+    url: "https://trilinos.github.io/muelu.html"
   - title: "PETSc/Tao"
     url: "https://www.mcs.anl.gov/petsc/"
 
