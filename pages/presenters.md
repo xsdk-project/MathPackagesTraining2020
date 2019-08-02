@@ -76,7 +76,7 @@ permalink: "/presenters/"
 ### Christian Glusa
 
 |:---:|:---:|
-|![](https://avatars3.githubusercontent.com/u/4666273?s=400&v=4){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MeuLu][meulu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][cg-m]<br><br>GitHub: [Profile][cg-g]|
+|![](https://avatars3.githubusercontent.com/u/4666273?s=400&v=4){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MueLu][muelu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][cg-m]<br><br>GitHub: [Profile][cg-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -85,7 +85,7 @@ permalink: "/presenters/"
 ### Jonathan Hu
 
 |:---:|:---:|
-|![](https://fastmath-scidac.org/system/files/styles/thumbnail/private/pictures/picture-19-1343084261.jpg%3Fitok=VDisfbuM){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MeuLu][meulu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][jh-m]<br><br>GitHub: [Profile][jh-g]|
+|![](https://fastmath-scidac.org/system/files/styles/thumbnail/private/pictures/picture-19-1343084261.jpg%3Fitok=VDisfbuM){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MueLu][muelu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][jh-m]<br><br>GitHub: [Profile][jh-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -164,7 +164,7 @@ permalink: "/presenters/"
 [sundials]: https://computing.llnl.gov/projects/sundials
 [visit]: https://visit.llnl.gov
 [trilinos]: https://trilinos.github.io
-[meulu]: https://trilinos.github.io/muelu.html
+[muelu]: https://trilinos.github.io/muelu.html
 [superlu]: https://portal.nersc.gov/project/sparse/superlu/
 [strumpack]: https://github.com/pghysels/STRUMPACK
 [hypre]: https://computing.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods
