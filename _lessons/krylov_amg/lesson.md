@@ -352,7 +352,7 @@ In the second anisotropic case, the smoothing is primarily
 influenced by its vertical neighbors.  These connections are called "strong" connections.
 
 This same idea of strong connections can help guide creation of the next coarse level.   Unknowns that are strongly connected are grouped together into
-/aggregates/.  The option to control this in MueLu is `aggregation: drop tol`.
+_aggregates_.  The option to control this in MueLu is `aggregation: drop tol`.
 
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of $$0.02$$.
 
