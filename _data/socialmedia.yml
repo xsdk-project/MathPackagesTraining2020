@@ -3,15 +3,20 @@
   class: icon-home
   title: "FASTMath"
 
-- name: ATPESC
-  url: https://www.youtube.com/playlist?list=PLGj2a3KTwhRZKjI7pRFxQDBORsswJAdJt
+- name: ATPESC17
+  url: https://www.youtube.com/watch?v=yvBrZ-R_IRg&list=PLGj2a3KTwhRZKjI7pRFxQDBORsswJAdJt
   class: icon-youtube
   title: "ATPESC-2017 Numerical Libaries"
+
+- name: ATPESC18
+  url: https://www.youtube.com/watch?v=mkIgyFF6a-4&list=PLGj2a3KTwhRbS2ghSgGvUjnVvEfv4US4R
+  class: icon-youtube
+  title: "ATPESC-2018 Numerical Libaries"
 
 - name: IDEAS-ECP
   url: https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos
   class: icon-youtube
-  title: "IDEAS on YouTube"
+  title: "IDEAS Productivity Webinars"
 
 - name: ECP 
   url: http://twitter.com/exascaleproject

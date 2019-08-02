@@ -1,3 +1,15 @@
+TODO for ATPESC2019
+    - Review hand-coded-heat lesson
+    - Try running other's software according to lesson
+    - Review slides
+    - Reherse my hands-on lesson
+    - Google Q&A Forms
+    - SME Speed Dating Sign Up Sheet
+    - Setup Instructions
+    - Email to students
+    - Chat
+  
+ 
 COMPLETED
     * how to make work on github
         - so far, just stood up as a site under my name
