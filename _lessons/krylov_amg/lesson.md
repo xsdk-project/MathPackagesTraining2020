@@ -119,105 +119,15 @@ Galeri complete.
   *****   Test 1 : Belos::StatusTestImpResNorm<>: (2-Norm Res Vec) / (2-Norm Prec Res0), tol = 1e-08
   *******************************************************
   Iter   0, [ 1] :    1.000000e+00
-  Iter   1, [ 1] :    2.667840e-01
-  Iter   2, [ 1] :    9.630585e-02
-  Iter   3, [ 1] :    4.716414e-02
-  Iter   4, [ 1] :    2.601988e-02
-  Iter   5, [ 1] :    1.595708e-02
-  Iter   6, [ 1] :    1.036451e-02
-  Iter   7, [ 1] :    7.145844e-03
-  Iter   8, [ 1] :    5.142773e-03
-  Iter   9, [ 1] :    3.818838e-03
   Iter  10, [ 1] :    2.934358e-03
-  Iter  11, [ 1] :    2.327132e-03
-  Iter  12, [ 1] :    1.887747e-03
-  Iter  13, [ 1] :    1.533947e-03
-  Iter  14, [ 1] :    1.249840e-03
-  Iter  15, [ 1] :    1.026678e-03
-  Iter  16, [ 1] :    8.508437e-04
-  Iter  17, [ 1] :    7.139002e-04
-  Iter  18, [ 1] :    6.095116e-04
-  Iter  19, [ 1] :    5.267792e-04
   Iter  20, [ 1] :    4.605673e-04
-  Iter  21, [ 1] :    4.060881e-04
-  Iter  22, [ 1] :    3.587923e-04
-  Iter  23, [ 1] :    3.206265e-04
-  Iter  24, [ 1] :    2.881254e-04
-  Iter  25, [ 1] :    2.601520e-04
-  Iter  26, [ 1] :    2.361561e-04
-  Iter  27, [ 1] :    2.148650e-04
-  Iter  28, [ 1] :    1.962584e-04
-  Iter  29, [ 1] :    1.795979e-04
   Iter  30, [ 1] :    1.647752e-04
-  Iter  31, [ 1] :    1.510336e-04
-  Iter  32, [ 1] :    1.381126e-04
-  Iter  33, [ 1] :    1.266867e-04
-  Iter  34, [ 1] :    1.165070e-04
-  Iter  35, [ 1] :    1.074754e-04
-  Iter  36, [ 1] :    9.948513e-05
-  Iter  37, [ 1] :    9.235956e-05
-  Iter  38, [ 1] :    8.581441e-05
-  Iter  39, [ 1] :    7.984624e-05
   Iter  40, [ 1] :    7.453272e-05
-  Iter  41, [ 1] :    7.196591e-05
-  Iter  42, [ 1] :    6.928686e-05
-  Iter  43, [ 1] :    6.657443e-05
-  Iter  44, [ 1] :    6.387575e-05
-  Iter  45, [ 1] :    6.120425e-05
-  Iter  46, [ 1] :    5.852310e-05
-  Iter  47, [ 1] :    5.586336e-05
-  Iter  48, [ 1] :    5.324640e-05
-  Iter  49, [ 1] :    5.066589e-05
   Iter  50, [ 1] :    4.822835e-05
-  Iter  51, [ 1] :    4.590083e-05
-  Iter  52, [ 1] :    4.361577e-05
-  Iter  53, [ 1] :    4.140468e-05
-  Iter  54, [ 1] :    3.925937e-05
-  Iter  55, [ 1] :    3.718955e-05
-  Iter  56, [ 1] :    3.519377e-05
-  Iter  57, [ 1] :    3.324371e-05
-  Iter  58, [ 1] :    3.131167e-05
-  Iter  59, [ 1] :    2.944434e-05
   Iter  60, [ 1] :    2.768790e-05
-  Iter  61, [ 1] :    2.603053e-05
-  Iter  62, [ 1] :    2.450479e-05
-  Iter  63, [ 1] :    2.311998e-05
-  Iter  64, [ 1] :    2.185368e-05
-  Iter  65, [ 1] :    2.074036e-05
-  Iter  66, [ 1] :    1.978885e-05
-  Iter  67, [ 1] :    1.897970e-05
-  Iter  68, [ 1] :    1.828365e-05
-  Iter  69, [ 1] :    1.768024e-05
   Iter  70, [ 1] :    1.712668e-05
-  Iter  71, [ 1] :    1.661157e-05
-  Iter  72, [ 1] :    1.612929e-05
-  Iter  73, [ 1] :    1.567208e-05
-  Iter  74, [ 1] :    1.522580e-05
-  Iter  75, [ 1] :    1.477677e-05
-  Iter  76, [ 1] :    1.430758e-05
-  Iter  77, [ 1] :    1.380182e-05
-  Iter  78, [ 1] :    1.324124e-05
-  Iter  79, [ 1] :    1.261394e-05
   Iter  80, [ 1] :    1.194621e-05
-  Iter  81, [ 1] :    1.162435e-05
-  Iter  82, [ 1] :    1.138018e-05
-  Iter  83, [ 1] :    1.119328e-05
-  Iter  84, [ 1] :    1.100671e-05
-  Iter  85, [ 1] :    1.081077e-05
-  Iter  86, [ 1] :    1.062132e-05
-  Iter  87, [ 1] :    1.042180e-05
-  Iter  88, [ 1] :    1.022048e-05
-  Iter  89, [ 1] :    1.000587e-05
   Iter  90, [ 1] :    9.782121e-06
-  Iter  91, [ 1] :    9.553433e-06
-  Iter  92, [ 1] :    9.324356e-06
-  Iter  93, [ 1] :    9.093214e-06
-  Iter  94, [ 1] :    8.863016e-06
-  Iter  95, [ 1] :    8.625018e-06
-  Iter  96, [ 1] :    8.370087e-06
-  Iter  97, [ 1] :    8.095293e-06
-  Iter  98, [ 1] :    7.810039e-06
-  Iter  99, [ 1] :    7.515709e-06
   Iter 100, [ 1] :    7.221948e-06
   Passed.......OR Combination ->
     Failed.......Number of Iterations = 100 == 100
@@ -382,30 +292,37 @@ Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/
 {% include qanda question='Try increasing the number of MPI ranks.  What happens ?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
 Another common smoother is a matrix polynomial, specifically, a Chebyshev polynomial.  This type smoother has certain advantages over relaxation methods
-like Jacobi or Gauss-Seidel.  First, Chebyshev will have better convergence properties than Jacobi.  Second, the Chebyshev computational kernel is a
-sparse matrix-vector multiply (SpMV), which is invariant with respect to the number of processes.
-In contrast, virtually all parallel Gauss-Seidel implementations are actually block Jacobi.  Each block
-is the set of matrix rows local to a process, and Gauss-Seidel is applied only to the local block.
-Third, the SpMV kernel is easily parallelizable, whereas Gauss-Seidel has limited inherent parallelism.
+like Jacobi or Gauss-Seidel.
+  - Chebyshev will have better convergence properties than Jacobi.
+  - The Chebyshev computational kernel is a sparse matrix-vector multiply (SpMV), which is invariant with respect to the number of processes.
+  - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
+    e.g., coloring.
 
-First, we compare the performance of symmetric Gauss-Seidel on one MPI rank with the performance on 10 MPI ranks.
-```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-```
 Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
 mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
 ```
 
-{% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
+{% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
 {% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
 receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
 the number of MPI processes due its use of the SpMV kernel.' %}
 
-Choosing a smoother that is very cheap and rather weak can result in a lot of solver iterations.
-Choosing a smoother that is quite expensive and strong can result in a small number of iterations, but overall long solve time.
+Change the input file to use ILU(k) (incomplete LU factorization) smoothing instead of Gauss-Seidel, and repeat the experiment.
+
+{% include qanda question='What do you observe?' answer='The sed.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
+
+```
+mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+```
+
+Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
+Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
+run times.
+
+In practice, one must strike a balance.
 
 #### Changing the behavior of the grid transfer operators
 
