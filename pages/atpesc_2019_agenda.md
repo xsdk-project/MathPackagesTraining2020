@@ -19,7 +19,7 @@ permalink: "/atpesc_2019_agenda/"
 |12:00pm|30|[Time Integration and<br>Nonlinear Solvers][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
 |12:30pm|60|Lunch|Mingle with SMEs|
 |1:30pm|30|[Time Integration and<br>Nonlinear Solvers (cont'd)][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
-|2:00pm|60|[Krylov Solvers and<br>Preconditioning][XX] | [Jonathon Hu][jh]<br>[Christian Glusa][cg]<br>[Hands-on examples][l23]<br>[with Meulu][w24]|
+|2:00pm|60|[Krylov Solvers and<br>Preconditioning][XX] | [Jonathan Hu][jh]<br>[Christian Glusa][cg]<br>[Hands-on examples][l23]<br>[with Muelu][w24]|
 |3:00pm|30|Break|Mingle with SMEs|
 |3:30pm|55|Panel: Software Engineering<br>for Extreme Scale Science | Moderater<br>[Mark C Miller][mcm]<br>Panelists<br>[Barry Smith][bs]<br>[Ann Almgren][aa]<br>[Lois Curfman McInnes][lcm]<br>[Jonathan Hu][jh]<br>[Dan Reynolds][dr]|
 |4:25pm|45|[Numerical Optimization][XX] |[Alp Dener][ad]<br>[Hands-on&nbsp;examples][l25]<br>[with PETSc/TAO][w10]|
