@@ -309,15 +309,6 @@ mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 -
 receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
 the number of MPI processes due its use of the SpMV kernel.' %}
 
-Change the input file to use ILU(0) (incomplete LU factorization) smoothing instead of Gauss-Seidel, and repeat the experiment.
-
-{% include qanda question='What do you observe?' answer='The sed.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
-
-```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-```
-
 Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
 Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
 run times.
