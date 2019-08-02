@@ -38,8 +38,6 @@ It is discretized using central finite differences, leading to a symmetric posit
 
 For this lesson, we will be using the executable `MueLu_Stratimikos.exe` from the MueLu package of Trilinos which allows us to test a variety of solvers and preconditioners.
 
-WHERE WILL THE EXECUTABLE BE LOCATED?
-
 For the first part of the lesson, we will be running on a single MPI rank, so no need to ask for a massive allocation.
 
 The executable takes several command line arguments that influence the linear system that is generated on the fly or read in from file.
@@ -235,7 +233,7 @@ We observe the following:
 #### Question and Answer Boxes
 
 Modify the input file to use the conjugate gradient method.
-The "Solver Type" parameter to use is "Pseudo Block CG".
+The `Solver Type` parameter to use is `Pseudo Block CG`.
 Rerun.
 
 {% include qanda question='Do you see any significant changes in convergence behavior?' answer='No' %}
@@ -256,8 +254,8 @@ IS THERE A BETTER WAY OF CHECKING PEAK MEMORY?
 
 We now explore some simple (and quite generic) options for preconditioning the problem.
 
-By default, the "Preconditioner Type" parameter was set to "None", meaning no preconditioning.
-Use "Ifpack2" instead.
+By default, the `Preconditioner Type` parameter was set to `None`, meaning no preconditioning.
+Use `Ifpack2` instead.
 (Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.)
 
 Moreover, have a look at the configuration for Ifpack2.
@@ -276,14 +274,14 @@ Rerun the code.
 
 {% include qanda question='Why did the solve become even worse?' answer='Gauss-Seidel is an unsymmetric preconditioner, but CG needs a symmetric one!' %}
 
-Switch the "relaxation: type" from "Gauss-Seidel" to "Symmetric Gauss-Seidel".
+Switch the `relaxation: type` from `Gauss-Seidel` to `Symmetric Gauss-Seidel`.
 This corresponds to one forward and one backward sweep of Gauss-Seidel.
 
 Rerun to verify that the solver is now converging.
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
 
-Switch "relaxation: sweeps" to 3 and rerun.
+Switch `relaxation: sweeps` to 3 and rerun.
 
 Now, we will check whether we have created a scalable solver strategy.
 Record the number of iterations for different problem sizes by running
@@ -307,7 +305,7 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-Switch the "Preconditioner Type" to "MueLu", which is an algebraic multigrid package in Trilinos, and run
+Switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
@@ -358,7 +356,7 @@ First, we run
 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000
 ```
 to display timing information on a large enough problem.
-The relevant timer to look at is "Belos: PseudoBlockCGSolMgr total solve time".
+The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
 (You might want to run this more than once in case you are experiencing some system noise.)
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
@@ -431,7 +429,7 @@ vertical neighbors.  These connections are called "strong" connections.
 
 We can plot the aggregates that MueLu generated:
 ![Aggregates::](muelu-noDrop.png)
-(If you want to reproduce this, have a look at the parameter "aggregation: export visualization data".)
+(If you want to reproduce this, have a look at the parameter `aggregation: export visualization data`.)
 
 We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
 This leads to poor convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
@@ -482,7 +480,7 @@ Please feel free to submit questions, feature requests and bug reports to the is
 ### Evening Activity 1
 
 You can compare the scaling results from Set 2 to the case when no preconditioner is used.
-You should increase the "Maximum Iterations" parameter of the CG solve to at least 500 for this, so that the solver actually converges.
+You should increase the `Maximum Iterations` parameter of the CG solve to at least 500 for this, so that the solver actually converges.
 
 What you should observe is that the preconditioner significantly cuts down on the number of iterations, but that the scaling of the solver remains the same.
 
@@ -518,7 +516,7 @@ It would be better for smaller matrices to live on smaller sub-communicators.
 
 #### Repartitioning
 
-Enable the repartitioning option of MueLu by uncommenting the relevant block in the input file. (That's all the options starting with "repartitioning: ".)
+Enable the repartitioning option of MueLu by uncommenting the relevant block in the input file. (That's all the options starting with `repartitioning: `.)
 
 What this means is that based on several criteria, MueLu will try to repartition coarser level matrices onto a sub-communicator of smaller size, thereby improving the volume-to-surface ratio.
 By default, MueLu uses a partitioner from Zoltan2, a Trilinos package that provides several algorithms for partitioning, load-balancing, ordering and coloring.
@@ -528,15 +526,15 @@ Rerun the code to verify that the coarsest level now only lives on a single MPI 
 
 #### Other types of multigrid hierarchies
 
-By default, MueLu builds a so-called "smoothed aggregation" multigrid preconditioner.
+By default, MueLu builds a so-called `smoothed aggregation` multigrid preconditioner.
 What this means is that in order to build coarser matrices, connected unknowns are grouped into aggregates.
 A tentative prolongation operator is formed, which preserves a pre-defined near-nullspace.
 (In the case of our Poisson equation, that's the constant function.)
 In order to obtain provable scalability, this operator is smoothed using a single step of Jacobi to obtain the final prolongator.
 This implies, however, that the prolongator contains more non-zeros than the tentative prolongator.
-Switching the parameter "multigrid algorithm" to "unsmoothed" skips the smoothing step and uses the tentative prolongator directly.
+Switching the parameter `multigrid algorithm` to `unsmoothed` skips the smoothing step and uses the tentative prolongator directly.
 
-Compare timings for "sa" and "unsmoothed".
+Compare timings for `sa` and `unsmoothed`.
 {% include qanda question='Can you see an improvement?' answer='No, both iteration count and time-to-solution actually increase.' %}
 
 {% include qanda question='Looking at the respective multigrid summaries, can you observe a reduction of non-zeros (nnz)?' answer='Yes, the number of nonzeros is reduced.' %}
@@ -547,7 +545,7 @@ Problems which have more non-zeros per row (e.g. in higher spatial dimension) ca
 #### MueLu on next-generation platforms
 
 MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
-This code can be enabled at runtime by setting the parameter "use kokkos refactor" to true.
+This code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
 Cooley has two GPUs per node.
 Try re-running with the refactor option set.
 
