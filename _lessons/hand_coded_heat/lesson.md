@@ -17,9 +17,9 @@ header:
 
 |Questions|Objectives|Key Points|
 |:--------|:---------|:---------|
-|What is a numerical algorithm?|Implement a simple numerical algorithm.<br>Use it to solve a simple science problem.|Numerical Packages are used<br>to solve scientific problems<br>involving [PDEs.][PDE]|
+|What is a numerical algorithm?|Implement a simple numerical algorithm.<br>Use it to solve a simple science problem.|Numerical Packages are used<br>to solve scientific problems involving [PDEs.][PDE]|
 |What is [discretization][DISC]?|Introduce basic concepts in solving continuous<br>[PDEs][PDE] using discrete computations.|_Meshing_ (or [discretization][DISC]) is an<br>important first step.|
-|How can numerical packages<br>help me with my software?|Understand the value numerical packages<br>offer in developing science applications|Numerical packages offer many advantages<br>including: rigorous/vetted numerics<br>increased generality, extreme scalability,<br>performance portability, enhanced reproducibility<br>and many others...|
+|How can numerical packages<br>help me with my software?|Understand the value numerical packages<br>offer in developing science applications|Numerical packages offer: rigorous/vetted numerics<br>greater generality, extreme scalability and more...|
 
 #### To begin this lesson
 
