@@ -360,7 +360,7 @@ solver converges in 7 iterations.'%}
 
 We plot the resulting aggregates.  (Recall that aggregates are groups of fine DOFs that form coarse DOFs.)
 
-![Aggregates with dropping enabled::](muelu-drop.png)
+[<img src="muelu-drop.png" width="400">](muelu-drop.png)
 
 (If you want to reproduce this, have a look at the parameter `aggregation: export visualization data`.)
 
