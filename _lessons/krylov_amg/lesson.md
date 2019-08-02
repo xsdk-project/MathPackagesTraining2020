@@ -261,7 +261,7 @@ Use `Ifpack2` instead.
 Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.
 
 Moreover, have a look at the configuration for Ifpack2, starting on line 74.
-```
+```xml
 <ParameterList name="Ifpack2">
   <Parameter name="Prec Type" type="string" value="relaxation"/>
   <ParameterList name="Ifpack2 Settings">
@@ -360,7 +360,9 @@ First, we run
 to display timing information on a large enough problem.
 The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
 (You might want to run this more than once in case you are experiencing some system noise.)
-Since there are quite a lot of timers, you could grep for the iteration count and the timer by appending ` | grep "\(Belos: PseudoBlockCGSolMgr total solve time\)\|\(Number of Iterations\)"` to the command.
+Since there are quite a lot of timers, you could grep for the iteration count and the timer by appending
+```| grep "\(Belos: PseudoBlockCGSolMgr total solve time\)\|\(Number of Iterations\)"```
+to the command.
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
