@@ -551,9 +551,17 @@ Problems which have more non-zeros per row (e.g. in higher spatial dimension) ca
 #### MueLu on next-generation platforms
 
 MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
-This code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
-Cooley has two GPUs per node.
-Try re-running with the refactor option set.
+If MueLu has been compiled with OpenMP or CUDA support, this code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
+
+Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
+Try running
+```
+export CUDA_LAUNCH_BLOCKING=1
+./MueLu_Stratimikos_gpu.exe
+```
+with the refactor option set.
+
+
 
 ---
 
