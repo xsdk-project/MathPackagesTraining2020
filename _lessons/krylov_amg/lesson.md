@@ -87,7 +87,8 @@ If you want to keep track of your changes and work with different input files, t
 ### Set 1 - Krylov solver, no preconditioner
 
 The default Krylov method is GMRES, and no preconditioner is used.
-[<img src="arrow.png" width="20">]() Run
+
+<img src="arrow.png" width="30"> Run
 ```
 ./MueLu_Stratimikos.exe
 ```
