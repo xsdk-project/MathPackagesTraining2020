@@ -283,7 +283,7 @@ Rerun to verify that the solver is now converging.
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
 
-Switch `relaxation: sweeps` to 3 and rerun.
+Switch `relaxation: sweeps` to 3, rerun and verify that the number of iterations further decreased.
 
 Now, we will check whether we have created a scalable solver strategy.
 Record the number of iterations for different problem sizes by running
@@ -368,7 +368,7 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 
 Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
 
-{% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations an time-to-solution are reduced.' %}
+{% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations and time-to-solution are reduced.' %}
 
 {% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
