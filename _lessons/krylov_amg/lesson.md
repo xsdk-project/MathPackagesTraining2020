@@ -144,8 +144,7 @@ We observe the following:
 
 Now, modify the input file to use the conjugate gradient method.
 
-<img src="arrow.png" width="30"> The `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to use is `Pseudo Block CG`.
-Rerun.
+<img src="arrow.png" width="30"> Change the `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to `Pseudo Block CG` and rerun.
 
 {% include qanda question='Do you see any significant changes in convergence behavior?' answer='No, neither solver manages to converge in less than 100 iterations.' %}
 
