@@ -80,7 +80,7 @@ permalink: "/atpesc_2019_agenda/"
 [l22]: ../lessons/time_integrators/sundials
 [l23]: ../lessons/krylov_amg/
 [l24]: ../lessons/superlu_mfem/
-[l25]: ../lessons/adjoint/
+[l25]: ../lessons/obstacle_tao/
 [l27]: ../lessons/hand_coded_heat/
 [l28]: ../lessons/amrex/
 
