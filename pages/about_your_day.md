@@ -16,12 +16,14 @@ following fairly structured lesson plans.
 * Evening hands-on will permit deeper dive into hands-on exercises of your choosing
 and with less structured lessons.
 
-#### Points and Prizes!
-We have some fun prizes at the end of the evening! We will be keeping track of
-hands-on exercise progress and points totals. At the end of the evening session,
-the highest point getters will be rewarded with some cool gifts.
+#### Fun and Prizes!
+We have some fun prizes to give away at the end of the evening! The hands on exercises
+offer **optional** question and answer forms with the chance to gain points towards fun
+prizes at the end of the evening. **These are optional** and intended to be for fun.
+You are not **required** to participate but we highly recommend it for a few reasons.
+First, its designed to be fun. Second, it helps us guage whether or not our training
+materials are really having the intended impact.
 
-#### Q&As and Show-Your-Works
 * We have tried to design most of the hands-on lessons (day-time or evening) with
 questions for which you will submit Google Forms for your answers.
 * During day-time hands-on exercises, the expandable question-and-answer boxes
@@ -69,16 +71,16 @@ be best to try to pair with someone who is.
 #### Todays Agenda
 The [agenda for today's presentations and hands-on exercises](atpesc_2019_agenda.md)
 is available under the _Intro_ menu on this site. This includes links to presentation slides,
-presenter emails and hands-on lesson plans.
+presenter information and hands-on lesson plans.
 
 #### Chat Option
 We will set up a Google Hangouts Chat starting the morning of the session. Expect to receive
-an email invite with the subject _ATPESC2018 Numerical Packages Chat_. We will also include
+an email invite with the subject _ATPESC2019 Numerical Packages Chat_. We will also include
 a link under the Intro menu. We ask that you please exercise discretion and use this chat only
 for interactions as they pertain to today’s material and exercises.
 
 #### Getting Help
 * If during day-time hands-on exercises, please use your red post-it note (see above)
 * Feel free to flag any of us down throughout the day.
-* You may send email to
-[Mark Miller, miller86@llnl.gov, Satish Balay,balay@mcs.anl.gov and Cameron Smith, smithc11@rpi.edu](mailto:balay@mcs.anl.gov,smithc11@rpi.edu,miller86@llnl.gov?subject=ATPESC2018%20Tech%20Support)
+* Feel free to send email to
+[Mark Miller, miller86@llnl.gov and Satish Balay,balay@mcs.anl.gov](mailto:balay@mcs.anl.gov,miller86@llnl.gov?subject=ATPESC2019%20Tech%20Support)
