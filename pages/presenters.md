@@ -200,7 +200,7 @@ permalink: "/presenters/"
 [aa-m]: <mailto:ASAlmgren@lbl.gov>
 [dw-m]: <mailto:DEWillcox@lbl.gov>
 [ad-m]: <mailto:adener@anl.gov>
-[cg-m]: <mailto:aglusa@sandia.gov>
+[cg-m]: <mailto:caglusa@sandia.gov>
 [jh-m]: <mailto:jhu@sandia.gov>
 [bs-m]: <mailto:bsmith@mcs.anl.gov>
 [sl-m]: <mailto:xsli@lbl.gov>
