@@ -347,7 +347,7 @@ problem converges in 22 iterations.'%}
 
 A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
 
-$$x_i = \frac{1}{a_{ii}} (b_i - \Sigma_j a_{ij} x_j).$$
+$$x_i = \frac{1}{a_{ii}} (b_i - \Sigma_{j\neq i} a_{ij} x_j).$$
 
 In the second anisotropic case, the smoothing is primarily
 influenced by its vertical neighbors.  These connections are called "strong" connections.
