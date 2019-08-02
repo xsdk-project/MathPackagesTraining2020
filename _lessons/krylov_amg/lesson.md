@@ -334,31 +334,45 @@ Run the following two examples.
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements ($$x$$ and $$y$$ points equidistant).
-The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an $$x$$-dimension 10 times greater than its
-$$y$$-dimension.  The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
+The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements:
+[<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png)
+
+The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an aspect ratio of 10 to 1:
+[<img src="anisotropic-mesh.png" width="400">](anisotropic-mesh.png)
+
+The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
 
 {% include qanda question='What do you observe in the previous runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
 problem converges in 22 iterations.'%}
 
-A smoother like Jacobi or Gauss-Seidel works by averaging neighboring unknown''s values.  In the anisotropic case, an unknown is influenced primarily by its
-vertical neighbors.  These connections are called "strong" connections.
+A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
 
+$$x_i = \frac{1}{a_{ii}} (b_i - \Sigma_j a_{ij} x_j).$$
+
+In the second anisotropic case, the smoothing is primarily
+influenced by its vertical neighbors.  These connections are called "strong" connections.
+
+This same idea of strong connections can help guide creation of the next coarse level by determining how unknowns are grouped together.
+<!--
 We can plot the aggregates that MueLu generated:
 ![Aggregates::](muelu-noDrop.png)
 (If you want to reproduce this, have a look at the parameter `aggregation: export visualization data`.)
 
 We observe that just as the mesh, the aggregates get stretched in the $$x$$-dimension.
 This leads to poor convergence, since the interactions in the $$y$$-direction are stronger and are more important to be preserved on the coarse grid.
+-->
 
 Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of 0.02.
 
 {% include qanda question='What effect does modifying the threshold value have on the multigrid convergence?' answer='For the anisotropic problem, the multigrid
 solver converges in 7 iterations.'%}
 
-Again, we plot the resulting aggregates:
+We plot the resulting aggregates.  (Recall that aggregates are groups of fine DOFs that form coarse DOFs.)
+
 ![Aggregates with dropping enabled::](muelu-drop.png)
+
+(If you want to reproduce this, have a look at the parameter `aggregation: export visualization data`.)
 
 We can see that the aggregates are now entirely aligned with the $$y$$-direction.
 
