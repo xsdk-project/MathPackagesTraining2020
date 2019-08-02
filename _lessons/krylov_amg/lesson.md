@@ -336,8 +336,8 @@ Run the following two examples.
 
 The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements, whereas
 The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an aspect ratio of 10 to 1.
-[<img src="isotropic-mesh.png" width="200">](isotropic-mesh.png)
-[<img src="stretched-mesh.png" width="200">](stretched-mesh.png)
+
+[<img src="isotropic-mesh.png" width="200">](isotropic-mesh.png) [<img src="stretched-mesh.png" width="200">](stretched-mesh.png)
 
 The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
