@@ -370,6 +370,11 @@ We can see that the aggregates are now entirely aligned with the $$y$$-direction
 
 ---
 
+There are many other options that one can use to affect the AMG behavior.  Some of these can be found below in the Evening Activity section.
+
+---
+
+
 ## Out-Brief
 
 In this lesson, we have developed a scalable solver for a simple test problem, the Poisson equation.
