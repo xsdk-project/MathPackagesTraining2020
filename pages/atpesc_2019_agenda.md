@@ -30,7 +30,7 @@ permalink: "/atpesc_2019_agenda/"
 |8:50|40|Self-paced Hands-on Lessons with Subject Matter Experts (SMEs)|VARIOUS|
 |9:30|10|Awards for high point getters and adjourn||
 
----
+### Other Sessions 
 
 |Start|Minutes|Title|Speaker(s)|
 |:----|:------|:---:|------:|

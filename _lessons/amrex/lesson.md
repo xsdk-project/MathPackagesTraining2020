@@ -7,7 +7,7 @@ permalink: "lessons/amrex/"
 use_math: true
 lesson: true
 header:
- image_fullwidth: "amrex_warpx2.png"
+ image_fullwidth: "amrex_warpx-fs8.png"
 ---
 
 ## At a Glance
