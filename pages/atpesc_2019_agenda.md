@@ -37,6 +37,14 @@ permalink: "/atpesc_2019_agenda/"
 |Monday 4:30pm<br>Aug 5th|60|Adaptive Linear Solvers and Eigensolvers|[Jack Dongarra][jd2]|
 |Thursday 8:30am<br>Aug 8th|60|The Convergence of Big Data and Large-scale Simulation|[David Keyes][dk]|
 
+### Additional SME Availability
+
+* [Satish Balay][sb]
+* [Barry Smith][bs]
+* [Steve Hudson][sh]
+* [Ulrike Yang][uy] (available remotely during SME 2-on-1)
+* [Sherry Li][sl]  (available remotely during SME 2-on-1)
+
 #### [ATPESC Overall Agenda](http://extremecomputingtraining.anl.gov/agenda-2019/)
 
 [XX]: http://extremecomputingtraining.anl.gov/agenda-2019
@@ -88,7 +96,8 @@ permalink: "/atpesc_2019_agenda/"
 [sb]: {{site.url}}{{site.baseurl}}/presenters/#satish-balay
 [bs]: {{site.url}}{{site.baseurl}}/presenters/#barry-smith
 [uy]: {{site.url}}{{site.baseurl}}/presenters/#ulrike-yang
-[sl]: {{site.url}}{{site.baseurl}}/presenters/#sherry-li
+[sl]: {{site.url}}{{site.baseurl}}/presenters/#x-sherry-li
 [jd]: {{site.url}}{{site.baseurl}}/presenters/#jim-demmel
 [dk]: {{site.url}}{{site.baseurl}}/presenters/#david-keyes
 [jd2]: {{site.url}}{{site.baseurl}}/presenters/#jack-dongarra
+[sh]: {{site.url}}{{site.baseurl}}/presenters/#steve-hudson

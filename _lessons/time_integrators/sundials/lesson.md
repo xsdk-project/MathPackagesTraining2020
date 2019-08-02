@@ -8,7 +8,7 @@ youtube: "https://youtu.be/vAJ6kDf7Ifk"
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSepKOxuQseZ-PycSwocahehWLjdMzPg76pjvNyNZfGxX5vpNQ/viewform?usp=sf_link"
 lesson: true
 header:
- image_fullwidth: "sundials.png"
+ image_fullwidth: "sundials-fs8.png"
 ---
 ## At a glance
 

@@ -7,7 +7,7 @@ use_math: true
 lesson: true
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link"
 header:
- image_fullwidth: "summit_and_sierra.png"
+ image_fullwidth: "summit_and_sierra-fs8.png"
 ---
 
 ## At a Glance
