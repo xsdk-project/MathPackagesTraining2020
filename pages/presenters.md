@@ -21,7 +21,7 @@ permalink: "/presenters/"
 ### Mark C. Miller
 
 |:---:|:---:|
-|![](https://avatars1.githubusercontent.com/u/5720676?s=460&v=4){:width="200px"}|Key Expertise: [Silo][silo], [VisIt][visit], [IDEAS][ideas]<br><br>Affiliation: [LLNL][llnl]/[WCI][llnl-wci]<br><br>Contact: [email][mcm-m]<br><br>GitHub: [Profile][mcm-g]|
+|![](https://avatars1.githubusercontent.com/u/5720676?s=460&v=4){:width="200px"}|Key Expertise: [IDEAS][ideas], [BSSw][bssw], [Silo][silo], [VisIt][visit]<br><br>Affiliation: [LLNL][llnl]/[WCI][llnl-wci]<br><br>Contact: [email][mcm-m]<br><br>GitHub: [Profile][mcm-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -121,7 +121,7 @@ permalink: "/presenters/"
 ### Steve Hudson
 
 |:---:|:---:|
-|![](https://www.anl.gov/sites/www/files/styles/profile_teaser_square_350px/public/stephen_hudson.jpeg?itok=s4Md_Agn){:width="200px"}|Key Expertise: [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: N/A|
+|![](https://avatars3.githubusercontent.com/u/16457059?s=460&v=4){:width="200px"}|Key Expertise: [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: [Profile][sh-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -222,3 +222,4 @@ permalink: "/presenters/"
 [bs-g]: https://github.com/BarrySmith
 [sl-g]: https://github.com/xiaoyeli
 [uy-g]: https://github.com/ulrikeyang
+[sh-g]: https://github.com/shuds13

@@ -20,7 +20,7 @@ and with less structured lessons.
 We have some fun prizes to give away at the end of the evening! The hands on exercises
 offer **optional** question and answer forms with the chance to gain points towards fun
 prizes at the end of the evening. **These are optional** and intended to be for fun.
-You are not **required** to participate but we highly recommend it for a few reasons.
+You are **not** equired to participate but we highly encourage it for a few reasons.
 First, its designed to be fun. Second, it helps us guage whether or not our training
 materials are really having the intended impact.
 
