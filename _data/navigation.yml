@@ -29,10 +29,10 @@
     url: "/lessons/amrex/"
   - title: "Time Integration & Non-Linear Solvers (SUNDIALS)"
     url: "/lessons/time_integrators/sundials"
-  - title: "Krylov Solvers and Algebraic Multigrid"
+  - title: "Krylov Solvers and Algebraic Multigrid (Trilinos/MeuLu)"
     url: "/lessons/krylov_amg/"
-  - title: "Numerical Optimization (Adjoint)"
-    url: "/lessons/adjoint/"
+  - title: "Numerical Optimization (PETSc/Tao)"
+    url: "/lessons/obstacle_tao/"
   - title: "Putting It All Together"
     url: "/lessons/lesson_template/"
 
