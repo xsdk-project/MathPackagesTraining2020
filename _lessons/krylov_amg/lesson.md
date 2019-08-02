@@ -20,8 +20,7 @@ header:
 ### To begin this lesson
 
 <!-- Do we really want this? -->
-
-* [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"}
+<!-- * [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"} -->
 ```
 cd {{site.handson_root}}/krylov_amg
 ```
