@@ -237,12 +237,12 @@ Let''s look a little more closely at the output from the largest example.  Rerun
 ```
 The multigrid summary provides the following information:
 
-    - The number of multigrid levels created, including the linear system of interest
-    - The smoother used on each level
-    - Matrix statistics for each level (rows, number of nonzeros, number of processors)
-    - The multigrid cycle type
-    - Operator complexity
-    - Smoother complexity
+* The number of multigrid levels created, including the linear system of interest
+* The smoother used on each level
+* Matrix statistics for each level (rows, number of nonzeros, number of processors)
+* The multigrid cycle type
+* Operator complexity
+* Smoother complexity
 
 The operator complexity is given by the formula
 
