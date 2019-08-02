@@ -143,6 +143,7 @@ We observe the following:
 - The solve failed, since we reached 100 iterations, but only reduced the residual norm by a factor of 7e-06.
 
 Now, modify the input file to use the conjugate gradient method.
+
 <img src="arrow.png" width="30"> The `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to use is `Pseudo Block CG`.
 Rerun.
 
