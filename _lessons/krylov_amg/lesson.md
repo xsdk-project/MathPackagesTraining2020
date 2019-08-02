@@ -473,11 +473,15 @@ Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
 Try running
 ```
 export CUDA_LAUNCH_BLOCKING=1
+export CUDA_MANAGED_FORCE_DEVICE_ALLOC=1
 ./MueLu_Stratimikos_gpu.exe
 ```
 with the refactor option set.
 
-
+If you want to use both GPUs, run
+```
+mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --kokkos-ndevices=2
+```
 
 ---
 
