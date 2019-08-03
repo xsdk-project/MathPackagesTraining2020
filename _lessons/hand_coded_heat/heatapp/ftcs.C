@@ -1,6 +1,6 @@
 #include "heat.H"
 
-bool
+bool                          // false if unstable, true otherwise
 update_solution_ftcs(
     int n,                    // number of samples
     Double *uk1,              // new array of u(x,k+1) to compute/return
