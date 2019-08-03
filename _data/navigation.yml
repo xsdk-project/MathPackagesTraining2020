@@ -27,14 +27,12 @@
     url: "/lessons/hand_coded_heat/"
   - title: "Meshing and Discretization (AMReX)"
     url: "/lessons/amrex/"
-  - title: "Time Integration & Non-Linear Solvers (SUNDIALS)"
+  - title: "Time Integration & Nonlinear Solvers (SUNDIALS)"
     url: "/lessons/time_integrators/sundials"
-  - title: "Krylov Solvers and Algebraic Multigrid (Trilinos/MueLu)"
+  - title: "Krylov Solvers and Preconditioning (Trilinos/MueLu)"
     url: "/lessons/krylov_amg/"
   - title: "Numerical Optimization (PETSc/Tao)"
     url: "/lessons/obstacle_tao/"
-  - title: "Putting It All Together"
-    url: "/lessons/lesson_template/"
 
 - title: Featured Packages
   audience: "public"
