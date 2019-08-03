@@ -297,7 +297,8 @@ for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of 
 {% include qanda question='Try increasing the number of MPI ranks to 2, 4, and 8, respectively.  What happens?' answer='The number of iterations grows
 slightly.  The solution time decreases.' %}
 
-{% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
+{% include qanda question='Do you think that Gauss-Seidel is well suited for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
+limited opportunities for parallelism.  Equation $$i$$ cannot be solved until all equations $$j, j<i$$ that $$i$$ depends on have been solved.' %}
 Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
 
 Another common smoother is a matrix polynomial, specifically, a Chebyshev polynomial.  This type smoother has certain advantages over relaxation methods
@@ -321,8 +322,6 @@ the number of MPI processes due its use of the SpMV kernel.' %}
 Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
 Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
 run times.
-
-In practice, one must strike a balance.
 
 #### Changing the behavior of the grid transfer operators
 
