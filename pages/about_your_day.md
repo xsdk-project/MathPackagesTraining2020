@@ -8,7 +8,7 @@ header:
 permalink: "/about_your_day/"
 ---
 
-#### Hands On Exercises
+#### Hands-On Exercises
 * Lectures and brief hands-on exercises will be interleaved throughout the day.
 Deeper dive hands-on lessons will be in the evening.
 * Day-time hands-on will be brief runs of examples and exposure to key concepts
