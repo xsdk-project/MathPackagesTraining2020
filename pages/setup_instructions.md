@@ -140,14 +140,14 @@ does take the following actions to your login setup on cooley...
 If you do not wont these files changed...please do not run this script.
 
 Here are the steps
-1. Copy the vnc setup script to a suitable directory on your local machine
+1. Download the vnc setup script to a suitable directory on your local machine
+
+[atpesc_cooley_vnc_setup.sh]({{ site.baseurl }}{% link pages/atpesc_cooley_vnc_setup.sh %})
+
+1. Run the script [but first fix file permissions]
 ```
-scp -l <cooley-username> cooley:/projects/ATPESC2019/FASTMath/scripts/atpesc2019_cooley_vnc_setup.sh .
-chmod 755 ./atpesc2019_cooley_vnc_setup.sh
-```
-1. Run the script
-```
-./atpesc2019_cooley_vnc_setup.sh <cooley-username>
+chmod 755 ./atpesc_cooley_vnc_setup.sh
+./atpesc_cooley_vnc_setup.sh <cooley-username>
 ```
 1. It will prompt you for your cooley login password. Enter it as you normally would.
 1. You may observer output such as...

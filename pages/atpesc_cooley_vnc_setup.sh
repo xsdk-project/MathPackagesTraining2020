@@ -1,5 +1,5 @@
 #!/bin/sh
-acct=ATPESC2018
+acct=ATPESC2019
 nnodes=1
 queue=training
 tl=720
