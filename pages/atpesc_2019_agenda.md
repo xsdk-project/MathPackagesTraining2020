@@ -34,7 +34,7 @@ permalink: "/atpesc_2019_agenda/"
 
 |Start|Minutes|Title|Speaker(s)|
 |:----|:------|:---:|------:|
-|Monday 4:30pm<br>Aug 5th|60|Adaptive Linear Solvers<br>and Eigensolvers|[Jack Dongarra][jd2]|
+|Monday 8:30am<br>Aug 5th|60|Adaptive Linear Solvers<br>and Eigensolvers|[Jack Dongarra][jd2]|
 |Thursday 8:30am<br>Aug 8th|60|The Convergence of Big Data<br>and Large-scale Simulation|[David Keyes][dk]|
 
 ### Additional SME Availability
