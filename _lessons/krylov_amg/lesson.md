@@ -27,15 +27,14 @@ cd {{site.handson_root}}/krylov_amg
 
 ## The Problem Being Solved
 
-We consider the Poisson equation
+The Poisson equation arises in electrostatics, incompressible fluid flow simulations, and numerous
+other applications.  We will consider the Poisson equation
 
 $$-\Delta u = f$$
 
 on a square mesh of size $$n_x \times n_y$$ with Dirichlet boundary conditions $$u = 0$$.
 
 It is discretized using central finite differences, leading to a symmetric positive (spd) matrix.
-
-This type of system arises in electrostatics incompressible fluid flow simulations, etc.
 
 ## The Example Source Code
 
