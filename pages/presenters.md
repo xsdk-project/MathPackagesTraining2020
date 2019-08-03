@@ -121,7 +121,7 @@ permalink: "/presenters/"
 ### Steve Hudson
 
 |:---:|:---:|
-|![](https://avatars3.githubusercontent.com/u/16457059?s=460&v=4){:width="200px"}|Key Expertise: [libEnsemble][libEnsemble]. [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: [Profile][sh-g]|
+|![](https://avatars3.githubusercontent.com/u/16457059?s=460&v=4){:width="200px"}|Key Expertise: [libEnsemble][libEnsemble], [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: [Profile][sh-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
