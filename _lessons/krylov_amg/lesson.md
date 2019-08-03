@@ -35,6 +35,8 @@ on a square mesh of size $$n_x \times n_y$$ with Dirichlet boundary conditions $
 
 It is discretized using central finite differences, leading to a symmetric positive (spd) matrix.
 
+This type of system arises in electrostatics incompressible fluid flow simulations, etc.
+
 ## The Example Source Code
 
 For this lesson, we will be using the executable `MueLu_Stratimikos.exe` from the MueLu package of Trilinos which allows us to test a variety of solvers and preconditioners.
@@ -242,11 +244,11 @@ Let''s look a little more closely at the output from the largest example.
 The multigrid summary provides the following information:
 
 * The number of multigrid levels created, including the linear system of interest
-* The smoother used on each level
-* Matrix statistics for each level (rows, number of nonzeros, number of processors)
-* The multigrid cycle type
 * Operator complexity
 * Smoother complexity
+* The multigrid cycle type
+* Matrix statistics for each level (rows, number of nonzeros, number of processors)
+* The smoother used on each level
 
 The operator complexity is given by the formula
 
@@ -266,7 +268,7 @@ answer='A smoother such as an incomplete factorization will have a much higher F
 #### Effect of different smoothers
 
 The first adjustment that we want to make is to select different smoothers.
-This involves the following trade-off: Using a better smoother will reduce the number of iterations, but might involve more computation.
+This involves the following trade-off: choosing a more effective smoother should reduce the number of iterations, but might involve more computation.
 
 By default, we use a single sweep of Jacobi smoothing, which is very cheap.
 
@@ -278,8 +280,10 @@ to display timing information on a large enough problem.
 The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
 (You might want to run this more than once in case you are experiencing some system noise.)
 Since there are quite a lot of timers, you could grep for the iteration count and the timer by appending
-```| grep "\(Belos: PseudoBlockCGSolMgr total solve time\)\|\(Number of Iterations\)"```
-to the command.
+```|  egrep "total solve time|Number of Iterations"``` to the command, i.e.,
+```
+./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+```
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
@@ -287,12 +291,14 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 
 <img src="arrow.png" width="30"> Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
 
-{% include qanda question='Do you see an improvement?' answer='Yes, both number of iterations and time-to-solution are reduced.' %}
+{% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
+for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
+
+{% include qanda question='Try increasing the number of MPI ranks to 2, 4, and 8, respectively.  What happens?' answer='The number of iterations grows
+slightly.  The solution time decreases.' %}
 
 {% include qanda question='Do you think that Gauss-Seidel is well suited for use on multithreaded architectures such as GPUs?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
-
-{% include qanda question='Try increasing the number of MPI ranks.  What happens ?' answer='No, because Gauss-Seidel is an inherently serial algorithm.' %}
 
 Another common smoother is a matrix polynomial, specifically, a Chebyshev polynomial.  This type smoother has certain advantages over relaxation methods
 like Jacobi or Gauss-Seidel.
@@ -337,8 +343,8 @@ definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sq
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements, whereas
-The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but each element has an aspect ratio of 10 to 1.
+The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements.
+The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but now each element has an _aspect ratio_ of 10 to 1.
 
 [<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png) [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
@@ -386,11 +392,12 @@ A good choice of solver and preconditioner will depend significantly on the prob
 
 - CG works for symmetric, GMRES for unsymmetric systems, but GMRES has a larger memory footprint.
   (Trilinos has many more specialized Krylov solvers.
-  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing algorithms have not yet been properly documented.)
+  The [Belos Doxygen](https://trilinos.org/docs/dev/packages/belos/doc/html/index.html) is a good starting point, but some newer communication reducing
+  algorithms have not yet been fully documented.)
 
 - One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
 
-- Multigrid solvers are scalable (on Poisson), but getting good performance can involve some parameter tuning.
+- Multigrid solvers are scalable (on Poisson), but getting good performance often involves some parameter tuning.
 
 ---
 
