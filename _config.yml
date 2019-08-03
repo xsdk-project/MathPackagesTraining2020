@@ -29,11 +29,10 @@ url: 'https://xsdk-project.github.io'
 baseurl: '/MathPackagesTraining'
 handson_install_root: '/projects/ATPESC2019/MathPackagesTraining'
 handson_root: 'HandsOnLessons'
-audience: ['public', 'private']
-#audience: ['public']
+audience: ['public']
 
 # Controls whether lesson answer expansions are hidden or not
-handson_hide_qanda: false
+handson_hide_qanda: true
 
 # This is for the editing function in _/includes/improve_content
 # Leave it empty if your site is not on GitHub/GitHub Pages
