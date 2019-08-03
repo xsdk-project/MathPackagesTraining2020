@@ -60,7 +60,7 @@ will both occur concurrently. Finally, don't forget to take advantage of time du
 breaks to visit with SMEs. We are here to help and happy to talk with you.
 
 #### For Evening, Consider Working in Teams (2-4)
-For the evening hands-on exercises, we encourage participants to work in teams of 2-4.
+For the evening hands-on exercises, we encourage participants to work in teams of 2-4 people.
 First, this helps us to cut down the number of IT issues that may arise during hands-on
 exercises.  Moreover, [pair programming](https://en.wikipedia.org/wiki/Pair_programming)
 (the practice of having two people work together
@@ -69,7 +69,7 @@ code review, which [research has shown](http://www.sciencedirect.com/science/art
 results in higher productivity. Finally, if you are not using an OSX or Linux laptop, it would
 be best to try to pair with someone who is.
 
-#### Todays Agenda
+#### Today's Agenda
 The [agenda for today's presentations and hands-on exercises](atpesc_2019_agenda.md)
 is available under the _Intro_ menu on this site. This includes links to presentation slides,
 presenter information and hands-on lesson plans.
@@ -81,7 +81,7 @@ a link under the Intro menu. We ask that you please exercise discretion and use 
 for interactions as they pertain to today’s material and exercises.
 
 #### Getting Help
-* If during day-time hands-on exercises, please use your red post-it note (see above)
+* If during day-time hands-on exercises, please use your red post-it note (see above).
 * Feel free to flag any of us down throughout the day.
 * Feel free to send email to
-[Mark Miller, miller86@llnl.gov and Satish Balay,balay@mcs.anl.gov](mailto:balay@mcs.anl.gov,miller86@llnl.gov?subject=ATPESC2019%20Tech%20Support)
+[Mark Miller, miller86@llnl.gov and Satish Balay, balay@mcs.anl.gov](mailto:balay@mcs.anl.gov,miller86@llnl.gov?subject=ATPESC2019%20Tech%20Support)
