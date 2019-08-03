@@ -233,7 +233,7 @@ this uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 and compare the final result against a stored reference solution (on a
 $$128^2$$ grid),
 ```bash
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 Notice that the computed solution error is rather small (since the
 solution has magnitude $$\mathcal{O}(1)$$, errors should be less than
@@ -246,7 +246,7 @@ Now re-run this hands-on code using a larger time step size of 100.0,
 _see how much faster the code ran!_  However, now check the accuracy
 of the computed solution,
 ```bash
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 and note the reported error of $$10^{98}$$.
 
@@ -266,7 +266,7 @@ the default tolerances, $$rtol=10^{-4}$$ and $$atol=10^{-9}$$) by
 specifying `fixed_dt=0`,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=0
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _note how rapidly the executable finishes, providing a solution that
 is both stable and accurate to within the specified tolerances!_
@@ -299,7 +299,7 @@ through 8).  Alternate orders of accuracy may be run with the
 `arkode_order` option, e.g.,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=0 arkode_order=8
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _note the dramatic decrease in overall time steps (457 vs 258), but
 the accompanying increase in total RHS evaluations (2865 vs 3773)._
@@ -368,7 +368,7 @@ Run the second hands-on code using its default parameters (note that
 this also uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 ```bash
 ./HandsOn2.exe inputs-2
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _note that this takes significantly longer than `HandsOn1.exe` with
 the same time step size_
@@ -376,7 +376,7 @@ the same time step size_
 Now re-run using the larger time step size of 100.0,
 ```bash
 ./HandsOn2.exe inputs-2 fixed_dt=100.0
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _again this version runs much more quickly, but now the results are usable!_
 
@@ -403,7 +403,7 @@ $$atol=10^{-9}$$) by specifying `fixed_dt=0`,
 Compute the solution error, and determine the adaptive time-stepping
 statistics as before,
 ```bash
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ./process_ARKStep_diags.py HandsOn2_diagnostics.txt
 display h_vs_iter.png
 ```
@@ -437,7 +437,7 @@ converge more slowly than Newton-based methods, we will also increase
 the allowed number of nonlinear iterations by specifying `nls_max_iter=20`,
 ```bash
 ./HandsOn2.exe inputs-2 fixed_dt=0 nls_method=1 nls_max_iter=20
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 How do the total number of implicit RHS function calls, solution
 accuracy, number of time steps, and total runtime compare against an
@@ -466,13 +466,13 @@ $$\vec{a} \cdot \nabla u$$ treated explicitly by specifying
 `rhs_adv=2`,
 ```bash
 ./HandsOn2.exe inputs-2 rhs_adv=2
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 For comparison, re-run an identical test but with fully-implicit
 treatment,
 ```bash
 ./HandsOn2.exe inputs-2
-fcompare.ex plt00001/ reference_solution/
+fcompare.gnu.ex plt00001/ reference_solution/
 ```
 Do you notice any efficiency or accuracy differences between fully
 implicit and IMEX formulations with these fixed time-step tests?
