@@ -5,7 +5,7 @@ subheadline: ""
 permalink: "lessons/krylov_amg/"
 use_math: true
 lesson: true
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link"
+answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSf0-OXq5gsvPG0jsli75iGbBTQx100xvTddCKGAz3sdRouUAA/viewform?usp=sf_link"
 header:
  image_fullwidth: "summit_and_sierra-fs8.png"
 ---
@@ -17,10 +17,10 @@ header:
 |How do we choose a preconditioner?|Know common sparse preconditioners.|As the size of the linear system grows, most iterative methods will require increasing number of iterations.|
 |How can we improve efficiency of the solver?|Understand the basic components of multigrid.|For certain common problem classes, multigrid methods require a constant number of iterations and constant work per unknown.|
 
-### To begin this lesson
+#### To begin this lesson
 
-<!-- Do we really want this? -->
-<!-- * [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"} -->
+* [Open the Answers Form]({{page.answers_google_form}})
+* Go to the directory for the krylov application
 ```
 cd {{site.handson_root}}/krylov_amg
 ```
