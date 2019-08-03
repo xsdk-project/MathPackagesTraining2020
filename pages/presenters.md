@@ -130,7 +130,7 @@ permalink: "/presenters/"
 ### Jim Demmel
 
 |:---:|:---:|
-|![](https://www2.eecs.berkeley.edu/Faculty/Photos/Homepages/demmel.jpg){:width="200px"}|Presentation on Communication-<br>Avoiding Algorithms.<br><br>Affiliation: [UCB][ucb]/[EECS][ucb-eecs]<br><br>Contact: [email][jd-m]<br><br>GitHub: N/A|
+|![](https://www2.eecs.berkeley.edu/Faculty/Photos/Homepages/demmel.jpg){:width="200px"}|Presentation on Communication-<br>Avoiding Algorithms.<br><br>Affiliation: [UCB][ucb]/[EECS][ucb-eecs]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -139,7 +139,7 @@ permalink: "/presenters/"
 ### Jack Dongarra
 
 |:---:|:---:|
-|![](https://www.eecs.utk.edu/wp-content/uploads/2015/12/Dongarra_EECS.jpg){:width="200px"}|Presentation on Adaptive<br>Linear Solvers and Eigensolvers <br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]<br><br>Contact: [email][jd2-m]<br><br>GitHub: N/A|
+|![](https://www.eecs.utk.edu/wp-content/uploads/2015/12/Dongarra_EECS.jpg){:width="200px"}|Presentation on Adaptive<br>Linear Solvers and Eigensolvers <br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -148,7 +148,7 @@ permalink: "/presenters/"
 ### David Keyes
 
 |:---:|:---:|
-|![](https://www.kaust.edu.sa/PublishingImages/study/faculty/bio-keyes.jpg?renditionId=20){:width="200px"}|Presentation on Convergence of Big Data and<br>Large Scale Simulation<br><br>Affiliation: [KAUST][kaust]/[CEMSE][kaust-cemse]<br><br>Contact: [email][dk-m]<br><br>GitHub: N/A|
+|![](https://www.kaust.edu.sa/PublishingImages/study/faculty/bio-keyes.jpg?renditionId=20){:width="200px"}|Presentation on Convergence of Big Data and<br>Large Scale Simulation<br><br>Affiliation: [KAUST][kaust]/[CEMSE][kaust-cemse]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
