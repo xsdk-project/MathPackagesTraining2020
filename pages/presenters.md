@@ -49,7 +49,7 @@ permalink: "/presenters/"
 ### Ann Almgren
 
 |:---:|:---:|
-|![](https://ccse.lbl.gov/people/almgren/picture_small.jpg){:width="200px"}|Key Expertise: [AMReX][amrex], [FASTMath][fastmath]<br><br>Affiliation: [LBL][lbl]/[CCSE][lbl-ccse]<br><br>Contact: [email][aa-m]<br><br>GitHub: [Profile][aa-g]|
+|![](https://ccse.lbl.gov/people/almgren/picture_small.jpg){:width="200px"}|Key Expertise: [AMReX][amrex], [FASTMath][fastmath], [xSDK][xsdk] <br><br>Affiliation: [LBL][lbl]/[CCSE][lbl-ccse]<br><br>Contact: [email][aa-m]<br><br>GitHub: [Profile][aa-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -112,7 +112,7 @@ permalink: "/presenters/"
 ### Ulrike Yang
 
 |:---:|:---:|
-|![](https://avatars2.githubusercontent.com/u/16307629?s=400&v=4){:width="200px"}|Key Expertise: [HYPRE][hypre], [FASTMath][fastmath], [xSDK][xsdk]<br><br>Affiliation: [LLNL][llnl]/[CASC][llnl-casc]<br><br>Contact: [email][sl-m]<br><br>GitHub: [Profile][sl-g]|
+|![](https://avatars2.githubusercontent.com/u/16307629?s=400&v=4){:width="200px"}|Key Expertise: [hypre][hypre], [FASTMath][fastmath], [xSDK][xsdk]<br><br>Affiliation: [LLNL][llnl]/[CASC][llnl-casc]<br><br>Contact: [email][sl-m]<br><br>GitHub: [Profile][sl-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -121,7 +121,7 @@ permalink: "/presenters/"
 ### Steve Hudson
 
 |:---:|:---:|
-|![](https://avatars3.githubusercontent.com/u/16457059?s=460&v=4){:width="200px"}|Key Expertise: [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: [Profile][sh-g]|
+|![](https://avatars3.githubusercontent.com/u/16457059?s=460&v=4){:width="200px"}|Key Expertise: [libEnsemble][libEnsemble]. [xSDK][xsdk]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][sh-m]<br><br>GitHub: [Profile][sh-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -130,7 +130,7 @@ permalink: "/presenters/"
 ### Jim Demmel
 
 |:---:|:---:|
-|![](https://www2.eecs.berkeley.edu/Faculty/Photos/Homepages/demmel.jpg){:width="200px"}|Special talk on Communication<br>avoiding algorithms.<br><br>Affiliation: [UCB][ucb]/[EECS][ucb-eecs]<br><br>Contact: [email][jd-m]<br><br>GitHub: N/A|
+|![](https://www2.eecs.berkeley.edu/Faculty/Photos/Homepages/demmel.jpg){:width="200px"}|Presentation on Communication-<br>Avoiding Algorithms.<br><br>Affiliation: [UCB][ucb]/[EECS][ucb-eecs]<br><br>Contact: [email][jd-m]<br><br>GitHub: N/A|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -139,7 +139,7 @@ permalink: "/presenters/"
 ### Jack Dongarra
 
 |:---:|:---:|
-|![](https://www.eecs.utk.edu/wp-content/uploads/2015/12/Dongarra_EECS.jpg){:width="200px"}|Key Expertise: [Netlib][netlib], [BLAS][blas], [LINPACK][linpack], [LAPACK][lapack], [ScaLAPACK][scalapack]...<br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]<br><br>Contact: [email][jd2-m]<br><br>GitHub: N/A|
+|![](https://www.eecs.utk.edu/wp-content/uploads/2015/12/Dongarra_EECS.jpg){:width="200px"}|Presentation on Adaptive<br>Linear Solvers and Eigensolvers <br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]<br><br>Contact: [email][jd2-m]<br><br>GitHub: N/A|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -148,7 +148,7 @@ permalink: "/presenters/"
 ### David Keyes
 
 |:---:|:---:|
-|![](https://www.kaust.edu.sa/PublishingImages/study/faculty/bio-keyes.jpg?renditionId=20){:width="200px"}|Special talk on Convergence of Big Data and<br>Large Scale Simulation<br><br>Affiliation: [KAUST][kaust]/[CEMSE][kaust-cemse]<br><br>Contact: [email][dk-m]<br><br>GitHub: N/A|
+|![](https://www.kaust.edu.sa/PublishingImages/study/faculty/bio-keyes.jpg?renditionId=20){:width="200px"}|Presentation on Convergence of Big Data and<br>Large Scale Simulation<br><br>Affiliation: [KAUST][kaust]/[CEMSE][kaust-cemse]<br><br>Contact: [email][dk-m]<br><br>GitHub: N/A|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -173,6 +173,7 @@ permalink: "/presenters/"
 [linpack]: https://www.netlib.org/linpack/
 [lapack]: http://www.netlib.org/lapack/
 [scalapack]: http://www.netlib.org/scalapack/
+[libensemble]: https://libensemble.readthedocs.io
 
 [anl]: https://www.anl.gov
 [anl-mcs]: https://www.anl.gov/mcs
