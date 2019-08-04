@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
   /* Initialize problem and set sizes */
 
   ierr = PetscInitialize( &argc, &argv,(char *)0,help );if (ierr) return ierr;
-  ierr = VecCreateMPI(PETSC_COMM_WORLD, user.n, &X);CHKERRQ(ierr);
+  ierr = VecCreateMPI(PETSC_COMM_WORLD, user.n, user.N,  &X);CHKERRQ(ierr);
   ierr = VecSet(X, 0.0);CHKERRQ(ierr);
 
   ierr = TaoCreate(PETSC_COMM_WORLD, &tao);CHKERRQ(ierr);
@@ -149,52 +149,20 @@ int main(int argc, char *argv[])
 
 TAO calls the user-provided ``FormFunctionGradient()`` routine whenever the optimization algorithm needs to evaluate the objective and its gradient. The ``AppCtx`` structure contains any data the user has to preserve and propagate through for these computations.
 
-## Example Problem: Boundary Control with the Poisson Equation
+## Example Problem: Boundary Control with the 2D Laplace Equation
 
 The inverse problem for the boundary control case is given as
 
-$$\min_p \quad \frac{1}{2}\int_\Omega (u(p) - u_{targ})^2 d \Omega,$$
+$$\min_p \quad \frac{1}{2}\int_0^1 (u(1, y) - u_{targ})^2 d y,$$
 
-$$\text{governed by} \quad -\frac{\partial}{\partial x}\left(\rho \frac{\partial u}{\partial x} \right) + \mu u = h \quad \forall \; x \in (0, 1), \quad u(x=0) = p_1, \quad u(x=1) = p_2,$$
+$$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y} = 0 \quad \forall \; x, y \in (0, 1), \quad p = \begin{bmatrix} u(x, 0) & u(0, y) & u(x, 1)\end{bmatrix}^T \quad \text{and} \quad \frac{\partial u}{\partial x}$$
 
-where $$u_{targ}$$ is a target solution that we want to recover by controlling the Dicihlet boundary terms $$p_1$$ and $$p_2$$. For simplicity, we set $$\rho = 1$$ and $$\mu = 0$$, and reduce the governing equation to the 1-D Poisson equation.
+where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet boundary terms with the optimization variables in $$p$$.
 
-We apply a central finite difference stencil,
+[<img src="laplace-domain.png" width="320">](laplace-domain.png){:align="middle"}
 
-$$\frac{\partial u}{\partial x} \approx \frac{u(x+\delta) - 2u(x) + u(x-\delta)}{\delta^2},$$
-
-to a 6-node discretization where nodes 0 and 6 are the Dirichlet boundaries. This yields the following linear system of equations in residual form:
-
-$$
-  R(p, u) = \begin{pmatrix}
-      2u_1 - u_2 - \delta^2 h_1 - p_1 \\
-      -u_1 + 2u_2 - u_3 - \delta^2 h_2 \\
-      -u_2 + 2u_3 - u_4 - \delta^2 h_3 \\
-      - u_3 + 2u_4 - \delta^2 h_4 - p_2
-  \end{pmatrix} = 0.
-$$
-
-The Jacobians for this problem are
-
-$$
-\frac{\partial R}{\partial u} = \begin{bmatrix}
-    2 && -1 && 0 && 0 \\
-    -1 && 2 && -1 && 0 \\
-    0 && -1 && 2 && -1 \\
-    0 && 0 && -1 && 2
-\end{bmatrix},
-$$
-
-and
-
-$$
-\frac{\partial R}{\partial p} = \begin{bmatrix}
-    -1 && 0 \\
-    0 && 0 \\
-    0 && 0 \\
-    0 && -1
-\end{bmatrix}.
-$$
+We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
+symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
 
 The adjoint system for this problem is
 
@@ -205,10 +173,6 @@ and the total derivative of the objective function w.r.t. the optimization varia
 $$\frac{d f}{d p} = \frac{\partial f}{\partial p} + \left(\frac{\partial R}{\partial p}\right)^T \lambda.$$
 
 Note that the total derivative notation is $$\frac{d}{dp}(\cdot)$$ and includes indirect sensitivities that come through the governing equations. In this problem, the partial derivative of the objective w.r.t the optimization variables, denoted by $$\frac{\partial}{\partial p}(\cdot)$$, is zero because $$p$$ does not directly appear in the objective function.
-
-### Implementation with AMReX
-
-
 
 ### Results
 
