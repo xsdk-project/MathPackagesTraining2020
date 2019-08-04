@@ -6,23 +6,23 @@ teaser: "Why use numerical packages..."
 permalink: "lessons/hand_coded_heat/"
 use_math: true
 lesson: true
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSdoyXOL4UCe4_p0SheNidqY_ErKcrRS2qqqomIHQMZi5eVM2g/viewform?usp=sf_link"
-youtube: "https://youtu.be/e9rhMXN-bpM"
+answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSffsHKM0EnEh9AoDbw57DTDC5JNbyHANhervOTOXisSdX9B3Q/viewform?usp=sf_link"
 header:
  image_fullwidth: "Differential-Equations-e1509686869201.png"
+#youtube: "https://youtu.be/e9rhMXN-bpM"
 ---
 
 ## At a Glance
 
 |Questions|Objectives|Key Points|
 |:--------|:---------|:---------|
-|What is a numerical algorithm?|Implement a simple numerical algorithm.<br>Use it to solve a simple science problem.|Numerical Packages are used<br>to solve scientific problems<br>involving [PDEs.][PDE]|
+|What is a numerical algorithm?|Implement a simple numerical algorithm.<br>Use it to solve a simple science problem.|Numerical Packages are used<br>to solve scientific problems involving [PDEs.][PDE]|
 |What is [discretization][DISC]?|Introduce basic concepts in solving continuous<br>[PDEs][PDE] using discrete computations.|_Meshing_ (or [discretization][DISC]) is an<br>important first step.|
-|How can numerical packages<br>help me with my software?|Understand the value numerical packages<br>offer in developing science applications|Numerical packages offer many advantages<br>including: rigorous/vetted numerics<br>increased generality, extreme scalability,<br>performance portability, enhanced reproducibility<br>and many others...|
+|How can numerical packages<br>help me with my software?|Understand the value numerical packages<br>offer in developing science applications|Numerical packages offer: rigorous/vetted numerics<br>greater generality, extreme scalability and more...|
 
 #### To begin this lesson
 
-* [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSdoyXOL4UCe4_p0SheNidqY_ErKcrRS2qqqomIHQMZi5eVM2g/viewform?usp=sf_link){:target="_blank"}
+* [Open the Answers Form]({{page.answers_google_form}})
 * Go to the directory for the hand-coded `heat` application
 ```
 cd {{ site.handson_root }}/hand_coded_heat
@@ -36,8 +36,8 @@ Inside the walls are some water pipes as pictured below.
 ![Wall and Pipe::](wall_and_pipe.png)
 
 You keep the inside temperature of the house always at 70 degrees F. But, there is an
-overnight storm coming. The temperature is expected to drop to -40 degrees F. Will your
-pipes freeze before the storm is over?
+overnight storm coming. The outside temperature is expected to drop to -40 degrees F for 15.5
+hours. Will your pipes freeze before the storm is over?
 
 ### Governing Equations
 
@@ -51,7 +51,7 @@ by the partial differential ([PDE][PDE])...
 
 $$\frac{\partial u}{\partial t} - \nabla \cdot \alpha \nabla u = 0$$
 
-where _u_ is the temperature within the wall at spatial positions, _x_, and times, _t_, \\( \alpha \\),
+where _u_ is the temperature _through_ the wall at spatial positions, _x_, and times, _t_, \\( \alpha \\),
 is the _thermal diffusivity_
 of the material(s) comprising the wall. This equation is known as the
 _Diffusion Equation_ and also the [_Heat Equation_](https://en.wikipedia.org/wiki/Heat_equation).
@@ -60,13 +60,16 @@ _Diffusion Equation_ and also the [_Heat Equation_](https://en.wikipedia.org/wik
 
 To make the problem tractable for this short lesson, we make some simplifying assumptions...
 
-1. The thermal diffusivity, \\( \alpha \\)
+1. The wall can be treated as _homogenous_ in material. In effect, we ignore the fact that
+   part of the wall has a pipe filled with water running through it.
+1. The thermal diffusivity of the wall material, \\( \alpha \\)
    is constant for all _space_ and _time_.
-1. The only heat _source_ is from the initial and/or boundary conditions.
-1. We will deal only with the _one dimensional_ problem in _Cartesian coordinates_.
+1. The only heat _source_ is from initial and/or boundary conditions.
+1. We will deal only with the _one dimensional_ problem in _Cartesian coordinates_. That is
+   heat along the dimension _through_ the wall between inside and outside.
 1. We will _[discretize][DISC]_ with constant spacing in both space, $$\Delta x$$ and time, $$\Delta t$$.
 
-In this case, the [PDE][PDE] we need to develop an application to solve simplifies to...
+In this case, the [PDE][PDE], above, simplifies too the one dimensional heat equation...
 
 $$\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$$
 
@@ -78,14 +81,15 @@ In order to write a computer program to solve this equation, numerically, the fi
 we need to consider is how to _[discretize][DISC]_
 the equation into a form suitable for numerical computation.
 
-Consider discretizing, independently, the left- and right-hand sides of
+Using [difference equations][DIFF] as approximations for derivatives,
+we can discretize, independently, the left- and right-hand sides of
 equation 2. For the left-hand side, we can approximate the first derivative
-of _u_ with respect to time, _t_, by the equation...
+of _u_ with respect to time, _t_, by the forward difference equation...
 
 $$\frac{\partial u}{\partial t} \Bigr\vert_{t_{k+1}} \approx \frac{u_i^{k+1}-u_i^k}{\Delta t}$$
 
 We can approximate the right-hand side of equation 2 with
-the second derivative of _u_ with respect to space, _x_, by the equation...
+the second derivative of _u_ with respect to space, _x_, by the centered difference equation...
 
 $$\alpha \frac{\partial^2 u}{\partial x^2}\Bigr\vert_{x_i} \approx \alpha \frac{u_{i-1}^k-2u_i^k+u_{i+1}^k}{\Delta x^2}$$
 
@@ -99,7 +103,7 @@ $$u_i^{k+1} = ru_{i+1}^k+(1-2r)u_i^k+ru_{i-1}^k$$
 where \\( r=\alpha\frac{\Delta t}{\Delta x^2} \\)
 
 {% include qanda
-    question='Is there anything here that looks like a _mesh_?'
+    question='Is there anything in this numerical treatment that looks like a _mesh_?'
     answer='
 In the process of discretizing the PDE, we have defined a fixed spacing in x
 and a fixed spacing in t as shown in the figure here
@@ -108,7 +112,7 @@ and a fixed spacing in t as shown in the figure here
 
 This is essentially a uniform mesh. Later lessons
 here address more sophisticated discretizations in space and in time which
-depart from these all too inflexible fixed spacings.
+depart from these often inflexible fixed spacings.
                                                                           
                                                                           
                                                                           
@@ -116,11 +120,11 @@ depart from these all too inflexible fixed spacings.
                                                                           
 ' %}
 
-Note that this equation now defines the solution at spatial position _i_ and time _k+1_
-in terms of values of u at time _k_ .  This is an
+Note that this equation now defines the value of _u_ at time _k+1_
+in terms of values of _u_ at time _k_ .  This is an example of an
 [_explicit_](https://en.wikipedia.org/wiki/Explicit_and_implicit_methods)
 numerical method known as the
-_[forward in time, centered difference (FTCS)](https://en.wikipedia.org/wiki/FTCS_scheme)_
+_[Forward-Time, Centered-Space (FTCS)](https://en.wikipedia.org/wiki/FTCS_scheme)_
  algorithm. As an explicit method, it has some nice properties:
 
 * They are easy to implement.
@@ -129,12 +133,18 @@ _[forward in time, centered difference (FTCS)](https://en.wikipedia.org/wiki/FTC
 
 ---
 
-## Exercise #1: Implement the FTCS Algorithm (2 mins)
+## Exercise #1: Implement the FTCS Algorithm (2-3 mins)
 
-The function, `solution_update_ftcs`, is defined below without its body.
+```
+% ls
+Double.H	crankn.C	ftcs.C		heat.H		tools		utils.C
+args.C		exact.C		heat.C		makefile	upwind15.C
+```
+
+The function, `solution_update_ftcs`, is defined in `ftcs.C` without its body.
 
 ```c
-static void
+static bool             // false if unstable, true otherwise
 solution_update_ftcs(
     int n,              // # of temperature samples in space
     Double *uk1,        // new temperatures @ t = k+1
@@ -176,7 +186,7 @@ solution_update_ftcs(
 }
 ```
 
-Open ftcs.C and implement the FTCS numerical algorithm by coding the body of this function.
+Edit `ftcs.C` and implement the FTCS numerical algorithm by coding the body of this function.
 
 ## Exercise #2: Build and Test the Application (1 min)
 
@@ -185,6 +195,40 @@ To compile the code you have just written...
 ```
 make
 ```
+
+#### Getting `--help` from the `heat` Application
+
+Run the command...
+
+```
+% ./heat --help
+```
+
+And observe the output...
+
+```
+Usage: ./heat <arg>=<value> <arg>=<value>...
+    runame="heat_results"               name to give run and results dir (char*)
+    prec="double"                       precision half|float|double|quad (char*)
+    alpha=0.2           material thermal diffusivity (sq-meters/second) (double)
+    lenx=1                                     material length (meters) (double)
+    dx=0.1                  x-incriment. Best if lenx/dx==int. (meters) (double)
+    dt=0.004                                      t-incriment (seconds) (double)
+    maxt=2         >0:max sim time (seconds) | <0:min l2 change in soln (double)
+    bc0=0                     boundary condition @ x=0: u(0,t) (Kelvin) (double)
+    bc1=1               boundary condition @ x=lenx: u(lenx,t) (Kelvin) (double)
+    ic="const(1)"               initial condition @ t=0: u(x,0) (Kelvin) (char*)
+    alg="ftcs"                            algorithm ftcs|upwind15|crankn (char*)
+    savi=0                                   save every i-th solution step (int)
+    save=0                              save error in every saved solution (int)
+    outi=100                      output progress every i-th solution step (int)
+    noout=0                                       disable all file outputs (int)
+```
+
+* The values each argument is assigned on the left are the *default* values the
+  application uses when the associated argument is not specified on the command line.
+* See the [note below](#icarg) regarding more information on the `ic` argument to
+  specify a variety of initial conditions.
 
 #### A Simple Sanity Check Run
 As a sanity check, lets just run the application with no arguments and see what
@@ -218,16 +262,27 @@ Before running, the application dumps its command-line arguments so the user can
 see what parameters it was passed to run. In this case, you are seeing the default
 values. It then runs the problem as defined by the command-line arguments and
 saves result files to the directory specified by the `runame=` argument.
+
+To list the most recently created entries in the current director, run the following
+command...
 ```
 % ls -1t | head -n 1
 heat_results
+```
+
+The entry `heat_results` is a directory containing some files created by the
+application. To determine what kind of files they are, run the following
+command...
+
+```
 % file heat_results/*.*
 heat_results/clargs.out:                    ASCII text
 heat_results/heat_results_soln_00000.curve: ASCII text
 heat_results/heat_results_soln_final.curve: ASCII text
 ```
-For this simple application, the results are uncomplicated. They are simple ascii
-text files containing x/y pairs of the computed numerical results.
+For this simple application, the results are uncomplicated. They are ASCII
+text files containing two columns of data. To see an example, run the command
+
 ```
 % cat heat_results/heat_results_soln_final.curve
 # Temperature
@@ -244,37 +299,9 @@ text files containing x/y pairs of the computed numerical results.
        1        1
 ```
 
-#### Getting Help
-
-Now that we have built the application, at any point, we can get help
-regarding various options for the `heat` application like so...
-```
-Usage: ./heat <arg>=<value> <arg>=<value>...
-    runame="heat"                       name to give run and results dir (char*)
-    alpha=0.2           material thermal diffusivity (sq-meters/second) (double)
-    lenx=1                                     material length (meters) (double)
-    dx=0.1                  x-incriment. Best if lenx/dx==int. (meters) (double)
-    dt=0.004                                      t-increment (seconds) (double)
-    maxt=2         >0:max sim time (seconds) | <0:min l2 change in soln (double)
-    bc0=0                     boundary condition @ x=0: u(0,t) (Kelvin) (double)
-    bc1=1               boundary condition @ x=lenx: u(lenx,t) (Kelvin) (double)
-    ic="const(1)"               initial condition @ t=0: u(x,0) (Kelvin) (char*)
-    alg="ftcs"                            algorithm ftcs|upwind15|crankn (char*)
-    savi=0                                   save every i-th solution step (int)
-    save=0                              save error in every saved solution (int)
-    outi=100                      output progress every i-th solution step (int)
-    noout=0                                       disable all file outputs (int)
-    prec="double"                       precision half|float|double|quad (char*)
-Examples...
-    ./heat dx=0.01 dt=0.0002 alg=ftcs
-    ./heat dx=0.1 bc0=273 bc1=273 ic="spikes(273,5,373)"
-```
-
-See the [note below](#icarg) regarding more information on the `ic` argument to
-specify a variety of initial conditions.
-
-When the `heat` application runs, by default it will store three files in a
-directory named `runame`
+The first column is each spatial position, $$x_{i}$$ and the second column is the
+temperature, _u_, at that spatial position. The name of the file indicates the 
+_time_ of the solution.
 
 ### Testing The heat Application
 
@@ -311,9 +338,9 @@ below.
 ' %}
 
 {% include qanda
-    question='How do you confirm results are indeed a linear steady state?'
+    question='How do you confirm results after a long time are a linear steady state?'
     answer='Examine the initial and final results file and confirm even a random input
-            still yields a final result where x==y for all rows of the results file
+            still yields a final result where $$u=x_{i}$$ for all rows of the results file
 ```
 % cat test/test_soln_00000.curve
 # Temperature
@@ -360,7 +387,7 @@ input in the correct units. Take care!
 
 {% include qanda
    question='Determine the command-line to run for our simple science problem?'
-   answer='./heat runame=wall alpha=8.2e-10 lenx=0.25 dx=0.01 dt=100 outi=100 savi=1000 maxt=55800 bc0=233.15 bc1=294.261 ic="const(294.261)"' %}
+   answer='./heat runame=wall alpha=8.2e-8 lenx=0.25 dx=0.01 dt=100 outi=100 savi=1000 maxt=55800 bc0=233.15 bc1=294.261 ic="const(294.261)"' %}
 
 ## Exercise #4: Analyze Results and Do Some Science
 
@@ -508,7 +535,7 @@ name _Composite Wall_ and upload evidence of your completed solution.
 
 ---
 
-### A note about the `ic=` argument to `heat`{:icarg}
+##### A note about the `ic=` argument to `heat`{:icarg}
 
 The initial condition argument, `ic`, handles a few interesting cases
 
@@ -537,4 +564,5 @@ Spikes, `ic="spikes(C,A0,X0,A1,X1,...)"`
 : Set initial condition to a constant value, `C` with any number of _spikes_ where each spike is the pair, `Ai` specifying the spike amplitude and `Xi` specifying its position in, x.
 
 [PDE]: https://en.wikipedia.org/wiki/Partial_differential_equation
-[DISC]:https://en.wikipedia.org/wiki/Discretization
+[DISC]: https://en.wikipedia.org/wiki/Discretization
+[DIFF]: https://en.wikipedia.org/wiki/Finite_difference#Forward,_backward,_and_central_differences

@@ -37,7 +37,7 @@ this command to update your local copy if we discover changes are necessary.
   * As a test case, use an example from hypre to confirm you can compile
     and run an example
 ```
-qsub -I -n 1 -t 5 -A ATPESC2018 -q debug
+qsub -I -n 1 -t 5 -A ATPESC2019 -q debug
 cd HandsOnLessons/krylov_amg
 touch ij.c
 make ij
@@ -51,9 +51,9 @@ exit
     the last `echo` command should produce a `0` response.
 1. As soon after 9am, Monday, August 6th as possible, allocate an interactive node on
    cooley. The following command allocates a single Cooley node (`-n 1`) for 480 minutes
-   (`-t 480`) using the ATPESC2018 allocation (`-A ATPESC2018`) and the training reservation (`-q training`):
+   (`-t 480`) using the ATPESC2019 allocation (`-A ATPESC2019`) and the training reservation (`-q training`):
 ```
-qsub -I -n 1 -t 480 -A ATPESC2018 -q training
+qsub -I -n 1 -t 480 -A ATPESC2019 -q training
 ```
 The command blocks until the node is ready.  Until the allocation expires (480mins in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
   * **Note 1:** The special `-q training` will not be functional until 9am, August 6th and will go away 9pm that same day.
@@ -76,12 +76,15 @@ installing these tools locally...
   find a suitable bundled executable installation for your system and then download and install it.
 * For [GLVis][glvis], go [here](http://glvis.org/building/) and follow instructions for building GLVis
   from sources. Note, this will also involve building MFEM but does NOT require any special MFEM
-  dependencies. Alternatively, you may use [Spack][spack] to install [GLVis][glvis] and MFEM as like so
+  dependencies.
+<!---
+  Alternatively, you may use [Spack][spack] to install [GLVis][glvis] and MFEM as like so
 ```
 git clone https://github.com/spack/spack.git
 . spack/share/spack/setup-env.sh
 spack install mfem glvis
 ```
+-->
 
 Once you have installed these tools, you can move data from cooley to your local machine and 
 visualize it locally.  But, manually logging in to move data files each time you need to
@@ -137,14 +140,14 @@ does take the following actions to your login setup on cooley...
 If you do not wont these files changed...please do not run this script.
 
 Here are the steps
-1. Copy the vnc setup script to a suitable directory on your local machine
+1. Download the vnc setup script to a suitable directory on your local machine
+
+[atpesc_cooley_vnc_setup.sh]({{ site.baseurl }}{% link pages/atpesc_cooley_vnc_setup.sh %})
+
+1. Run the script [but first fix file permissions]
 ```
-scp -l <cooley-username> cooley:/projects/ATPESC2018/FASTMath/scripts/atpesc2018_cooley_vnc_setup.sh .
-chmod 755 ./atpesc2018_cooley_vnc_setup.sh
-```
-1. Run the script
-```
-./atpesc2018_cooley_vnc_setup.sh <cooley-username>
+chmod 755 ./atpesc_cooley_vnc_setup.sh
+./atpesc_cooley_vnc_setup.sh <cooley-username>
 ```
 1. It will prompt you for your cooley login password. Enter it as you normally would.
 1. You may observer output such as...

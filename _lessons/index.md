@@ -15,13 +15,16 @@ permalink: /lessons/
     {% if item.title == "Lesson Template" %}
         {% continue %}
     {% endif %}
+    {% if item.youtube %}
+        {% continue %}
+    {% endif %}
     <tr>
     <td><a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></td>
     <td>{{ item.subheadline }}</td>
     {% if item.youtube %}
         <td><a href="{{ item.youtube }}">YouTube</a></td>
     {% else %}
-        <td>No Video</td>
+        <td>Video to be added</td>
     {% endif %}
     </tr>
 {% endfor %}
