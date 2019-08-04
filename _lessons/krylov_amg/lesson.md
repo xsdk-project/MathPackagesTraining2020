@@ -362,22 +362,22 @@ definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sq
 ```
 
 This example solves the PDE $$u_{xx} + u_{yy} = f$$ discretized
-on a regular $$50\times 50$$ mesh with elements with an aspect ratio of 1 to 1:
+on a regular $$50\times 50$$ mesh with elements with an _aspect ratio_ of 1 to 1, as illustrated below.
 
 [<img src="isotropic-mesh.png" width="300">](isotropic-mesh.png)
 
 The matrix stencil for this example is given by
 [<img src="isotropic-stencil.png" width="300">](isotropic-stencil.png)
 
-<img src="arrow.png" width="30"> Now run the following example.
+<img src="arrow.png" width="30"> Now run the following variation.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-This example solves the PDE $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$,
-discretized on a regular $$50\times 50$$ mesh, but now each element has an
-_aspect ratio_ of 10 to 1:
+This example solves a Poisson problem, but on a mesh where each element has an
+aspect ratio of 10 to 1.  With an appropriate transformation, this corresponds
+to the PDE $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$,
 
 [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
