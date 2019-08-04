@@ -293,7 +293,7 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
 
-{% include qanda question='Try increasing the number of MPI ranks to 2, 4, and 8, respectively.  What happens?' answer='The number of iterations grows
+{% include qanda question='Try increasing the number of MPI ranks to 2, 4, 8, and 12, respectively.  What happens?' answer='The number of iterations grows
 slightly.  The solution time decreases.' %}
 
 {% include qanda question='Do you think that Gauss-Seidel is well suited for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
@@ -309,8 +309,11 @@ like Jacobi or Gauss-Seidel.
 
 <img src="arrow.png" width="30"> Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
 ```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
@@ -362,10 +365,10 @@ _aspect ratio_ of 10 to 1.  The corresponding PDE is $$\epsilon u_{xx} + u_{yy} 
 
 [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
-The matrix stencil looks like
+The matrix stencil for the second example looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
 
-{% include qanda question='What do you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+{% include qanda question='What did you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
 problem converges in 22 iterations.'%}
 
 A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
@@ -376,7 +379,8 @@ In the second anisotropic case, the smoothing is primarily
 influenced by its vertical neighbors.  These connections are called "strong" connections.
 
 This same idea of strong connections can help guide creation of the next coarse level.   Unknowns that are strongly connected are grouped together into
-_aggregates_.  The option to control this in MueLu is `aggregation: drop tol`.
+_aggregates_, which are the unknowns in the next coarser matrix.
+The option to control this grouping in MueLu is `aggregation: drop tol`.
 
 <img src="arrow.png" width="30"> Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of $$0.02$$.
 
