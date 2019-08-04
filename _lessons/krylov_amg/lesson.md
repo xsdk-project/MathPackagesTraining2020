@@ -293,7 +293,7 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
 
-Now let's see the effect of running with increasing numbers of MPI ranks.
+Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI ranks.
 
 <img src="arrow.png" width="30"> Run
 ```
