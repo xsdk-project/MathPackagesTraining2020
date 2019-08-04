@@ -168,7 +168,7 @@ In what follows, we will be using the CG solver.
 We now explore some simple (and quite generic) options for preconditioning the problem.
 
 By default, the `Preconditioner Type` parameter was set to `None` on line 59, meaning no preconditioning.
-Use `Ifpack2` instead.
+Use `Ifpack2` instead by commenting out line 59 and uncommenting line 62.
 Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.
 
 Moreover, have a look at the configuration for Ifpack2, starting on line 74.
@@ -219,7 +219,8 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-<img src="arrow.png" width="30"> On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
+<img src="arrow.png" width="30"> Comment out line 59 and uncomment line 65 to switch the `Preconditioner Type` to
+`MueLu`, which is an algebraic multigrid package in Trilinos.  Run
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
