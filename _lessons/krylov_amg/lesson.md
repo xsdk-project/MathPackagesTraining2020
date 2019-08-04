@@ -431,21 +431,6 @@ A good choice of solver and preconditioner will depend significantly on the prob
 
 ---
 
-### Further Reading
-
-[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
-Please feel free to submit questions, feature requests and bug reports to the issue tracker.
-
-[MueLu webpage](https://trilinos.github.io/muelu.html)
-
-[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
-
-[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
-
-[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
-
----
-
 ### Evening Activity 1
 
 You can compare the scaling results from Set 2 to the case when no preconditioner is used.
@@ -513,7 +498,8 @@ Problems which have more non-zeros per row (e.g. in higher spatial dimension) ca
 
 #### MueLu on next-generation platforms
 
-MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
+MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs,
+using a [Kokkos](https://github.com/kokkos/kokkos) backend.
 If MueLu has been compiled with OpenMP or CUDA support, this code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
 
 Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
@@ -538,3 +524,18 @@ The executable has the option to load the linear system and the right-hand side 
 ```
 ./MueLu_Stratimikos.exe --matrix=poisson-matrix.m --rhs=poisson-rhs.m --coords=poisson-coords.m
 ```
+
+---
+
+### Further Reading
+
+[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
+Please feel free to submit questions, feature requests and bug reports to the issue tracker.
+
+[MueLu webpage](https://trilinos.github.io/muelu.html)
+
+[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
+
+[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
+
+[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
