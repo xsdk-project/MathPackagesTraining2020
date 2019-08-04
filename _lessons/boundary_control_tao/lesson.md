@@ -87,17 +87,17 @@ Newton-type optimization algorithms apply the Newton's method to the first-order
 Karush-Kuhn-Tucker (KKT) system,
 
 $$
-\begin{bmatrix}
-    \nabla_{pp}^2 \mathcal{L} && \nabla_{up}^2 \mathcal{L} && \frac{\partial R}{\partial p}^T \\
-    \nabla_{pu}^2 \mathcal{L} && \nabla_{uu}^2 \mathcal{L} && \frac{\partial R}{\partial u}^T \\
-    \frac{\partial R}{\partial p} && \frac{\partial R}{\partial u} && 0
-\end{bmatrix}
-\begin{pmatrix}
+\begin{array}{ccc}
+    \nabla_{pp}^2 \mathcal{L} & \nabla_{up}^2 \mathcal{L} & \frac{\partial R}{\partial p}^T \\
+    \nabla_{pu}^2 \mathcal{L} & \nabla_{uu}^2 \mathcal{L} & \frac{\partial R}{\partial u}^T \\
+    \frac{\partial R}{\partial p} & \frac{\partial R}{\partial u} & 0
+\end{array}
+\begin{array}{c}
     \Delta p \\ \Delta u \\ \Delta \lambda
-\end{pmatrix} = 
-\begin{pmatrix}
+\end{array} = 
+\begin{array}{c}
     -\nabla_p \mathcal{L} \\ -\nabla_u \mathcal{L} \\ -R(p, u)
-\end{pmatrix},
+\end{array},
 $$
 
 which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The 
@@ -191,10 +191,11 @@ $$\min_p \quad \frac{1}{2}\int_0^1 (u(1, y) - u_{targ})^2 d y,$$
 
 $$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y} = 0 \quad \forall \; x, y \in (0, 1),$$ 
 
-$$p = \begin{bmatrix} u(x, 0) & u(0, y) & u(x, 1)\end{bmatrix}^T \quad \text{and} \quad \frac{\partial u}{\partial x}\Bigr|_{x=1}.$$ 
+$$p = \left[u(x, 0), u(0, y), u(x, 1) \right]^T \quad \text{and} \quad \frac{\partial u}{\partial x}\Bigr|_{x=1}.$$ 
 
 where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet 
-boundary terms with the optimization variables in $$p$$.
+boundary terms with the optimization variables in $$p$$. In this example, we set the target solution to 
+$$u_{targ} = 4(y - 0.5)^2 - 0.5$$.
 
 Representative Domain      |  Target Solution on Right Boundary
 :-------------------------:|:-------------------------:
