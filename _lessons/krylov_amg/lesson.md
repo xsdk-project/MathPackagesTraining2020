@@ -315,9 +315,10 @@ mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 -
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
 
-{% include qanda question='Can you explain your observations?' answer='First, when run with more than one MPI rank,
+{% include qanda question='Can you explain your observations?' answer='First, when Gauss-Seidel is run with
+more than one MPI rank,
 the order in which unknowns are updated is different than in serial.
-Second, the Ifpack2 implementation is additive. Each MPI rank is simultaneously running
+Second, the Ifpack2 Gauss-Seidel implementation is additive. Each MPI rank simultaneously runs
 Gauss-Seidel on the process-local unknowns, and communication occurs only after all MPI ranks have completed their
 local solves.
 In a true multiplicative implementation, each MPI rank would solve its local unknowns in turn, with communication between
