@@ -86,19 +86,7 @@ $$\nabla_\lambda \mathcal{L} = R(p, u) = 0.$$
 Newton-type optimization algorithms apply the Newton's method to the first-order optimality conditions to produce the 
 Karush-Kuhn-Tucker (KKT) system,
 
-$$
-\begin{array}{ccc}
-    \nabla_{pp}^2 \mathcal{L} & \nabla_{up}^2 \mathcal{L} & \frac{\partial R}{\partial p}^T \\
-    \nabla_{pu}^2 \mathcal{L} & \nabla_{uu}^2 \mathcal{L} & \frac{\partial R}{\partial u}^T \\
-    \frac{\partial R}{\partial p} & \frac{\partial R}{\partial u} & 0
-\end{array}
-\begin{array}{c}
-    \Delta p \\ \Delta u \\ \Delta \lambda
-\end{array} = 
-\begin{array}{c}
-    -\nabla_p \mathcal{L} \\ -\nabla_u \mathcal{L} \\ -R(p, u)
-\end{array},
-$$
+[<img src="kkt_sys.png">](kkt_sys.png =500){:align="middle"}
 
 which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The 
 step is then globalized using a line search or a trust region framework in order to avoid stationary points that are 
@@ -199,7 +187,7 @@ $$u_{targ} = 4(y - 0.5)^2 - 0.5$$.
 
 Representative Domain      |  Target Solution on Right Boundary
 :-------------------------:|:-------------------------:
-![<img src="laplace-domain.png" width="320">](laplace-domain.png){:align="middle"} | ![<img src="target_sol.png" width="320">](target_sol.png){:align="middle"}
+![<img src="laplace-domain.png">](laplace-domain.png =320x){:align="middle"} | ![<img src="target_sol.png">](target_sol.png =320x){:align="middle"}
 
 We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
