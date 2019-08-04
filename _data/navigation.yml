@@ -31,8 +31,8 @@
     url: "/lessons/time_integrators/sundials"
   - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg/"
-  - title: "Numerical Optimization with PETSc/Tao"
-    url: "/lessons/obstacle_tao/"
+  - title: "Poisson Boundary Control with PETSc/Tao"
+    url: "/lessons/boundary_control_tao/"
 
 - title: Featured Packages
   audience: "public"

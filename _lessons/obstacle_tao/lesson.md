@@ -4,6 +4,7 @@ title: "Numerical Optimization with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "Leveraging interoperability between PETSc/TAO and MFEM"
 permalink: "lessons/obstacle_tao/"
+youtube: "https://youtu.be/E-8lbX5Wi1I"
 use_math: true
 lesson: true
 header:
