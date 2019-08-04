@@ -361,10 +361,13 @@ definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sq
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ```
 
-This example solves a Poisson equation discretized
-on a regular $$50\times 50$$ mesh with square elements, and the corresponding PDE is $$u_{xx} + u_{yy} = f$$.
+This example solves the PDE $$u_{xx} + u_{yy} = f$$ discretized
+on a regular $$50\times 50$$ mesh with elements with an aspect ratio of 1 to 1:
 
 [<img src="isotropic-mesh.png" width="300">](isotropic-mesh.png)
+
+The matrix stencil for this example is given by
+[<img src="isotropic-stencil.png" width="300">](isotropic-stencil.png)
 
 <img src="arrow.png" width="30"> Now run the following example.
 
@@ -372,13 +375,14 @@ on a regular $$50\times 50$$ mesh with square elements, and the corresponding PD
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-This example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but now each element has an
-_aspect ratio_ of 10 to 1.  The corresponding PDE is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.
+This example solves the PDE $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$,
+discretized on a regular $$50\times 50$$ mesh, but now each element has an
+_aspect ratio_ of 10 to 1:
 
 [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
 The matrix stencil for the second example looks like
-[<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
+[<img src="anisotropic-stencil.png" width="300">](anisotropic-stencil.png)
 
 {% include qanda question='What did you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
 problem converges in 22 iterations.'%}
