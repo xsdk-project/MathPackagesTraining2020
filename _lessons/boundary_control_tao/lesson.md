@@ -22,42 +22,60 @@ header:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./main -tao_monitor -tao_view
+./main2s.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
 ```
 
 ## Brief Introduction to PDE-Constrained Optimization
 
-PDE-constrained optimization algorithms seek to find the input variables or parameters (referred to as "control", "design" or "optimization" variables) that minimize (or maximize) a functional that depends on the solution of a partial differential equation (PDE). A general PDE-constrained optimization problem is stated as
+PDE-constrained optimization algorithms seek to find the input variables or parameters (referred to as "control", 
+"design" or "optimization" variables) that minimize (or maximize) a functional that depends on the solution of a 
+partial differential equation (PDE). A general PDE-constrained optimization problem is stated as
 
 $$
 \min_{p, u} \quad f(p, u) \quad \text{subject to} \quad R(p, u) = 0,
 $$
 
-where $$p \in \mathbb{R}^n}$$ are the optimization variables, $$u \in \mathbb{R}^m$$ are the PDE states, $$f(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}$$ is the objective function, and $$R(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}^m$$ are the state equations that represent the discretized PDE.
+where $$p \in \mathbb{R}^n}$$ are the optimization variables, $$u \in \mathbb{R}^m$$ are the PDE states, 
+$$f(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}$$ is the objective function, and 
+$$R(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}^m$$ are the state equations that represent the discretized 
+PDE.
 
-The above optimization statement is called the "full-space" method for PDE-constrained optimization, where the PDE solution variables $$u$$ are solved simultaneously with the optimization variables $$p$$. Consequently, the size of the optimization problem is $$n + m$$.
+The above optimization statement is called the "full-space" method for PDE-constrained optimization, where the PDE 
+solution variables $$u$$ are solved simultaneously with the optimization variables $$p$$. Consequently, the size of the 
+optimization problem is $$n + m$$.
 
-In the "reduced-space" formulation, the PDe constraint is removed from the optimization problem using the implicit function theorem, such that
+In the "reduced-space" formulation, the PDe constraint is removed from the optimization problem using the implicit 
+function theorem, such that
 
 $$\min_p \quad f(p, u(p)),$$
 
-where the state or solution variables $$u$$ are now expressed as an implicit function of the optimization variables $$p$$. In practice, this means that every evaluation of the objective function $$f(p, u(p))$$ at a new $$p$$ point requires a complete solution of the state equations $$R(p, u) = 0$$ in order to compute the solution $$u(p)$$ that corresponds to that $$p$$ point. Consequently, the function evaluation becomes significantly more expensive, at the trade-off that the size of the optimization problem shrinks to $$n$$.
+where the state or solution variables $$u$$ are now expressed as an implicit function of the optimization variables 
+$$p$$. In practice, this means that every evaluation of the objective function $$f(p, u(p))$$ at a new $$p$$ point 
+requires a complete solution of the state equations $$R(p, u) = 0$$ in order to compute the solution $$u(p)$$ that 
+corresponds to that $$p$$ point. Consequently, the function evaluation becomes significantly more expensive, at the 
+trade-off that the size of the optimization problem shrinks to $$n$$.
 
 The reduced-space formulation can also be re-written as 
 
 $$\min_p \quad f(p, u(p)) \quad \text{governed by} \quad R(p, u) = 0,$$
 
-where the "governed by" notation describes the governing equations that relate the solution variables $$u$$ to the optimization variables $$p$$, but are not imposed as constraints in the optimization problem.
+where the "governed by" notation describes the governing equations that relate the solution variables $$u$$ to the 
+optimization variables $$p$$, but are not imposed as constraints in the optimization problem.
 
-In this lesson, we focus on gradient-based optimization methods -- methods that utilize information about the sensitivity of the objective function with respect to its inputs. We begin by exploring the optimality conditions for this class of algorithms as applied to the PDE-constrained problem.
+In this lesson, we focus on gradient-based optimization methods -- methods that utilize information about the 
+sensitivity of the objective function with respect to its inputs. We begin by exploring the optimality conditions for 
+this class of algorithms as applied to the PDE-constrained problem.
 
 ## Optimality Conditions
 
-For full-space PDE-constrained optimization, the first-order optimality conditions are derived first by forming the Lagrangian
+For full-space PDE-constrained optimization, the first-order optimality conditions are derived first by forming the 
+Lagrangian
 
 $$\mathcal{L}(p, u, \lambda) = f(p, u) + \lambda^T R(p, u),$$
 
-where $$\lambda \in \mathbb{R}^m$$ are the Lagrange multipliers associated with the PDE constraint. Differentiating the Lagrangian with respect to all of its inputs yields the first-order optimality conditions (also called the Karush-Kuhn-Tucker conditions) that must be satisfied by the optimal solution:
+where $$\lambda \in \mathbb{R}^m$$ are the Lagrange multipliers associated with the PDE constraint. Differentiating the 
+Lagrangian with respect to all of its inputs yields the first-order optimality conditions (also called the 
+Karush-Kuhn-Tucker conditions) that must be satisfied by the optimal solution:
 
 $$\nabla_p \mathcal{L} = \frac{\partial f}{\partial p} + \lambda^T \frac{\partial R}{\partial p} = 0,$$
 
@@ -65,7 +83,8 @@ $$\nabla_u \mathcal{L} = \frac{\partial f}{\partial u} + \lambda^T \frac{\partia
 
 $$\nabla_\lambda \mathcal{L} = R(p, u) = 0.$$
 
-Newton-type optimization algorithms apply the Newton's method to the first-order optimality conditions to produce the Karush-Kuhn-Tucker (KKT) system,
+Newton-type optimization algorithms apply the Newton's method to the first-order optimality conditions to produce the 
+Karush-Kuhn-Tucker (KKT) system,
 
 $$
 \begin{bmatrix}
@@ -81,22 +100,35 @@ $$
 \end{pmatrix},
 $$
 
-which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The step is then globalized using a line search or a trust region framework in order to avoid stationary points that are not the minimum. This approach converges the PDE states simultaneously with the optimization variables. This means that the PDE solution 
-and the optimization are tightly coupled and the PDE constraint is not satisfied at intermediate steps.
+which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The 
+step is then globalized using a line search or a trust region framework in order to avoid stationary points that are 
+not the minimum. This approach converges the PDE states simultaneously with the optimization variables. This means that 
+the PDE solution and the optimization are tightly coupled and the PDE constraint is not satisfied at intermediate steps.
 
 The reduced-space variant of the above problem solves the KKT system with the following steps:
 
-1. Solve $$\nabla_\lambda \mathcal{L} = R(p, u) = 0$$ at each new $$p$$ for $$u(p)$$. This is called the "state solution", i.e.: calculating the PDE state at $$p$$.
+1. Solve $$\nabla_\lambda \mathcal{L} = R(p, u) = 0$$ at each new $$p$$ for $$u(p)$$. This is called the "state 
+solution", i.e.: calculating the PDE state at $$p$$.
 
-2. Substitute $$p$$ and $$u(p)$$ into $$\nabla_u \mathcal{L}$$ amd solve $$\left( \frac{\partial R}{\partial u} \right)^T \lambda = -\frac{\partial f}{\partial u}$$ for $$\lambda(p, u)$$. This is called the "adjoint solution" and the Lagrange multipliers are called the adjoint variables in the reduced-space formulation.
+2. Substitute $$p$$ and $$u(p)$$ into $$\nabla_u \mathcal{L}$$ amd solve 
+$$\left( \frac{\partial R}{\partial u} \right)^T \lambda = -\frac{\partial f}{\partial u}$$ for $$\lambda(p, u)$$. This 
+is called the "adjoint solution" and the Lagrange multipliers are called the adjoint variables in the reduced-space 
+formulation.
 
-3. Substitute $$p$$, $$u(p)$$ and $$\lambda(p, u)$$ into $$\nabla_p \mathcal{L}$$ and solve $$\nabla_{p}^2 \mathcal{L} \Delta p = -\nabla_p \mathcal{L}$$ for the step direction $$\Delta p$$.
+3. Substitute $$p$$, $$u(p)$$ and $$\lambda(p, u)$$ into $$\nabla_p \mathcal{L}$$ and solve 
+$$\nabla_{p}^2 \mathcal{L} \Delta p = -\nabla_p \mathcal{L}$$ for the step direction $$\Delta p$$.
 
-Note that the reduced-space steps avoid the computation of second derivative information in $$\nabla_{pu}^2 \mathcal{L}$$ and $$\nabla_{uu}^2 \mathcal{L}$$. Additionally, the PDE solver and the optimization algorithm are decoupled from each other. This comes at the cost of performing a full PDE solution for every objective function evaluation.
+Note that the reduced-space steps avoid the computation of second derivative information in 
+$$\nabla_{pu}^2 \mathcal{L}$$ and $$\nabla_{uu}^2 \mathcal{L}$$. Additionally, the PDE solver and the optimization 
+algorithm are decoupled from each other. This comes at the cost of performing a full PDE solution for every objective 
+function evaluation.
 
 ## Using TAO
 
-Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. It is primarily intended for continuous gradient-based optimization, and supports PDE-constrained problems using the reduced-space formulation.
+Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National 
+Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. It is 
+primarily intended for continuous gradient-based optimization, and supports PDE-constrained problems using the 
+reduced-space formulation.
 
 Below is a TAO main file template that can be adapted to any PDE-constrained problem:
 
@@ -147,7 +179,9 @@ int main(int argc, char *argv[])
   ierr = PetscFinalize();
 ```
 
-TAO calls the user-provided ``FormFunctionGradient()`` routine whenever the optimization algorithm needs to evaluate the objective and its gradient. The ``AppCtx`` structure contains any data the user has to preserve and propagate through for these computations.
+TAO calls the user-provided ``FormFunctionGradient()`` routine whenever the optimization algorithm needs to evaluate 
+the objective and its gradient. The ``AppCtx`` structure contains any data the user has to preserve and propagate 
+through for these computations.
 
 ## Example Problem: Boundary Control with the 2D Laplace Equation
 
@@ -157,22 +191,15 @@ $$\min_p \quad \frac{1}{2}\int_0^1 (u(1, y) - u_{targ})^2 d y,$$
 
 $$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y} = 0 \quad \forall \; x, y \in (0, 1), \quad p = \begin{bmatrix} u(x, 0) & u(0, y) & u(x, 1)\end{bmatrix}^T \quad \text{and} \quad \frac{\partial u}{\partial x}$$
 
-where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet boundary terms with the optimization variables in $$p$$.
+where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet 
+boundary terms with the optimization variables in $$p$$.
 
 [<img src="laplace-domain.png" width="320">](laplace-domain.png){:align="middle"}
 
 We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
 
-The adjoint system for this problem is
 
-$$\left(\frac{\partial R}{\partial u}\right)^T \lambda = -\frac{\partial f}{\partial u},$$
-
-and the total derivative of the objective function w.r.t. the optimization variables is
-
-$$\frac{d f}{d p} = \frac{\partial f}{\partial p} + \left(\frac{\partial R}{\partial p}\right)^T \lambda.$$
-
-Note that the total derivative notation is $$\frac{d}{dp}(\cdot)$$ and includes indirect sensitivities that come through the governing equations. In this problem, the partial derivative of the objective w.r.t the optimization variables, denoted by $$\frac{\partial}{\partial p}(\cdot)$$, is zero because $$p$$ does not directly appear in the objective function.
 
 ### Results
 
