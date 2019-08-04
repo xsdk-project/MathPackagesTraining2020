@@ -4,6 +4,7 @@ title: "Poisson Boundary Control"
 subheadline: "Numerical Optimization"
 teaser: "Leveraging interoperability between PETSc/TAO and AMReX"
 permalink: "lessons/boundary_control_tao/"
+youtube: "https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos"
 use_math: true
 lesson: true
 header:

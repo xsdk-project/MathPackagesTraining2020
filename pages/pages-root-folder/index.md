@@ -8,18 +8,20 @@ layout: frontpage
 widget1:
   url: https://fastmath-scidac.llnl.gov
   title: "Open</br>Source"
-  text: '<a href="https://fastmath-scidac.llnl.gov"><ul><li>Numerically Rigorous.</li><li>Community Adopted.</li><li>Extremely Scalable.</li><li>Performance Portable.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal1"></a>'
+  text: '<a href="#" data-reveal-id="videoModal2"><ul><li>Numerically Rigorous.</li><li>Community Adopted.</li><li>Extremely Scalable.</li><li>Performance Portable.</li></ul></a>'
+#  text: '<a href="#" data-reveal-id="videoModal1"><ul><li>Numerically Rigorous.</li><li>Community Adopted.</li><li>Extremely Scalable.</li><li>Performance Portable.</li></ul></a>'
+#  video: '<a href="#" data-reveal-id="videoModal1"></a>'
 widget2:
   url: https://xsdk.info
   title: "Interoperability &<br>Ease of Use&nbsp;"
-  text: '<a href="https://xsdk.info"><ul><li>Easy Download.</li><li>Easy Configure & Install.</li><li>Easy Dependencies.</li><li>Easy Update.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal2"></a>'
+  text: '<a href="#" data-reveal-id="videoModal2"><ul><li>Easy Download.</li><li>Easy Configure & Install.</li><li>Easy Dependencies.</li><li>Easy Update.</li></ul></a>'
+#  video: '<a href="#" data-reveal-id="videoModal2"></a>'
 widget3:
   url: https://ideas-productivity.org
   title: "Enhanced</br>Productivity"
-  text: '<a href="https://ideas-productivity.org"><ul><li>Development Resources.</li><li>Shared Know-How.</li><li>Common Tools.</li><li>Training.</li></ul></a>'
-  video: '<a href="#" data-reveal-id="videoModal3"></a>'
+#  text: '<a href="https://ideas-productivity.org"><ul><li>Development Resources.</li><li>Shared Know-How.</li><li>Common Tools.</li><li>Training.</li></ul></a>'
+  text: '<a href="#" data-reveal-id="videoModal3"><ul><li>Development Resources.</li><li>Shared Know-How.</li><li>Common Tools.</li><li>Training.</li></ul></a>'
+#  video: '<a href="#" data-reveal-id="videoModal3"></a>'
 #
 # Use the call for action to show a button on the frontpage
 #

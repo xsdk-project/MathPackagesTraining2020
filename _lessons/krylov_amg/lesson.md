@@ -1,7 +1,7 @@
 ---
 layout: page-fullwidth
-title: "Krylov Solvers and Preconditioning"
-subheadline: ""
+title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
+subheadline: "Various cases in the use of Trilinos Krylov solvers"
 permalink: "lessons/krylov_amg/"
 use_math: true
 lesson: true
