@@ -314,9 +314,14 @@ mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 -
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
-{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
-receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
-the number of MPI processes due its use of the SpMV kernel.' %}
+
+{% include qanda question='Can you explain your observations?' answer='First, when run with more than one MPI rank,
+the order in which unknowns are updated is different than in serial.
+Second, the Ifpack2 implementation is additive. Each MPI rank is simultaneously running
+Gauss-Seidel on the process-local unknowns, and communication occurs only after all MPI ranks have completed their
+local solves.
+In a true multiplicative implementation, each MPI rank would solve its local unknowns in turn, with communication between
+each rank solve.  Third, Chebyshev is relatively unaffected by the number of MPI processes due its use of the SpMV kernel.' %}
 
 Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
 Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
