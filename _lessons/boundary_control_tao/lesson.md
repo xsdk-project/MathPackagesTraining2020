@@ -189,7 +189,9 @@ The inverse problem for the boundary control case is given as
 
 $$\min_p \quad \frac{1}{2}\int_0^1 (u(1, y) - u_{targ})^2 d y,$$
 
-$$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y} = 0 \quad \forall \; x, y \in (0, 1), \quad p = \begin{bmatrix} u(x, 0) & u(0, y) & u(x, 1)\end{bmatrix}^T \quad \text{and} \quad \frac{\partial u}{\partial x}$$
+$$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y} = 0 \quad \forall \; x, y \in (0, 1),$$ 
+
+$$p = \begin{bmatrix} u(x, 0) & u(0, y) & u(x, 1)\end{bmatrix}^T \quad \text{and} \quad \frac{\partial u}{\partial x}\Bigr|_{x=1}.$$ 
 
 where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet 
 boundary terms with the optimization variables in $$p$$.
