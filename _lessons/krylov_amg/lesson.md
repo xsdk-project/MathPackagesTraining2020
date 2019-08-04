@@ -340,19 +340,28 @@ A technical
 definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 -->
 
-<img src="arrow.png" width="30"> Run the following two examples.
+<img src="arrow.png" width="30"> Run the following example.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
+```
+
+This example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements.
+
+[<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png)
+
+<img src="arrow.png" width="30"> Now run the following example.
+
+```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements.
-The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but now each element has an _aspect ratio_ of 10 to 1.
+This example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but now each element has an
+_aspect ratio_ of 10 to 1.
 
-[<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png) [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
+[<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
-The PDE corresponding to the second solve is
+The corresponding PDE is
 
 $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.
 
