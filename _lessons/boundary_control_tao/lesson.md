@@ -35,7 +35,7 @@ $$
 \min_{p, u} \quad f(p, u) \quad \text{subject to} \quad R(p, u) = 0,
 $$
 
-where $$p \in \mathbb{R}^n}$$ are the optimization variables, $$u \in \mathbb{R}^m$$ are the PDE states, 
+where $$p \in \mathbb{R}^n$$ are the optimization variables, $$u \in \mathbb{R}^m$$ are the PDE states, 
 $$f(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}$$ is the objective function, and 
 $$R(p, u): \mathbb{R}^{n \times m} \rightarrow \mathbb{R}^m$$ are the state equations that represent the discretized 
 PDE.
@@ -199,11 +199,74 @@ boundary terms with the optimization variables in $$p$$.
 We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
 
+The source code for this problem is available on GitHub under 
+[AMReX-Codes/ATPESC-codes/TAO-of-AMReX](https://github.com/AMReX-Codes/ATPESC-codes/tree/master/TAO-of-AMReX). The 
+problem can be compiled and run with:
+
+```
+cd {{site.handson_root}}/boundary_control_tao
+make
+./main2d.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+```
+
+In this example, we will learn about different command line options for TAO, 
 
 
 ### Results
 
+Running the above command produces the output below with information from TAO about the optimization.
 
+```
+AMReX (19.08) initialized
+  0 TAO,  Function value: 0.00564792,  Residual: 4.57574e-08
+  1 TAO,  Function value: 0.00564792,  Residual: 4.57574e-08
+  2 TAO,  Function value: 0.000351831,  Residual: 6.72001e-09
+  3 TAO,  Function value: 0.000104118,  Residual: 4.5399e-09
+  4 TAO,  Function value: 4.39909e-06,  Residual: 5.62804e-10
+  5 TAO,  Function value: 3.20011e-06,  Residual: 3.18434e-10
+  6 TAO,  Function value: 2.90562e-06,  Residual: 3.67294e-10
+  7 TAO,  Function value: 2.82687e-06,  Residual: 3.54986e-10
+  8 TAO,  Function value: 2.74912e-06,  Residual: 3.45265e-10
+  9 TAO,  Function value: 2.74912e-06,  Residual: 3.45265e-10
+ 10 TAO,  Function value: 2.5271e-06,  Residual: 1.99102e-10
+ 11 TAO,  Function value: 2.41122e-06,  Residual: 1.43435e-10
+ 12 TAO,  Function value: 2.10344e-06,  Residual: 8.34685e-11
+ 13 TAO,  Function value: 1.78759e-06,  Residual: 1.11393e-10
+ 14 TAO,  Function value: 1.30814e-06,  Residual: 8.4585e-11
+ 15 TAO,  Function value: 1.10837e-06,  Residual: 9.14759e-11
+ 16 TAO,  Function value: 1.08865e-06,  Residual: 9.52258e-11
+ 17 TAO,  Function value: 8.87623e-07,  Residual: 1.29118e-10
+TaoSolve() duration: 1316289 microseconds
+[The  Pinned Arena] space (MB) used spread across MPI: [8 ... 8]
+AMReX (19.08) finalized
+```
+
+In this case, we have specified an absolute function value tolerance of $$10^{-6}$$ (with `-tao_fmin 1e-6`) and an 
+absolute gradient tolerance of $$10^{-12}$$ (with `-tao_gatol 1e-12`). We can see in the convergence information that 
+the optimization terminated based on the function value. We can further validate this further by running the problem 
+with the `-tao_view` argument and inspecting the printed convergence reason: `Solution converged:    Minf --  f < fmin`.
+
+We can also visualize the AMReX solution using Paraview, with the initial solution on the right and the final solution 
+on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by manipulating the 
+Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($y=1$$) edges.
+
+Initial Solution             |  Final Solution
+:-------------------------:|:-------------------------:
+![<img src="adjoint_init_sol.png" width="320">](adjoint_init_sol.png){:align="middle"} | ![<img src="adjoint_final_sol.png" width="320">](adjoint_final_sol.png){:align="middle"}
+
+### Hands-on Activities
+
+1. Change problem size with `-nx <size>` (default is 128) and evaluate its impact on performance.
+
+2. Now disable the adjoint solution and enable the finite difference gradient with `-fd`. Change problem size again 
+and evaluate performance. Note: convergence tolerances may need to be changed to account for truncation errors in the 
+gradient.
+
+3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type BNCG`. Compare convergence with 
+the default method (`BQNLS` -- quasi-Newton line search).
+
+4. Run the problem in parallel using `mpirun -n 4 ./main2d.gnu.MPI.ex ...`. AMReX and PETSc can seamlessly scale up the 
+problem without changing the source code.
 
 ## Further Reading
 
