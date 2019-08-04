@@ -352,7 +352,11 @@ The second example solves a Poisson equation discretized on a regular $$50\times
 
 [<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png) [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
-The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
+The PDE corresponding to the second solve is
+
+$$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.
+
+The matrix stencil looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
 
 {% include qanda question='What do you observe in the previous runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
