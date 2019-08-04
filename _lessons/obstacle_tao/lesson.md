@@ -1,14 +1,14 @@
 ---
 layout: page-fullwidth
-title: "The Obstacle Problem"
+title: "Numerical Optimization with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "Leveraging interoperability between PETSc/TAO and MFEM"
 permalink: "lessons/obstacle_tao/"
+youtube: "https://youtu.be/E-8lbX5Wi1I"
 use_math: true
 lesson: true
-youtube: "https://youtu.be/E-8lbX5Wi1I"
 header:
- image_fullwidth: "xsdk_logo_wide.png"
+ image_fullwidth: "xsdk_logo_wide-fs8.png"
 ---
 
 ## At a Glance
