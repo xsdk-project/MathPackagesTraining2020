@@ -207,9 +207,10 @@ symmetric, we can perform the adjoint solution by changing the right-hand-side v
 
 ## Further Reading
 
-[PETSc Manual](http://www.mcs.anl.gov/petsc/petsc-current/docs/manual.pdf)  
-[TAO Manual](http://www.mcs.anl.gov/petsc/petsc-current/docs/tao_manual.pdf)
-[AMReX Documentation](https://amrex-codes.github.io/amrex/docs_html/)
+- [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manual.pdf)  
+- [TAO manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/tao_manual.pdf)
+- [PETSc/TAO website](https://www.mcs.anl.gov/petsc)
+- [AMReX documentation](https://amrex-codes.github.io/amrex/docs_html)
 
 [1]: https://en.wikipedia.org/wiki/Quasi-Newton_method
 [2]: https://en.wikipedia.org/wiki/Broyden–Fletcher–Goldfarb–Shanno_algorithm
