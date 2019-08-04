@@ -333,7 +333,7 @@ run times.
 ##### Change coarsening procedure by setting the aggregation threshold parameter
 
 In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
-or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns.
+or some other directional variability.  In these cases, it's often beneficial to ignore weak connections between unknowns.
 <!--
 JHU: This won''t render properly
 A technical
