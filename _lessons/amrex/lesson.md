@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-title: "AMReX"
+title: "Meshing and Discretization with AMReX"
 subheadline: "A Block Structured Adaptive Mesh Refinement Framework"
 teaser: "Not your grandmother's AMR...!"
 permalink: "lessons/amrex/"

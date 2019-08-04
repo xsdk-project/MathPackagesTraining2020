@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-title: "Time Integration & Nonlinear Solvers with SUNDIALS"
+title: "Time Integration and Nonlinear Solvers with SUNDIALS"
 subheadline: "Role and Impact of Time Integrators in Solution Accuracy and Computational Efficiency"
 permalink: "lessons/time_integrators/sundials"
 use_math: true

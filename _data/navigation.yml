@@ -25,13 +25,13 @@
   dropdown:
   - title: "Hand Coded Heat"
     url: "/lessons/hand_coded_heat/"
-  - title: "Meshing and Discretization (AMReX)"
+  - title: "Meshing and Discretization with AMReX"
     url: "/lessons/amrex/"
-  - title: "Time Integration & Nonlinear Solvers (SUNDIALS)"
+  - title: "Time Integration and Nonlinear Solvers with SUNDIALS"
     url: "/lessons/time_integrators/sundials"
-  - title: "Krylov Solvers and Preconditioning (Trilinos/MueLu)"
+  - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg/"
-  - title: "Numerical Optimization (PETSc/Tao)"
+  - title: "Numerical Optimization with PETSc/Tao"
     url: "/lessons/obstacle_tao/"
 
 - title: Featured Packages
