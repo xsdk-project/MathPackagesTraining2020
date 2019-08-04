@@ -27,15 +27,14 @@ cd {{site.handson_root}}/krylov_amg
 
 ## The Problem Being Solved
 
-We consider the Poisson equation
+The Poisson equation arises in electrostatics, incompressible fluid flow simulations, and numerous
+other applications.  We will consider the Poisson equation
 
 $$-\Delta u = f$$
 
 on a square mesh of size $$n_x \times n_y$$ with Dirichlet boundary conditions $$u = 0$$.
 
 It is discretized using central finite differences, leading to a symmetric positive (spd) matrix.
-
-This type of system arises in electrostatics incompressible fluid flow simulations, etc.
 
 ## The Example Source Code
 
@@ -169,7 +168,7 @@ In what follows, we will be using the CG solver.
 We now explore some simple (and quite generic) options for preconditioning the problem.
 
 By default, the `Preconditioner Type` parameter was set to `None` on line 59, meaning no preconditioning.
-Use `Ifpack2` instead.
+Use `Ifpack2` instead by commenting out line 59 and uncommenting line 62.
 Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.
 
 Moreover, have a look at the configuration for Ifpack2, starting on line 74.
@@ -220,7 +219,8 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-<img src="arrow.png" width="30"> On line 59 switch the `Preconditioner Type` to `MueLu`, which is an algebraic multigrid package in Trilinos, and run
+<img src="arrow.png" width="30"> Comment out line 59 and uncomment line 65 to switch the `Preconditioner Type` to
+`MueLu`, which is an algebraic multigrid package in Trilinos.  Run
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ./MueLu_Stratimikos.exe --nx=100 --ny=100
@@ -294,10 +294,20 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
 
-{% include qanda question='Try increasing the number of MPI ranks to 2, 4, and 8, respectively.  What happens?' answer='The number of iterations grows
-slightly.  The solution time decreases.' %}
+Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI ranks.
 
-{% include qanda question='Do you think that Gauss-Seidel is well suited for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
+<img src="arrow.png" width="30"> Run
+```
+mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+```
+
+{% include qanda question='What do you observe as you add MPI ranks?'
+answer='The number of iterations changes slightly, while the solution time decreases.' %}
+
+{% include qanda question='Do you think that Gauss-Seidel is easily adaptible for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
 limited opportunities for parallelism.  Equation $$i$$ cannot be solved until all equations $$j, j<i$$ that $$i$$ depends on have been solved.' %}
 Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
 
@@ -308,16 +318,26 @@ like Jacobi or Gauss-Seidel.
   - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
     e.g., coloring.
 
-<img src="arrow.png" width="30"> Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
+<img src="arrow.png" width="30"> In the XML input file, comment out the Gauss-Seidel smoother you were using, and
+uncomment the Chebyshev smoother block on line 155. Repeat the above experiment.
 ```
-mpirun -np 1 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
-mpirun -np 10 ./MueLu_Stratimikos.exe --timings --matrixType=Laplace3D --nx=20 --ny=20 --nz=20
+./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
-{% include qanda question='Can you explain your observations?' answer='Each MPI rank is running Gauss-Seidel on its part of the matrix, and no rank
-receives updated solutions from any other rank.  Thus, the overall convergence is worse than true Gauss-Seidel.  Chebyshev is relatively unaffected by
-the number of MPI processes due its use of the SpMV kernel.' %}
+
+{% include qanda question='Can you explain your observations?' answer='First, when Gauss-Seidel is run with
+more than one MPI rank,
+the order in which unknowns are updated is different than in serial.
+Second, the Ifpack2 Gauss-Seidel implementation is additive. Each MPI rank simultaneously runs
+Gauss-Seidel on the process-local unknowns, and communication occurs only after all MPI ranks have completed their
+local solves.
+In a true multiplicative implementation, each MPI rank would solve its local unknowns in turn, with communication between
+each rank solve.  Third, Chebyshev is relatively unaffected by the number of MPI processes due its use of the SpMV kernel.' %}
 
 Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
 Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
@@ -328,29 +348,43 @@ run times.
 ##### Change coarsening procedure by setting the aggregation threshold parameter
 
 In practice, you will likely encounter matrices arising from partial differential equation with material coefficient variation, mesh stretching,
-or some other directional variability.  In these cases, it''s often beneficial to ignore weak connections between unknowns.
+or some other directional variability.  In these cases, it's often beneficial to ignore weak connections between unknowns.
 <!--
 JHU: This won''t render properly
 A technical
 definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 -->
 
-<img src="arrow.png" width="30"> Run the following two examples.
+<img src="arrow.png" width="30"> Run the following example.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
+```
+
+This example solves the PDE $$u_{xx} + u_{yy} = f$$ discretized
+on a regular $$50\times 50$$ mesh with elements with an aspect ratio of 1 to 1:
+
+[<img src="isotropic-mesh.png" width="300">](isotropic-mesh.png)
+
+The matrix stencil for this example is given by
+[<img src="isotropic-stencil.png" width="300">](isotropic-stencil.png)
+
+<img src="arrow.png" width="30"> Now run the following example.
+
+```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50 --stretchx=10
 ```
 
-The first example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh with square elements.
-The second example solves a Poisson equation discretized on a regular $$50\times 50$$ mesh, but now each element has an _aspect ratio_ of 10 to 1.
+This example solves the PDE $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$,
+discretized on a regular $$50\times 50$$ mesh, but now each element has an
+_aspect ratio_ of 10 to 1:
 
-[<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png) [<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
+[<img src="stretched-mesh.png" width="400">](stretched-mesh.png)
 
-The PDE corresponding to the second solve is $$\epsilon u_{xx} + u_{yy} = f, \epsilon=0.1$$.  The matrix stencil looks like
-[<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
+The matrix stencil for the second example looks like
+[<img src="anisotropic-stencil.png" width="300">](anisotropic-stencil.png)
 
-{% include qanda question='What do you observe in the previous runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+{% include qanda question='What did you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
 problem converges in 22 iterations.'%}
 
 A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
@@ -361,7 +395,8 @@ In the second anisotropic case, the smoothing is primarily
 influenced by its vertical neighbors.  These connections are called "strong" connections.
 
 This same idea of strong connections can help guide creation of the next coarse level.   Unknowns that are strongly connected are grouped together into
-_aggregates_.  The option to control this in MueLu is `aggregation: drop tol`.
+_aggregates_, which are the unknowns in the next coarser matrix.
+The option to control this grouping in MueLu is `aggregation: drop tol`.
 
 <img src="arrow.png" width="30"> Now rerun the second anisotropic example, but modifying the parameter `aggregation: drop tol` on line 110 in the input deck to have a value of $$0.02$$.
 
@@ -397,21 +432,6 @@ A good choice of solver and preconditioner will depend significantly on the prob
 - One-level preconditioners (such as Jacobi and Gauss-Seidel) will often not lead to a scalable solver.
 
 - Multigrid solvers are scalable (on Poisson), but getting good performance often involves some parameter tuning.
-
----
-
-### Further Reading
-
-[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
-Please feel free to submit questions, feature requests and bug reports to the issue tracker.
-
-[MueLu webpage](https://trilinos.github.io/muelu.html)
-
-[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
-
-[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
-
-[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
 
 ---
 
@@ -482,7 +502,8 @@ Problems which have more non-zeros per row (e.g. in higher spatial dimension) ca
 
 #### MueLu on next-generation platforms
 
-MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs, using a Kokkos backend.
+MueLu has specialized kernels that allow it to run on next-generation computing platforms such as KNLs and GPUs,
+using a [Kokkos](https://github.com/kokkos/kokkos) backend.
 If MueLu has been compiled with OpenMP or CUDA support, this code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
 
 Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
@@ -507,3 +528,18 @@ The executable has the option to load the linear system and the right-hand side 
 ```
 ./MueLu_Stratimikos.exe --matrix=poisson-matrix.m --rhs=poisson-rhs.m --coords=poisson-coords.m
 ```
+
+---
+
+### Further Reading
+
+[Trilinos GitHub Repo](https://github.com/trilinos/Trilinos)
+Please feel free to submit questions, feature requests and bug reports to the issue tracker.
+
+[MueLu webpage](https://trilinos.github.io/muelu.html)
+
+[MueLu Doxygen](https://trilinos.org/docs/dev/packages/muelu/doc/html/index.html)
+
+[MueLu User Guide](https://trilinos.github.io/pdfs/mueluguide.pdf)
+
+[Longer, in-depth MueLu tutorial](https://trilinos.github.io/muelu_tutorial.html)
