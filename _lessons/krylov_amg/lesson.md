@@ -340,15 +340,16 @@ A technical
 definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sqrt{(\|a_{ii} a_{jj}\|}$$, where $$\epsilon \geq 0$$ is a user-specified value.
 -->
 
-<img src="arrow.png" width="30"> Run the following example, which solves a Poisson equation discretized
-on a regular $$50\times 50$$ mesh with square elements.  The corresponding PDE is $$u_{xx} + u_{yy} = f$$.
+<img src="arrow.png" width="30"> Run the following example.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
 ```
 
+This example solves a Poisson equation discretized
+on a regular $$50\times 50$$ mesh with square elements, and the corresponding PDE is $$u_{xx} + u_{yy} = f$$.
 
-[<img src="isotropic-mesh.png" width="400">](isotropic-mesh.png)
+[<img src="isotropic-mesh.png" width="300">](isotropic-mesh.png)
 
 <img src="arrow.png" width="30"> Now run the following example.
 
@@ -364,7 +365,7 @@ _aspect ratio_ of 10 to 1.  The corresponding PDE is $$\epsilon u_{xx} + u_{yy} 
 The matrix stencil looks like
 [<img src="anisotropic-stencil.png" width="400">](anisotropic-stencil.png)
 
-{% include qanda question='What do you observe in the previous runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
+{% include qanda question='What do you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
 problem converges in 22 iterations.'%}
 
 A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
