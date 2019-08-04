@@ -341,7 +341,7 @@ definition of a weak matrix connection $$a_{ij}$$ is $$\|a_{ij}\| < \epsilon \sq
 -->
 
 <img src="arrow.png" width="30"> Run the following example, which solves a Poisson equation discretized
-on a regular $$50\times 50$$ mesh with square elements.  The corresponding PDE is $$u_{xx} + u_{yy} = f, \epsilon=0.1$$.
+on a regular $$50\times 50$$ mesh with square elements.  The corresponding PDE is $$u_{xx} + u_{yy} = f$$.
 
 ```
 ./MueLu_Stratimikos.exe --nx=50 --ny=50
