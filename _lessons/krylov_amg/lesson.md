@@ -317,7 +317,8 @@ like Jacobi or Gauss-Seidel.
   - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
     e.g., coloring.
 
-<img src="arrow.png" width="30"> Change the input file to use Chebyshev smoothing instead of Gauss-Seidel, and repeat the experiment.
+<img src="arrow.png" width="30"> In the XML input file, comment out the Gauss-Seidel smoother you were using, and
+uncomment the Chebyshev smoother block on line 155. Repeat the above experiment.
 ```
 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
