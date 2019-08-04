@@ -248,13 +248,15 @@ absolute gradient tolerance of $$10^{-12}$$ (with `-tao_gatol 1e-12`). We can se
 the optimization terminated based on the function value. We can further validate this further by running the problem 
 with the `-tao_view` argument and inspecting the printed convergence reason: `Solution converged:    Minf --  f < fmin`.
 
-We can also visualize the AMReX solution using Paraview, with the initial solution on the right and the final solution 
-on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by manipulating the 
-Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($y=1$$) edges.
+We can also visualize the AMReX solution using Paraview, with the initial solution ($$u_0 = 1.0$$) on the right and the 
+final solution on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by 
+manipulating the Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($$y=1$$) edges.
 
 Initial Solution             |  Final Solution
 :-------------------------:|:-------------------------:
 ![<img src="adjoint_init_sol.png" width="320">](adjoint_init_sol.png){:align="middle"} | ![<img src="adjoint_final_sol.png" width="320">](adjoint_final_sol.png){:align="middle"}
+
+Note: The missing line in the final solution surface is a visualization artifact.
 
 ### Hands-on Activities
 
