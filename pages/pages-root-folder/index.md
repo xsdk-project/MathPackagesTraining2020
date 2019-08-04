@@ -38,7 +38,7 @@ callforaction:
   style: alert
 permalink: /index.html
 header:
-  image_fullwidth: "shared_values_project_logos_banner4.png"
+  image_fullwidth: "shared_values_project_logos_banner4-fs8.png"
 #
 # This is a nasty hack to make the navigation highlight
 # this page as active in the topbar navigation
