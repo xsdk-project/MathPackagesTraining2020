@@ -194,7 +194,9 @@ $$\text{governed by} \quad \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 
 where $$u_{targ}$$ is a target solution that we want to recover by controlling the bottom, left and top Dicihlet 
 boundary terms with the optimization variables in $$p$$.
 
-[<img src="laplace-domain.png" width="320">](laplace-domain.png){:align="middle"}
+Representative Domain      |  Target Solution on Right Boundary
+:-------------------------:|:-------------------------:
+![<img src="laplace-domain.png" width="320">](laplace-domain.png){:align="middle"} | ![<img src="target_sol.png" width="320">](target_sol.png){:align="middle"}
 
 We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
