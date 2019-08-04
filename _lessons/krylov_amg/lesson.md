@@ -293,10 +293,20 @@ you can either use different directions in the sweeps in pre- and post-smoothing
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
 
-{% include qanda question='Try increasing the number of MPI ranks to 2, 4, 8, and 12, respectively.  What happens?' answer='The number of iterations grows
-slightly.  The solution time decreases.' %}
+Now let's see the effect of running with increasing numbers of MPI ranks.
 
-{% include qanda question='Do you think that Gauss-Seidel is well suited for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
+<img src="arrow.png" width="30"> Run
+```
+mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+```
+
+{% include qanda question='What do you observe as you add MPI ranks?'
+answer='The number of iterations changes slightly, while the solution time decreases.' %}
+
+{% include qanda question='Do you think that Gauss-Seidel is easily adaptible for use on massively parallel architectures such as GPUs?' answer='Gauss-Seidel has
 limited opportunities for parallelism.  Equation $$i$$ cannot be solved until all equations $$j, j<i$$ that $$i$$ depends on have been solved.' %}
 Hint: Have a look at the [Gauss-Seidel algorithm](https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method#Algorithm).
 
