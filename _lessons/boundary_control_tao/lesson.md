@@ -1,14 +1,13 @@
 ---
 layout: page-fullwidth
-title: "Poisson Boundary Control"
+title: "Poisson Boundary Control with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "Leveraging interoperability between PETSc/TAO and AMReX"
 permalink: "lessons/boundary_control_tao/"
-youtube: "https://www.youtube.com/channel/UCEkJLPAMOUsjC_RXGFcVq-A/videos"
 use_math: true
 lesson: true
 header:
- image_fullwidth: "xsdk_logo_wide.png"
+ image_fullwidth: "xsdk_logo_wide-fs8.png"
 ---
 
 ## At a Glance
