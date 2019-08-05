@@ -243,26 +243,26 @@ with the `-tao_view` argument and inspecting the printed convergence reason: `So
 
 We can also visualize the AMReX solution using Paraview, with the initial solution ($$u_0 = 1.0$$) on the right and the 
 final solution on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by 
-manipulating the Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($$y=1$$) edges.
+manipulating the Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($$y=1$$) edges. Note that the 
+missing line in the final solution surface is a visualization artifact.
 
 Initial Solution             |  Final Solution
 :-------------------------:|:-------------------------:
 ![<img src="adjoint_init_sol.png">](adjoint_init_sol.png){:align="middle"} | ![<img src="adjoint_final_sol.png">](adjoint_final_sol.png){:align="middle"}
-
-Note: The missing line in the final solution surface is a visualization artifact.
 
 ### Hands-on Activities
 
 1. Change problem size with `-nx <size>` (default is 128) and evaluate its impact on performance.
 
 2. Now disable the adjoint solution and enable the finite difference gradient with `-fd`. Change problem size again 
-and evaluate performance. Note: convergence tolerances may need to be changed to account for truncation errors in the 
+and evaluate performance. Convergence tolerances may need to be changed to account for truncation errors in the 
 gradient.
 
-3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type BNCG`. Compare convergence with 
-the default method (`BQNLS` -- quasi-Newton line search).
+3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg` (remove `-tao_ls_type armijo` 
+to default back to the More-Thuente line search). Compare convergence with the default method (`bqnls` -- quasi-Newton 
+line search). 
 
-4. Run the problem in parallel using `mpirun -n 4 ./main2d.gnu.MPI.ex ...`. AMReX and PETSc can seamlessly scale up the 
+4. Run the problem in parallel using `mpiexec -np 4 ./boundary_control ...`. AMReX and PETSc can seamlessly scale up the 
 problem without changing the source code.
 
 ## Further Reading
