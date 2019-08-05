@@ -22,7 +22,7 @@ header:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./main2s.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
 ```
 
 ## Brief Introduction to PDE-Constrained Optimization
@@ -201,7 +201,7 @@ problem can be compiled and run with:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./main2d.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
 ```
 
 In this example, we will learn about different command line options for TAO, 
