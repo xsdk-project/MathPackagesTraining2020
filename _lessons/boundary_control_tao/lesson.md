@@ -187,9 +187,9 @@ where $$u_{targ}$$ is a target solution that we want to recover by controlling t
 boundary terms with the optimization variables in $$p$$. In this example, we set the target solution to 
 $$u_{targ} = 4(y - 0.5)^2 - 0.5$$.
 
-Representative Domain      |  Target Solution on Right Boundary
-:-------------------------:|:-------------------------:
-![<img src="laplace-domain.png">](laplace-domain.png =250x){:align="middle"} | ![<img src="target_sol.png">](target_sol.png =250x){:align="middle"}
+| Representative Domain | Target Solution on Right Boundary |
+|:-------------------------:|:-------------------------:|
+|![](laplace-domain.png){:width="130%"|![](target_sol2.png){:width="60%"}|
 
 We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
