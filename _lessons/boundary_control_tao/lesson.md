@@ -22,7 +22,7 @@ header:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./main2s.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
 ```
 
 ## Brief Introduction to PDE-Constrained Optimization
@@ -191,7 +191,8 @@ $$u_{targ} = 4(y - 0.5)^2 - 0.5$$.
 |:-------------------------:|:-------------------------:|
 |![](laplace-domain.png){:width="130%"|![](target_sol2.png){:width="60%"}|
 
-We use [AMReX][5] to solve the governing equation. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
+We use [AMReX][5] to solve the governing equation. The default domain is a 128x128 cell square and the edge size can be 
+changed with the option flag `-nx <integer>`. Since the Laplace equation is self-adjoint, i.e. the Jacobian is 
 symmetric, we can perform the adjoint solution by changing the right-hand-side vector for the forward solution.
 
 The source code for this problem is available on GitHub under 
@@ -201,11 +202,22 @@ problem can be compiled and run with:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./main2d.gnu.MPI.ex inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
 ```
 
-In this example, we will learn about different command line options for TAO, 
+In this example, we will run the problem with different TAO configurations using command line options. Below is an 
+overview of some of the available flags. For a complete list, please refer to the [TAO User Manual][6].
 
+| Flag              | Available Options                    | Description                   |
+|:-----------------:|:------------------------------------:|:-----------------------------:|
+| `-tao_type`       | `bncg`, `bqnls`                      | Change the TAO algorithm type |
+| `-tao_ls_type`    | `unit`, `armijo`, `more-thuente`     | Change the TAO line search type |
+| `-tao_gatol`      | `1e-12` (real number)                | Set the absolute gradient norm tolerance for convergence |
+| `-tao_fmin`       | `1e-6` (real number)                 | Set the absolute function value tolerance for convergence |
+| `-tao_monitor`    | N/A                                  | Activates the iteration monitor for the TAO solution | 
+| `-tao_ls_monitor` | N/A                                  | Activates the line search monitor within each TAO iteration |
+| `-nx`             | `128` (integer)                      | Set the number of cells on each edge of the square domain |
+| `-fd`             | N/A                                  | Disable the adjoint method and turn on the finite difference method for the gradient |
 
 ### Results
 
@@ -243,27 +255,45 @@ with the `-tao_view` argument and inspecting the printed convergence reason: `So
 
 We can also visualize the AMReX solution using Paraview, with the initial solution ($$u_0 = 1.0$$) on the right and the 
 final solution on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by 
-manipulating the Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($$y=1$$) edges.
+manipulating the Dirichlet boundaries on the bottom ($$y=0$$), left ($$x=0$$) and top ($$y=1$$) edges. Note that the 
+missing line in the final solution surface is a visualization artifact.
 
 Initial Solution             |  Final Solution
 :-------------------------:|:-------------------------:
 ![<img src="adjoint_init_sol.png">](adjoint_init_sol.png){:align="middle"} | ![<img src="adjoint_final_sol.png">](adjoint_final_sol.png){:align="middle"}
-
-Note: The missing line in the final solution surface is a visualization artifact.
 
 ### Hands-on Activities
 
 1. Change problem size with `-nx <size>` (default is 128) and evaluate its impact on performance.
 
 2. Now disable the adjoint solution and enable the finite difference gradient with `-fd`. Change problem size again 
-and evaluate performance. Note: convergence tolerances may need to be changed to account for truncation errors in the 
-gradient.
+and evaluate both convergence and iteration speed.
 
-3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type BNCG`. Compare convergence with 
-the default method (`BQNLS` -- quasi-Newton line search).
+3. Run the problem in parallel using `mpiexec -np 4 ./boundary_control ...`. AMReX and PETSc can seamlessly scale up 
+the problem without changing the source code.
 
-4. Run the problem in parallel using `mpirun -n 4 ./main2d.gnu.MPI.ex ...`. AMReX and PETSc can seamlessly scale up the 
-problem without changing the source code.
+4. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg`. Compare convergence with the 
+default method (`bqnls` -- quasi-Newton line search). Change the line search type (using `-tao_ls_type`) and 
+convergence tolerances (using `-tao_fmin` and `-tao_gatol`) to help the problem converge.
+
+For each of these tasks, you can move AMReX plot files and inspect the solution using [VisIt][6] or [ParaView][7]. If 
+you use ParaView, you must use the latest v5.7.0 RC1 version with support for the AMReX grid format. 2D solutions in 
+Paraview can be converted to 3D surface representations first by using the "Cell to Point Data" filter, and then 
+applying the "Warp by Scalar" filter.
+
+## Take-Away Messages
+
+* PDE-constrained optimization does not need to be intimidating!
+    - PETSc/TAO provides interfaces and algorithms that work with reduced-space formulations.
+    - PETSc/TAO can compute gradients automatically with finite differencing.
+    - PETSc data structures are easy to couple with most PDE solvers (e.g., AMReX).
+* The adjoint method is ideal for sensitivity analysis in PDE-constrained problems.
+    - Computational cost is (mostly) independent of the number of optimization variables.
+    - Some PDE solvers already have the necessary building blocks.
+    - Possible to take implementation shortcuts in self-adjoint problems.
+* PETSc/TAO offers parallel optimization algorithms for large-scale problems.
+    - Optimization data is duplicated from user-generated PETSc vectors.
+    - User has full control over parallel distribution and vector type.
 
 ## Further Reading
 
@@ -277,3 +307,6 @@ problem without changing the source code.
 [3]: https://books.google.com/books?id=VbHYoSyelFcC&dq=Nonlinear+Optimization+Nocedal&source=gbs_navlinks_s
 [4]: http://www.mcs.anl.gov/petsc
 [5]: https://amrex-codes.github.io/amrex/
+[6]: https://www.mcs.anl.gov/petsc/petsc-current/docs/tao_manual.pdf
+[7]: https://wci.llnl.gov/simulation/computer-codes/visit/
+[8]: https://www.paraview.org
