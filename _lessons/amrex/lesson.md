@@ -95,30 +95,30 @@ the finer levels.
 ### Running the Code
 
 ```
-cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
+cd HandsOnLessons/amrex/AMReX_Amr_Advection
 ```
 
 In this directory you'll see
 
 ```
-main2d.ex -- the executable -- this has been built with MPI 
+main2d.gnu.MPI.ex -- the executable -- this has been built with MPI 
 
-inputs_2d -- an inputs file
+inputs -- an inputs file
 ```
 
 To run in serial, 
 
 ```
-./main2d.ex inputs_2d
+./main2d.gnu.MPI.ex inputs
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.ex inputs_2d
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_2d
+The following parameters can be set at run-time -- these are currently set in the inputs
 file but you can also set them on the command line.  
 
 ```
