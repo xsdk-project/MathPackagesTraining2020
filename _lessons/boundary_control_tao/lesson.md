@@ -249,7 +249,8 @@ AMReX (19.08) finalized
 In this case, we have specified an absolute function value tolerance of $$10^{-6}$$ (with `-tao_fmin 1e-6`) and an 
 absolute gradient tolerance of $$10^{-12}$$ (with `-tao_gatol 1e-12`). We can see in the convergence information that 
 the optimization terminated based on the function value. We can further validate this further by running the problem 
-with the `-tao_view` argument and inspecting the printed convergence reason: `Solution converged:    Minf --  f < fmin`.
+with the `-tao_converged_reason` argument and inspecting the printed convergence reason: 
+`TAO solve converged due to CONVERGED_MINF iterations 17`.
 
 We can also visualize the AMReX solution using Paraview, with the initial solution ($$u_0 = 1.0$$) on the right and the 
 final solution on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by 

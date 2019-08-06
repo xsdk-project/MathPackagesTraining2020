@@ -95,30 +95,30 @@ the finer levels.
 ### Running the Code
 
 ```
-cd HandsOnLessons/amrex/AMReX_Advection_AmrCore
+cd HandsOnLessons/amrex/AMReX_Amr_Advection
 ```
 
 In this directory you'll see
 
 ```
-main2d.ex -- the executable -- this has been built with MPI 
+main2d.gnu.MPI.ex -- the executable -- this has been built with MPI 
 
-inputs_2d -- an inputs file
+inputs -- an inputs file
 ```
 
 To run in serial, 
 
 ```
-./main2d.ex inputs_2d
+./main2d.gnu.MPI.ex inputs
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.ex inputs_2d
+mpirun -n 4 ./main2d.gnu.MPI.ex inputs
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_2d
+The following parameters can be set at run-time -- these are currently set in the inputs
 file but you can also set them on the command line.  
 
 ```
@@ -152,8 +152,18 @@ want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we
 After you run the code you will have a series of plotfiles.  To visualize these we will use the
 VisIt package.
 
+To use the VisIt python script, simply do the following to generate `amr_advection.mp4`:
+
 ```
-1. On Cooley, in the tutorial directory, do: ls -1 plt*/Header | tee movie.visit
+$ make movie
+```
+
+(You will need `+ffmpeg` in your `.soft.cooley` file, and this assumes that `python2` is the Python 2 interpreter. If `python` is the Python 2 interpreter, you can do `make movie PYTHON2=python`).
+
+To do the same thing with the VisIt client-server interface to Cooley, here are the instructions:
+
+```
+1. On Cooley, in the tutorial directory, run the command, "ls -1 plt*/Header | tee movie.visit"
 2. Start VisIt and connect to Cooley. 
 3. File --> Open file ... go to Cooley and select movie.visit 
 4. In the Plots pane, go to Add/Pseudocolor and select the field phi
@@ -165,14 +175,17 @@ VisIt package.
 
 ### Topics to Explore
 
-* How does the load balancing distribute grids to MPI processes?   
-  (You will want to visualize the "proc" variable in the plotfile)
-
-* Is time to solution faster with subcycling or without?  Did the solution change at all?
-  (Note we print the total time to solution at the end of the screen output of each run)
+* What happens as you change the max grid size for decomposition?
 
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
-  (You can edit these in inputs_2d)  
+  (You can edit these in inputs)  
+
+* How does runtime scale with number of processors? To give the problem sufficient work for 4 processors,
+  run it as, e.g:
+
+```
+mpiexec -n 4 ./main2d.gnu.MPI.ex inputs amr.n_cell=256 256 amr.max_level=3 max_step=50
+```
 
 ## Example: "Off to the Races"
 
@@ -215,9 +228,9 @@ In this directory you'll see
 ```
 main3d.ex -- the executable -- this has been built with MPI 
 
-inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+inputs_3d -- domain size, size of grids, how many time steps, which obstacles...
 
-particle_file       -- initial particle locations  (this name is given in the inputs_3d file)
+initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
 To run in serial, 
@@ -258,7 +271,7 @@ We define the cylinders with this numbering scheme
 You can also set the parameters on the command line; for example,  
 
 ```
-mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
+mpirun -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
 ```
 
 will run the problem with only six obstacles 
@@ -310,6 +323,17 @@ of a science investigation or design process.
 ### Visualizing the Results
 
 We'll use Paraview to visualize the results for this example. 
+
+To use the Paraview python script, simply do:
+
+```
+$ make movie
+```
+
+(You will need `+ffmpeg` in your `.soft.cooley` file)
+
+To do the same thing with the ParaView client-server interface to Cooley,
+see the note below on how to set up the client-server interface for this tutorial.
 
 There are three types of data from the simulation that we want to load:
 
@@ -486,6 +510,17 @@ That took 1.145916707 seconds.
 
 Again we'll use Paraview to visualize the results. 
 
+As before, to use the Paraview python script, simply do:
+
+```
+$ make movie
+```
+
+(You will need `+ffmpeg` in your `.soft.cooley` file)
+
+To do the same thing with the ParaView client-server interface to Cooley,
+see the note below on how to set up the client-server interface for this tutorial.
+
 Remember there are three types of data from the simulation that we want to load:
 
 1. the EB representation of the cylinders
@@ -594,6 +629,27 @@ Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
 Look at the AMReX documentation/tutorials [here](https://amrex-codes.github.io/amrex/)
 
 Read the Journal of Open Source Software (JOSS) paper [here](http://joss.theoj.org/papers/10.21105/joss.01370)
+
+### Starting the ParaView Server on Cooley
+
+To work with AMReX plotfiles locally you can use ParaView 5.6.1 with the instructions above.
+
+On Cooley, to use ParaView 5.6.1 in client-server mode with AMReX plotfiles, we will need to start the ParaView server from the following path:
+
+```
+$ cd /projects/ATPESC2019/MathPackagesTraining/ParaView-5.6.1-MPI-Linux-64bit/bin
+$ mpiexec -f $COBALT_NODEFILE -np 1 ./pvserver --server-port=8000
+```
+
+After the ParaView server starts, it will report which node and port it is listening on.
+
+```
+Waiting for client...
+Connection URL: cs://cc054:8000
+Accepting connection(s): cc054:8000
+```
+
+You can then connect to this ParaView server from your local ParaView 5.6.1 client using the Manual/Forward directions [here](https://www.alcf.anl.gov/user-guides/paraview-cooley)
 
 <!-- Insert space, horizontal line, and link to HandsOnLesson table -->
 
