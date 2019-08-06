@@ -32,7 +32,7 @@ handson_root: 'HandsOnLessons'
 audience: ['public']
 
 # Controls whether lesson answer expansions are hidden or not
-handson_hide_qanda: true
+handson_hide_qanda: false
 
 # This is for the editing function in _/includes/improve_content
 # Leave it empty if your site is not on GitHub/GitHub Pages
