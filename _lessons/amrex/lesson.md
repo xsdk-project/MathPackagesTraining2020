@@ -174,6 +174,13 @@ VisIt package.
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
   (You can edit these in inputs_2d)  
 
+* How does runtime scale with number of processors? To give the problem sufficient work for 4 processors,
+  run it as, e.g:
+
+```
+mpiexec -n 4 ./main2d.gnu.MPI.ex inputs amr.n_cell=256 256 amr.max_level=3 max_step=50
+```
+
 ## Example: "Off to the Races"
 
 ### What Features Are We Using
