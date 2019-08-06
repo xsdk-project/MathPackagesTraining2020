@@ -219,9 +219,9 @@ In this directory you'll see
 ```
 main3d.ex -- the executable -- this has been built with MPI 
 
-inputs_3d           -- domain size, size of grids, how many time steps, which obstacles...
+inputs_3d -- domain size, size of grids, how many time steps, which obstacles...
 
-particle_file       -- initial particle locations  (this name is given in the inputs_3d file)
+initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
 ```
 
 To run in serial, 
