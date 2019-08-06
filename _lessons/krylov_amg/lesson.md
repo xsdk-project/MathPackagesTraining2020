@@ -387,7 +387,7 @@ The matrix stencil for the second example looks like
 [<img src="anisotropic-stencil.png" width="300">](anisotropic-stencil.png)
 
 {% include qanda question='What did you observe in the previous two runs?' answer='The first problem, which has an isotropic underlying mesh, converges in 7 iterations.  The second
-problem converges in 22 iterations.'%}
+problem converges in 28 iterations.'%}
 
 A smoother like Gauss-Seidel works by averaging the values of neighboring unknowns:
 
