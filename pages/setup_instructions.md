@@ -108,7 +108,19 @@ Beyond that, you may also want to have a look at...
 * [Using SFTP](https://www.digitalocean.com/community/tutorials/how-to-use-sftp-to-securely-transfer-files-with-a-remote-server)
 * [Mounting Filesystems Over SSHFS](https://wiki.archlinux.org/index.php/SSHFS)
 
-to simplify the process of manually moving data over many iterations of examples and tests.
+to simplify the process of manually moving data over many iterations of examples and tests. For ex: to easily login to cooley - one can do:
+
+* add the following to ~/.ssh/config
+```
+Host cooley.alcf.anl.gov
+    Compression yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    ControlMaster auto
+    ControlPersist 12h
+    ControlPath ~/.ssh/%r@cooley.alcf.anl.gov:%p
+```
+With this - the first time you login cooley.alcf.anl.gov - you need to provide passwd. But subsequent ssh/scp/sftp will go throguh this control master - and not ask for passwd
 
 ### Using Local Installations in Client-Server Mode
 A benefit from installing these tools locally is that once you have them installed locally, you
