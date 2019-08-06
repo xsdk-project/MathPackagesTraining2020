@@ -216,6 +216,7 @@ overview of some of the available flags. For a complete list, please refer to th
 | `-tao_ls_monitor` | N/A                                  | Activates the line search monitor within each TAO iteration |
 | `-nx`             | `128` (integer)                      | Set the number of cells on each edge of the square domain |
 | `-fd`             | N/A                                  | Disable the adjoint method and turn on the finite difference method for the gradient |
+| `-plot`           | N/A                                  | Enable writing of AMReX plot files |
 
 ### Results
 
