@@ -271,7 +271,7 @@ We define the cylinders with this numbering scheme
 You can also set the parameters on the command line; for example,  
 
 ```
-mpirun -n 4 ./main3d.ex inputs obstacles = 1 3 4 5 6 8
+mpirun -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
 ```
 
 will run the problem with only six obstacles 
