@@ -150,9 +150,18 @@ want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we
 ![Sample solution](advection.gif)
 
 After you run the code you will have a series of plotfiles.  To visualize these we will use the
-Visit package.
+VisIt package.
 
-INSTRUCTIONS HERE
+```
+1. On Cooley, in the tutorial directory, do: ls -1 plt*/Header | tee movie.visit
+2. Start VisIt and connect to Cooley. 
+3. File --> Open file ... go to Cooley and select movie.visit 
+4. In the Plots pane, go to Add/Pseudocolor and select the field phi
+5. In the Plots pane, go to Add/Subset and select "patches"
+6. Open the options for the "patches" subset object and select "Wireframe"
+7. Go to Controls/Animation and select "Cache animation ..."
+8. Press the "Play" button
+```
 
 ### Topics to Explore
 
