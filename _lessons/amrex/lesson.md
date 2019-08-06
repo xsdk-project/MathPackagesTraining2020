@@ -152,8 +152,18 @@ want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we
 After you run the code you will have a series of plotfiles.  To visualize these we will use the
 VisIt package.
 
+To use the VisIt python script, simply do the following to generate `amr_advection.mp4`:
+
 ```
-1. On Cooley, in the tutorial directory, run the command, "make movie"
+$ make movie
+```
+
+(You will need `+ffmpeg` in your `.soft.cooley` file, and this assumes that `python2` is the Python 2 interpreter. If `python` is the Python 2 interpreter, you can do `make movie PYTHON2=python`).
+
+To do the same thing with the VisIt client-server interface to Cooley, here are the instructions:
+
+```
+1. On Cooley, in the tutorial directory, run the command, "ls -1 plt*/Header | tee movie.visit"
 2. Start VisIt and connect to Cooley. 
 3. File --> Open file ... go to Cooley and select movie.visit 
 4. In the Plots pane, go to Add/Pseudocolor and select the field phi
