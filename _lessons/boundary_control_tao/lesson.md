@@ -22,7 +22,7 @@ header:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6
 ```
 
 ## Brief Introduction to PDE-Constrained Optimization
@@ -200,7 +200,7 @@ problem can be compiled and run with:
 ```
 cd {{site.handson_root}}/boundary_control_tao
 make
-./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6 -tao_gatol 1e-12
+./boundary_control inputs -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6
 ```
 
 In this example, we will run the problem with different TAO configurations using command line options. Below is an 
@@ -222,35 +222,40 @@ overview of some of the available flags. For a complete list, please refer to th
 Running the above command produces the output below with information from TAO about the optimization.
 
 ```
-AMReX (19.08) initialized
-  0 TAO,  Function value: 0.00564792,  Residual: 4.57574e-08
-  1 TAO,  Function value: 0.00564792,  Residual: 4.57574e-08
-  2 TAO,  Function value: 0.000351831,  Residual: 6.72001e-09
-  3 TAO,  Function value: 0.000104118,  Residual: 4.5399e-09
-  4 TAO,  Function value: 4.39909e-06,  Residual: 5.62804e-10
-  5 TAO,  Function value: 3.20011e-06,  Residual: 3.18434e-10
-  6 TAO,  Function value: 2.90562e-06,  Residual: 3.67294e-10
-  7 TAO,  Function value: 2.82687e-06,  Residual: 3.54986e-10
-  8 TAO,  Function value: 2.74912e-06,  Residual: 3.45265e-10
-  9 TAO,  Function value: 2.74912e-06,  Residual: 3.45265e-10
- 10 TAO,  Function value: 2.5271e-06,  Residual: 1.99102e-10
- 11 TAO,  Function value: 2.41122e-06,  Residual: 1.43435e-10
- 12 TAO,  Function value: 2.10344e-06,  Residual: 8.34685e-11
- 13 TAO,  Function value: 1.78759e-06,  Residual: 1.11393e-10
- 14 TAO,  Function value: 1.30814e-06,  Residual: 8.4585e-11
- 15 TAO,  Function value: 1.10837e-06,  Residual: 9.14759e-11
- 16 TAO,  Function value: 1.08865e-06,  Residual: 9.52258e-11
- 17 TAO,  Function value: 8.87623e-07,  Residual: 1.29118e-10
-TaoSolve() duration: 1316289 microseconds
+MPI initialized with 1 MPI processes
+AMReX (447467a2ca90) initialized
+  0 TAO,  Function value: 0.00564792,  Residual: 0.000749689 
+  1 TAO,  Function value: 0.00559275,  Residual: 0.000744637 
+  2 TAO,  Function value: 0.000888762,  Residual: 0.00015535 
+  3 TAO,  Function value: 0.000605835,  Residual: 0.000115997 
+  4 TAO,  Function value: 0.000233747,  Residual: 3.97986e-05 
+  5 TAO,  Function value: 0.000162946,  Residual: 3.63787e-05 
+  6 TAO,  Function value: 6.59668e-05,  Residual: 1.59724e-05 
+  7 TAO,  Function value: 4.40513e-05,  Residual: 6.76306e-06 
+  8 TAO,  Function value: 2.44612e-05,  Residual: 2.77668e-05 
+  9 TAO,  Function value: 2.2582e-05,  Residual: 2.69655e-05 
+ 10 TAO,  Function value: 1.50213e-05,  Residual: 1.53602e-05 
+ 11 TAO,  Function value: 1.16378e-05,  Residual: 1.13325e-05 
+ 12 TAO,  Function value: 9.13617e-06,  Residual: 4.94145e-06 
+ 13 TAO,  Function value: 8.49373e-06,  Residual: 1.74395e-06 
+ 14 TAO,  Function value: 8.39324e-06,  Residual: 1.52181e-06 
+ 15 TAO,  Function value: 8.31419e-06,  Residual: 1.89774e-06 
+ 16 TAO,  Function value: 7.63232e-06,  Residual: 5.39182e-06 
+ 17 TAO,  Function value: 6.67578e-06,  Residual: 8.13022e-06 
+ 18 TAO,  Function value: 4.59113e-06,  Residual: 1.10091e-05 
+ 19 TAO,  Function value: 4.51694e-06,  Residual: 1.61728e-05 
+ 20 TAO,  Function value: 2.03898e-06,  Residual: 9.35813e-06 
+ 21 TAO,  Function value: 1.17464e-06,  Residual: 5.05618e-06 
+ 22 TAO,  Function value: 8.64949e-07,  Residual: 2.68442e-06 
+TaoSolve() duration: 751834 ms
 [The  Pinned Arena] space (MB) used spread across MPI: [8 ... 8]
-AMReX (19.08) finalized
+AMReX (447467a2ca90) finalized
 ```
 
-In this case, we have specified an absolute function value tolerance of $$10^{-6}$$ (with `-tao_fmin 1e-6`) and an 
-absolute gradient tolerance of $$10^{-12}$$ (with `-tao_gatol 1e-12`). We can see in the convergence information that 
-the optimization terminated based on the function value. We can further validate this further by running the problem 
+In this case, we have specified an absolute function value tolerance of $$10^{-6}$$ (with `-tao_fmin 1e-6`) and we can 
+see in the output that the optimization terminates at this tolerance. To validate this further, we can run the problem 
 with the `-tao_converged_reason` argument and inspecting the printed convergence reason: 
-`TAO solve converged due to CONVERGED_MINF iterations 17`.
+`TAO solve converged due to CONVERGED_MINF iterations 21`.
 
 We can also visualize the AMReX solution using Paraview, with the initial solution ($$u_0 = 1.0$$) on the right and the 
 final solution on the left. The final solution captures the target solution at the right edge ($$x = 1$$) accurately by 
