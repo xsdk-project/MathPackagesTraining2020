@@ -165,9 +165,6 @@ VisIt package.
 
 ### Topics to Explore
 
-* How does the load balancing distribute grids to MPI processes?   
-  (You will want to visualize the "proc" variable in the plotfile)
-
 * Is time to solution faster with subcycling or without?  Did the solution change at all?
   (Note we print the total time to solution at the end of the screen output of each run)
 
