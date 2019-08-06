@@ -262,22 +262,38 @@ Initial Solution             |  Final Solution
 
 ### Hands-on Activities
 
-1. Change problem size with `-nx <size>` (default is 128) and evaluate its impact on performance.
+1. Change problem size with `-nx <size>` (default is 128) and evaluate its impact on performance. Now disable the 
+adjoint solution and enable the finite difference gradient with `-fd`. Change problem size again and evaluate both 
+convergence and iteration speed.
 
-2. Now disable the adjoint solution and enable the finite difference gradient with `-fd`. Change problem size again 
-and evaluate both convergence and iteration speed.
-
-3. Run the problem in parallel using `mpiexec -np 4 ./boundary_control ...`. AMReX and PETSc can seamlessly scale up 
+2. Run the problem in parallel using `mpiexec -np 4 ./boundary_control ...`. AMReX and PETSc can seamlessly scale up 
 the problem without changing the source code.
 
-4. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg`. Compare convergence with the 
+3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg`. Compare convergence with the 
 default method (`bqnls` -- quasi-Newton line search). Change the line search type (using `-tao_ls_type`) and 
 convergence tolerances (using `-tao_fmin` and `-tao_gatol`) to help the problem converge.
 
-For each of these tasks, you can move AMReX plot files and inspect the solution using [VisIt][6] or [ParaView][7]. If 
-you use ParaView, you must use the latest v5.7.0 RC1 version with support for the AMReX grid format. 2D solutions in 
-Paraview can be converted to 3D surface representations first by using the "Cell to Point Data" filter, and then 
-applying the "Warp by Scalar" filter.
+4. Change the initial starting point and see if the solution converges to a different local minimum. The default 
+starting point is Dirichlet values set to $$1.0$$ for all controlled boundaries (bottom, left and top). You can either 
+choose a different constant value, or try to impose a more complicated starting point by manipulating the vector data 
+element-by-element.
+
+5. Change the target solution in `boundary_control.cpp`. You can define any 1D function for `utarg` with the 
+y-coordinate as the input variable.
+
+```
+amrex::Real TargetSolution(amrex::Real* coords)
+{
+    amrex::Real y = coords[1];
+    amrex::Real utarg = 4.*(y-0.5)*(y-0.5) - 0.5;
+    return utarg;
+}
+```
+
+For each of these tasks, you can inspect the solution at each iteration by opening the AMReX plot files in [VisIt][6] 
+or [ParaView][7]. If you use ParaView, you must use the latest v5.7.0 RC1 version with support for the AMReX grid 
+format. 2D solutions in ParaView can be converted to 3D surface representations first by using the "Cell to Point Data" 
+filter, and then applying the "Warp by Scalar" filter.
 
 ## Take-Away Messages
 
