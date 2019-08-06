@@ -86,9 +86,7 @@ $$\nabla_\lambda \mathcal{L} = R(p, u) = 0.$$
 Newton-type optimization algorithms apply the Newton's method to the first-order optimality conditions to produce the 
 Karush-Kuhn-Tucker (KKT) system,
 
-|Karush-Kuhn-Tucker (KKT) system|
-|:---:|
-|![](kkt_sys.png){: width="50%"}|
+![::](kkt_sys.png){: width="50%"}
 
 which is solved at every Newton iteration to produce the step direction $$(\Delta p, \Delta u, \Delta \lambda)$$. The 
 step is then globalized using a line search or a trust region framework in order to avoid stationary points that are 

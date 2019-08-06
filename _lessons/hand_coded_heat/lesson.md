@@ -301,19 +301,19 @@ text files containing two columns of data. To see an example, run the command
 
 The first column is each spatial position, $$x_{i}$$ and the second column is the
 temperature, _u_, at that spatial position. The name of the file indicates the 
-_time_ of the solution.
+_time_ of the solution data stored therein.
 
 ### Testing The heat Application
 
 Before we use our new application to solve our simple science question, how can we assure
-ourselves that the code we have written is correct or, at the very least, sanity check
-ourselves that there isn't anything glaringly incorrect?
+ourselves that the code we have written is not somehow seriously broken?
 
 {% include qanda
-    question='Can you think ways to test the application?'
+    question='Can you think ways to sanity check the our code?'
     answer='
 * Compare it to known, validated numerical solutions.
 * Compare it to known analytical solutions.
+* Confirm its behavior at steady state.
 
 In any case, think about how you would measure _error_.
 ' %}
