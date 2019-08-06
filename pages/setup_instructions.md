@@ -40,22 +40,26 @@ this command to update your local copy if we discover changes are necessary.
 qsub -I -n 1 -t 5 -A ATPESC2019 -q debug
 cd HandsOnLessons/hand_coded_heat
 make mpi_test
+mpicc mpi_test.c -o mpi_test
 mpiexec -n 4 ./mpi_test
-echo $?
+Size=4, Rank=0
+Size=4, Rank=1
+Size=4, Rank=2
+Size=4, Rank=3
 exit
 ```
   * The `qsub` command reserves a cooley node for interactive work for 5 minutes.
     You may have to wait a moment for the interactive prompt on the reserved node to return.
   * The above commands produce makefile and execution output. In particular
     the last `echo` command should produce a `0` response.
-1. As soon after 9am, Tuesday , August 6th as possible, allocate an interactive node on
+1. As soon after 9:30am, Tuesday , August 6th as possible, allocate an interactive node on
    cooley. The following command allocates a single Cooley node (`-n 1`) for 480 minutes
-   (`-t 480`) using the ATPESC2019 allocation (`-A ATPESC2019`) and the training reservation (`-q training`):
+   (`-t 480`) using the ATPESC2019 allocation (`-A ATPESC2019`) and the queue reservation (`-q R.ATPESC2019_0806_1`):
 ```
-qsub -I -n 1 -t 480 -A ATPESC2019 -q training
+qsub -I -n 1 -t 480 -A ATPESC2019 -q R.ATPESC2019_0806_1 
 ```
-The command blocks until the node is ready.  Until the allocation expires (480mins in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
-  * **Note 1:** The special `-q training` will not be functional until 9am, August 6th and will go away 9pm that same day.
+The command blocks until the node is ready.  Until the allocation expires (480 minutes in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
+  * **Note 1:** The special `-q R.ATPESC2019_0806_1` will not be functional until 9:30 am, August 6th and will go away at 5:30pm that same day. Another queue, `-q R.ATPESC2019_0806_2` will be used for *evening* hands-on lessons from 6:30pm to 9:30pm.
   * **Note 2:** Please **DO NOT** run MPI jobs on the login nodes. Instead, run them on an allocated compute node.
   * **Note 3:** Be aware, however, that any running job will be terminated when your allocation expires.
   * **Note 4:** To enable X windows for visualization on the compute node, you can open a new terminal and login to the allocated compute node by doing `ssh -Y cc0xx` (`cc0xx` is your node id)

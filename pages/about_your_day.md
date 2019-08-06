@@ -15,6 +15,8 @@ Deeper dive hands-on lessons will be in the evening.
 following fairly structured lesson plans.
 * Evening hands-on will permit deeper dive into hands-on exercises of your choosing
 and with less structured lessons.
+* Subject matter experts (SMEs) will be available throughout the day and in the
+evening.
 
 #### Fun and Prizes!
 We have some fun prizes to give away at the end of the evening! The hands on exercises
