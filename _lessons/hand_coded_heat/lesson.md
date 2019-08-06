@@ -223,6 +223,9 @@ Usage: ./heat <arg>=<value> <arg>=<value>...
     save=0                              save error in every saved solution (int)
     outi=100                      output progress every i-th solution step (int)
     noout=0                                       disable all file outputs (int)
+Examples...
+    ./heat dx=0.01 dt=0.0002 alg=ftcs
+    ./heat dx=0.1 bc0=273 bc1=273 ic="spikes(273,5,373)"
 ```
 
 * The values each argument is assigned on the left are the *default* values the
