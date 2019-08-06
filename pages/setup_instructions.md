@@ -16,7 +16,7 @@ or improving performance of certain operations.
 ## Required Steps
 
 Please complete the following _required_ steps prior to the beginning of the session
-on Monday, August 6th.
+on Tuesday, August 6th.
 
 1. Log Into Cooley
   * Use secure shell with compression, and trusted X forwarding enabled
@@ -38,18 +38,17 @@ this command to update your local copy if we discover changes are necessary.
     and run an example
 ```
 qsub -I -n 1 -t 5 -A ATPESC2019 -q debug
-cd HandsOnLessons/krylov_amg
-touch ij.c
-make ij
-mpiexec -n 4 ./ij
+cd HandsOnLessons/hand_coded_heat
+make mpi_test
+mpiexec -n 4 ./mpi_test
 echo $?
 exit
 ```
   * The `qsub` command reserves a cooley node for interactive work for 5 minutes.
     You may have to wait a moment for the interactive prompt on the reserved node to return.
-  * The above commands should produce makefile and execution output. In particular
+  * The above commands produce makefile and execution output. In particular
     the last `echo` command should produce a `0` response.
-1. As soon after 9am, Monday, August 6th as possible, allocate an interactive node on
+1. As soon after 9am, Tuesday , August 6th as possible, allocate an interactive node on
    cooley. The following command allocates a single Cooley node (`-n 1`) for 480 minutes
    (`-t 480`) using the ATPESC2019 allocation (`-A ATPESC2019`) and the training reservation (`-q training`):
 ```
@@ -66,17 +65,16 @@ The command blocks until the node is ready.  Until the allocation expires (480mi
 ### Local Installations
 
 Results from various applications we use today may involve visualization with
-[VisIt][visit], [ParaView][paraview] or [GLVis][glvis]. By far, the simplest and
+[VisIt][visit], [ParaView][paraview] or other visualization tools. By far, the simplest and
 most reliable way to setup any of these tools is to create a local installation on your laptop
-and then transfer data files from cooley to visualize them locally. For instructions for
-installing these tools locally...
+and then transfer data files from cooley to visualize them locally. In track 4, you will
+have alread learned how to do this. Nonetheless, for your convenience links to instructions for
+installing these tools locally are provided here...
 * For [VisIt][visit], go [here](https://wci.llnl.gov/simulation/computer-codes/visit/executables) to
   find a suitable bundled executable installation for your system and then download and install it.
 * For [ParaView][paraview], go [here](https://www.paraview.org/download/)  to
   find a suitable bundled executable installation for your system and then download and install it.
-* For [GLVis][glvis], go [here](http://glvis.org/building/) and follow instructions for building GLVis
-  from sources. Note, this will also involve building MFEM but does NOT require any special MFEM
-  dependencies.
+
 <!---
   Alternatively, you may use [Spack][spack] to install [GLVis][glvis] and MFEM as like so
 ```
@@ -86,7 +84,8 @@ spack install mfem glvis
 ```
 -->
 
-Once you have installed these tools, you can move data from cooley to your local machine and 
+Once you have installed these tools, you can run them in client/server mode to connect to cooley
+and visualize here data there or you may move data from cooley to your local machine and 
 visualize it locally.  But, manually logging in to move data files each time you need to
 can become combersome. You can use a single `scp` command to copy many files using either
 file [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) or the `-r` recursive
@@ -114,7 +113,6 @@ instance to log into a remote resource, such as cooley, and visualize data there
 to manually transfer it locally. To setup these tools for client-server operation...
 * Follow [these instructions](https://www.alcf.anl.gov/user-guides/visit-cooley) to setup and run [VisIt][visit] client-server to Cooley.
 * Follow [these instructions](https://www.alcf.anl.gov/user-guides/paraview-cooley) to setup and run [ParaView][paraview] client-server to Cooley.
-* Follow [these instructions](http://glvis.org/options-and-use/#server-mode) to setup and run [GLVis][glvis] client-server.
 
 ### Using Remote Visualization Tools Through VNC
 If you don't want to bother with installing anything locally or if you run into problems with
