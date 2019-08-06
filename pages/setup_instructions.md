@@ -120,7 +120,7 @@ Host cooley.alcf.anl.gov
     ControlPersist 12h
     ControlPath ~/.ssh/%r@cooley.alcf.anl.gov:%p
 ```
-With this - the first time you login cooley.alcf.anl.gov - you need to provide passwd. But subsequent ssh/scp/sftp will go throguh this control master - and not ask for passwd
+With this - the first time you login cooley.alcf.anl.gov - you need to provide passwd. But subsequent ssh/scp/sftp will go through this control master - and not ask for passwd
 
 ### Using Local Installations in Client-Server Mode
 A benefit from installing these tools locally is that once you have them installed locally, you
