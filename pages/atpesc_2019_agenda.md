@@ -17,7 +17,7 @@ permalink: "/atpesc_2019_agenda/"
 |10:30am|30|Break|[Computer History Q&A][game1]|
 |11:00am|60|[Structured/Adaptive<br>Meshing & Discretization][XX] |[Ann Almgren][aa]<br>[Don Willcox][dw]<br>[Hands-on examples][l28]<br>[with AMReX][w20]|
 |12:00pm|30|[Time Integration and<br>Nonlinear Solvers][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
-|12:30pm|60|Lunch|[Word Search][game3]|
+|12:30pm|60|Lunch|[HPC Word Search][game3]|
 |1:30pm|30|[Time Integration and<br>Nonlinear Solvers (cont'd)][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
 |2:00pm|60|[Krylov Solvers and<br>Preconditioning][XX] | [Jonathan Hu][jh]<br>[Christian Glusa][cg]<br>[Hands-on examples][l23]<br>[with Muelu][w24]|
 |3:00pm|30|Break|[Women in Computing Q&A][game2]|
