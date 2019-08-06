@@ -230,7 +230,7 @@ Examples...
 
 * The values each argument is assigned on the left are the *default* values the
   application uses when the associated argument is not specified on the command line.
-* See the [note below](#icarg) regarding more information on the `ic` argument to
+* See the [note below](#a-note-about-the-ic-argument-to-heat) regarding more information on the `ic` argument to
   specify a variety of initial conditions.
 
 #### A Simple Sanity Check Run
