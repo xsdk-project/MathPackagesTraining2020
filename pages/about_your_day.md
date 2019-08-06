@@ -26,6 +26,17 @@ You are **not** equired to participate but we highly encourage it for a few reas
 First, its designed to be fun. Second, it helps us guage whether or not our training
 materials are really having the intended impact.
 
+In addition, we've tried to create a few fun activities for the day including three
+Q&A games...
+
+* [Computer History][game1] the last 5 minutes of the mid-morning break
+* [Word Search][game3] the last 15 minutes of lunch break
+* [Women in Computing][game2] the last 5 minutes of the mid-afternoon break
+
+You can find these under the "Intro" menu as well. They will be open and active for
+the intervals specified above. You may have to refresh your browser to get to them
+once the links go active.
+
 * We have tried to design most of the hands-on lessons (day-time or evening) with
 questions for which you will submit Google Forms for your answers.
 * During day-time hands-on exercises, the expandable question-and-answer boxes
@@ -87,3 +98,7 @@ for interactions as they pertain to today’s material and exercises.
 * Feel free to flag any of us down throughout the day.
 * Feel free to send email to
 [Mark Miller, miller86@llnl.gov and Satish Balay, balay@mcs.anl.gov](mailto:balay@mcs.anl.gov,miller86@llnl.gov?subject=ATPESC2019%20Tech%20Support)
+
+[game1]: https://docs.google.com/forms/d/e/1FAIpQLSfxZ4UQyJAvQzsB80oLQ6NQ1pQDLYEVTF1RuNftSSvcmb78sg/viewform?usp=sf_link
+[game2]: https://docs.google.com/forms/d/e/1FAIpQLSfKk7H2aW2eUfRzgZ5EP1jxVrulT9c23MEe7cD3_paOIqUCnQ/viewform?usp=sf_link
+[game3]: https://docs.google.com/forms/d/e/1FAIpQLSdh5_OhuhV9jDEoYtgO3fsFO-rwoJ1pay62zMgcDi-vFuYFow/viewform?usp=sf_link
