@@ -153,7 +153,7 @@ After you run the code you will have a series of plotfiles.  To visualize these 
 VisIt package.
 
 ```
-1. On Cooley, in the tutorial directory, do: ls -1 plt*/Header | tee movie.visit
+1. On Cooley, in the tutorial directory, run the command, "make movie"
 2. Start VisIt and connect to Cooley. 
 3. File --> Open file ... go to Cooley and select movie.visit 
 4. In the Plots pane, go to Add/Pseudocolor and select the field phi
