@@ -179,7 +179,7 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
   (Note we print the total time to solution at the end of the screen output of each run)
 
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
-  (You can edit these in inputs_2d)  
+  (You can edit these in inputs)  
 
 * How does runtime scale with number of processors? To give the problem sufficient work for 4 processors,
   run it as, e.g:
