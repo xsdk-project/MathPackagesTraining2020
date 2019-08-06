@@ -14,13 +14,13 @@ permalink: "/atpesc_2019_agenda/"
 |8:30am|5|Introduction to Session|[Lois Curfman McInnes][lcm]|
 |8:35am|55|[Communication-Avoiding Algorithms<br>For Linear Algebra and Beyond][XX] |[Jim Demmel][jd]|
 |9:30am|60|[Overview of Numerical<br>Algorithms and Software][XX] |[Lois Curfman McInnes][lcm]<br>[Mark C Miller][mcm]<br>[Hands-on Example][l27]|
-|10:30am|30|Break|[Computer History Q&A][game1]|
+|10:30am|30|Break|[Computer History Q&A<br>Last 10 mins][game1]|
 |11:00am|60|[Structured/Adaptive<br>Meshing & Discretization][XX] |[Ann Almgren][aa]<br>[Don Willcox][dw]<br>[Hands-on examples][l28]<br>[with AMReX][w20]|
 |12:00pm|30|[Time Integration and<br>Nonlinear Solvers][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
-|12:30pm|60|Lunch|[HPC Word Search][game3]|
+|12:30pm|60|Lunch|[HPC Word Search<br>Last 15 mins][game3]|
 |1:30pm|30|[Time Integration and<br>Nonlinear Solvers (cont'd)][XX] |[Dan Reynolds][dr]<br>[Hands-on examples][l22]<br>[with SUNDIALS][w23]|
 |2:00pm|60|[Krylov Solvers and<br>Preconditioning][XX] | [Jonathan Hu][jh]<br>[Christian Glusa][cg]<br>[Hands-on examples][l23]<br>[with Muelu][w24]|
-|3:00pm|30|Break|[Women in Computing Q&A][game2]|
+|3:00pm|30|Break|[Women in Computing Q&A<br>Last 10 mins][game2]|
 |3:30pm|55|Panel: Numerical Algorithms and Software<br>for Extreme-Scale Science | Moderater<br>[Mark C Miller][mcm]<br>Panelists<br>[Ann Almgren][aa]<br>[Jonathan Hu][jh]<br>[Lois Curfman McInnes][lcm]<br>[Dan Reynolds][dr]<br>[Barry Smith][bs]|
 |4:25pm|45|[Numerical Optimization][XX] |[Alp Dener][ad]<br>[Hands-on&nbsp;examples][l25]<br>[with PETSc/TAO][w10]|
 |5:10pm|20|[Putting It All Together][XX] |[Ann Almgren][aa]|
