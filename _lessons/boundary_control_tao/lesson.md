@@ -6,6 +6,7 @@ teaser: "Leveraging interoperability between PETSc/TAO and AMReX"
 permalink: "lessons/boundary_control_tao/"
 use_math: true
 lesson: true
+youtube: https://youtu.be/co0lGR9cojo
 header:
  image_fullwidth: "xsdk_logo_wide-fs8.png"
 ---

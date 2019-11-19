@@ -2,6 +2,7 @@
 layout: page
 show_meta: false
 title: "ATPESC 2019 Hands On Lessons"
+not_active: true
 header:
    image_fullwidth: "llnl_machine.jpg"
 permalink: /lessons/
@@ -9,13 +10,7 @@ permalink: /lessons/
 
 <table>
 {% for item in site.lessons %}
-    {% if item.title == "ATPESC 2019 Hands On Lessons" %}
-        {% continue %}
-    {% endif %}
-    {% if item.title == "Lesson Template" %}
-        {% continue %}
-    {% endif %}
-    {% if item.youtube %}
+    {% if item.not_active %}
         {% continue %}
     {% endif %}
     <tr>

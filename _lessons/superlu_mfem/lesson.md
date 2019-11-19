@@ -5,6 +5,7 @@ subheadline: "Role and Use of Direct Solvers in Ill-Conditioned Problems"
 permalink: "lessons/superlu_mfem/"
 use_math: true
 lesson: true
+not_active: true
 youtube: "https://youtu.be/-L0kNOUF0hI"
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSfxlKXG74hffseYxc52l7p7DALHk-WTiZXQmdT6WGMVBRw7Sg/viewform?usp=sf_link"
 header:

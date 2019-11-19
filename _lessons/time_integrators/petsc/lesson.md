@@ -7,6 +7,7 @@ use_math: true
 youtube: "https://youtu.be/vAJ6kDf7Ifk"
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSepKOxuQseZ-PycSwocahehWLjdMzPg76pjvNyNZfGxX5vpNQ/viewform?usp=sf_link"
 lesson: true
+not_active: true
 header:
  image_fullwidth: "theta.png"
 ---

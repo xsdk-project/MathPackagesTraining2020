@@ -7,6 +7,7 @@ use_math: true
 lesson: true
 youtube: "https://youtu.be/Zh6pFjkmr0g"
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLScs9reOCfuD1CfbQ-m458MDyvwiTCRXEcp1XCQukaf5tP_uSQ/viewform?usp=sf_link"
+not_active: true
 header:
  image_fullwidth: "WSC_top4.jpg"
 ---
