@@ -6,6 +6,7 @@ teaser: "Set your teaser here..."
 permalink: "lessons/lesson_template/"
 use_math: true
 lesson: true
+not_active: true
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link"
 header:
  image_fullwidth: "matrices.png"

@@ -6,6 +6,7 @@ permalink: "lessons/time_integrators/sundials"
 use_math: true
 answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSe9oHru75v6pjsuSUpZruSbqAIpY-8flx-g6ZP1STXEqcvTgg/viewform?usp=sf_link"
 lesson: true
+youtube: https://youtu.be/uuJaSjhi1dc
 header:
  image_fullwidth: "sundials-fs8.png"
 #youtube: "https://youtu.be/vAJ6kDf7Ifk"
