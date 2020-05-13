@@ -6,8 +6,6 @@ teaser: "Why use numerical packages..."
 permalink: "lessons/hand_coded_heat/"
 use_math: true
 lesson: true
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSffsHKM0EnEh9AoDbw57DTDC5JNbyHANhervOTOXisSdX9B3Q/viewform?usp=sf_link"
-youtube: "https://youtu.be/6bv27bSjyG8?t=1418"
 header:
  image_fullwidth: "Differential-Equations-e1509686869201.png"
 ---

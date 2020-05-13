@@ -3,11 +3,8 @@ layout: page-fullwidth
 title: "Using adjoint for PDE-constrained optimization"
 subheadline: "Adjoin time dependent differential equations"
 permalink: "lessons/adjoint/"
-youtube: "https://youtu.be/E-8lbX5Wi1I"
 use_math: true
 lesson: true
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLScxRMHLK7CCDLDU6qYYWfimi18IxPk261lp3wJL737I-78cKQ/viewform?usp=sf_link"
-not_active: true
 header:
  image_fullwidth: "rd.jpg"
 ---

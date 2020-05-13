@@ -6,9 +6,6 @@ teaser: "MFEM with PUMI Conformal Unstructured Mesh Adaptation"
 permalink: "lessons/pumi/"
 use_math: true
 lesson: true
-youtube: "https://youtu.be/K5Bx2LRPkyE"
-answers_google_form: "https://goo.gl/forms/HmuX6HrT0Yfoz7ny2"
-not_active: true
 header:
  image_fullwidth: "rf_mesh_cut2.png"
 ---

@@ -5,8 +5,6 @@ subheadline: "Introduction to Krylov Solvers and Preconditioning, with emphasis 
 permalink: "lessons/krylov_amg/"
 use_math: true
 lesson: true
-youtube: https://youtu.be/lO5IOW-JUEU
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSf0-OXq5gsvPG0jsli75iGbBTQx100xvTddCKGAz3sdRouUAA/viewform?usp=sf_link"
 header:
  image_fullwidth: "summit_and_sierra-fs8.png"
 ---
