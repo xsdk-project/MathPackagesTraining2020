@@ -7,7 +7,6 @@ permalink: "lessons/amrex/"
 years: [2019]
 use_math: true
 lesson: true
-youtube: https://youtu.be/UhPv4hXQUzw
 header:
  image_fullwidth: "amrex_warpx-fs8.png"
 ---
