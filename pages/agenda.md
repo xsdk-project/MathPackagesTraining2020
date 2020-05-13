@@ -5,7 +5,7 @@ title: "Math Packages Agenda"
 subheadline: "Agenda for ATPESC Numerical Libraries, August 4th, 2020"
 header:
    image_fullwidth: "atpesc-1024x2746.jpg"
-permalink: "/atpesc_2019_agenda/"
+permalink: "/agenda/"
 ---
 
 
