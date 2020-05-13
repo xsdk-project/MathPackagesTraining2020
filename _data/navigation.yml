@@ -8,19 +8,9 @@
   - title: "Setup Instructions"
     url: "/setup_instructions/"
   - title: "Today's Agenda"
-    url: "/atpesc_2019_agenda/"
+    url: "/agenda/"
   - title: "ALCF User Guides"
     url: "https://www.alcf.anl.gov/user-guides"
-  - title: "Open Chat"
-    url: "https://hangouts.google.com/group/8DrS9URxiqnDuKLJ8"
-  - title: "SME 2-on-1 Sign Up"
-    url: "https://docs.google.com/forms/d/e/1FAIpQLScO1Yqwox6cbo0frQ9tJZMAWW8O8OLfhZm6ztbbC5gBI2Wn0g/viewform?usp=sf_link"
-  - title: "Computer History Q&A (10:50-10:55am)"
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSfxZ4UQyJAvQzsB80oLQ6NQ1pQDLYEVTF1RuNftSSvcmb78sg/viewform?usp=sf_link"
-  - title: "HPC Word Search Results"
-    url: "https://xsdk-project.github.io/MathPackagesTraining/images/word_search_results.png"
-  - title: "Women in Computing Q&A (3:20-3:25pm)"
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSfKk7H2aW2eUfRzgZ5EP1jxVrulT9c23MEe7cD3_paOIqUCnQ/viewform?usp=sf_link"
   - title: "Submit a Show Your Work"
     url: "https://docs.google.com/forms/d/e/1FAIpQLSdefMeS_Ns6hvn_O8jXVLmv-5Zsdez-9j09vLhHz1DXi0xS9A/viewform?usp=sf_link"
 
@@ -41,7 +31,7 @@
   - title: "Poisson Boundary Control with PETSc/Tao"
     url: "/lessons/boundary_control_tao/"
 
-- title: Featured Packages
+- title: Packages
   audience: "public"
   url: "https://fastmath-scidac.org/software-catalog.html"
   side: left

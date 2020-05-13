@@ -8,7 +8,7 @@
 #                                                 /____/
 #
 # Title of your website
-title: 'ATPESC 2019 Math Packages Training'
+title: 'ATPESC 2020 Math Packages Training'
 
 # The slogan describes your website and is used on homepage in <title> and other important places
 slogan: 'So my code will see the future'
@@ -26,10 +26,10 @@ author: markcmiller86
 # This URL is the main address for absolute links. Don't include a slash at the end.
 #
 url: 'https://xsdk-project.github.io'
-baseurl: '/MathPackagesTraining'
-handson_install_root: '/projects/ATPESC2019/MathPackagesTraining'
+baseurl: '/MathPackagesTraining2020'
+handson_install_root: '/projects/ATPESC2020/MathPackagesTraining'
 handson_root: 'HandsOnLessons'
-audience: ['public']
+audience: ['private','public']
 
 # Controls whether lesson answer expansions are hidden or not
 handson_hide_qanda: false
