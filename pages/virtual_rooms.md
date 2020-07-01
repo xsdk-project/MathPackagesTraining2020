@@ -7,9 +7,8 @@ header:
    image_fullwidth: "telecom_meeting.png"
 permalink: "/virtual_rooms/"
 ---
-# All teleconference links
 
-## General tech support
+## General Tech Support
 
 * [General #1 - Satish](https://us02web.zoom.us/j/88160159760?pwd=MnVyRFZFT0FBc3RFTTlwQ2xZdDFTUT09)
 * [General #3 - Mark](https://us02web.zoom.us/j/88160159760?pwd=MnVyRFZFT0FBc3RFTTlwQ2xZdDFTUT09)
