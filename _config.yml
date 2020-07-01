@@ -27,7 +27,7 @@ author: markcmiller86
 #
 url: 'https://xsdk-project.github.io'
 baseurl: '/MathPackagesTraining2020'
-handson_install_root: '/projects/ATPESC2020/MathPackagesTraining'
+handson_install_root: '/projects/ATPESC2020/MathPackagesTraining2020'
 handson_root: 'HandsOnLessons'
 audience: ['private','public']
 
@@ -36,7 +36,7 @@ handson_hide_qanda: false
 
 # This is for the editing function in _/includes/improve_content
 # Leave it empty if your site is not on GitHub/GitHub Pages
-improve_content: https://github.com/xsdk-project/MathPackagesTraining/edit/master
+improve_content: https://github.com/xsdk-project/MathPackagesTraining2020/edit/master
 
 # This URL points directly to the images directory making
 # things easier to link to images in posts and templates. It needs a slash at the end.
@@ -44,7 +44,7 @@ improve_content: https://github.com/xsdk-project/MathPackagesTraining/edit/maste
 # Example: <img src="{{ site.urlimg }}{{ post.image.title }}" />
 # Markdown-Example for posts ![Image Text]({{ site.urlimg }}image.jpg)
 #
-urlimg: 'https://xsdk-project.github.io/MathPackagesTraining/images/'
+urlimg: 'https://xsdk-project.github.io/MathPackagesTraining2020/images/'
 
 # Logo size is 600x80 pixels
 logo: "logo.png"
