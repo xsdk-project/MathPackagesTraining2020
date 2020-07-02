@@ -25,6 +25,19 @@
 
 {% endcomment %}
       <ul class="right">
+
+        {% comment %}
+        Add a time-of-day clock as only item in right navigation
+        {% endcomment %}
+
+        <li class="divider"></li>
+        <a href="https://time.is/Chicago" id="time_is_link" rel="nofollow" style="font-size:20px">
+        <li id="Chicago_z123" style="font-size:20px;background-color:white;"></a></li>
+        <script src="//widget.time.is/t.js"></script>
+        <script>
+        time_is_widget.init({Chicago_z123:{time_format:"12hours:minutes:secondsAMPM"}});
+        </script>
+
         {% for link in site.data.navigation %}
               {% unless site.audience contains link.audience %}
                   {% continue %}
