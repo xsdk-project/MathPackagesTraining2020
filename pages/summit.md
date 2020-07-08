@@ -12,7 +12,7 @@ permalink: "/summit/"
 [top-500](https://www.top500.org) list achieving 148 petaFLOPS in November, 2019.
 
 
-|[Zoom](https://exascaleproject.zoomgov.com/j/1605256928?pwd=bkJ3YmhwRWhodjJDOFd1Z3ZaejRkdz09)|[Slack](https://app.slack.com/client/TBYBKDF9B/C016RH29VQA)
+|[Zoom](https://exascaleproject.zoomgov.com/j/1614676269?pwd=bnBnSjRsM2NmdnBQVVpVK0FHSXRXZz09)|[Slack](https://app.slack.com/client/TBYBKDF9B/C016RH29VQA)
 
 ## Events occuring in this space
 
