@@ -1,0 +1,159 @@
+- title: "Intro. to Numerical Libraries"
+  start: "Tue Aug 4 9:30 AM"
+  length: 55
+  speakers:
+    - "Lois Curfman-McInnes"
+    - "Mark Miller"
+  vname: "St.Charles Amphitheater"
+
+- title: "Telecon Transition"
+  start: "Tue Aug 4 10:25 AM"
+  length: 05
+
+- title: "**Parallel Session One**"
+  start: "Tue Aug 4 10:30 AM"
+  length: 60
+
+- title: "Structured Discretization"
+  speakers:
+    - "Ann Almgren"
+    - "Don Willcox"
+  vname: "Fugaku"
+
+- title: "Unstructured Discretization"
+  speakers:
+    - "Mark Shephard"
+    - "Tzanio Kolev"
+  vname: "Summit"
+
+- title: "Iterative Solves & Preconditioners"
+  speakers:
+    - "Jonathan Hu"
+    - "Christian Glusa"
+  vname: "Sierra"
+
+- title: "Direct Solvers"
+  speakers:
+    - "Sherry Li"
+  vname: "TaihuLight"
+  id: 1
+
+- title: "**Break** (panel questions due)"
+  start: "Tue Aug 4 11:30 AM"
+  length: 15
+
+- title: "**Parallel Session Two**"
+  start: "Tue Aug 4 11:45 AM"
+  length: 60
+
+- title: "Structured Discretization"
+  speakers:
+    - "Ann Almgren"
+    - "Don Willcox"
+  vname: "Fugaku"
+
+- title: "Unstructured Discretization"
+  speakers:
+    - "Mark Shephard"
+    - "Tzanio Kolev"
+  vname: "Summit"
+
+- title: "Iterative Solves & Preconditioners"
+  speakers:
+    - "Jonathan Hu"
+    - "Christian Glusa"
+  vname: "Sierra"
+
+- title: "Direct Solvers"
+  speakers:
+    - "Sherry Li"
+  vname: "TaihuLight"
+  id: 2
+
+- title: "**Lunch** (panel questions due)"
+  start: "Tue Aug 4 12:45 PM"
+  length: 60
+
+- title: "Panel"
+  start: "Tue Aug 4 1:45 PM"
+  length: 45 
+  vname: "St.Charles Amphitheater"
+
+- title: "Telecon Transition"
+  start: "Tue Aug 4 2:30 PM"
+  length: 05
+
+- title: "**Parallel Session Three**"
+  start: "Tue Aug 4 2:35 PM"
+  length: 50
+
+- title: "Nonlinear Solvers"
+  speakers:
+    - "Richard Mills"
+  vname: "Fugaku"
+
+- title: "Optimization"
+  speakers:
+    - "Alp Dener"
+  vname: "Summit"
+
+- title: "Time Integration"
+  speakers:
+    - "Dan Reynolds"
+  vname: "Sierra"
+
+- title: "Iterative Solves & Preconditioners"
+  speakers:
+    - "Jonathan Hu"
+    - "Christian Glusa"
+  vname: "TaihuLight"
+
+- title: "**Break** (SME selections due)"
+  start: "Tue Aug 4 3:25 PM"
+  length: 15
+
+- title: "**Parallel Session Four**"
+  start: "Tue Aug 4 3:40 PM"
+  length: 50
+
+- title: "Nonlinear Solvers"
+  speakers:
+    - "Richard Mills"
+  vname: "Fugaku"
+
+- title: "Optimization"
+  speakers:
+    - "Alp Dener"
+  vname: "Summit"
+
+- title: "Time Integration"
+  speakers:
+    - "Dan Reynolds"
+  vname: "Sierra"
+
+- title: "Direct Solvers"
+  speakers:
+    - "Sherry Li"
+  vname: "TaihuLight"
+  id: 3
+
+- title: "Telecon Transition"
+  start: "Tue Aug 4 4:30 PM"
+  length: 05
+
+- title: "Wrap up"
+  start: "Tue Aug 4 4:35 PM"
+  length: 25 
+  speakers:
+    - "Ann Almgren"
+  vname: "St.Charles Amphitheater"
+
+- title: "**END OF OFFICIAL AGENDA**"
+
+- title: "**Break**"
+  start: "Tue Aug 4 5:00 PM"
+  length: 15
+
+- title: "SME Speed Dating"
+  start: "Tue Aug 4 5:15 PM"
+  length: 80

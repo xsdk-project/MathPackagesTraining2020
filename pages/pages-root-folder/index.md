@@ -46,12 +46,12 @@ header:
 homepage: true
 ---
 
-# Various Projects with Shared Values
+# Different Projects, Common Values
 
 The projects highlighted here represent some [DOE](https://science.energy.gov)-funded 
 projects with shared values, all of which focus on producing high-quality, well-vetted,
 easy to use, sustainable, and scalable numerical packages for developing high-performance scientific simulations.
-Each project highlighted on this page addresses a complementary facet of scientific software development and use.
+Each project highlighted here page addresses a complementary facet of scientific software development and use.
 For example, [FASTMath](https://fastmath-scidac.llnl.gov) focuses on the numerical underpinnings
 of various packages, while [xSDK](https://xsdk.info) and [Spack](https://spack.io) address ease of use of multiple packages in combination.  Complementary work by the [IDEAS](https://ideas-productivity.org) project and the community-driven organization [Better Scientific Software](https://bssw.io) provides resources to help improve software productivity, quality, and sustainability, as key aspects of increasing overall scientific productivity.  
 
