@@ -44,7 +44,7 @@
   vname: "TaihuLight"
   id: 7
 
-- title: "**Break** (panel questions due)"
+- title: "**Break** (Panel questions / SME selections)"
   start: "Tue Aug 4 11:30 AM"
   length: 15
   id: 8
@@ -81,7 +81,7 @@
   vname: "TaihuLight"
   id: 13 
 
-- title: "**Lunch** (panel questions due)"
+- title: "**Lunch** (Panel questions / SME selections)"
   start: "Tue Aug 4 12:45 PM"
   length: 60
   id: 14 
@@ -127,7 +127,7 @@
   vname: "TaihuLight"
   id: 21 
 
-- title: "**Break** (SME selections due)"
+- title: "**Break** (SME selections)"
   start: "Tue Aug 4 3:25 PM"
   length: 15
   id: 22 
