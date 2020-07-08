@@ -1,0 +1,48 @@
+{% comment %}
+*
+*   This include lets you easily insert an agenda or sub-selection thereof
+*
+*       {% include agenda room_filter='room name' speaker_filter='speaker name' %}
+*
+{% endcomment %}
+
+{% assign agitms = site.data.agenda %}
+{% if include.room_filter %}
+  {% assign agitms2 = agitms | where: "vname", include.room_filter %}
+{% else %}
+  {% assign agitms2 = agitms %}
+{% endif %}
+
+{% capture newline %}
+{% endcapture %}
+
+|Start|Mins|Topic|Speaker(s)|Virtual<br>Venue|
+|---:|:---:|:---|---:|:---|{{newline}}
+{%- if include.speaker_filter -%}
+  {%- for agitm in agitms2 -%}
+    {%- for sp in agitm.speakers -%}
+      {%- if sp == include.speaker_filter -%}
+        {%- assign start = agitm.start -%}
+        {%- assign length = agitm.length -%}
+        {%- if start == nil -%}
+           {%- for itm in site.data.agenda -%}
+             {%- if itm.start -%}
+               {%- assign start = itm.start -%}
+               {%- assign length = itm.length -%}
+             {%- endif %}
+             {%- if itm == agitm -%}
+               {%- break -%}
+             {%- endif -%}
+           {%- endfor -%}
+        {%- endif -%}
+|{{start|date: "%I:%M"}}|{{length}}|{{agitm.title}}|{% for s in agitm.speakers %}[{{s}}]{% if s != agitm.speakers.last %}<br>{% endif %}{% endfor%}|{% if agitm.vname %}[{{agitm.vname|split: " "|join: "<br>"}}]{% endif %}|{{newline}}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- for agitm in agitms2 -%}
+|{{agitm.start|date: "%I:%M"}}|{{agitm.length}}|{{agitm.title}}|{% for s in agitm.speakers %}[{{s}}]{% if s != agitm.speakers.last %}<br>{% endif %}{% endfor%}|{% if agitm.vname %}[{{agitm.vname|split: " "|join: "<br>"}}]{% endif %}|{{newline}}
+  {%- endfor -%}
+{%- endif -%}
+{{newline}}

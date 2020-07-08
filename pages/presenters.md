@@ -153,12 +153,30 @@ permalink: "/presenters/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+### Tzanio Kolev
+### Tzanio Kolev
+
+|:---:|:---:|
+|![](https://people.llnl.gov/getImage?per_intr_no=1199570){:width="200px"}|Key Expertise: [MFEM][mfem], [xSDK][xsdk], [FASTMath][fastmath]<br><br>Affiliation: [LLNL][llnl]/[CASC][llnl-casc]<br><br>Contact: [email][tk-m]<br><br>GitHub: [Profile][tk-g]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Mark S. Shephard
+### Mark S. Shephard
+
+|:---:|:---:|
+|![](https://faculty.rpi.edu/sites/default/files/styles/large/public/Shepard_crop.jpg?itok=pfhiEDyz){:width="200px"}|Key Expertise: [PUMI][pumi], [FASTMath][fastmath]<br><br>Affiliation: [RPI][rpi]/[SCOREC][rpi-scorec]<br><br>Contact: [email][mss-m]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 [amrex]: https://amrex-codes.github.io
 [xsdk]: https://xsdk.info
 [petsc]: https://www.mcs.anl.gov/petsc/
 [ideas]: https://ideas-productivity.org
 [bssw]: https://bssw.io
-[fastmath]: https://fastmath-scidac.org/
+[fastmath]: https://fastmath-scidac.llnl.gov
 [silo]: https://silo.llnl.gov
 [spack]: https://spack.io
 [sundials]: https://computing.llnl.gov/projects/sundials
@@ -174,6 +192,8 @@ permalink: "/presenters/"
 [lapack]: http://www.netlib.org/lapack/
 [scalapack]: http://www.netlib.org/scalapack/
 [libensemble]: https://libensemble.readthedocs.io
+[mfem]: https://mfem.org
+[pumi]: https://www.scorec.rpi.edu/pumi/
 
 [anl]: https://www.anl.gov
 [anl-mcs]: https://www.anl.gov/mcs
@@ -193,6 +213,8 @@ permalink: "/presenters/"
 [utk-eecs]: http://www.eecs.utk.edu
 [kaust]: https://www.kaust.edu.sa/en
 [kaust-cemse]: https://cemse.kaust.edu.sa
+[rpi]: https://www.rpi.edu
+[rpi-scorec]: https://www.scorec.rpi.edu
 
 [lcm-m]: <mailto:curfman@mcs.anl.gov>
 [mcm-m]: <mailto:miller86@llnl.gov>
@@ -210,6 +232,8 @@ permalink: "/presenters/"
 [jd-m]: <mailto:demmel@cs.berkeley.edu>
 [jd2-m]: <mailto:dongarra@utk.edu>
 [dk-m]: <mailto:david.keyes@kaust.edu.sa>
+[tk-m]: <mailto:tzanio@llnl.gov>
+[mss-m]: <mailto:shephm@rpi.edu>
 
 [lcm-g]: https://github.com/curfman
 [mcm-g]: https://github.com/markcmiller86
@@ -224,3 +248,4 @@ permalink: "/presenters/"
 [sl-g]: https://github.com/xiaoyeli
 [uy-g]: https://github.com/ulrikeyang
 [sh-g]: https://github.com/shuds13
+[tk-g]: https://github.com/tzanio

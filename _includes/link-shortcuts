@@ -1,0 +1,65 @@
+{% comment %}
+[FOO]: https://i❤.ws/emoji-image/🤓.png?format=emojione&ar=2x1
+[BAR]: https://xn--i-7iq.ws/emoji-image/%F0%9F%A4%93%F0%9F%91%BD.png?format=emojione&ar=2x1
+[GORFO]: https://i❤.ws/emoji-image/👍.png?format=emojione&ar=2x1
+
+|10:30am|60|Parallel Session #1 Lectures + Hands On ![FOO]{:height="40px" width="40px"} ![BAR]|
+
+![GORFO]{:height="36px" width="36px"}
+{% endcomment %}
+
+
+[Fugaku]: /fugaku/
+[Summit]: /summit/
+[Sierra]: /sierra/
+[TaihuLight]: /taihulight/
+[St.Charles<br>Amphitheater]: /stcharles_amphitheater/
+
+[XX]: http://extremecomputingtraining.anl.gov/agenda-2019
+[m1]: <mailto:curfman@mcs.anl.gov>
+[m2]: <mailto:tmunson@mcs.anl.gov>
+[m3]: <mailto:hongzh@mcs.anl.gov>
+[m4]: <mailto:miller86@llnl.gov>
+[m5]: <mailto:ASAlmgren@lbl.gov>
+[m6]: <mailto:DEWillcox@lbl.gov>
+[m7]: <mailto:demmel@cs.berkeley.edu>
+[m8]: <mailto:reynolds@smu.edu>
+[m9]: <mailto:jhu@sandia.gov>
+[m10]: <mailto:caglusa@sandia.gov>
+[m11]: <mailto:bsmith@mcs.anl.gov>
+[m12]: <mailto:adener@anl.gov>
+
+[w1]: https://ccse.lbl.gov/index.html
+[w2]: https://computation.llnl.gov
+[w10]: http://www.mcs.anl.gov/petsc
+[w12]: https://www.mcs.anl.gov
+[w15]: http://crd.lbl.gov
+[w19]: http://www.mcs.anl.gov/research/projects/tao/tao-deprecated/index.html
+[w20]: https://amrex-codes.github.io
+[w21]: https://eecs.berkeley.edu
+[w22]: https://www.smu.edu/Dedman/academics/departments/math
+[w23]: https://computation.llnl.gov/projects/sundials
+[w24]: https://trilinos.github.io/muelu.html
+[w25]: https://xsdk.info
+
+[Lois Curfman-McInnes]: {{site.url}}{{site.baseurl}}/presenters/#lois-curfman-mcinnes
+[Mark Miller]: {{site.url}}{{site.baseurl}}/presenters/#mark-c-miller
+[Ann Almgren]: {{site.url}}{{site.baseurl}}/presenters/#ann-almgren
+[Don Willcox]: {{site.url}}{{site.baseurl}}/presenters/#don-willcox
+[Dan Reynolds]: {{site.url}}{{site.baseurl}}/presenters/#dan-reynolds
+[Christian Glusa]: {{site.url}}{{site.baseurl}}/presenters/#christian-glusa
+[Jonathan Hu]: {{site.url}}{{site.baseurl}}/presenters/#jonathan-hu
+[Alp Dener]: {{site.url}}{{site.baseurl}}/presenters/#alp-dener
+[Satish Balay]: {{site.url}}{{site.baseurl}}/presenters/#satish-balay
+[Barry Smith]: {{site.url}}{{site.baseurl}}/presenters/#barry-smith
+[Ulrike Yang]: {{site.url}}{{site.baseurl}}/presenters/#ulrike-yang
+[Sherry Li]: {{site.url}}{{site.baseurl}}/presenters/#x-sherry-li
+[Jim Demmel]: {{site.url}}{{site.baseurl}}/presenters/#jim-demmel
+[David Keyes]: {{site.url}}{{site.baseurl}}/presenters/#david-keyes
+[Jack Dongarra]: {{site.url}}{{site.baseurl}}/presenters/#jack-dongarra
+[Steve Hudson]: {{site.url}}{{site.baseurl}}/presenters/#steve-hudson
+[Tzanio Kolev]: {{site.url}}{{site.baseurl}}/presenters/#tzanio-kolev
+[Mark Shephard]: {{site.url}}{{site.baseurl}}/presenters/#mark-s-shephard
+[Cameron Smith]: {{site.url}}{{site.baseurl}}/presenters/#cameron-smith
+[Richard Mills]: {{site.url}}{{site.baseurl}}/presenters/#richard-mills
+[Carol Woodward]: {{site.url}}{{site.baseurl}}/presenters/#carol-woodward
