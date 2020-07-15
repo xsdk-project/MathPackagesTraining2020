@@ -4,7 +4,7 @@
   speakers:
     - "Lois Curfman-McInnes"
     - "Mark Miller"
-  vname: "St.Charles Amphitheater"
+  vname: "Amphitheater"
   id: 1
 
 - title: "Telecon Transition"
@@ -21,27 +21,27 @@
   speakers:
     - "Ann Almgren"
     - "Don Willcox"
-  vname: "Fugaku"
+  vname: "Frontier"
   id: 4
 
 - title: "Unstructured Discretization"
   speakers:
     - "Mark Shephard"
     - "Tzanio Kolev"
-  vname: "Summit"
+  vname: "Aurora"
   id: 5
 
 - title: "Iterative Solves & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
-  vname: "Sierra"
+  vname: "Perlmutter"
   id: 6
 
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
-  vname: "TaihuLight"
+  vname: "El-Capitan"
   id: 7
 
 - title: "**Break** (Panel questions / SME selections)"
@@ -58,27 +58,27 @@
   speakers:
     - "Ann Almgren"
     - "Don Willcox"
-  vname: "Fugaku"
+  vname: "Frontier"
   id: 10 
 
 - title: "Unstructured Discretization"
   speakers:
     - "Mark Shephard"
     - "Tzanio Kolev"
-  vname: "Summit"
+  vname: "Aurora"
   id: 11 
 
 - title: "Iterative Solves & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
-  vname: "Sierra"
+  vname: "Perlmutter"
   id: 12 
 
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
-  vname: "TaihuLight"
+  vname: "El-Capitan"
   id: 13 
 
 - title: "**Lunch** (Panel questions / SME selections)"
@@ -89,7 +89,7 @@
 - title: "Panel"
   start: "Tue Aug 4 1:45 PM"
   length: 45 
-  vname: "St.Charles Amphitheater"
+  vname: "Amphitheater"
   id: 15 
 
 - title: "Telecon Transition"
@@ -105,26 +105,26 @@
 - title: "Nonlinear Solvers"
   speakers:
     - "Richard Mills"
-  vname: "Fugaku"
+  vname: "Frontier"
   id: 18 
 
 - title: "Optimization"
   speakers:
     - "Alp Dener"
-  vname: "Summit"
+  vname: "Aurora"
   id: 19 
 
 - title: "Time Integration"
   speakers:
     - "Dan Reynolds"
-  vname: "Sierra"
+  vname: "Perlmutter"
   id: 20 
 
 - title: "Iterative Solves & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
-  vname: "TaihuLight"
+  vname: "El-Capitan"
   id: 21 
 
 - title: "**Break** (SME selections)"
@@ -140,25 +140,25 @@
 - title: "Nonlinear Solvers"
   speakers:
     - "Richard Mills"
-  vname: "Fugaku"
+  vname: "Frontier"
   id: 24 
 
 - title: "Optimization"
   speakers:
     - "Alp Dener"
-  vname: "Summit"
+  vname: "Aurora"
   id: 25 
 
 - title: "Time Integration"
   speakers:
     - "Dan Reynolds"
-  vname: "Sierra"
+  vname: "Perlmutter"
   id: 26 
 
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
-  vname: "TaihuLight"
+  vname: "El-Capitan"
   id: 27 
 
 - title: "Telecon Transition"
@@ -171,7 +171,7 @@
   length: 25 
   speakers:
     - "Ann Almgren"
-  vname: "St.Charles Amphitheater"
+  vname: "Amphitheater"
   id: 29 
 
 - title: "**END OF OFFICIAL AGENDA**"

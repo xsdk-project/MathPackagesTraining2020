@@ -1,20 +1,25 @@
 ---
 layout: page
 show_meta: false
-title: "St. Charles Amphitheater"
+title: "Amphitheater"
 subheadline: "Virtual venues and teleconference links"
 header:
    image_fullwidth: "q_center_main.jpg"
-permalink: "/stcharles_amphitheater/"
+permalink: "/amphitheater/"
 ---
 
 This is the main meeting room at the [Q-Center](https://qcenter.com/home-guest/)
 where [ATPESC](https://extremecomputingtraining.anl.gov) is ordinarily hosted.
 
-### [Zoom](https://zoom.us)
+{% for vr in site.data.vrooms %}
+  {% if vr.name == page.title %}
+### [Zoom]({{vr.zoom_link}})
+    {% break %}
+  {% endif %}
+{% endfor %}
 
 ## Events occuring in this space
 
-{% include agenda room_filter="St.Charles Amphitheater" %}
+{% include agenda room_filter="Amphitheater" %}
 
 {% include link-shortcuts %}
