@@ -15,11 +15,12 @@ permalink: "/el-capitan/"
   {% endif %}
 {% endfor %}
 
-### [Info]({{vroom.webinfo}})
+[El Capitan]({{vroom.webinfo}}) is projected to be the world’s most powerful supercomputer when it is
+fully deployed in 2023 and is expected to exceed 2 exaFLOPS.
 
-<iframe style="border:1px;" width="80%" src="{{vroom.webinfo}}"></iframe>
+<center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
 
-## Events occuring in this space
+## Events occuring in this room
 
 {% include agenda room_filter="El-Capitan" %}
 
