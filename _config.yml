@@ -27,11 +27,23 @@ author: markcmiller86
 #
 url: 'https://xsdk-project.github.io'
 baseurl: '/MathPackagesTraining2020'
+
+#
+# Paths on ANL file systems where software is installed
+#
 handson_install_root: '/projects/ATPESC2020/MathPackagesTraining2020'
 handson_root: 'HandsOnLessons'
+
+#
+# List only 'public' to generate a site that does NOT include all the
+# additional pages for development
+#
 audience: ['private','public']
 
+#
 # Controls whether lesson answer expansions are hidden or not
+# Should probably tie to audience
+#
 handson_hide_qanda: false
 
 # This is for the editing function in _/includes/improve_content

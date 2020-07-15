@@ -9,11 +9,11 @@
 {% endcomment %}
 
 
-[Fugaku]: {{site.url}}{{site.baseurl}}/fugaku/
-[Summit]: {{site.url}}{{site.baseurl}}/summit/
-[Sierra]: {{site.url}}{{site.baseurl}}/sierra/
-[TaihuLight]: {{site.url}}{{site.baseurl}}/taihulight/
-[St.Charles<br>Amphitheater]: {{site.url}}{{site.baseurl}}/stcharles_amphitheater/
+[El-Capitan]: {{site.url}}{{site.baseurl}}/el-capitan/
+[Aurora]: {{site.url}}{{site.baseurl}}/aurora/
+[Frontier]: {{site.url}}{{site.baseurl}}/frontier/
+[Perlmutter]: {{site.url}}{{site.baseurl}}/perlmutter/
+[Amphitheater]: {{site.url}}{{site.baseurl}}/amphitheater/
 
 [XX]: http://extremecomputingtraining.anl.gov/agenda-2019
 [m1]: <mailto:curfman@mcs.anl.gov>
