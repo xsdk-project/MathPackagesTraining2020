@@ -171,6 +171,24 @@ permalink: "/presenters/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+### Aaron Fisher
+### Aaron Fisher
+
+|:---:|:---:|
+|![](https://people.llnl.gov/getImage?per_intr_no=1214098){:width="200px"}|Key Expertise: [MFEM][mfem], [xSDK][xsdk]<br><br>Affiliation: [LLNL][llnl]/[CASC][llnl-casc]<br><br>Contact: [email][af-m]<br><br>GitHub: [Profile][af-g]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Sarah Osborn
+### Sarah Osborn
+
+|:---:|:---:|
+|![](https://people.llnl.gov/getImage?per_intr_no=1325696){:width="200px"}|Key Expertise: [hypre][hypre]<br><br>Affiliation: [LLNL][llnl]/[CASC][llnl-casc]<br><br>Contact: [email][so-m]<br><br>GitHub: [Profile][so-g]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 [amrex]: https://amrex-codes.github.io
 [xsdk]: https://xsdk.info
 [petsc]: https://www.mcs.anl.gov/petsc/
@@ -234,6 +252,8 @@ permalink: "/presenters/"
 [dk-m]: <mailto:david.keyes@kaust.edu.sa>
 [tk-m]: <mailto:tzanio@llnl.gov>
 [mss-m]: <mailto:shephm@rpi.edu>
+[af-m]: <mailto:afisher@llnl.gov>
+[so-m]: <mailto:osborn9@llnl.gov>
 
 [lcm-g]: https://github.com/curfman
 [mcm-g]: https://github.com/markcmiller86
@@ -249,3 +269,5 @@ permalink: "/presenters/"
 [uy-g]: https://github.com/ulrikeyang
 [sh-g]: https://github.com/shuds13
 [tk-g]: https://github.com/tzanio
+[af-g]: https://github.com/acfisher
+[so-g]: https://github.com/osborn9

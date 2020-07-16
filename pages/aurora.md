@@ -2,7 +2,6 @@
 layout: page
 show_meta: false
 title: "Aurora"
-subheadline: "Virtual venues and teleconference links"
 header:
    image_fullwidth: "aurora2.png"
 permalink: "/aurora/"
