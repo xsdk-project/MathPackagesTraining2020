@@ -30,12 +30,28 @@
         Add a time-of-day clock as only item in right navigation
         {% endcomment %}
 
-        <li class="divider"></li>
-        <a href="https://time.is/Chicago" id="time_is_link" rel="nofollow" style="font-size:16px">
-        <li id="Chicago_z123" style="font-size:16px;background-color:white;"></a></li>&nbsp;CST
-        <script src="//widget.time.is/t.js"></script>
-        <script>
-        time_is_widget.init({Chicago_z123:{time_format:"12hours:minutes:secondsAMPM"}});
+        <li class="divider"</li>
+        <li id="clockbox2" style="font-size:16px;background-color:white;"></li>
+        <script type="text/javascript">
+            function calcChicagoTime() {
+
+                // create Date object for current location
+                d = new Date();
+    
+                // convert to msec
+                // add local time zone offset 
+                // get UTC time in msec
+                utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    
+                // create new Date object for different city
+                // using supplied offset
+                nd = new Date(utc + (3600000*(-5)));
+    
+                // return time as a string
+                document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString();
+            }
+            calcChicagoTime();
+            setInterval(calcChicagoTime,1000);
         </script>
 
         {% for link in site.data.navigation %}
