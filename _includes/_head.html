@@ -119,7 +119,7 @@
                 d = new Date();
                 utc = d.getTime() + (d.getTimezoneOffset() * 60000);
                 nd = new Date(utc + (3600000*(-5)));
-                document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString()+"&nbsp;CST";
+                document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString();
             }
             calcChicagoTime();
             setInterval(calcChicagoTime,1000);
