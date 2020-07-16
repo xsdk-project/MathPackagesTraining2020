@@ -69,11 +69,10 @@ Usage: ./MueLu_Stratimikos.exe [options]
 
 Solvers (such as CG and GMRES) and preconditioners (such as Jacobi, Gauss-Seidel and multigrid) are configured via parameter files.
 
-Trilinos supports both XML and YAML files.
-In what follows, we will be modifying modifying `stratimikos_ParameterList.xml` to explore a variety of solvers and preconditioners.
+Trilinos supports both XML and YAML parameter files.
 
-By default, the XML file `stratimikos_ParameterList.xml` is read.
-If you want to keep track of your changes and work with different input files, this default can be overridden with `--xml=another-file.xml`.
+In order to make following along as simple as possible and avoid typos, parameter XML files for all examples can be found in the lesson folder.
+If you want to see the difference between to input files, run ```diff a.xml b.xml```.
 
 
 ## Running the Example
@@ -84,7 +83,7 @@ The default Krylov method is GMRES, and no preconditioner is used.
 
 <img src="arrow.png" width="30"> Run
 ```
-./MueLu_Stratimikos.exe
+./MueLu_Stratimikos.exe --xml=set1-gmres.xml
 ```
 
 #### Expected Behavior/Output
@@ -137,8 +136,11 @@ We observe the following:
 - The solve failed, since we reached 100 iterations, but only reduced the residual norm by a factor of 7e-06.
 
 Now, modify the input file to use the conjugate gradient method.
+We change the `Solver Type` parameter to `Pseudo Block CG`.
 
-<img src="arrow.png" width="30"> Change the `Solver Type` parameter on line 17 of `stratimikos_ParameterList.xml` to `Pseudo Block CG` and rerun.
+<img src="arrow.png" width="30"> Run ```
+./MueLu_Stratimikos.exe --xml=set1-cg.xml
+```
 
 {% include qanda question='Do you see any significant changes in convergence behavior?' answer='No, neither solver manages to converge in less than 100 iterations.' %}
 
@@ -146,7 +148,8 @@ Now, modify the input file to use the conjugate gradient method.
 
 You can check the last answer by comparing the approximate memory usage of CG and GMRES using
 ```
-/usr/bin/time -v ./MueLu_Stratimikos.exe --nx=1000 --ny=1000 2>&1 | grep "Maximum resident set size"
+/usr/bin/time -v ./MueLu_Stratimikos.exe --nx=1000 --ny=1000 --xml=set1-gmres.xml 2>&1 | grep "Maximum resident set size"
+/usr/bin/time -v ./MueLu_Stratimikos.exe --nx=1000 --ny=1000 --xml=set1-cg.xml    2>&1 | grep "Maximum resident set size"
 ```
 We used a larger problem to be able to see the difference more clearly.
 
@@ -160,11 +163,11 @@ In what follows, we will be using the CG solver.
 
 We now explore some simple (and quite generic) options for preconditioning the problem.
 
-By default, the `Preconditioner Type` parameter was set to `None` on line 59, meaning no preconditioning.
-Use `Ifpack2` instead by commenting out line 59 and uncommenting line 62.
+So far, the `Preconditioner Type` parameter was set to `None`, meaning no preconditioning.
+We now use `Ifpack2` instead.
 Ifpack2 is another Trilinos package which provides a number of different simple preconditioners.
 
-Moreover, have a look at the configuration for Ifpack2, starting on line 74.
+Moreover, we add the following configuration for Ifpack2.
 ```xml
 <ParameterList name="Ifpack2">
   <Parameter name="Prec Type" type="string" value="relaxation"/>
@@ -174,9 +177,11 @@ Moreover, have a look at the configuration for Ifpack2, starting on line 74.
   </ParameterList>
 </ParameterList>
 ```
-This means that a single sweep of symmetric Gauss-Seidel is used.
+This means that a single sweep of symmetric Gauss-Seidel is used for preconditioning.
 
-<img src="arrow.png" width="30"> Rerun the code.
+<img src="arrow.png" width="30"> Run ```
+./MueLu_Stratimikos.exe --xml=set2-sgs1.xml
+```
 
 <!-- {% include qanda question='Why did the solve become even worse?' answer='Gauss-Seidel is an unsymmetric preconditioner, but CG needs a symmetric one!' %} -->
 
@@ -186,16 +191,20 @@ This means that a single sweep of symmetric Gauss-Seidel is used.
 <!-- <img src="arrow.png" width="30"> Rerun to verify that the solver is now converging. -->
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
+We wwitch `relaxation: sweeps` to 3.
 
-<img src="arrow.png" width="30"> Switch `relaxation: sweeps` to 3, rerun and verify that the number of iterations further decreased.
+<img src="arrow.png" width="30"> Run
+Run ```
+./MueLu_Stratimikos.exe --xml=set2-sgs3.xml
+``` and verify that the number of iterations further decreased.
 
 Now, we will check whether we have created a scalable solver strategy.
 
 <img src="arrow.png" width="30"> Record the number of iterations for different problem sizes by running
 ```
-./MueLu_Stratimikos.exe --nx=50 --ny=50
-./MueLu_Stratimikos.exe --nx=100 --ny=100
-./MueLu_Stratimikos.exe --nx=200 --ny=200
+./MueLu_Stratimikos.exe --xml=set2-sgs3.xml --nx=50  --ny=50
+./MueLu_Stratimikos.exe --xml=set2-sgs3.xml --nx=100 --ny=100
+./MueLu_Stratimikos.exe --xml=set2-sgs3.xml --nx=200 --ny=200
 ```
 (This means that we are running the same 2D Laplace problem as above, but on meshes of size 50x50, etc.)
 
@@ -212,12 +221,13 @@ The number of iterations taken by CG scales with the square root of the conditio
 The reason that the Gauss-Seidel preconditioner did not work well is that it effectively only reduces error locally, but not globally.
 We hence need a global mechanism of error correction, which can be provided by adding one or more coarser grids.
 
-<img src="arrow.png" width="30"> Comment out line 59 and uncomment line 65 to switch the `Preconditioner Type` to
-`MueLu`, which is an algebraic multigrid package in Trilinos.  Run
+We switch the `Preconditioner Type` parameter to `MueLu`, which is an algebraic multigrid package in Trilinos.
+
+<img src="arrow.png" width="30"> Run
 ```
-./MueLu_Stratimikos.exe --nx=50 --ny=50
-./MueLu_Stratimikos.exe --nx=100 --ny=100
-./MueLu_Stratimikos.exe --nx=200 --ny=200
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --nx=50  --ny=50
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --nx=100 --ny=100
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --nx=200 --ny=200
 ```
 
 {% include qanda question='Is the solver scalable?' answer='Yes, the number of iterations stays more or less constant as we increase the problem size.' %}
@@ -267,7 +277,7 @@ By default, we use a single sweep of Jacobi smoothing, which is very cheap.
 
 <img src="arrow.png" width="30"> First, we run
 ```
-./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --timings --nx=1000 --ny=1000
 ```
 to display timing information on a large enough problem.
 The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
@@ -275,14 +285,17 @@ The relevant timer to look at is `Belos: PseudoBlockCGSolMgr total solve time`.
 Since there are quite a lot of timers, you could grep for the iteration count and the timer by appending
 ```|  egrep "total solve time|Number of Iterations"``` to the command, i.e.,
 ```
-./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
-you can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
+we can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
-<img src="arrow.png" width="30"> Make the required changes in the input file (starting from line 118) and compare the timings with the Jacobi case.
+<img src="arrow.png" width="30"> Run ```
+./MueLu_Stratimikos.exe --xml=set3-mg-sgs.xml --timings --nx=1000 --ny=1000
+./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml  --timings --nx=1000 --ny=1000
+```  and compare the timings with the Jacobi case.
 
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
@@ -291,10 +304,10 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 
 <img src="arrow.png" width="30"> Run
 ```
-mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe as you add MPI ranks?'
@@ -311,14 +324,14 @@ like Jacobi or Gauss-Seidel.
   - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
     e.g., coloring.
 
-<img src="arrow.png" width="30"> In the XML input file, comment out the Gauss-Seidel smoother you were using, and
-uncomment the Chebyshev smoother block on line 155. Repeat the above experiment.
+We switch the smmother to Chebyshev.
+<img src="arrow.png" width="30"> Repeat the above experiment.
 ```
-./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 2 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
