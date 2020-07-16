@@ -299,7 +299,8 @@ we can either use different directions in the sweeps in pre- and post-smoothing,
 ```
 ./MueLu_Stratimikos.exe --xml=set3-mg-sgs.xml --timings --nx=1000 --ny=1000
 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml  --timings --nx=1000 --ny=1000
-```  and compare the timings with the Jacobi case.
+```
+and compare the timings with the Jacobi case.
 
 {% include qanda question='Do you see an improvement?' answer='Yes. For symmetric Gauss-Seidel, the number of iterations decreases.  For forward Gauss-Seidel
 for pre-smoothing and backwards Gauss-Seidel for post-smoothing, both number of iterations and time-to-solution are reduced.' %}
