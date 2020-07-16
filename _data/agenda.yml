@@ -27,7 +27,7 @@
 - title: "Unstructured Discretization"
   speakers:
     - "Mark Shephard"
-    - "Tzanio Kolev"
+    - "Aaron Fisher"
   vname: "Aurora"
   id: 5
 
@@ -44,7 +44,7 @@
   vname: "El-Capitan"
   id: 7
 
-- title: "**Break** (Panel questions / SME selections)"
+- title: "**Break**<br>*SME selections*<br>*Panel Questions Due*"
   start: "Tue Aug 4 11:30 AM"
   length: 15
   id: 8
@@ -64,7 +64,7 @@
 - title: "Unstructured Discretization"
   speakers:
     - "Mark Shephard"
-    - "Tzanio Kolev"
+    - "Aaron Fisher"
   vname: "Aurora"
   id: 11 
 
@@ -80,7 +80,7 @@
   vname: "El-Capitan"
   id: 13 
 
-- title: "**Lunch** (Panel questions / SME selections)"
+- title: "**Lunch**<br>*SME selections*<br>*Panel Questions Due*"
   start: "Tue Aug 4 12:45 PM"
   length: 60
   id: 14 
@@ -126,7 +126,7 @@
   vname: "El-Capitan"
   id: 21 
 
-- title: "**Break** (SME selections)"
+- title: "**Break**<br>*SME Selections Due*"
   start: "Tue Aug 4 3:25 PM"
   length: 15
   id: 22 

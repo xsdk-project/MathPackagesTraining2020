@@ -2,7 +2,6 @@
 layout: page
 show_meta: false
 title: "Frontier"
-subheadline: "Virtual venues and teleconference links"
 header:
    image_fullwidth: "frontier2.png"
 permalink: "/frontier/"
@@ -14,6 +13,9 @@ permalink: "/frontier/"
     {% break %}
   {% endif %}
 {% endfor %}
+
+Scheduled for delivery in 2021, [Frontier]({{vroom.webinfo}}) will exceed 1.5 exaFLOPS and accelerate
+innovation in science and technology in high-performance computing and artificial intelligence. 
 
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
 
