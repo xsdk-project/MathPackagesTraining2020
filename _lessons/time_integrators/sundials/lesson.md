@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-title: "Time Integration and Nonlinear Solvers with SUNDIALS"
+title: "Time Integration with SUNDIALS"
 subheadline: "Role and Impact of Time Integrators in Solution Accuracy and Computational Efficiency"
 permalink: "lessons/time_integrators/sundials"
 use_math: true
@@ -17,7 +17,6 @@ header:
 |How do explicit, implicit or IMEX<br>methods impact step size?|Compare methods at step sizes<br>near the stability limit.|Choose time integration method<br>to match the problem.|
 |What is the impact of an<br>*adaptive* technique?|Compare fixed and adaptive techniques.|Adaptive techniques can be robust<br>reliable and reduce computational cost.|
 |How does integration *order*<br>impact cost?|Observe impact of order on time<br>to solution and number of steps.|Changing integration order is simple<br>allowing optimization for a given problem.|
-|How does the nonlinear solver<br>affect robustness/scalability?|Compare different solvers<br>with implicit and IMEX methods.|Some methods require more work<br>but are more robust and scalable.|
 |What is the role and benefit of<br>preconditioning?|Compare integration methods with<br>and without preconditioning.|Preconditioning is critical for scalability.|
 
 **Note:** To begin this lesson...
@@ -59,7 +58,7 @@ given initial condition.  The spatial domain is $$(x,y) \in
 The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
 and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
 [AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
-SUNDIALS' [ARKode][0] package for one-step time integration methods, to
+SUNDIALS' [ARKODE][0] package for one-step time integration methods, to
 demonstrate the use of [SUNDIALS][1] in both serial and parallel for
 more robust and flexible control over _time integration_
 (e.g., discretization in time) of PDEs.
@@ -82,8 +81,6 @@ at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4
 We will break apart our investigation of this problem into the following three phases:
 
 1. Explicit time integration (`HandsOn1.exe`)
-
-(lunch break)
 
 2. Implicit / IMEX time integration (`HandsOn2.exe`)
 
@@ -144,7 +141,7 @@ command line, then the command line option takes precedence.
 
 ### Cleaning up
 
-At any time, you can remove all of the solution output files and ARKode
+At any time, you can remove all of the solution output files and ARKODE
 temporal adaptivity diagnostics files with the command
 ```
 make pltclean
@@ -294,7 +291,7 @@ different tolerances are requested?
 
 ### Integrator order and efficiency
 
-ARKode defaults to a fourth-order accurate Runge--Kutta method,
+ARKODE defaults to a fourth-order accurate Runge--Kutta method,
 but many others are included (explicit methods have available orders 2
 through 8).  Alternate orders of accuracy may be run with the
 `arkode_order` option, e.g.,
@@ -325,9 +322,7 @@ b. Fixed time-stepping (exploration of linear stability)
 
 c. Adaptive time-stepping
 
-d. Newton vs accelerated fixed-point nonlinear solver
-
-e. Implicit-explicit partitioning
+d. Implicit-explicit partitioning
 
 
 ### Specification of algebraic solvers
@@ -417,7 +412,7 @@ average step size of `HandsOn1.exe` for the same tolerances?
     answer='The solution becomes smoother and decays toward zero as
     time goes on, making the initial guesses for each Newton and GMRES
     iteration more accurate, and the systems easier to solve, so
-    ARKode gradually increases the step size as it is able.' %}
+    ARKODE gradually increases the step size as it is able.' %}
 
 Run the code a few more times with various values of `rtol` -- how
 well does the adaptivity algorithm produce solutions within the
@@ -425,38 +420,6 @@ desired tolerances?  How do the number of time steps change as
 different tolerances are requested?  Is this algorithm more useful
 than the fully explicit approach when loose tolerances (e.g.,
 `rtol=1e-1`) are requested?
-
-
-### Nonlinear solvers
-
-As mentioned above, `HandsOn2.exe` defaults to solving implicit stages
-using an inexact Newton nonlinear solver.  We may switch this
-nonlinear solver algorithm to an accelerated fixed-point nonlinear
-solver (with the default acceleration subspace size, `nls_fp_iter=3`)
-by specifying `nls_method=1`; since fixed-point methods typically
-converge more slowly than Newton-based methods, we will also increase
-the allowed number of nonlinear iterations by specifying `nls_max_iter=20`,
-```bash
-./HandsOn2.exe inputs-2 fixed_dt=0 nls_method=1 nls_max_iter=20
-fcompare.gnu.ex plt00001/ reference_solution/
-```
-How do the total number of implicit RHS function calls, solution
-accuracy, number of time steps, and total runtime compare against an
-identical run using the inexact Newton nonlinear solver?
-
-{% include qanda
-    question='When using an implicit method, why is it that the total
-    number of RHS function calls is no longer an ideal predictor of
-    overall solver performance?'
-    answer='Since the inexact Newton and accelerated fixed-point
-    solvers use different internal algorithms (linear algebra, vs
-    "acceleration"), the per-iteration costs of these methods vary
-    substantially.' %}
-
-Run the code a few more times with various values of `nls_fp_acc`
-(e.g., 0 through 6) to determine whether there is a more 'optimal'
-value of the acceleration subspace size for this problem.
-
 
 
 ### IMEX partitioning
@@ -479,7 +442,7 @@ Do you notice any efficiency or accuracy differences between fully
 implicit and IMEX formulations with these fixed time-step tests?
 
 {% include qanda
-    question='Why does ARKode report such significant differences in
+    question='Why does ARKODE report such significant differences in
     the number of explicit vs implicit RHS function evaluations?'
     answer='Since the explicit portion need only be computed once per
     stage, but the implicit portion must be repeatedly called at each
@@ -607,7 +570,7 @@ preconditioned versions of this hands-on lesson.
 
 We have used AMReX and SUNDIALS as a demonstration vehicle for
 illustrating the value of robust time integration methods in numerical
-algorithms. In particular, we have used the ARKode's `ARKStep` time
+algorithms. In particular, we have used the ARKODE's `ARKStep` time
 integration module from [SUNDIALS][1] to explore a range of questions
 related to time integration and nonlinear solvers:
 
@@ -616,10 +579,6 @@ related to time integration and nonlinear solvers:
 
 2. the effects of the order of the time integration method on method
    efficiency,
-
-3. the tradeoffs between more powerful (but costly) Newton-based
-   nonlinear solvers and cheaper but more slowly-convergent
-   fixed-point nonlinear solvers,
 
 3. the increased cost but increased scalability offered through use of
    advanced preconditioning methods, and
@@ -678,11 +637,11 @@ evidence of your completed solutions.
 
 ### Further reading
 
-[ARKode Manual -- PDF](https://computation.llnl.gov/sites/default/files/public/ark_guide.pdf)
+[ARKODE Manual -- PDF](https://computation.llnl.gov/sites/default/files/public/ark_guide.pdf)
 
-[ARKode Manual -- HTML](http://runge.math.smu.edu/arkode_dev/doc/guide/build/html/index.html)
+[ARKODE Manual -- HTML](http://runge.math.smu.edu/arkode_dev/doc/guide/build/html/index.html)
 
-[0]: http://faculty.smu.edu/reynolds/ARKode
+[0]: http://faculty.smu.edu/reynolds/ARKODE
 [1]: https://computation.llnl.gov/projects/sundials
 [2]: https://amrex-codes.github.io/amrex
 [3]: https://github.com/AMReX-Codes/ATPESC-codes/blob/master/SUNDIALS%2BAMReX/HandsOn1.cpp
