@@ -15,6 +15,11 @@
 [Perlmutter]: {{site.url}}{{site.baseurl}}/perlmutter/
 [Amphitheater]: {{site.url}}{{site.baseurl}}/amphitheater/
 
+[Ampere]: {{site.url}}{{site.baseurl}}/ampere/
+[Navi]: {{site.url}}{{site.baseurl}}/navi/
+[Vega]: {{site.url}}{{site.baseurl}}/vega/
+[Volta]: {{site.url}}{{site.baseurl}}/volta/
+
 [XX]: http://extremecomputingtraining.anl.gov/agenda-2019
 [m1]: <mailto:curfman@mcs.anl.gov>
 [m2]: <mailto:tmunson@mcs.anl.gov>
@@ -63,3 +68,4 @@
 [Cameron Smith]: {{site.url}}{{site.baseurl}}/presenters/#cameron-smith
 [Richard Mills]: {{site.url}}{{site.baseurl}}/presenters/#richard-mills
 [Carol Woodward]: {{site.url}}{{site.baseurl}}/presenters/#carol-woodward
+[Aaron Fisher]: {{site.url}}{{site.baseurl}}/presenters/#aaron-fisher
