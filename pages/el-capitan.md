@@ -2,7 +2,6 @@
 layout: page
 show_meta: false
 title: "El-Capitan"
-subheadline: "Virtual venues and teleconference links"
 header:
    image_fullwidth: "el-capitan3.jpg"
 permalink: "/el-capitan/"
