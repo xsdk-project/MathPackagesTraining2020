@@ -138,7 +138,8 @@ We observe the following:
 Now, modify the input file to use the conjugate gradient method.
 We change the `Solver Type` parameter to `Pseudo Block CG`.
 
-<img src="arrow.png" width="30"> Run ```
+<img src="arrow.png" width="30"> Run
+```
 ./MueLu_Stratimikos.exe --xml=set1-cg.xml
 ```
 
@@ -179,7 +180,8 @@ Moreover, we add the following configuration for Ifpack2.
 ```
 This means that a single sweep of symmetric Gauss-Seidel is used for preconditioning.
 
-<img src="arrow.png" width="30"> Run ```
+<img src="arrow.png" width="30"> Run
+```
 ./MueLu_Stratimikos.exe --xml=set2-sgs1.xml
 ```
 
@@ -194,7 +196,7 @@ We can strengthen the preconditioner by increasing the number of symmetric Gauss
 We wwitch `relaxation: sweeps` to 3.
 
 <img src="arrow.png" width="30"> Run
-Run ```
+```
 ./MueLu_Stratimikos.exe --xml=set2-sgs3.xml
 ``` and verify that the number of iterations further decreased.
 
@@ -292,7 +294,8 @@ We know that Gauss-Seidel is a better smoother than Jacobi.
 There are two ways of using Gauss-Seidel while keeping the preconditioner symmetric:
 we can either use different directions in the sweeps in pre- and post-smoothing, or use a symmetric Gauss-Seidel smoother for both.
 
-<img src="arrow.png" width="30"> Run ```
+<img src="arrow.png" width="30"> Run
+```
 ./MueLu_Stratimikos.exe --xml=set3-mg-sgs.xml --timings --nx=1000 --ny=1000
 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml  --timings --nx=1000 --ny=1000
 ```  and compare the timings with the Jacobi case.
