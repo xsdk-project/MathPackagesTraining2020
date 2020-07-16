@@ -28,7 +28,6 @@
 
         {% comment %}
         Add a time-of-day clock as only item in right navigation
-        {% endcomment %}
 
         <li class="divider"></li>
         <li id="clockbox2" style="font-size:16px;background-color:white;"></li>
@@ -48,11 +47,12 @@
                 nd = new Date(utc + (3600000*(-5)));
     
                 // return time as a string
-                document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString();
+                document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString()+"&nbsp;CST";
             }
             calcChicagoTime();
             setInterval(calcChicagoTime,1000);
         </script>
+        {% endcomment %}
 
         {% for link in site.data.navigation %}
               {% unless site.audience contains link.audience %}
