@@ -198,7 +198,8 @@ We wwitch `relaxation: sweeps` to 3.
 <img src="arrow.png" width="30"> Run
 ```
 ./MueLu_Stratimikos.exe --xml=set2-sgs3.xml
-``` and verify that the number of iterations further decreased.
+```
+and verify that the number of iterations further decreased.
 
 Now, we will check whether we have created a scalable solver strategy.
 
