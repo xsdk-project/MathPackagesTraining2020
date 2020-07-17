@@ -14,10 +14,10 @@ header:
 ## At a glance
 
 |Questions|Objectives|Key Points|
-|How do explicit, implicit or IMEX<br>methods impact step size?|Compare methods at step sizes<br>near the stability limit.|Choose time integration method<br>to match the problem.|
-|What is the impact of an<br>*adaptive* technique?|Compare fixed and adaptive techniques.|Adaptive techniques can be robust<br>reliable and reduce computational cost.|
-|How does integration *order*<br>impact cost?|Observe impact of order on time<br>to solution and number of steps.|Changing integration order is simple<br>allowing optimization for a given problem.|
-|What is the role and benefit of<br>preconditioning?|Compare integration methods with<br>and without preconditioning.|Preconditioning is critical for scalability.|
+|How do explicit, implicit or IMEX <br>methods impact step size?|Compare methods at step sizes <br>near the stability limit.|Choose time integration method <br>to match the problem.|
+|What is the impact of an <br>*adaptive* technique?|Compare fixed and adaptive techniques.|Adaptive techniques can be robust <br>reliable and reduce computational cost.|
+|How does integration *order* <br>impact cost?|Observe impact of order on time <br>to solution and number of steps.|Changing integration order is simple <br>allowing optimization for a given problem.|
+|What is the role and benefit of <br>preconditioning?|Compare integration methods with <br>and without preconditioning.|Preconditioning is critical for scalability.|
 
 **Note:** To begin this lesson...
 
