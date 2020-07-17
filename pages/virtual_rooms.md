@@ -1,23 +1,27 @@
 ---
 layout: page
 show_meta: false
-title: "Virtual Venues"
-subheadline: "Teleconference links"
+title: "Virtual Rooms"
 header:
    image_fullwidth: "telecom_meeting.png"
 permalink: "/virtual_rooms/"
 ---
 
-### Main [Amphitheater]
+### Main Meeting Room
+* [Amphitheater]
 
-&nbsp;
+### Parallel Session Rooms
+* [Aurora]
+* [El-Capitan]
+* [Frontier]
+* [Perlmutter]
 
-|**Parallel Session Rooms**|**IT Support Rooms**|
-|:---:|:---:|
-|[Aurora]|[Ampere]|
-|[El-Capitan]|[Navi]|
-|[Frontier]|[Vega]|
-|[Perlmutter]|[Volta]|
+### IT Support Rooms
+
+* [Ampere]
+* [Volta]
+* [Navi] (morning sessions only; viz-tool issues only)
+* [Vega] (morning sessions only; viz-tool issues only)
 
 {% include link-shortcuts %}
 
