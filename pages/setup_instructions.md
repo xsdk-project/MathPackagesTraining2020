@@ -2,7 +2,7 @@
 layout: page
 show_meta: false
 title: "Setup Instructions"
-subheadline: "Instructions to complete prior to August 6th."
+subheadline: "Instructions to complete prior to August 4th."
 header:
    image_fullwidth: "atpesc-1024x2746.jpg"
 permalink: "/setup_instructions/"
