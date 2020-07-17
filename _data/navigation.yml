@@ -45,25 +45,25 @@
 
 - title: Packages
   audience: "public"
-  url: "https://fastmath-scidac.llnl.gov/software-catalog.html"
+  url: "/packages/"
   side: left
   dropdown:
   - title: "AMReX"
-    url: "https://amrex-codes.github.io/amrex/"
+    url: "/packages/amrex/"
   - title: "MFEM"
-    url: "https://mfem.org/"
+    url: "/packages/mfem/"
   - title: "PUMI"
-    url: "https://scorec.rpi.edu/pumi/"
+    url: "/packages/pumi/"
   - title: "HYPRE"
-    url: "https://computing.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods"
+    url: "/packages/hypre"
   - title: "SuperLU"
-    url: "https://portal.nersc.gov/project/sparse/superlu/"
-  - title: "Trilinos/MueLu"
-    url: "https://trilinos.github.io/muelu.html"
-  - title: "SUNDIALS"
-    url: "https://computation.llnl.gov/projects/sundials"
+    url: "/packages/superlu/"
+  - title: "STRUMPACK"
+    url: "/packages/strumpack/"
   - title: "PETSc/Tao"
-    url: "https://www.mcs.anl.gov/petsc/"
+    url: "/packages/petsc/"
+  - title: "SUNDIALS"
+    url: "/packages/sundials/"
 
 - title: Contributing
   audience: "private"
