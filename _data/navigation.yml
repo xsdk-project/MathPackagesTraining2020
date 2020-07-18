@@ -11,11 +11,16 @@
     url: "/agenda/"
   - title: "Virtual Meeting Rooms"
     url: "/virtual_rooms/"
-  - title: "ALCF User Guides"
-    url: "https://www.alcf.anl.gov/user-guides"
+  - title: "SME Speed Dating Selections"
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe73POCve2GDFeE5n-07tODaCNsZQlz_v7sS8qUVRvkc2FuaA/viewform?usp=sf_link"
+  - title: "Panel Question Submissions"
+    url: "https://docs.google.com/forms/d/e/1FAIpQLScFAHguSG6m7H9lfjfSTSyOm1RZc1Mcc1N9aEAUyx4GTXpDhA/viewform?usp=sf_link"
   - title: "Submit a Show Your Work"
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSdefMeS_Ns6hvn_O8jXVLmv-5Zsdez-9j09vLhHz1DXi0xS9A/viewform?usp=sf_link"
-
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSfDF8xk0mHEVnAfWzXs2vCZSKeaUmUAhAD6BbXRqghh7h7FWQ/viewform?usp=sf_link"
+  - title: "Computing History Game (opens 11:40AM)"
+    url: "https://docs.google.com/forms/d/e/1FAIpQLScNmuc4_RstcqAHHNy4FGNmYG0efyTxKaNmhmmMaQ7IjNHVxw/viewform?usp=sf_link"
+  - title: "Women in Computing Game (opens 3:35PM)"
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe9PENDMfpOysjyvAKjAHOhUNFyerRM1fVfNopyqdTZwnMVYg/viewform?usp=sf_link"
 
 - title: Lessons
   audience: "public"
@@ -66,6 +71,8 @@
     url: "https://computation.llnl.gov/projects/sundials"
   - title: "PETSc/Tao"
     url: "https://www.mcs.anl.gov/petsc/"
+  - title: "ALCF User Guides"
+    url: "https://www.alcf.anl.gov/user-guides"
 
 - title: Contributing
   audience: "private"
