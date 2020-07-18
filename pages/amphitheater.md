@@ -2,7 +2,6 @@
 layout: page
 show_meta: false
 title: "Amphitheater"
-subheadline: "Virtual venues and teleconference links"
 header:
    image_fullwidth: "q_center_main.jpg"
 permalink: "/amphitheater/"
@@ -16,6 +15,7 @@ permalink: "/amphitheater/"
 {% endfor %}
 
 This is the main meeting room at the [Q-Center](https://qcenter.com/home-guest/)
+in [St. Charles, IL.](https://en.wikipedia.org/wiki/St._Charles,_Illinois)
 where [ATPESC](https://extremecomputingtraining.anl.gov) is ordinarily hosted.
 
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
