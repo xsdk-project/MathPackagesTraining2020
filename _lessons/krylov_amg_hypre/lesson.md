@@ -51,6 +51,9 @@ Choice of Problem:
     -n <nx> <ny> <nz>    : problem size per process
     -P <Px> <Py> <Pz>    : process topology
     -a <ax>              : convection coefficient
+  -rotate [<opts>]       : build 2D problem with rotated anisotropy
+    -eps <eps>           : anisotropy for rotated problem
+    -alpha <alpha>       : angle by which anisotropy is rotated
 
 Choice of solver:
    -amg                  : AMG only
