@@ -1,12 +1,12 @@
 ---
 layout: page-fullwidth
 subheadline: ATPESC 2020 Package Overviews
-title: "PUMI"
-teaser: "Parallel Unstructured Mesh Interface"
-permalink: "packages/pumi/"
+title: "Trilinos/Belos"
+teaser: "Iterative Krylov based solvers"
+permalink: "packages/trilinosbelos/"
 use_math: true
 package: true
-website: https://github.com/SCOREC/core
+website: https://trilinos.github.io/belos.html
 header:
    image_fullwidth: "llnl_machine.jpg"
 ---
