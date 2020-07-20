@@ -1,12 +1,12 @@
 ---
 layout: page-fullwidth
 subheadline: ATPESC 2020 Package Overviews
-title: "PUMI"
-teaser: "Parallel Unstructured Mesh Interface"
-permalink: "packages/pumi/"
+title: "Trilinos/MueLu"
+teaser: "Structured and unstructured aggregation-based algebraic multigrid preconditioners"
+permalink: "packages/trilinosmuelu/"
 use_math: true
 package: true
-website: https://github.com/SCOREC/core
+website: https://trilinos.github.io/muelu.html
 header:
    image_fullwidth: "llnl_machine.jpg"
 ---

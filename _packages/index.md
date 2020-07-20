@@ -18,7 +18,6 @@ permalink: /packages/
         <tr>
         <td><a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></td>
         <td>{{ item.teaser }}</td>
-        <td><a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}overview.pdf">Overview</a></td>
         {% if item.website %}
             <td><a href="{{ item.website }}">Website</a></td>
         {% else %}
@@ -29,7 +28,7 @@ permalink: /packages/
 {% endfor %}
 </table>
 
-## Other ECP Packages
+## Other Numerical Packages
 <table>
 {% for item in site.packages %}
     {% if item.package %}
@@ -37,7 +36,6 @@ permalink: /packages/
             <tr>
             <td><a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></td>
             <td>{{ item.teaser }}</td>
-            <td><a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}overview.pdf">Overview</a></td>
             {% if item.website %}
                 <td><a href="{{ item.website }}">Website</a></td>
             {% else %}

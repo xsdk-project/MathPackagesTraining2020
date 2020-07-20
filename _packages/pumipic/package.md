@@ -1,9 +1,9 @@
 ---
 layout: page-fullwidth
 subheadline: ATPESC 2020 Package Overviews
-title: "PUMI"
-teaser: "Parallel Unstructured Mesh Interface"
-permalink: "packages/pumi/"
+title: "PUMIPic"
+teaser: "PUMI for Particle-in-Cell Simulations"
+permalink: "packages/pumipic/"
 use_math: true
 package: true
 website: https://github.com/SCOREC/core
