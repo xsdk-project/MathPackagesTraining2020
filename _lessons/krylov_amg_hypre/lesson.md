@@ -158,7 +158,35 @@ Now solve this problem using -pcg and -bicgstab.
 
 {% include qanda question='Why is BiCGSTAB slower than PCG?' answer='It requires two matrix vector operations and additional vector operations per iteration, and thus each iteration takes longer than an iteration of PCG.' %}
 
-Now let us scale up the problem starting with a cube of size $$50 \times 50 \times 50$$ on one process:
+
+We now consider the diffusion-convection equation
+
+$$-\Delta u + a \nabla \cdot u = f$$
+
+on a cuboid with Dirichlet boundary conditions.
+
+The diffusion part is discretized using central finite differences, and upwind finite differences are used for the advection term.
+For $$a = 0$$ we just get the Poisson equation, but when $$a > 0$$ we get a nonsymmetric linear system.
+
+Now let us apply Krylov solvers to the convection-diffusion equation with $$a=10$$, starting with conjugate gradient.
+
+```
+./ij -n 50 50 50 -difconv -a 10 -pcg
+```
+{% include qanda question='What do you observe? Why?' answer='PCG fails, because the linear system is nonsymmetric.' %}
+
+Now try GMRES(20) and BiCGSTAB.
+```
+./ij -n 50 50 50 -difconv -a 10 -gmres -k 20
+```
+```
+./ij -n 50 50 50 -difconv -a 10 -bicgstab
+```
+
+{% include qanda question='What do you observe? Which solver is faster for this problem?' answer='BiCGSTAB and GMRES both solve the problem. BiCGSTAB is faster than GMRES(20) for this problem.' %}
+
+
+Now let us scale up the Poisson problem starting with a cube of size $$50 \times 50 \times 50$$ on one process:
 ```
 mpiexec -n 1 ./ij -n 50 50 50 -pcg -P 1 1 1
 ```
@@ -365,7 +393,88 @@ mpiexec -n 8 ./struct -n 50 50 50 -pfmgpcg -P 2 2 2 -rap 1
 {% include qanda question='How does the number of iterations and the time change?' answer='The number of iterations remains 14, but the total time is less (0.21)'  %}
 
 
-### Evening exercises
+### Additional Exercises 
+
+We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
+Let us begin with a grid-aligned anisotropy.
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -pcg -iout 3
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 0 -pfmg
+```
+{% include qanda question='What do you observe?' answer='The residual norms for all solvers improve, but only AMG and PFMG converge within less than 1000 iterations.' %}
+
+Now let us rotate the anisotropy by 45 degrees.
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgpcg
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 45 -pfmg
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 45 -pfmgpcg
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 45 -pfmggmres
+```
+
+{% include qanda question='Does the result change? What is the order of the solvers?' answer='The order from slowest to fastest is: PFMG, PFMG-GMRES, PFMG-CG, AMG, AMG-GMRES, AMG-CG. PFMG does not work well for non-grid-aligned anisotropies, but convergence improves when PFMG is combined with a Krylov solver. AMG can handle non-grid-aligned anisotropies well.' %}
+
+Now let us rotate the anisotropy by 30 degrees.
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 30 -amg
+```
+```
+./ij -rotate -n 300 300 -eps 0.01 -alpha 30 -amgpcg
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 30 -pfmg
+```
+```
+./struct -rotate -n 300 300 -eps 0.01 -alpha 30 -pfmgpcg
+```
+
+{% include qanda question='Does the result change? What is the order of the solvers?' answer='The order from slowest to fastest is: PFMG, AMG, AMG-CG, PFMG-CG. While AMG is signifcantly better than PFMG, this problem is harder for it than the previous problem. PFMG-CG is faster here than AMG-CG.' %}
+
+Let us now scale up the problem for AMG-CG and PFMG-CG.
+```
+mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 30 -amgpcg
+```
+```
+mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amgpcg
+```
+```
+mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amgpcg
+```
+```
+mpiexec -n 2 ./struct -P 2 1 1 -rotate -n 300 300 -eps 0.01 -alpha 30 -pfmgpcg
+```
+```
+mpiexec -n 4 ./struct -P 2 2 1 -rotate -n 300 300 -eps 0.01 -alpha 30 -pfmgpcg
+```
+```
+mpiexec -n 8 ./struct -P 4 2 1 -rotate -n 300 300 -eps 0.01 -alpha 30 -pfmgpcg
+```
+
+{% include qanda question='How do the solvers scale?' answer='Both solvers scale well, with PFMG-CG taking more iterations, but overall less time than AMG-CG.' %}
+
+
 
 We now consider the diffusion-convection equation
 
@@ -413,69 +522,6 @@ Let us solve the problem using structured multigrid solvers.
 ```
 
 {% include qanda question='What do you observe? Which solver fails? What is the order of the remaining solvers in terms of number of iterations? Which solver is the fastest.' answer='The non-Galerkin version of PFMG as alone solver fails. The order from largest to least number of iterations is: Non-Galerkin PFMG-GMRES, PFMG, PFMG-GMRES. But PFMG alone solves the problem faster.' %}
-
-We will now consider a two-dimensional problem with a rotated anisotropy on a rectangular domain.
-Let us begin with a grid-aligned anisotropy.
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -gmres -k 100 -iout 3
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -bicgstab -iout 3
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 0 -amg -iout 3
-```
-{% include qanda question='What do you observe?' answer='The residual norms for all solvers improve, but only AMG converges within less than 1000 iterations.' %}
-
-Now let us rotate the anisotropy by 45 degrees.
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amgbicgstab
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-./ij -rotate -n 300 300 -eps 0.01 -alpha 45 -amg
-```
-
-{% include qanda question='Does the result change? What is the order of the solvers?' answer='The order from slowest to fastest is: AMG, AMG-GMRES, AMG-BiCGSTAB.' %}
-
-Let us now scale up the problem.
-```
-mpiexec -n 2 ./ij -P 2 1 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-mpiexec -n 4 ./ij -P 2 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 45 -amggmres
-```
-
-{% include qanda question='How do the numbers of iterations change?' answer='They increase to 10 when running more than 1 process, but stay 10 all three parallel runs.' %}
-
-Let us now rotate the anisotropy by 30 degrees.
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres
-```
-{% include qanda question='Is the convergence affected by the change in angle?' answer='This problem is harder. The number of iterations increases to 15.' %}
-
-Let us now coarsen more aggressively.
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1
-```
-{% include qanda question='Does this improve convergence and time?' answer='No. Both get worse. The number of iterations increases to 34 and the time goes up.' %}
-
-Let us investigate the operator complexities:
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -iout 1
-```
-```
-mpiexec -n 8 ./ij -P 4 2 -rotate -n 300 300 -eps 0.01 -alpha 30 -amggmres -agg_nl 1 -iout 1
-```
-
-{% include qanda question='What are the operator complexities and how large is the largest average number of nonzeroes per row (row avg) for both cases?' answer='The operator complexities are 3.2 and 1.3. The largest average number of nonzeroes per row are 36.3 and 27.5.' %}
-
-Often using aggressive coarsening is not recommended for two-dimensional problems, which generally have less growth in the number of nonzeroes per row than three-dimensional problems.
 
 ## Out-Brief
 
