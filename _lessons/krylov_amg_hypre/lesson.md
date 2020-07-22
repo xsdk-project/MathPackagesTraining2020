@@ -29,7 +29,7 @@ It is discretized using central finite differences, leading to a symmetric posit
 **Note:** To begin this lesson...
 * [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSeZAaguErZ-VTtzQSeYfkrpkck_ki2-OZ1uIbLRXjc6NW8-gg/viewform?usp=sf_link)
 ```
-cd {{site.handson_root}}/krylov_amg
+cd {{site.handson_root}}/krylov_amg_hypre
 ```
 
 
