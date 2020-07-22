@@ -32,9 +32,17 @@ format: page-fullwidth
 
 			{{ content }}
 
-                        {% if page.lesson %}
-                        <p><a href='../../lessons'>Back to all ATPESC 2020 Lessons</a></p>
-                        {% endif %}
+                        <div id="1slide" style="position: relative;padding-bottom: 57%;height: 0;overflow: hidden;max-width: 100%;">
+                            <a href="overview.pdf">
+                              <object data="overview.pdf" type="application/pdf" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;">
+                                <embed src="overview.pdf" type="application/pdf">
+                                    <p>This browser does not support embedded PDFs. <a href="overview.pdf">You may download the PDF to view it</a>.</p>
+                                </embed>
+                              </object>
+                            </a>
+                        </div>
+                        <p></p>
+                        <p><a href='../../packages'>Back to all ATPESC 2020 Packages</a></p>
 
 		</article>
 	</div><!-- /.medium-12.columns -->
