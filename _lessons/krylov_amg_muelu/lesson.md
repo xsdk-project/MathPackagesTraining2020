@@ -245,7 +245,7 @@ Let''s look a little more closely at the output from the largest example.
 
 <img src="arrow.png" width="30"> Rerun:
 ```
-./MueLu_Stratimikos.exe --nx=200 --ny=200
+./MueLu_Stratimikos.exe --xml=set3-mg-jacobi.xml --nx=200 --ny=200
 ```
 The multigrid summary provides the following information:
 
@@ -309,9 +309,9 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 
 <img src="arrow.png" width="30"> Run
 ```
-mpirun -np 2 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
@@ -332,10 +332,10 @@ like Jacobi or Gauss-Seidel.
 We switch the smmother to Chebyshev.
 <img src="arrow.png" width="30"> Repeat the above experiment.
 ```
-./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 2 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+./MueLu_Stratimikos.exe               --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpirun -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
