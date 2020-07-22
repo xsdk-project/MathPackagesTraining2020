@@ -32,11 +32,12 @@
   vname: "Aurora"
   id: 5
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
   vname: "Perlmutter"
+  has_synopsis: true
   id: 6
 
 - title: "Direct Solvers"
@@ -70,7 +71,7 @@
   vname: "Aurora"
   id: 11 
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
@@ -139,11 +140,12 @@
     library for time integration, along with the AMReX library for spatial
     semi-discretization.
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 21 
 
 - title: "**Break**<br>*SME Selections Due*"
