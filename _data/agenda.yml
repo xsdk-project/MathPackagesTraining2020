@@ -125,22 +125,6 @@
   vname: "Perlmutter"
   id: 20 
   has_synopsis: true
-  synopsis: >
-    In this lecture we discuss the role and impact of high order, adaptive, and
-    flexible time integration libraries in solution accuracy and computational
-    efficiency of large-scale simulations.  Due to the wide variety of
-    backgrounds among ATPESC participants, we briefly discuss
-    * the location of time integrators in the HPC landscape, and their reliance on scalable nonlinear and linear solver libraries,
-    * the different categories of time integration methods (explicit/implicit/IMEX),
-    * the basic theoretical properties of time integration methods (order of accuracy, linear stability),
-    * the role of temporal adaptivity for improving accuracy and efficiency,
-    * an overview of DOE time integration packages.
-    We spend approximately half of the time period in lecture, followed by
-    hands-on exercises that examine stability, accuracy, temporal adaptivity,
-    and the role of problem-specific preconditioning.  All of the hands-on
-    exercises focus on time-dependent PDEs, and use the SUNDIALS' ARKODE
-    library for time integration, along with the AMReX library for spatial
-    semi-discretization.
 
 - title: "Iterative Solvers & Preconditioners"
   speakers:
