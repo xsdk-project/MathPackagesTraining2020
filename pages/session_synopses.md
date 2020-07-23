@@ -33,6 +33,15 @@ solvers to impose incompressibility on a flow around obstacles, and
 ### Unstructured Discretization
 ### Unstructured Discretization with MFEM and PUMI
 
+Unstructured meshes can yield required levels of accuracy using fewer degrees of
+freedom at the cost of more complex parallel data structures and algorithms. To
+support the ability of application code developers to take advantage of unstructured
+meshes, FASTMath develops core tools to support the development of unstructured
+mesh simulation capabilities. This lecture will first introduce the highly extendible
+MFEM high order finite element solver library and then overview the PUMI unstructured
+mesh tools developed to support mesh adaptation, load balancing and PIC calculations. 
+
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 

@@ -1,5 +1,5 @@
 ---
-layout: pagckage
+layout: package
 subheadline: ATPESC 2020 Package Overviews
 title: "PHIST"
 teaser: "Pipelined Hybrid-parallel Iterative Solver Toolkit"
