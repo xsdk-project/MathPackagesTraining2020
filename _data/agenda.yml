@@ -30,6 +30,7 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 5
 
 - title: "Iterative Solvers & Preconditioners"
@@ -69,6 +70,7 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 11 
 
 - title: "Iterative Solvers & Preconditioners"
