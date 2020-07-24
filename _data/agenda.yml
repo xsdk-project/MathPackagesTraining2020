@@ -22,6 +22,7 @@
     - "Ann Almgren"
     - "Don Willcox"
   vname: "Frontier"
+  has_synopsis: true
   id: 4
 
 - title: "Unstructured Discretization"
@@ -29,13 +30,15 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 5
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
   vname: "Perlmutter"
+  has_synopsis: true
   id: 6
 
 - title: "Direct Solvers"
@@ -59,6 +62,7 @@
     - "Ann Almgren"
     - "Don Willcox"
   vname: "Frontier"
+  has_synopsis: true
   id: 10 
 
 - title: "Unstructured Discretization"
@@ -66,9 +70,10 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 11 
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
@@ -105,6 +110,7 @@
   speakers:
     - "Richard Mills"
   vname: "Frontier"
+  has_synopsis: true
   id: 18 
 
 - title: "Optimization"
@@ -118,12 +124,14 @@
     - "Dan Reynolds"
   vname: "Perlmutter"
   id: 20 
+  has_synopsis: true
 
-- title: "Iterative Solves & Preconditioners"
+- title: "Iterative Solvers & Preconditioners"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 21 
 
 - title: "**Break**<br>*SME Selections Due*"
@@ -140,6 +148,7 @@
   speakers:
     - "Richard Mills"
   vname: "Frontier"
+  has_synopsis: true
   id: 24 
 
 - title: "Optimization"
@@ -152,6 +161,7 @@
   speakers:
     - "Dan Reynolds"
   vname: "Perlmutter"
+  has_synopsis: true
   id: 26 
 
 - title: "Direct Solvers"
