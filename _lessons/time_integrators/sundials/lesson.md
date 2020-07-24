@@ -24,14 +24,18 @@ header:
 cd {{site.handson_root}}/time_integrators/sundials
 source source_cooley_plotfile_tools.sh
 ```
-(note: you should be able to recompile these executables with a simple
-`make`)
 
-Also, if you do not already have the `anaconda3-4.0.0` SoftEnv module
+Also, if you do not already have the `anaconda3-4.0.0`, `gcc v8.2.0` and corresponding MVAPICH SoftEnv modules
 loaded, please do so now,
 ```bash
+soft add +gcc-8.2.0
+soft add +mvapich2-2.2-gcc820
 soft add +anaconda3-4.0.0
 ```
+
+(note: you should be able to recompile these executables with a simple
+`make`, although this should not be necessary)
+
 
 ## The problem being solved
 
