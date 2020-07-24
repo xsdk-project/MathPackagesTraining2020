@@ -1,22 +1,17 @@
 - name: Amphitheater
   webinfo: https://qcenter.com/home-guest/
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: El-Capitan 
   webinfo: https://www.llnl.gov/news/llnl-and-hpe-partner-amd-el-capitan-projected-worlds-fastest-supercomputer
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: Aurora
   webinfo: https://www.alcf.anl.gov/aurora
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: Perlmutter
   webinfo: https://www.nersc.gov/systems/perlmutter/
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: Frontier
   webinfo: https://www.olcf.ornl.gov/frontier/
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: Volta
   webinfo: https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/

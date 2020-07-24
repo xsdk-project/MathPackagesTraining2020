@@ -1,0 +1,53 @@
+---
+layout: default
+format: page-fullwidth
+---
+{% if page.image.title %}
+<div class="row t30">
+	<div class="small-12 columns">
+		<img src="{{ site.urlimg }}{{ page.image.title }}" width="970" alt="{{ page.title | escape_once }}">
+		{% if page.image.caption_url and page.image.caption %}
+		<p class="text-right caption">
+			<a href="{{ page.image.caption_url }}">{{ page.image.caption }}</a>
+		</p>
+		{% endif %}
+	</div><!-- /.small-12.columns -->
+</div><!-- /.row -->
+{% endif %}
+
+
+<div class="row t30">
+	<div class="medium-12 columns">
+		<article>
+			<header>
+				{% if page.subheadline %}<p class="subheadline">{{ page.subheadline }}</p>{% endif %}
+				<h1>{{ page.title }}</h1>
+			</header>
+
+			{% if page.teaser %}
+			<p class="teaser">
+				{{ page.teaser }}
+			</p>
+			{% endif %}
+
+			{{ content }}
+
+                        <p>Click on the slide to zoom and scroll</p>
+
+                        <div id="1slide" style="position: relative;padding-bottom: 57%;height: 0;overflow: hidden;max-width: 100%;">
+                            <a href="overview.pdf">
+                              <object data="overview.pdf" type="application/pdf" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;">
+                                <embed src="overview.pdf" type="application/pdf">
+                                    <p>This browser does not support embedded PDFs. <a href="overview.pdf">You may download the PDF to view it</a>.</p>
+                                </embed>
+                              </object>
+                            </a>
+                        </div>
+                        <p></p>
+                        <p><a href='../../packages'>Back to all ATPESC 2020 Packages</a></p>
+
+		</article>
+	</div><!-- /.medium-12.columns -->
+</div><!-- /.row -->
+
+
