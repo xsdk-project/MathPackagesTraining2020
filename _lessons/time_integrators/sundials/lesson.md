@@ -370,7 +370,7 @@ this also uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _note that this takes significantly longer than `HandsOn1.exe` with
-the same time step size_
+the same time step size._
 
 Now re-run using the larger time step size of 100.0,
 ```bash
