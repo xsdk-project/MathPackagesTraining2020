@@ -33,7 +33,7 @@
   has_synopsis: true
   id: 5
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with MeuLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -47,7 +47,7 @@
   vname: "El-Capitan"
   id: 7
 
-- title: "**Break**<br>*SME selections*<br>*Panel Questions Due*"
+- title: "**Break**<br>*SME selections*<br>*Panel Questions*"
   start: "Tue Aug 4 11:30 AM"
   length: 15
   id: 8
@@ -73,7 +73,7 @@
   has_synopsis: true
   id: 11 
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with Hypre"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
@@ -127,7 +127,7 @@
   id: 20 
   has_synopsis: true
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with MeuLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
