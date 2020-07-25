@@ -193,7 +193,7 @@ This means that a single sweep of symmetric Gauss-Seidel is used for preconditio
 <!-- <img src="arrow.png" width="30"> Rerun to verify that the solver is now converging. -->
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
-We wwitch `relaxation: sweeps` to 3.
+We switch `relaxation: sweeps` to 3.
 
 <img src="arrow.png" width="30"> Run
 ```
