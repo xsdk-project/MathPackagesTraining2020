@@ -84,10 +84,8 @@ semi-discretization.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Iterative Solvers & Preconditioners
-### Iterative Solvers & Preconditioners
-
-#### With MueLu (Jonathan Hu / Christian Glusa)
+### Iterative Solvers & Preconditioners with MeuLu
+### Iterative Solvers & Preconditioners with MeuLu
 
 In this session, you will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
@@ -98,7 +96,11 @@ hands-on lessons will give you an opportunity to run a variety of stand-alone
 examples that demonstrate some of the many Trilinos solver capabilities on a
 model linear problem.
 
-#### With hypre (Ulrike Yang)
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Iterative Solvers & Preconditioners with Hypre
+### Iterative Solvers & Preconditioners with Hypre
 
 We will present the basic concepts of iterative linear solvers with focus on
 Krylov solvers, including the generalized minimum residual method (GMRES),
