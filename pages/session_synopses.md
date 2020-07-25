@@ -85,7 +85,9 @@ semi-discretization.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Iterative Solvers & Preconditioners
-### Iterative Solvers & Preconditioners With Muelu
+### Iterative Solvers & Preconditioners
+
+#### With MueLu (Jonathan Hu / Christian Glusa)
 
 In this session, you will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
@@ -95,6 +97,18 @@ scalable aggregation-based algebraic multigrid preconditioning.  The two
 hands-on lessons will give you an opportunity to run a variety of stand-alone
 examples that demonstrate some of the many Trilinos solver capabilities on a
 model linear problem.
+
+#### With hypre (Ulrike Yang)
+
+We will present the basic concepts of iterative linear solvers with focus on
+Krylov solvers, including the generalized minimum residual method (GMRES),
+preconditioning and algebraic multigrid (AMG) methods. We will provide a brief
+description of the high performance linear solvers library hypre, its
+interfaces and its most used multigrid solvers, BoomerAMG and PFMG, including
+a brief discussion of the effect of their data structures on performance.
+The lesson includes hands-on examples with structured and unstructured solvers
+from the hypre library applied to several test problems.
+ 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
