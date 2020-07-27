@@ -33,15 +33,8 @@ function updateServerAndClientClocks()
         + " &plusmn; " + ServerDate.getPrecision() + " ms";
 }
 
-function reallySilly()
-{
-    document.getElementById("server-time").innerHTML = "Foobar-Gorfo";
-}
-
 updateServerAndClientClocks();
 setInterval(updateServerAndClientClocks, 1000);
-reallySilly();
-setInterval(reallySilly, 1250);
 </SCRIPT>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
