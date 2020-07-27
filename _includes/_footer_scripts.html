@@ -59,8 +59,8 @@ s0.parentNode.insertBefore(s1,s0);
 <script src="{{site.url}}{{site.baseurl}}/assets/js/ServerDate.js"></script>
 <script type="text/javascript">
     function calcChicagoTime() {
-        //d = new Date();
-        d = ServerDate;
+        d = new Date();
+        //d = ServerDate;
         utc = d.getTime() + (d.getTimezoneOffset() * 60000);
         nd = new Date(utc + (3600000*(-5)));
         document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString()+"&nbsp;CDT";
@@ -68,4 +68,3 @@ s0.parentNode.insertBefore(s1,s0);
     calcChicagoTime();
     setInterval(calcChicagoTime,1000);
 </script>
-
