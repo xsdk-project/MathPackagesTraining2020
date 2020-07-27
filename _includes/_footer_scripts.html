@@ -56,11 +56,11 @@ s0.parentNode.insertBefore(s1,s0);
 {% comment %}
 # Clock for Chicago Time
 {% endcomment %}
-<script src="../assets/js/ServerDate.js"></script>
+<script src="{{site.url}}{{site.baseurl}}/assets/js/ServerDate.js"></script>
 <script type="text/javascript">
     function calcChicagoTime() {
         //d = new Date();
-        d = new ServerDate();
+        d = ServerDate;
         utc = d.getTime() + (d.getTimezoneOffset() * 60000);
         nd = new Date(utc + (3600000*(-5)));
         document.getElementById('clockbox2').innerHTML=nd.toLocaleTimeString()+"&nbsp;CDT";
