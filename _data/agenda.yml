@@ -118,6 +118,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 19 
 
 - title: "Time Integration"
@@ -156,6 +157,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 25 
 
 - title: "Time Integration"
