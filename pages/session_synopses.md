@@ -8,35 +8,6 @@ header:
 permalink: "/session_synopses/"
 ---
 
-<H1>ServerDate Example</H1>
-
-<P>The precision may improve after a few seconds as a result of clock
-synchronization and amortization.</P>
-
-<TABLE border="1">
-  <TR><TD>server</TD><TD id="server-time"></TD></TR>
-  <TR><TD>client</TD><TD id="client-time"></TD></TR>
-  <TR><TD>difference</TD>
-  <TD id="difference-time" style="text-align: right"></TD></TR>
-</TABLE>
-
-<SCRIPT src="../assets/js/ServerDate.js"></SCRIPT>
-<SCRIPT>
-function updateServerAndClientClocks()
-{
-    var client = new Date();
-
-    document.getElementById("server-time").innerHTML = String(ServerDate);
-    document.getElementById("client-time").innerHTML = String(client);
-
-    document.getElementById("difference-time").innerHTML = (ServerDate - client)
-        + " &plusmn; " + ServerDate.getPrecision() + " ms";
-}
-
-updateServerAndClientClocks();
-setInterval(updateServerAndClientClocks, 1000);
-</SCRIPT>
-
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
