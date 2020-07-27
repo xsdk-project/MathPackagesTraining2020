@@ -8,6 +8,36 @@ header:
 permalink: "/session_synopses/"
 ---
 
+<H1>ServerDate Example</H1>
+
+<P>The precision may improve after a few seconds as a result of clock
+synchronization and amortization.</P>
+
+<TABLE border="1">
+  <TR><TD>server</TD><TD id="server"></TD></TR>
+  <TR><TD>client</TD><TD id="client"></TD></TR>
+  <TR><TD>difference</TD>
+  <TD id="difference" style="text-align: right"></TD></TR>
+</TABLE>
+
+<SCRIPT src="../assets/js/ServerDate.js"></SCRIPT>
+<SCRIPT>
+function updateClocks()
+{
+    var client = new Date();
+
+    document.getElementById("server").innerHTML = String(ServerDate);
+    document.getElementById("client").innerHTML = String(client);
+
+    document.getElementById("difference").innerHTML = (ServerDate - client)
+        + " &plusmn; " + ServerDate.getPrecision() + " ms";
+}
+
+// Display the clocks and update them every second.
+updateClocks();
+setInterval(updateClocks, 1000);
+</SCRIPT>
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -111,6 +141,20 @@ a brief discussion of the effect of their data structures on performance.
 The lesson includes hands-on examples with structured and unstructured solvers
 from the hypre library applied to several test problems.
  
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Optimization
+### Optimization with PETSc/Tao
+
+This lecture will provide an introduction to numerical optimization with a
+theoretical focus on simulation-based problems. We will introduce the user
+interfaces for the Toolkit for Advanced Optimization (Tao) package within
+the PETSc library and exercise several gradient-based algorithms on scalable
+synthetic test problems. We will observe and discuss the relative convergence
+of different classes of algorithms and sensitivity analysis methods in a
+parallel environment.
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
