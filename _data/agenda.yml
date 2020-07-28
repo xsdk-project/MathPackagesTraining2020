@@ -44,7 +44,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 7
 
 - title: "**Break**<br>*SME selections*<br>*Panel Questions*"
@@ -83,7 +85,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 13 
 
 - title: "**Lunch**<br>*SME selections*<br>*Panel Questions Due*"
@@ -109,7 +113,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 18 
@@ -148,7 +152,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 24 
@@ -170,7 +174,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 27 
 
 - title: "Telecon Transition"

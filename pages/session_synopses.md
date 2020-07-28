@@ -128,3 +128,24 @@ parallel environment.
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Direct Solvers
+### Direct Solvers with SuperLU and Strumpack
+
+Direct Solvers are presented in three different time slots each with a slightly
+different emphasis...
+
+* Session 1 (10:30am-11:30am):
+  * Sparse direct solvers (both superlu and strumpack), 30 minutes  (Sherry)
+  * low rank approximation techniques in strumpack, 15 minutes (Pieter)
+  * superlu hands-on demo, 15 minutes (Sherry)
+
+* Session 2 (11:45am-12:45pm):
+  * Sparse direct solvers (both superlu and strumpack), 30 minutes  (Sherry)
+  * low rank approximation techniques in strumpack, 15 minutes (Pieter)
+  * strumpack hands-on demo, 15 minutes (Pieter)
+
+* Session 4 (3:40pm - 4:30pm):
+  * Sparse direct solvers (both superlu and strumpack), 30 minutes  (Sherry)
+  * low rank approximation techniques in strumpack, 15 minutes (Pieter)
+  * Q&A.  (Sherry, Pieter)
