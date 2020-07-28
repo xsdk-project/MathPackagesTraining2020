@@ -3,8 +3,6 @@ layout: page
 show_meta: false
 title: "Session Synopses"
 subheadline: "More details about each session"
-header:
-   image_fullwidth: "amrex_warpx-fs8.png"
 permalink: "/session_synopses/"
 ---
 
