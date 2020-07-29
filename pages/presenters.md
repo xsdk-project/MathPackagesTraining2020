@@ -85,7 +85,7 @@ permalink: "/presenters/"
 ### Jonathan Hu
 
 |:---:|:---:|
-|![](https://fastmath-scidac.org/system/files/styles/thumbnail/private/pictures/picture-19-1343084261.jpg%3Fitok=VDisfbuM){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MueLu][muelu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][jh-m]<br><br>GitHub: [Profile][jh-g]|
+|![](https://extremecomputingtraining.anl.gov/files/2019/08/jhu.png){:width="200px"}|Key Expertise: [Trilinos][trilinos]/[MueLu][muelu]<br><br>Affiliation: [SNL][snl]/[CCR][snl-ccr]<br><br>Contact: [email][jh-m]<br><br>GitHub: [Profile][jh-g]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -189,6 +189,24 @@ permalink: "/presenters/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+### Richard Tran Mills
+### Richard Tran Mills
+
+|:---:|:---:|
+|![](https://www.anl.gov/sites/www/files/styles/profile_teaser_square_350px/public/richard_mills.jpg?itok=fc8TVnEs){:width="200px"}|Key Expertise: [PETSc][petsc]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][rtm-m]<br><br>GitHub: [Profile][rtm-g]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### Pieter Ghysels
+### Pieter Ghysels
+
+|:---:|:---:|
+|![](https://crd.lbl.gov/assets/Uploads/_resampled/SetHeight150-10797thumb.jpg){:width="200px"}|Key Expertise: [SuperLU][superlu], [STRUMPACK][strumpack]<br><br>Affiliation: [LBL][lbl]/[MCS][lbl-crd]<br><br>Contact: [email][pg-m]<br><br>GitHub: [Profile][pg-g]|
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 [amrex]: https://amrex-codes.github.io
 [xsdk]: https://xsdk.info
 [petsc]: https://www.mcs.anl.gov/petsc/
@@ -254,6 +272,8 @@ permalink: "/presenters/"
 [mss-m]: <mailto:shephm@rpi.edu>
 [af-m]: <mailto:afisher@llnl.gov>
 [so-m]: <mailto:osborn9@llnl.gov>
+[rtm-m]: <mailto:rtmills@anl.gov>
+[pg-m]: <mailto:pghysels@lbl.gov>
 
 [lcm-g]: https://github.com/curfman
 [mcm-g]: https://github.com/markcmiller86
@@ -271,3 +291,6 @@ permalink: "/presenters/"
 [tk-g]: https://github.com/tzanio
 [af-g]: https://github.com/acfisher
 [so-g]: https://github.com/osborn9
+[rtm-g]: https://github.com/rtmills
+[pg-g]: https://github.com/pghysels
+

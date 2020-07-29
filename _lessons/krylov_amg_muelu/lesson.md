@@ -20,10 +20,10 @@ header:
 
 #### To begin this lesson
 
-* [Open the Answers Form]({{page.answers_google_form}})
-* Go to the directory for the krylov application
+<!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
+Go to the directory for the krylov application
 ```
-cd {{site.handson_root}}/krylov_amg
+cd {{site.handson_root}}/krylov_amg_muelu
 ```
 
 ## The Problem Being Solved
@@ -193,7 +193,7 @@ This means that a single sweep of symmetric Gauss-Seidel is used for preconditio
 <!-- <img src="arrow.png" width="30"> Rerun to verify that the solver is now converging. -->
 
 We can strengthen the preconditioner by increasing the number of symmetric Gauss-Seidel sweeps we are using as a preconditioner.
-We wwitch `relaxation: sweeps` to 3.
+We switch `relaxation: sweeps` to 3.
 
 <img src="arrow.png" width="30"> Run
 ```
@@ -309,10 +309,10 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 
 <img src="arrow.png" width="30"> Run
 ```
-mpirun -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe as you add MPI ranks?'
@@ -333,10 +333,10 @@ We switch the smmother to Chebyshev.
 <img src="arrow.png" width="30"> Repeat the above experiment.
 ```
 ./MueLu_Stratimikos.exe               --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}

@@ -20,7 +20,7 @@
 [Vega]: {{site.url}}{{site.baseurl}}/vega/
 [Volta]: {{site.url}}{{site.baseurl}}/volta/
 
-[XX]: http://extremecomputingtraining.anl.gov/agenda-2019
+[XX]: http://extremecomputingtraining.anl.gov/agenda-2020
 [m1]: <mailto:curfman@mcs.anl.gov>
 [m2]: <mailto:tmunson@mcs.anl.gov>
 [m3]: <mailto:hongzh@mcs.anl.gov>
@@ -33,6 +33,7 @@
 [m10]: <mailto:caglusa@sandia.gov>
 [m11]: <mailto:bsmith@mcs.anl.gov>
 [m12]: <mailto:adener@anl.gov>
+[m13]: <mailto:pghysels@lbl.gov>
 
 [w1]: https://ccse.lbl.gov/index.html
 [w2]: https://computation.llnl.gov
@@ -66,6 +67,7 @@
 [Tzanio Kolev]: {{site.url}}{{site.baseurl}}/presenters/#tzanio-kolev
 [Mark Shephard]: {{site.url}}{{site.baseurl}}/presenters/#mark-s-shephard
 [Cameron Smith]: {{site.url}}{{site.baseurl}}/presenters/#cameron-smith
-[Richard Mills]: {{site.url}}{{site.baseurl}}/presenters/#richard-mills
+[Richard Tran Mills]: {{site.url}}{{site.baseurl}}/presenters/#richard-tran-mills
 [Carol Woodward]: {{site.url}}{{site.baseurl}}/presenters/#carol-woodward
 [Aaron Fisher]: {{site.url}}{{site.baseurl}}/presenters/#aaron-fisher
+[Pieter Ghysels]: {{site.url}}{{site.baseurl}}/presenters/#pieter-ghysels
