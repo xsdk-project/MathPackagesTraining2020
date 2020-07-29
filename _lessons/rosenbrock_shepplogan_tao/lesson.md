@@ -41,39 +41,45 @@ where $$p \in \mathbb{R}^n$$ are the optimization variables and $$f(p): \mathbb{
 objective function. In this lesson, we focus on gradient-based optimization methods -- methods that utilize information 
 about the sensitivity of the objective function with respect to its inputs. 
 
-Solutions for this problem, which we denote $$p^*$$, are found where the gradient of the objective function is zero, 
-$$\nabla_p f(p^*) = 0$$. However, this is only a *necessary* but not sufficient condition for optimality given that 
-other stationary points (e.g. maxima) also satisfy this condition.
+Solutions to this problem are found where the gradient of the objective function is zero, $$\nabla_p f(p) = 0$$. 
+However, this is only a *necessary* but not sufficient condition for optimality given that other stationary points 
+(e.g. maxima) also satisfy this condition.
 
 ## Sequential Quadratic Programming
 
-To find local minima for the above problems, we replace the original problem with a sequence of quadratic subproblems 
+To find local minima for the above problems, we replace the original problem with a sequence of quadratic subproblems,
 
 $$
-\begin{algorithmic}
-  \FOR {k=0,1,2,\dots}
-    \STATE $\min_p \quad f_k + d^T g_k + 0.5d^T H_k d$
-    \STATE $\min_\alpha \quad \Phi(\alpha) = f(p_k + \alpha d)$
-    \STATE $p_{k+1} \gets p_k + \alpha d$
-  \ENDFOR
-\end{algorithmic}
+\underset{d}{\text{minimize}} \quad f_k + d^Tg_k + \frac{1}{2}d^TH_kd^T,
 $$
 
 where $$g_k = \nabla_p f(p_k)$$ is the gradient, $$H_k = \nabla_p^2 f(p_k)$$ is the Hessian, $$d \in \mathbb{R}^n$$ is 
-the search direction, $$\alpha$$ is the step length, and the $$k$$ subscript denotes evaluation at the iterate $$p_k$$.
+the search direction, and the $$k$$ subscript denotes evaluation at the iterate $$p_k$$. The exact solution to this 
+quadratic subproblem is the inversion of the Hessian onto the negative gradient, $$d = -H_k^{-1} g_k$$. This can also be viewed as the application of the Newton root-finding method to the system of nonlinear equations defined by the optimality condition $$\nabla_p f(p) = 0$$.
 
-The exact solution to this quadratic subproblem is the inversion of the Hessian onto the negative gradient, 
-$$d = -H_k^{-1} g_k$$. The subsequent "line search" to find a valid step length that minimizes the objective function 
-along this search direction helps avoid non-minimum stationary points. Line searches, along with other similar 
-approaches such as trust region methods and filters, are known as "globalization" methods because they maintain 
-consistency between the localquadratic model and the global nonlinear function.
+In order to avoid non-minimum stationary points, we also seek to find a step length $$\alpha$$ that approximately 
+minimizes the objective function along the line defined by the search direction,
 
-In this approach, different approximations to the search direction solution yield different SQP algorithms:
+$$
+\underset{\alpha}{\text{minimize}} \Phi(\alpha) = f(p_k + \alpha d).
+$$
+
+This scalar minimization problem is called a "line search", and is categorized as a "globalization" method because it helps 
+maintain consistency between the local quadratic model and the global nonlinear function.
+
+The SQP class of algorithms can be summarized with the pseudocode:
+
+![](sqp_pseudo.png){:width="25%"}
+
+In this approach, different approximations to the search direction solution yield different members of the SQP family:
 
 + **Truncated Newton:** $$d = -H_k^{-1} g_k$$ with Hessian inverted iteratively (e.g. Krylov methods) using dynamic tolerances
 + **Quasi-Newton:** $$d = -B_k g_k$$ where $$B_k \approx H_k^{-1}$ with low-rank updates based on the Secant condition
 + **Conjugate Gradient:** $$d_k = -g_k + \beta d_{k-1}$$ with $$\beta$$ defining different CG update formulas
 + **Gradient Descent:** $$d = g_k$$ with Hessian replaced with the identity matrix
+
+Further variations exist in combination with other globalization methods such as trust region and filter methods. In 
+the present lecture, however, we only consider line search versions.
 
 ### PDE-constrained Optimization
 
