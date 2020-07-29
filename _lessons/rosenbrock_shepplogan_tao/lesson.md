@@ -5,7 +5,7 @@ subheadline: "Numerical Optimization"
 teaser: "A practical introduction to large-scale optimization"
 permalink: "lessons/rosenbrock_shepplogan_tao/"
 use_math: true
-lesson: true
+lesson: false
 header:
  image_fullwidth: "xsdk_logo_wide-fs8.png"
 header-includes:
