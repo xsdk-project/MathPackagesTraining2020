@@ -30,9 +30,10 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 5
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with MueLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -43,10 +44,12 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 7
 
-- title: "**Break**<br>*SME selections*<br>*Panel Questions Due*"
+- title: "**Break**<br>*SME selections*<br>*Panel Questions*"
   start: "Tue Aug 4 11:30 AM"
   length: 15
   id: 8
@@ -69,18 +72,22 @@
     - "Mark Shephard"
     - "Aaron Fisher"
   vname: "Aurora"
+  has_synopsis: true
   id: 11 
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with Hypre"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
+  has_synopsis: true
   id: 12 
 
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 13 
 
 - title: "**Lunch**<br>*SME selections*<br>*Panel Questions Due*"
@@ -106,7 +113,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 18 
@@ -115,6 +122,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 19 
 
 - title: "Time Integration"
@@ -123,24 +131,8 @@
   vname: "Perlmutter"
   id: 20 
   has_synopsis: true
-  synopsis: >
-    In this lecture we discuss the role and impact of high order, adaptive, and
-    flexible time integration libraries in solution accuracy and computational
-    efficiency of large-scale simulations.  Due to the wide variety of
-    backgrounds among ATPESC participants, we briefly discuss
-    * the location of time integrators in the HPC landscape, and their reliance on scalable nonlinear and linear solver libraries,
-    * the different categories of time integration methods (explicit/implicit/IMEX),
-    * the basic theoretical properties of time integration methods (order of accuracy, linear stability),
-    * the role of temporal adaptivity for improving accuracy and efficiency,
-    * an overview of DOE time integration packages.
-    We spend approximately half of the time period in lecture, followed by
-    hands-on exercises that examine stability, accuracy, temporal adaptivity,
-    and the role of problem-specific preconditioning.  All of the hands-on
-    exercises focus on time-dependent PDEs, and use the SUNDIALS' ARKODE
-    library for time integration, along with the AMReX library for spatial
-    semi-discretization.
 
-- title: "Iterative Solvers & Preconditioners"
+- title: "Iterative Solvers & Preconditioners<br>with MueLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -160,7 +152,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 24 
@@ -169,6 +161,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 25 
 
 - title: "Time Integration"
@@ -181,7 +174,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 27 
 
 - title: "Telecon Transition"

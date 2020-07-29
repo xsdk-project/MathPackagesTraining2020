@@ -24,14 +24,17 @@ header:
 cd {{site.handson_root}}/time_integrators/sundials
 source source_cooley_plotfile_tools.sh
 ```
-(note: you should be able to recompile these executables with a simple
-`make`)
 
-Also, if you do not already have the `anaconda3-4.0.0` SoftEnv module
+Also, if you do not already have the `anaconda3-4.0.0`, `gcc v8.2.0` and corresponding MVAPICH SoftEnv modules
 loaded, please do so now,
 ```bash
+soft add +gcc-8.2.0
+soft add +mvapich2-2.2-gcc820
 soft add +anaconda3-4.0.0
 ```
+
+(note: you should be able to recompile the hands-on executables with a simple `make`, although this is not necessary)
+
 
 ## The problem being solved
 
@@ -56,18 +59,17 @@ given initial condition.  The spatial domain is $$(x,y) \in
 ## The Application Models
 The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
 and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
-[AMReX][2] and the ODE solvers from [SUNDIALS][1], specifically
-SUNDIALS' [ARKODE][0] package for one-step time integration methods, to
+[AMReX][2].  For the _time integration_ (i.e., semi-discretization in time) of this PDE,
+we use the [ARKODE][0] ODE solver from [SUNDIALS][1], to
 demonstrate the use of [SUNDIALS][1] in both serial and parallel for
-more robust and flexible control over _time integration_
-(e.g., discretization in time) of PDEs.
+more robust and flexible control over temporal integration.
 
-All the runs solve a problem on a periodic, cell-centered,
+Each application solves the problem on a periodic, cell-centered,
 uniform mesh with an initial Gaussian bump:
 
 $$u_0(x,y) = \frac{10}{\sqrt{2\pi}} e^{-50(x^2+y^2)}$$
 
-Snapshots of the solution for advection [flow] vector
+Snapshots of the solution for the advection [flow] vector
 $$\vec{a}=\left[ 0.0005,\, 0.00025\right]$$,
 and diffusion coefficient matrix
 $$D = \operatorname{diag}\left(\, \left[10^{-6},\, 10^{-6}\right]\,\right)$$
@@ -77,7 +79,7 @@ at the times $$t = \left\{0, 1000, 2000, 3000\right\}$$ are shown in Figures 1-4
 |:---:|:---:|:---:|:---:|
 |[![](advection-diffusion-u0.png)](sundials/advection-diffusion-u0.png)|[![](advection-diffusion-u1000.png)](sundials/advection-diffusion-u1000.png)|[![](advection-diffusion-u2000.png)](sundials/advection-diffusion-u2000.png)|[![](advection-diffusion-u3000.png)](sundials/advection-diffusion-u3000.png)|
 
-We will break apart our investigation of this problem into the following three phases:
+We will investigate this problem in three phases:
 
 1. Explicit time integration (`HandsOn1.exe`)
 
@@ -88,8 +90,8 @@ We will break apart our investigation of this problem into the following three p
 
 ### Getting help
 
-You can get help on all the command-line options to these applications
-with the `help=1` argument for any of these executables, e.g.,
+You can discover the full set of command-line options for each applications
+with the `help=1` argument, e.g.,
 
 ```
 ./HandsOn1.exe help=1
@@ -140,8 +142,8 @@ command line, then the command line option takes precedence.
 
 ### Cleaning up
 
-At any time, you can remove all of the solution output files and ARKODE
-temporal adaptivity diagnostics files with the command
+If your directory gets cluttered, at any time you can remove all of the solution
+output files and ARKODE temporal adaptivity diagnostics files with the command
 ```
 make pltclean
 ```
@@ -150,10 +152,9 @@ make pltclean
 
 ## Hands-on lesson 1 -- Explicit time integration (`HandsOn1.exe`)
 
-This lesson will explore the following topics:
+This lesson explores the following topics:
 
-a. Problem specification -- vector wrapper and right-hand side
-   functions
+a. Problem specification -- vector wrapper and right-hand side functions
 
 b. Fixed time-stepping (exploration of linear stability)
 
@@ -191,8 +192,7 @@ an existing simulation code:
    [shared/NVector_Multifab.cpp][7].
 
 2. Create a function that computes the problem-defining ODE right-hand
-   side function on your `N_Vector` data (or for KINSOL, the
-   problem-defining nonlinear residual function).  Here, we implement the
+   side on your `N_Vector` data.  Here, we implement the
    advection-diffusion right-hand side function,
 
    $$f(t,u) = -\vec{a} \cdot \nabla u + \nabla \cdot ( D \nabla u )$$
@@ -203,20 +203,17 @@ an existing simulation code:
    ```
    found in the file [shared/Utilities.cpp][8].
 
-3. Use SUNDIALS to integrate your ODE/DAE or solve your nonlinear
-   system:
+3. Use SUNDIALS to integrate your ODE/DAE:
 
    1. Instantiate and fill an `N_Vector` for your initial conditions,
-      $$u_0(x,y)$$ or your initial guess to the nonlinear solve.  In
-      our example this is done [here][9].
+      $$u_0(x,y)$$.  In our example this is done [here][9].
 
    2. Create the time integrator memory structure, providing both the
       initial condition vector $$u_0(x,y)$$ and the problem-defining
       function $$f(t,u)$$. In our example, these are done [here][10].
 
    3. Call the SUNDIALS solver to evolve the problem over a series of
-      time sub-intervals, or to solve the nonlinear problem.  Our
-      example does this in a loop [here][11].
+      time sub-intervals.  Our example does this in a loop [here][11].
 
 
 
@@ -227,33 +224,31 @@ this uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 ```bash
 ./HandsOn1.exe inputs-1
 ```
-and compare the final result against a stored reference solution (on a
-$$128^2$$ grid),
+and compare the final result against a stored reference solution (again on a $$128^2$$ grid),
 ```bash
 fcompare.gnu.ex plt00001/ reference_solution/
 ```
-Notice that the computed solution error is rather small (since the
-solution has magnitude $$\mathcal{O}(1)$$, errors should be less than
-0.1).
+Notice that the computed solution error is rather small (the solution
+has magnitude $$\mathcal{O}(1)$$, so we hope for errors well below 0.1).
 
 Now re-run this hands-on code using a larger time step size of 100.0,
 ```bash
 ./HandsOn1.exe inputs-1 fixed_dt=100.0
 ```
-_see how much faster the code ran!_  However, now check the accuracy
+_see how much faster the code ran!_  However, if we check the accuracy
 of the computed solution,
 ```bash
 fcompare.gnu.ex plt00001/ reference_solution/
 ```
-and note the reported error of $$10^{98}$$.
+we see it has an error of $$10^{98}$$.
 
 {% include qanda
     question='What do you think happened?'
     answer='At this mesh size, the explicit algorithm is unstable for
     a time step size of 100, but is stable for a time step size of 5.' %}
 
-Run the code a few more times -- what is the largest stable time step
-size that you can find?
+Run the code a few more times, trying to identify the largest stable time step
+size.
 
 
 ### Temporal adaptivity
@@ -269,7 +264,7 @@ _note how rapidly the executable finishes, providing a solution that
 is both stable and accurate to within the specified tolerances!_
 
 Run the accompanying Python script `process_ARKStep_diags.py` to view
-some overall time adaptivity statistics and generate plots of the time
+some overall time adaptivity statistics and to generate plots of the time
 step size history,
 ```bash
 ./process_ARKStep_diags.py HandsOn1_diagnostics.txt
@@ -281,10 +276,10 @@ attempts to increase the time step size to investigate whether this
 stability limit has changed; however, the raw percentage of these
 failed steps remains rather small.
 
-Run the code a few more times with various values of `rtol` -- how
-well does the adaptivity algorithm produce solutions within the
-desired tolerances?  How do the number of time steps change as
-different tolerances are requested?
+Run the code a few more times with various values of `rtol` (e.g.,
+`./HandsOn1.exe inputs-1 rtol=1e-6`) -- how well does the adaptivity
+algorithm produce solutions within the desired tolerances?  How do the
+number of time steps change as different tolerances are requested?
 
 
 
@@ -313,7 +308,7 @@ method for this problem at this tolerance?
 
 ## Hands-on lesson 2 -- Implicit / IMEX time integration (`HandsOn2.exe`)
 
-This lesson will explore the following topics:
+This lesson explores the following topics:
 
 a. Specification of algebraic solver algorithms (nonlinear and linear)
 
@@ -326,10 +321,9 @@ d. Implicit-explicit partitioning
 
 ### Specification of algebraic solvers
 
-Once your code is set up to run an explicit method, it is not
-difficult to switch to an implicit or IMEX solver.  All of the
-relevant changes for this in our examples today are in the file
-[HandsOn2.cpp][4], and are indicated by the comment
+Once your code is set up to run an explicit method, it is not difficult to
+switch to an implicit or IMEX solver.  All of the relevant changes for this
+in are in the file [HandsOn2.cpp][4], and are indicated by the comment
 `***** UPDATED FROM HandsOn1 *****`. The main steps are:
 
 1. Move specification of the ODE right-hand side function to the
@@ -339,7 +333,7 @@ relevant changes for this in our examples today are in the file
 
    This is done [here][12] in our example, where we either supply
    `ComputeRhsAdvDiff()` for *fully implicit* integration, or
-   specifies two routines `ComputeRhsAdv()` and `ComputeRhsDiff()` for
+   we supply two routines, `ComputeRhsAdv()` and `ComputeRhsDiff()`, for
    an IMEX splitting of the ODE right-hand side.
 
 2. To use the default Newton nonlinear solver, you must specify which
@@ -352,23 +346,23 @@ relevant changes for this in our examples today are in the file
 3. Alternately, you may select an alternate nonlinear solver module to
    use instead of Newton.
 
-   In our example, if requested we attach an accelerated fixed-point
+   In our example, we can instead attach an accelerated fixed-point
    nonlinear solver (with no inner linear solver needed) [here][14].
 
 
 
 ### Linear stability revisited
 
-Run the second hands-on code using its default parameters (note that
-this also uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
+Run the second hands-on code using its default parameters (this also
+uses a mesh size of $$128^2$$ and fixed time step size of 5.0),
 ```bash
 ./HandsOn2.exe inputs-2
 fcompare.gnu.ex plt00001/ reference_solution/
 ```
 _note that this takes significantly longer than `HandsOn1.exe` with
-the same time step size_
+the same time step size._
 
-Now re-run using the larger time step size of 100.0,
+Re-run this problem using the larger time step size of 100.0,
 ```bash
 ./HandsOn2.exe inputs-2 fixed_dt=100.0
 fcompare.gnu.ex plt00001/ reference_solution/
@@ -389,8 +383,8 @@ so large that the nonlinear and/or linear solver fails to converge?
 
 ### Temporal adaptivity revisited
 
-As with the previous hands-on exercise, we may switch to adaptive
-time-stepping (with the default tolerances, $$rtol=10^{-4}$$ and
+As with the previous hands-on exercise, we can switch to adaptive
+time-stepping (with tolerances $$rtol=10^{-4}$$ and
 $$atol=10^{-9}$$) by specifying `fixed_dt=0`,
 ```bash
 ./HandsOn2.exe inputs-2 fixed_dt=0
@@ -402,7 +396,7 @@ fcompare.gnu.ex plt00001/ reference_solution/
 ./process_ARKStep_diags.py HandsOn2_diagnostics.txt
 display h_vs_iter.png
 ```
-How does that average step size for this tolerance compare against the
+How does the average step size for this tolerance compare against the
 average step size of `HandsOn1.exe` for the same tolerances?
 
 {% include qanda
@@ -425,14 +419,12 @@ than the fully explicit approach when loose tolerances (e.g.,
 
 By default, `HandsOn2.exe` uses a fully implicit formulation of the
 problem.  However, this can instead be run with the advection terms
-$$\vec{a} \cdot \nabla u$$ treated explicitly by specifying
-`rhs_adv=2`,
+$$\vec{a} \cdot \nabla u$$ treated explicitly by specifying `rhs_adv=2`, i.e.
 ```bash
 ./HandsOn2.exe inputs-2 rhs_adv=2
 fcompare.gnu.ex plt00001/ reference_solution/
 ```
-For comparison, re-run an identical test but with fully-implicit
-treatment,
+For comparison, re-run an identical test but with fully-implicit treatment,
 ```bash
 ./HandsOn2.exe inputs-2
 fcompare.gnu.ex plt00001/ reference_solution/
@@ -475,17 +467,15 @@ b. Performance for IMEX time integrators
 c. Performance for fully implicit time integrators
 
 
-The file `HandsOn3.cpp` is nearly identical to the previous versions
+The file `HandsOn3.cpp` is nearly identical to the last example
 (with relevant changes indicated by the comment `***** UPDATED FROM
-HandsOn2 *****`).  We note, however, that it's default parameters
-differ slightly from the previous versions:
+HandsOn2 *****`), however, its default parameters differ slightly:
 
-* it defaults to adaptive time-stepping (with the same default
-  tolerances)
+* it defaults to adaptive time-stepping (with the same default tolerances)
 
 * it defaults to IMEX mode, with advection treated explicitly
 
-* it defaults to using the preconditioner (discussed below).
+* it defaults to using a preconditioner (discussed below).
 
 
 ### Preconditioner specification
@@ -493,7 +483,7 @@ differ slightly from the previous versions:
 Perhaps the most challenging (and most critical) component for a
 scalable implicit or IMEX time integrator is the creation of an
 effective, efficient, and scalable preconditioner to accelerate the
-iterative linear solvers (more on this by the next speakers).  This
+iterative linear solvers (more on this by other ATPESC speakers).  This
 requires three steps:
 
 1. Create preconditioner "setup" and "solve" routines that prepare any
@@ -511,7 +501,7 @@ requires three steps:
 
 2. Supply the preconditioning routines to the integrator.
 
-   In our example, when creating the GMRES linear solver, we notify it
+   In our example, when creating the GMRES linear solver, we signal
    to use left preconditioning [here][17].  We then attach the
    `precondition_setup` and `precondition_solve` routines to the
    integrator [here][18].
@@ -569,7 +559,7 @@ preconditioned versions of this hands-on lesson.
 
 We have used AMReX and SUNDIALS as a demonstration vehicle for
 illustrating the value of robust time integration methods in numerical
-algorithms. In particular, we have used the ARKODE's `ARKStep` time
+algorithms. In particular, we have used ARKODE's `ARKStep` time
 integration module from [SUNDIALS][1] to explore a range of questions
 related to time integration and nonlinear solvers:
 
@@ -579,19 +569,19 @@ related to time integration and nonlinear solvers:
 2. the effects of the order of the time integration method on method
    efficiency,
 
-3. the increased cost but increased scalability offered through use of
+3. the increased cost (and scalability) offered through use of
    advanced preconditioning methods, and
 
 4. the choice of IMEX partitioning in time discretization.
 
 We note that our use of _adaptivity_ here was confined to the
-_time discretization_ only. Other lessons here demonstrate the
+_time discretization_ only. Other ATPESC lecturers demonstrate the
 advantages of spatial adaptation as well (e.g., AMR).
 
 We further note that we have barely scratched the surface of linear
 solver algorithms; while GMRES with geometric multigrid
 preconditioning remains a top choice of many large-scale applications,
-other lessons here will focus on alternatives that can work for much
+other ATPESC lecturers will focus on alternatives that can work for much
 broader classes of problems.
 
 Finally, we note that the application demonstrated here can be run on

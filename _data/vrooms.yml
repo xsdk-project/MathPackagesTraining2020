@@ -1,26 +1,26 @@
 - name: Amphitheater
   webinfo: https://qcenter.com/home-guest/
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: El-Capitan 
   webinfo: https://www.llnl.gov/news/llnl-and-hpe-partner-amd-el-capitan-projected-worlds-fastest-supercomputer
-  zoom_link: https://exascaleproject.zoomgov.com/j/1600891933?pwd=Z3pJZnVnR3BNWlFwUkNlUmF2N2xydz09
 
 - name: Aurora
   webinfo: https://www.alcf.anl.gov/aurora
-  zoom_link: https://mandrillapp.com/track/click/31090945/exascaleproject.zoomgov.com?p=eyJzIjoiRWlXSDRfYVJsM0pOeG4tcDdUREhqUUI1XzlrIiwidiI6MSwicCI6IntcInVcIjozMTA5MDk0NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2V4YXNjYWxlcHJvamVjdC56b29tZ292LmNvbVxcXC9zXFxcLzE2MDMyMzA1NjFcIixcImlkXCI6XCI1NWRlMTZmYTJhYzg0Mzc3YWMzOTE1ZTRiNzJhZDE0NVwiLFwidXJsX2lkc1wiOltcIjAzMDYwM2M4MjAyNTZhNDkwNWFkNDNmYWQ2ZGEzYjdiYTVjMGFiZGFcIl19In0
 
 - name: Perlmutter
   webinfo: https://www.nersc.gov/systems/perlmutter/
-  zoom_link: https://mandrillapp.com/track/click/31090945/exascaleproject.zoomgov.com?p=eyJzIjoiLWFHcUhBZHNLNjVkOUVqb0l0TnVuWEh5cmhZIiwidiI6MSwicCI6IntcInVcIjozMTA5MDk0NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2V4YXNjYWxlcHJvamVjdC56b29tZ292LmNvbVxcXC9zXFxcLzE2MTQxNTY5MThcIixcImlkXCI6XCIyZmI0NmNkNWVjZGQ0NGE2YjA2ZGYzZGMwYTcxN2E2OFwiLFwidXJsX2lkc1wiOltcIjM1ZmMwM2Q3NGJmYTFlODNmZjZiZmRjYzM5MTAxNDkyNzlmYmZjNmJcIl19In0
 
 - name: Frontier
   webinfo: https://www.olcf.ornl.gov/frontier/
-  zoom_link: https://mandrillapp.com/track/click/31090945/exascaleproject.zoomgov.com?p=eyJzIjoiV3BaNHRiclVET045VF9DV2RfYVZSMi1wSHF3IiwidiI6MSwicCI6IntcInVcIjozMTA5MDk0NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2V4YXNjYWxlcHJvamVjdC56b29tZ292LmNvbVxcXC9zXFxcLzE2MDk2MTAwMjFcIixcImlkXCI6XCI0NWNlYjczNzQ1OTc0YzIwYjI2MjQwNTc3MjAyYTYzOVwiLFwidXJsX2lkc1wiOltcIjliZTk3MWZjNWZhMDliYzc3Y2MxZjA2NWY0OWNhMGJjOTA5ODBkZDVcIl19In0
-
-- name: Tesla
-  wevinfo: https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units#Tesla
-  zoom_link: https://mandrillapp.com/track/click/31090945/exascaleproject.zoomgov.com?p=eyJzIjoiX1Z6bGtpa18wQnZkLUdLaWUybkdfNGdfeXBRIiwidiI6MSwicCI6IntcInVcIjozMTA5MDk0NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2V4YXNjYWxlcHJvamVjdC56b29tZ292LmNvbVxcXC9zXFxcLzE2MDAyMDYwMzdcIixcImlkXCI6XCJlY2M0ZmViNjlhMzU0YmEwYTllNWY3ZmY2YWU3MDg0YlwiLFwidXJsX2lkc1wiOltcIjk1ZjQ4NjllNjFiNDgxNmU1YWMyYzYyMTdjZDIyODQ5NTlhYjZiZGRcIl19In0
 
 - name: Volta
-  zoom_link: https://mandrillapp.com/track/click/31090945/exascaleproject.zoomgov.com?p=eyJzIjoiTlM4cUVzQ0ptYlRsQ3dweFlHLXFPSXRwN1NvIiwidiI6MSwicCI6IntcInVcIjozMTA5MDk0NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2V4YXNjYWxlcHJvamVjdC56b29tZ292LmNvbVxcXC9zXFxcLzE2MDE2OTgwMjFcIixcImlkXCI6XCJhOGZhM2YzY2FiMWE0NzNlYTg0NzkwYTQ2YjRiNzY4N1wiLFwidXJsX2lkc1wiOltcImJmOGYzMGQxMDgwNjNlOTBhZTg2ODJkZDFiYmU4YzViOTQwZmY3YzlcIl19In0
+  webinfo: https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/
+
+- name: Ampere
+  webinfo: https://blogs.nvidia.com/blog/2020/05/14/double-precision-tensor-cores/
+
+- name: Navi
+  webinfo: https://en.wikipedia.org/wiki/Radeon_RX_5000_series
+
+- name: Vega
+  webinfo: https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Radeon_RX_Vega_series

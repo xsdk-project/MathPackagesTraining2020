@@ -214,9 +214,9 @@ isLocal=0
 render=1
 mdl=upright_defeatured_geomsim.smd
 mesh=5kg1_defeatured/
-mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_parmetis/ 4 pmetis kway $isLocal $runParma $render &> graph.out
-mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rcb/ 4 rcb ptn $isLocal $runParma $render &> rcb.out
-mpirun -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rib/ 4 rib ptn $isLocal $runParma $render &> rib.out
+mpiexec -np 4 ./ptnParma $mdl $mesh 5kg1_p4_parmetis/ 4 pmetis kway $isLocal $runParma $render &> graph.out
+mpiexec -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rcb/ 4 rcb ptn $isLocal $runParma $render &> rcb.out
+mpiexec -np 4 ./ptnParma $mdl $mesh 5kg1_p4_rib/ 4 rib ptn $isLocal $runParma $render &> rib.out
 ```
 
 The entity imbalance information is listed on the lines containing `entity
@@ -403,7 +403,7 @@ Run the adaptive simulation:
 
 ```
 cd ~/mfem-pumi-lesson/analysis
-mpirun -np 2 ./pumi_upright_ex2p -p upright_defeatured_geomsim.smd -bf upright.def -m 2p5kg1/
+mpiexec -np 2 ./pumi_upright_ex2p -p upright_defeatured_geomsim.smd -bf upright.def -m 2p5kg1/
 ```
 
 [<img src="figs/analysis/initialAndFinalMesh.png" width="400">](figs/analysis/initialAndFinalMesh.png)

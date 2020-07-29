@@ -116,7 +116,7 @@ To run in serial,
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main2d.gnu.MPI.ex inputs
+mpiexec -n 4 ./main2d.gnu.MPI.ex inputs
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -243,7 +243,7 @@ To run in serial,
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main3d.ex inputs_3d
+mpiexec -n 4 ./main3d.ex inputs_3d
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
@@ -272,7 +272,7 @@ We define the cylinders with this numbering scheme
 You can also set the parameters on the command line; for example,  
 
 ```
-mpirun -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
+mpiexec -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
 ```
 
 will run the problem with only six obstacles 
@@ -464,7 +464,7 @@ To run in serial,
 To run in parallel, for example on 4 ranks:
 
 ```
-mpirun -n 4 ./main3d.ex inputs_3d
+mpiexec -n 4 ./main3d.ex inputs_3d
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
@@ -486,7 +486,7 @@ max_steps = 100000                    # the maximum number of steps (if max_step
 
 You can also set values on the command line; for example,
 ```
-mpirun -n 4 ./main3d.ex inputs_3d particle_file=my_file
+mpiexec -n 4 ./main3d.ex inputs_3d particle_file=my_file
 ```
 
 will read the particles from a file called "my_file"
