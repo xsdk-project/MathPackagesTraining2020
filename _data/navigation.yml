@@ -33,7 +33,7 @@
     url: "/lessons/pumi/"
   - title: "Unstructured Meshing & Discretization with MFEM"
     url: "/lessons/mfem_convergence/"
-  - title: "Meshing and Discretization with AMReX"
+  - title: "Structured Meshing & Discretization with AMReX"
     url: "/lessons/amrex/"
   - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg_muelu/"
@@ -43,12 +43,8 @@
     url: "/lessons/superlu_mfem/"
   - title: "Time Integration and Nonlinear Solvers with SUNDIALS"
     url: "/lessons/time_integrators/sundials"
-  - title: "Poisson Boundary Control with PETSc/Tao"
-    url: "/lessons/boundary_control_tao/"
   - title: "Numerical Optimization with PETSc/TAO"
-    url: "/lessons/obstacle_tao"
-  - title: "Using adjoint for PDE-constrained optimization"
-    url: "/lessons/adjoint/"
+    url: "/lessons/rosenbrock_shepplogan_tao/"
 
 - title: Packages
   audience: "public"
