@@ -20,10 +20,10 @@ header:
 
 #### To begin this lesson
 
-* [Open the Answers Form]({{page.answers_google_form}})
-* Go to the directory for the krylov application
+<!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
+Go to the directory for the krylov application
 ```
-cd {{site.handson_root}}/krylov_amg
+cd {{site.handson_root}}/krylov_amg_muelu
 ```
 
 ## The Problem Being Solved
