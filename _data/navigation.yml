@@ -46,7 +46,7 @@
   - title: "Time Integration and Nonlinear Solvers with SUNDIALS"
     url: "/lessons/time_integrators/sundials"
   - title: "Numerical Optimization with PETSc/TAO"
-    url: "/lessons/rosenbrock_shepplogan_tao/"
+    url: "/lessons/multidim_rosenbrock_tao/"
 
 - title: Packages
   audience: "public"

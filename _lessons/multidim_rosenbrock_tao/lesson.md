@@ -1,15 +1,13 @@
 ---
 layout: page-fullwidth
-title: "Rosenbrock and Shepp-Logan with PETSc/TAO"
+title: "Multidimensional Rosenbrock with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "A practical introduction to large-scale optimization"
-permalink: "lessons/rosenbrock_shepplogan_tao/"
+permalink: "lessons/multidim_rosenbrock_tao/"
 use_math: true
-lesson: false
+lesson: true
 header:
  image_fullwidth: "xsdk_logo_wide-fs8.png"
-header-includes:
-  - \usepackage{algorithmic}
 ---
 
 ## At a Glance
@@ -22,10 +20,9 @@ header-includes:
 
 **Note:** To run the application in this lesson
 ```
-cd {{site.handson_root}}/rosenbrock_shepplogan_tao
-make
-./rosenbrock -tao_monitor -tao_ls_type armijo -tao_fmin 1e-6
-./shepplogan -tao_monitor
+cd {{site.handson_root}}/multidim_rosenbrock_tao
+make multidim_rosenbrock
+./multidim_rosenbrock -tao_monitor
 ```
 
 ## Brief Introduction to Optimization
@@ -61,7 +58,7 @@ In order to avoid non-minimum stationary points, we also seek to find a step len
 minimizes the objective function along the line defined by the search direction,
 
 $$
-\underset{\alpha}{\text{minimize}} \Phi(\alpha) = f(p_k + \alpha d).
+\underset{\alpha}{\text{minimize}} \quad \Phi(\alpha) = f(p_k + \alpha d).
 $$
 
 This scalar minimization problem is called a "line search", and is categorized as a "globalization" method because it helps 
@@ -107,6 +104,10 @@ evaluation of the objective function, as well as an adjoint solution to efficien
 For more detail on PDE-constrained optimization, please refer to the ["Boundary Control with PETSc/TAO and AMReX" 
 lecture from ATPESC 2019](https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/).
 
+## Sensitivity Analysis
+
+
+
 ## Using TAO
 
 Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National 
@@ -123,18 +124,34 @@ typedef struct {
   int n; /* number of optimization variables */
 } AppCtx;
 
-PetscErrorCode FormFunctionGradient(Tao tao, Vec P, PetscReal *fcn,Vec G,void *ptr)
+PetscErrorCode FormFunction(Tao tao, Vec P, PetscReal *fcn, void *ptr)
 {
   PetscErrorCode ierr;
   AppCtx *user = (AppCtx*)ptr;
 
-  /* Compute objective function and store in fcn */
-  /* 1. Compute the states U(P) for the given P vector (i.e.: solve the PDE) */
-  /* 2. Use P and U(P) to compute the objective function */
+  /* Compute the objective function at point P and store in fcn */
 
-  /* Compute gradient and store in G */
-  /* 1. Solve the adjoint system for the adjoint variables lambda(P, U(P)) */
-  /* 2. Compute the gradient G = \nabla_p f using P, U(P), lambda(P, U(P)) */
+  return 0;
+}
+
+PetscErrorCode FormGradient(Tao tao, Vec P, Vec G, void *ptr)
+{
+  PetscErrorCode ierr;
+  AppCtx *user = (AppCtx*)ptr;
+
+  /* Compute the gradient at point P and store in vector G */
+
+  return 0;
+}
+
+PetscErrorCode FormHessian(Tao tao, Vec P, Mat H, Mat Hpre, void *ptr)
+{
+  PetscErrorCode ierr;
+  AppCtx *user = (AppCtx*)ptr;
+
+  /* Compute the Hessian at point P and store in matrix H */
+
+  /* Note: Hpre is an OPTIONAL preconditioner for inverting the Hessian */
 
   return 0;
 }
@@ -144,87 +161,118 @@ int main(int argc, char *argv[])
   PetscErrorCode ierr;
   AppCtx user;
   Tao tao;
+  Vec X;
+  Mat H;
 
-  /* Initialize problem and set sizes */
+  /* Initialize the PETSc library */
+  ierr = PetscInitialize( &argc, &argv, (char *)0, (char *)0);if (ierr) return ierr;
 
-  ierr = PetscInitialize( &argc, &argv,(char *)0,help );if (ierr) return ierr;
-  ierr = VecCreateMPI(PETSC_COMM_WORLD, user.n, user.N,  &X);CHKERRQ(ierr);
+  /* Create solution vector and Hessian matrix */
+  ierr = VecCreate(PETSC_COMM_WORLD, &X);CHKERRQ(ierr);
+  ierr = VecSetSizes(X, PETSC_DECIDE, user.n);CHKERRQ(ierr);
   ierr = VecSet(X, 0.0);CHKERRQ(ierr);
+  ierr = MatCreate(PETSC_COMM_WORLD, &H);CHKERRQ(ierr);
+  ierr = MatSetSizes(H, PETSC_DECIDE, PETSC_DECIDE, user.n, user.n);CHKERRQ(ierr);
+  ierr = MatSetUp(H);CHKERRQ(ierr);
 
+  /* Create Tao solver and configure */
   ierr = TaoCreate(PETSC_COMM_WORLD, &tao);CHKERRQ(ierr);
-  ierr = TaoSetType(tao, TAOBQNLS);CHKERRQ(ierr); // TAOBQNLS Algorithm: Bounded Quasi-Newton Line Search
+  ierr = TaoSetType(tao, TAOBQNLS);CHKERRQ(ierr);
   ierr = TaoSetInitialVector(tao, X);CHKERRQ(ierr);
-  ierr = TaoSetObjectiveAndGradientRoutine(tao, FormFunctionGradient, (void*) &user);CHKERRQ(ierr);
+  ierr = TaoSetObjectiveRoutine(tao, FormFunction, &user);CHKERRQ(ierr);
+  ierr = TaoSetGradientRoutine(tao, FormGradient, &user);CHKERRQ(ierr);
+  ierr = TaoSetHessianRoutine(tao )
   ierr = TaoSetFromOptions(tao);CHKERRQ(ierr);
+
+  /* Trigger the solution */
   ierr = TaoSolve(tao);CHKERRQ(ierr);
 
+  /* Clean up PETSc objects and finalize */
   ierr = VecDestroy(&X);CHKERRQ(ierr);
+  ierr = MatDestroy(&H);CHKERQ(ierr);
   ierr = TaoDestroy(&tao);CHKERRQ(ierr);
   ierr = PetscFinalize();
 ```
 
-TAO calls the user-provided ``FormFunctionGradient()`` routine whenever the optimization algorithm needs to evaluate 
-the objective and its gradient. The ``AppCtx`` structure contains any data the user has to preserve and propagate 
-through for these computations.
+TAO calls the user-provided ``FormFunction()``, ``FormGradient()`` and ``FormHessian()`` routine whenever the 
+optimization algorithm needs to evaluate the objective, its gradient and Hessian. The ``AppCtx`` structure contains 
+any data the user has to preserve and propagate through for these computations.
+
+Applications where it is more efficient to evaluate the objective function together with the gradient can use 
+an alternative ``TaoSetObjectiveAndGradientRoutine()`` interface to provide TAO a single ``FormFunctionGradient()`` 
+callback that evaluates both at the same time.
 
 ## Example Problem: Multidimensional Rosenbrock
 
 The Rosenbrock function is a canonical nonconvex test problem created by Howard H. Rosenbrock in 1960 and used 
-extensively to evaluate the performance of optimization algorithms. The original function is given as 
+extensively to evaluate the performance of optimization algorithms. The original function is defined as
 
 $$
-f(x_1, x_2) = (1 - x_1)^2 + 100(x_2 - x_1^2)^2
+f(x_1, x_2) = (1 - x_1)^2 + 100(x_2 - x_1^2)^2,
 $$
 
 with a global minimum at $$(1, 1)$$.
 
-In this lecture, we will be using a multidimensional generalization of this problem given by
+In this lecture, we will be using a multidimensional generalization of this problem is given by
 
 $$
 f(x) = f(x_1, x_2, \dots, x_N) = \sum_{i=1}^{N-1} \left[ (1 - x_i)^2 + 100(x_{i+1} - x_i^2)^2 \right],
 $$
 
-for which the gradient is defined as
+with a global minimum at $x_i = 1$.
 
-$$
-\frac{df}{dx_1} = -400x_1(x_2 - x_1^2)^2 - 2(1-x_1)
-$$
+The hands-on example implements the multidimensional Rosenbrock with an analytical gradient and Hessian. However, 
+TAO also provides [``TaoDefaultComputeGradient()``][1] and [``TaoDefaultComputeHessian()``][2] callbacks that utilize finite-differencing to generate the required sensitivities.
 
-$$
-\frac{df}{dx_j} = 200(x_j - x_{j-1}^2) - 400x_j(x_{j+1} - x_j^2) - 2(1 - x_j) \quad \forall j = 2, 3, \dots, N-1 
-$$
+Compile the problem with 
+```
+$ make multidim_rosenbrock
+```
+and run with the TAO iteration monitor to see the following output
+```
+$ ./multidim_rosenbrock -tao_monitor
+  0 TAO,  Function value: 1.,  Residual: 2. 
+  1 TAO,  Function value: 0.774343,  Residual: 6.13432 
+  2 TAO,  Function value: 0.650088,  Residual: 3.17699 
+  3 TAO,  Function value: 0.559353,  Residual: 5.42469 
+  4 TAO,  Function value: 0.3851,  Residual: 3.23695 
+  5 TAO,  Function value: 0.282163,  Residual: 1.71921 
+  6 TAO,  Function value: 0.244212,  Residual: 4.48633 
+  7 TAO,  Function value: 0.13797,  Residual: 7.96088 
+  8 TAO,  Function value: 0.0828213,  Residual: 0.422896 
+  9 TAO,  Function value: 0.0552284,  Residual: 0.722561 
+ 10 TAO,  Function value: 0.0387923,  Residual: 2.7757 
+ 11 TAO,  Function value: 0.0245732,  Residual: 3.24021 
+ 12 TAO,  Function value: 0.00930132,  Residual: 0.106282 
+ 13 TAO,  Function value: 0.00549438,  Residual: 2.74682 
+ 14 TAO,  Function value: 0.00220124,  Residual: 0.288169 
+ 15 TAO,  Function value: 0.000797288,  Residual: 0.138221 
+ 16 TAO,  Function value: 0.000118687,  Residual: 0.447673 
+ 17 TAO,  Function value: 7.30857e-06,  Residual: 0.0158896 
+ 18 TAO,  Function value: 4.98542e-08,  Residual: 0.00401749 
+ 19 TAO,  Function value: 3.33403e-11,  Residual: 0.000194926 
+ 20 TAO,  Function value: 7.51502e-15,  Residual: 3.26958e-06 
 
-$$
-\frac{df}{dx_N} = 200(x_N - x_{N-1}^2)
-$$
+TaoSolve() time: 0.021143
 
-
+Solution correct!
+```
 
 ### Hands-on Activities
 
-1. Change problem size with `-nx <size>` (default is 2) and evaluate its impact on performance. Now disable the 
-analytical gradient and enable the finite difference gradient with `-fd`. Change problem size again and evaluate both 
-convergence and iteration speed.
+1. Increase the problem size with the `-n <size>` argument (default size is 2) and evaluate its impact on convergence. 
 
-2. Run the problem in parallel using `mpiexec -np 4 ./multidim_rosenbrock...`. PETSc can seamlessly scale up 
-the problem without changing the source code.
+2. Solve the problem with the finite difference gradient using the `-fd` argument. Change problem size again and 
+evaluate both convergence and iteration speed.
 
-3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg` or to truncated Newton using 
-`-tao_type bnls`. Compare convergence with the default method (`bqnls` -- quasi-Newton line search). If necessary, 
-change the convergence tolerances (using `-tao_fmin` and `-tao_gatol`) to help the problem converge.
+3. Change the TAO algorithm to nonlinear conjugate gradient method using `-tao_type bncg` and to truncated Newton 
+using `-tao_type bnls`. Compare convergence against the default quasi-Newton method (`-tao_type bqnls`). 
 
-## Example Problem: Shepp-Logan Phantom Image Reconstruction
+4. Try running the problem in parallel with `mpirun -np <# of processes> ./multidim_rosenbrock ...`. Why does running 
+in parallel slow the solution down at small problem sizes? How large should the problem be to observe a speedup in 
+parallel runs?
 
-Blah blah blah.
-
-### Hands-on Activities
-
-1. Solve the problem using different regularization terms.
-
-2. Change the least-squares subsolver to a quasi-Newton method.
-
-3. Try to manually construct the least-squares problem on your own and solve it using the Newton Line-Search (`bnls`) 
-algorithm instead of letting BRGN construct the problem on its own. Evaluate if the solution is the same.
+5. Repeat Activity 4 with different TAO algorithms. Are the break-even points for size vs. performance the same?
 
 ## Take-Away Messages
 
@@ -243,3 +291,6 @@ algorithm instead of letting BRGN construct the problem on its own. Evaluate if 
 ## Previous Optimization Lectures
 - [ATPESC 2019](https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/)
 - [ATPESC 2018](https://xsdk-project.github.io/ATPESC2018HandsOnLessons/lessons/obstacle_tao/)
+
+[1]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoDefaultComputeGradient.html)
+[2]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoDefaultComputeHessian.html)
