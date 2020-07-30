@@ -147,3 +147,6 @@ different emphasis...
   * Sparse direct solvers (both superlu and strumpack), 30 minutes  (Sherry)
   * low rank approximation techniques in strumpack, 15 minutes (Pieter)
   * Q&A.  (Sherry, Pieter)
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
