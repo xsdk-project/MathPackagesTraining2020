@@ -22,7 +22,6 @@ PetscErrorCode FormHessian(Tao,Vec,Mat,Mat,void*);
 int main(int argc,char **argv)
 {
   PetscErrorCode     ierr;                  /* used to check for function return/error codes */
-  PetscReal          zero = 0.0;
   Vec                x;                     /* solution vector */
   Mat                H;                     /* Hessian matrix */
   Tao                tao;                   /* Tao solver context */
@@ -61,7 +60,7 @@ int main(int argc,char **argv)
   ierr = TaoSetType(tao, TAOBQNLS);CHKERRQ(ierr);
 
   /* Set solution vec and an initial guess */
-  ierr = VecSet(x, zero);CHKERRQ(ierr);
+  ierr = VecSet(x, -1.0);CHKERRQ(ierr);
   ierr = TaoSetInitialVector(tao, x);CHKERRQ(ierr);
 
   /* Set routines for function, gradient, hessian evaluation */
@@ -76,7 +75,7 @@ int main(int argc,char **argv)
 
   /* Check for TAO command line options */
   ierr = TaoSetMaximumFunctionEvaluations(tao, 1000000);CHKERRQ(ierr);
-  ierr = TaoSetMaximumIterations(tao, 1000);CHKERRQ(ierr);
+  ierr = TaoSetMaximumIterations(tao, 100000);CHKERRQ(ierr);
   ierr = TaoSetTolerances(tao, 1e-05, 0.0, 0.0);CHKERRQ(ierr);
   ierr = TaoSetFromOptions(tao);CHKERRQ(ierr);
 
