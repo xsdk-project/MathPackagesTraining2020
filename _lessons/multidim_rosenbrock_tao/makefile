@@ -2,7 +2,7 @@ CFLAGS		 =
 FFLAGS		 =
 CPPFLAGS         =
 FPPFLAGS         =
-EXAMPLESC        = multidim_rosenbrock.c shepp_logan.c
+EXAMPLESC        = multidim_rosenbrock.c
 EXAMPLESF        = 
 EXAMPLESCH       =
 EXAMPLESFH       = 
@@ -10,7 +10,7 @@ LOCDIR		 =
 MANSEC		 =
 DOCS		 =
 DIRS		 =
-CLEANFILES   = multidim_rosenbrock shepp_logan
+CLEANFILES   = multidim_rosenbrock
 
 include ${PETSC_DIR}/lib/petsc/conf/variables
 include ${PETSC_DIR}/lib/petsc/conf/rules
