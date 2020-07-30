@@ -20,10 +20,10 @@ header:
 
 #### To begin this lesson
 
-* [Open the Answers Form]({{page.answers_google_form}})
-* Go to the directory for the krylov application
+<!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
+Go to the directory for the krylov application
 ```
-cd {{site.handson_root}}/krylov_amg
+cd {{site.handson_root}}/krylov_amg_muelu
 ```
 
 ## The Problem Being Solved
@@ -517,18 +517,22 @@ MueLu has specialized kernels that allow it to run on next-generation computing 
 using a [Kokkos](https://github.com/kokkos/kokkos) backend.
 If MueLu has been compiled with OpenMP or CUDA support, this code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
 
-Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
-Try running
+Add the `openmpi-2.1.5` and `cuda-10.0` modules to your environment.
 ```
+soft add +openmpi-2.1.5
+soft add +cuda-10.0
 export CUDA_LAUNCH_BLOCKING=1
 export CUDA_MANAGED_FORCE_DEVICE_ALLOC=1
-./MueLu_Stratimikos_gpu.exe
+```
+Try running
+```
+./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
 ```
 with the refactor option set.
 
 If you want to use both GPUs, run
 ```
-mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --kokkos-ndevices=2
+mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
 ```
 
 ---
