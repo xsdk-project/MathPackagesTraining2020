@@ -138,6 +138,7 @@ PetscErrorCode FormFunction(Tao tao,Vec X,PetscReal *f,void *ptr)
   ierr = VecGetLocalSize(X, &n);CHKERRQ(ierr);
   ierr = VecGetArrayRead(X, &xx);CHKERRQ(ierr);
 
+  /* Communicate boundary term to adjacent rank */
   if (user->rank != 0) {
     ierr = MPI_Send(&xx[0], 1, MPIU_REAL, user->rank-1, 123, PETSC_COMM_WORLD);CHKERRQ(ierr);
   }
@@ -145,12 +146,14 @@ PetscErrorCode FormFunction(Tao tao,Vec X,PetscReal *f,void *ptr)
     ierr = MPI_Recv(&xghost, 1, MPIU_REAL, user->rank+1, 123, PETSC_COMM_WORLD, MPI_STATUS_IGNORE);CHKERRQ(ierr);
   }
 
+  /* Loop over local elements and add contribution to objective */
   ff = 0;
   for (i = 0; i < n-1; i++) {
     t1 = 1.0 - xx[i]; t2 = xx[i+1] - xx[i]*xx[i];
     ff += t1*t1 + 100.0*t2*t2;
   }
 
+  /* Add contribution from element on adjacent rank */
   if ((user->size > 1) && (user->rank < user->size - 1)) {
     t1 = 1.0 - xx[n-1]; t2 = xghost - xx[n-1]*xx[n-1];
     ff += t1*t1 + 100.0*t2*t2;
