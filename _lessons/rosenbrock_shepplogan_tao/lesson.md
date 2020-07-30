@@ -169,7 +169,36 @@ through for these computations.
 
 ## Example Problem: Multidimensional Rosenbrock
 
-Blah blah blah.
+The Rosenbrock function is a canonical nonconvex test problem created by Howard H. Rosenbrock in 1960 and used 
+extensively to evaluate the performance of optimization algorithms. The original function is given as 
+
+$$
+f(x_1, x_2) = (1 - x_1)^2 + 100(x_2 - x_1^2)^2
+$$
+
+with a global minimum at $$(1, 1)$$.
+
+In this lecture, we will be using a multidimensional generalization of this problem given by
+
+$$
+f(x) = f(x_1, x_2, \dots, x_N) = \sum_{i=1}^{N-1} \left[ (1 - x_i)^2 + 100(x_{i+1} - x_i^2)^2 \right],
+$$
+
+for which the gradient is defined as
+
+$$
+\frac{df}{dx_1} = -400x_1(x_2 - x_1^2)^2 - 2(1-x_1)
+$$
+
+$$
+\frac{df}{dx_j} = 200(x_j - x_{j-1}^2) - 400x_j(x_{j+1} - x_j^2) - 2(1 - x_j) \quad \forall j = 2, 3, \dots, N-1 
+$$
+
+$$
+\frac{df}{dx_N} = 200(x_N - x_{N-1}^2)
+$$
+
+
 
 ### Hands-on Activities
 
@@ -180,18 +209,9 @@ convergence and iteration speed.
 2. Run the problem in parallel using `mpiexec -np 4 ./multidim_rosenbrock...`. PETSc can seamlessly scale up 
 the problem without changing the source code.
 
-3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg`. Compare convergence with the 
-default method (`bqnls` -- quasi-Newton line search). Change the onvergence tolerances (using `-tao_fmin` and 
-`-tao_gatol`) to help the problem converge.
-
-4. Change TAO algorithm to the truncated Newton's method using `-tao_type bnls`. Compare convergence with the 
-default method (`bqnls` -- quasi-Newton line search). Change the onvergence tolerances (using `-tao_fmin` and 
-`-tao_gatol`) to help the problem converge.
-
-4. Change the initial starting point and see if the solution converges to a different local minimum. The default 
-starting point is Dirichlet values set to $$1.0$$ for all controlled boundaries (bottom, left and top). You can either 
-choose a different constant value, or try to impose a more complicated starting point by manipulating the vector data 
-element-by-element.
+3. Change TAO algorithm to the nonlinear conjugate gradient method using `-tao_type bncg` or to truncated Newton using 
+`-tao_type bnls`. Compare convergence with the default method (`bqnls` -- quasi-Newton line search). If necessary, 
+change the convergence tolerances (using `-tao_fmin` and `-tao_gatol`) to help the problem converge.
 
 ## Example Problem: Shepp-Logan Phantom Image Reconstruction
 
