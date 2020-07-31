@@ -1,5 +1,6 @@
 - name: Amphitheater
   webinfo: https://qcenter.com/home-guest/
+  slack: https://join.slack.com/share/zt-g2iz7j9z-DlNMA~iDqAg9Q4AbaU6Lmg
 
 - name: El-Capitan 
   webinfo: https://www.llnl.gov/news/llnl-and-hpe-partner-amd-el-capitan-projected-worlds-fastest-supercomputer
