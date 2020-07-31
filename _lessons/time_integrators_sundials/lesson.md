@@ -4,7 +4,7 @@ order: 9
 subheadline: "Time Integration"
 title: "Time Integration with SUNDIALS"
 teaser: "Role and Impact of Time Integrators in Solution Accuracy and Computational Efficiency"
-permalink: "lessons/time_integrators/sundials"
+permalink: "lessons/time_integrators_sundials"
 use_math: true
 lesson: true
 header:
@@ -21,7 +21,7 @@ header:
 **Note:** To begin this lesson...
 
 ```bash
-cd {{site.handson_root}}/time_integrators/sundials
+cd {{site.handson_root}}/time_integrators_sundials
 source source_cooley_plotfile_tools.sh
 ```
 
