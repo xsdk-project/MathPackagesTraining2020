@@ -60,7 +60,7 @@ given initial condition.  The spatial domain is $$(x,y) \in
 The example applications here ([HandsOn1.cpp][3], [HandsOn2.cpp][4]
 and [HandsOn3.cpp][5]) use a finite volume spatial discretization with
 [AMReX][2].  For the _time integration_ (i.e., semi-discretization in time) of this PDE,
-we use the [ARKODE][0] ODE solver from [SUNDIALS][1], to
+we use the [ARKODE][0] ODE integrator from [SUNDIALS][1], to
 demonstrate the use of [SUNDIALS][1] in both serial and parallel for
 more robust and flexible control over temporal integration.
 
@@ -85,7 +85,7 @@ We will investigate this problem in three phases:
 
 2. Implicit / IMEX time integration (`HandsOn2.exe`)
 
-3. Preconditioning (`HandsOn3.exe`)
+3. Preconditioning (`HandsOn3.exe` -- optional)
 
 
 ### Getting help
@@ -212,7 +212,7 @@ an existing simulation code:
       initial condition vector $$u_0(x,y)$$ and the problem-defining
       function $$f(t,u)$$. In our example, these are done [here][10].
 
-   3. Call the SUNDIALS solver to evolve the problem over a series of
+   3. Call the SUNDIALS integrator to evolve the problem over a series of
       time sub-intervals.  Our example does this in a loop [here][11].
 
 
@@ -322,7 +322,7 @@ d. Implicit-explicit partitioning
 ### Specification of algebraic solvers
 
 Once your code is set up to run an explicit method, it is not difficult to
-switch to an implicit or IMEX solver.  All of the relevant changes for this
+switch to an implicit or IMEX integrator.  All of the relevant changes for this
 in are in the file [HandsOn2.cpp][4], and are indicated by the comment
 `***** UPDATED FROM HandsOn1 *****`. The main steps are:
 
@@ -403,9 +403,8 @@ average step size of `HandsOn1.exe` for the same tolerances?
     question='Open the plot `h_vs_iter.png` -- why do the time steps
     gradually increase throughout the simulation?'
     answer='The solution becomes smoother and decays toward zero as
-    time goes on, making the initial guesses for each Newton and GMRES
-    iteration more accurate, and the systems easier to solve, so
-    ARKODE gradually increases the step size as it is able.' %}
+    time goes on.  Since the solution changes more gradually as time
+    proceeds, the integrator can ramp up the step size.' %}
 
 Run the code a few more times with various values of `rtol` -- how
 well does the adaptivity algorithm produce solutions within the
@@ -438,7 +437,7 @@ implicit and IMEX formulations with these fixed time-step tests?
     answer='Since the explicit portion need only be computed once per
     stage, but the implicit portion must be repeatedly called at each
     stage during the nonlinear solver algorithm, we should expect
-    ARK-IMEX methods to always evalute `Fi` more often than `Fe`.' %}
+    IMEX methods to always evalute `Fi` more often than `Fe`.' %}
 
 Now that we again have an explicit portion of the problem, we should
 expect the time step size to be CFL-limited.  Run the IMEX version a few times
@@ -456,7 +455,38 @@ the overall solution error each time -- can you find an unstable step size?
 
 ----
 
-## Hands-on lesson 3 -- Preconditioning (`HandsOn3.exe`)
+## Out-brief
+
+We have used AMReX and SUNDIALS as a demonstration vehicle for
+illustrating the value of robust time integration methods in numerical
+algorithms. In particular, we have used ARKODE's `ARKStep` time
+integration module from [SUNDIALS][1] to explore a range of questions
+related to time integration and nonlinear solvers:
+
+1. the benefits of _adaptive_ (vs _fixed_) time stepping for both
+   performance and robustness of a simulation code,
+
+2. the effects of the order of the time integration method on method
+   efficiency,
+
+3. the choice of IMEX partitioning in time discretization.
+
+We note that our use of _adaptivity_ here was confined to the
+_time discretization_ only. Other ATPESC lecturers demonstrate the
+advantages of spatial adaptation as well (e.g., AMR).
+
+We further note that we have barely scratched the surface of algebraic
+linear solver algorithms; other of today's ATPESC lecturers focus
+specifically on scalable and robust versions of these algorithms.
+
+Finally, we note that the application demonstrated here can be run on
+much larger spatial meshes and parallel architectures than those
+tested here.
+
+
+----
+
+## Evening hands-on session -- Preconditioning (`HandsOn3.exe`)
 
 This lesson will explore the following topics:
 
@@ -507,7 +537,6 @@ requires three steps:
    integrator [here][18].
 
 
-
 ### Performance with IMEX integration
 
 Run `HandsOn3.exe` using the default parameters,
@@ -518,22 +547,11 @@ and again with preconditioning disabled,
 ```bash
 ./HandsOn3.exe inputs-3 use_preconditioner=0
 ```
-_note that the preconditioned version takes longer to run on this
+Note that the preconditioned version takes longer to run on this
 coarse problem, but shows significant improvements in the overall
-number of linear solver iterations._
-
-{% include qanda
-    question='Given that the above test resulted in a _slower_ code
-    when using preconditioning, then why is preconditioning used in
-    large-scale simulation?'
-    answer='We only ran this code on a very coarse problem, where the
-    un-preconditioned GMRES solver proved "sufficient" for solving the
-    Newton linear systems; however at larger scales the linear system
-    becomes "ill-conditioned," requiring a preconditioner for
-    convergence.  Related -- the preconditioned solver should be
-    algorithmically scalable, so at some point we should expect the
-    preconditioned version to out-perform the unpreconditioned
-    version.' %}
+number of linear solver iterations.  However, as the mesh is refined
+the preconditioned solver performance will remain relatively 'steady',
+while the un-preconditioned solver will deteriorate rapidly.
 
 
 ### Performance with fully implicit integration
@@ -545,83 +563,23 @@ Re-run `HandsOn3.exe` using a fully-implicit problem formulation,
 Recall that this preconditioner only 'preconditions' the diffusion
 portion of the problem, so when run in a fully-implicit manner the
 implicit advection terms are left un-preconditioned.  Is this
-discrepancy noticeable when comparing the solver statistics (number of
+discrepancy noticeable when comparing the integrator statistics (number of
 time steps, total linear iterations, etc.)?
 
-In the evening hands-on session (below), you can explore the
-scalability and efficiency of both the un-preconditioned and
-preconditioned versions of this hands-on lesson.
 
+### Scalability tests
 
-----
+Explore the weak scalability of `HandsOn3.exe` both with and without
+preconditioning.  Here, use from 1 to 36 MPI tasks, with a base grid
+of $$128^2$$ per MPI task, and retain the default temporal adaptivity.
+The choice of IMEX vs fully implicit is yours.  It is recommended that
+you use the batch queue instead of running interactively. Produce a
+weak scaling plot with these results.
 
-## Out-brief
-
-We have used AMReX and SUNDIALS as a demonstration vehicle for
-illustrating the value of robust time integration methods in numerical
-algorithms. In particular, we have used ARKODE's `ARKStep` time
-integration module from [SUNDIALS][1] to explore a range of questions
-related to time integration and nonlinear solvers:
-
-1. the benefits of _adaptive_ (vs _fixed_) time stepping for both
-   performance and robustness of a simulation code,
-
-2. the effects of the order of the time integration method on method
-   efficiency,
-
-3. the increased cost (and scalability) offered through use of
-   advanced preconditioning methods, and
-
-4. the choice of IMEX partitioning in time discretization.
-
-We note that our use of _adaptivity_ here was confined to the
-_time discretization_ only. Other ATPESC lecturers demonstrate the
-advantages of spatial adaptation as well (e.g., AMR).
-
-We further note that we have barely scratched the surface of linear
-solver algorithms; while GMRES with geometric multigrid
-preconditioning remains a top choice of many large-scale applications,
-other ATPESC lecturers will focus on alternatives that can work for much
-broader classes of problems.
-
-Finally, we note that the application demonstrated here can be run on
-much larger spatial meshes and parallel architectures than those
-tested here.
-
-----
-
-## Evening hands-on session
-
-Each of the following tasks are independent of one another.  Choose
-one to explore in detail during this evening session (or if
-interested, you may do multiple).
-
-1. (10 points) Examine the explicit stability boundary for
-   `HandsOn1.exe` as the mesh size `n_cell` is changed to 256 and 512.
-   Do the same for `HandsOn2.exe` when running in IMEX mode (with
-   explicit advection).  Determine whether the stability boundaries
-   for these problems are $$\Delta t_n \propto \Delta x$$ or
-   $$\Delta t_n \propto \Delta x^2$$.
-
-2. (5 points) Explore the weak scalability of `HandsOn3.exe` both with
-   and without preconditioning.  Here, use from 1 to 36 MPI tasks,
-   with a base grid of $$128^2$$ per MPI task, and retain the default
-   temporal adaptivity.  The choice of IMEX vs fully implicit is
-   yours.  It is recommended that you use the batch queue instead of
-   running interactively. Produce a weak scaling plot with these
-   results.
-
-3. (10 points) Add a simple 'reaction' term to the problem, e.g.
-
-   $$\frac{\partial u}{\partial t} + \vec{a} \cdot \nabla u -  \nabla \cdot ( D \nabla u ) = -u^2$$
-
-   You may add this to either the explicit or implicit portions of the
-   right-hand side; how well does the existing preconditioner do after
-   this is added?
-
-When you are done, be sure to submit a [Show Your Work](https://goo.gl/forms/B7UFpBvEOJbC58oJ2)
+When you are done, be sure to submit a
+[Show Your Work](https://goo.gl/forms/B7UFpBvEOJbC58oJ2)
 using the hands-on activity name _Time Integrators_ and upload
-evidence of your completed solutions.
+your weak-scaling plots.
 
 
 ### Further reading
