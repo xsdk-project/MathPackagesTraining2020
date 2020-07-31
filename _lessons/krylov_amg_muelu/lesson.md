@@ -23,7 +23,7 @@ header:
 #### To begin this lesson
 
 <!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
-Make sure that you have followed the [setup instructions](/setup_instructions).
+Make sure that you have followed the [setup instructions]({{site.url}}){{site.baseurl}}/setup_instructions/).
 
 Go to the directory for the Krylov application
 ```
@@ -533,13 +533,13 @@ export CUDA_MANAGED_FORCE_DEVICE_ALLOC=1
 ```
 Try running
 ```
-./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
+./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml --nx=1000 --ny=1000 --timings | egrep "total solve time|Number of Iterations"
 ```
 with the refactor option set.
 
 If you want to use both GPUs, run
 ```
-mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
+mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml --nx=1000 --ny=1000 --kokkos-num-devices=2
 ```
 
 ---
