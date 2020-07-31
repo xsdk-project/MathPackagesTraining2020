@@ -450,7 +450,7 @@ applications that address our science questions of interest.
 
 ----
 
-## Evening Hands On Session
+## Optional Homework
 
 ### Short / Quick Follow-on Questions
 
