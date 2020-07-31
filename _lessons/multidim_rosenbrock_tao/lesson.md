@@ -309,23 +309,23 @@ with a global minimum at $$p_i = 1$$.
 The gradient of the multidimensional Rosenbrock problem is given as
 
 $$
-\begin{aligned}
+\begin{align}
   \frac{df}{dp_1} &= -400p_1(p_2 - p_1^2) -2(1 - p_1), \\
   \frac{df}{dp_j} &= 200(p_j - p_{j-1}^2) - 400p_j(p_{j+1} - p_j^2) - 2(1 - p_j) \quad \forall \; j = 2, 3, \dots, N-1, \\
   \frac{df}{dp_N} &= 200(p_N - p_{N-1}^2).
-\end{aligned}
+\end{align}
 $$
 
 The Hessian is a tridiagonal sparse matrix with nonzero elements given as
 
 $$
-\begin{aligned}
+\begin{align}
   \frac{d^2f}{dp_1^2} &= 1200p_1^2 - 400p_2 + 2, \\
   \frac{d^2f}{dp_i dp_{i-1}} &= -400p_{i-1} \quad \forall \; i= 2, 3, \dots, N-1, \\
   \frac{d^2f}{dp_i dp_i} &= 202 + 1200p_i^2 - 400p_{i+1} \quad \forall \; i= 2, 3, \dots, N-1, \\
   \frac{d^2f}{dp_i dp_{i+1}} &= -400p_i \quad \forall \; i= 2, 3, \dots, N-1, \\
   \frac{d^2f}{dp_N^2} &= 200.
-\end{aligned}
+\end{align}
 $$
 
 </details>
