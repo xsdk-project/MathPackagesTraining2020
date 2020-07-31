@@ -19,6 +19,7 @@ in [St. Charles, IL.](https://en.wikipedia.org/wiki/St._Charles,_Illinois)
 where [ATPESC](https://extremecomputingtraining.anl.gov) is ordinarily hosted.
 
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
+<center style="font-size:24px"><a href="{{vroom.slack}}">Launch Slack Chat for This room</a></center>
 
 ## Events occuring in this space
 

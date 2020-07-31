@@ -27,13 +27,13 @@
 
 - title: "Unstructured Discretization"
   speakers:
-    - "Mark Shephard"
     - "Aaron Fisher"
+    - "Mark Shephard"
   vname: "Aurora"
   has_synopsis: true
   id: 5
 
-- title: "Iterative Solvers & Preconditioners<br>with MeuLu"
+- title: "Iterative Solvers & Preconditioners<br>with MueLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -44,7 +44,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 7
 
 - title: "**Break**<br>*SME selections*<br>*Panel Questions*"
@@ -67,8 +69,8 @@
 
 - title: "Unstructured Discretization"
   speakers:
-    - "Mark Shephard"
     - "Aaron Fisher"
+    - "Mark Shephard"
   vname: "Aurora"
   has_synopsis: true
   id: 11 
@@ -83,7 +85,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 13 
 
 - title: "**Lunch**<br>*SME selections*<br>*Panel Questions Due*"
@@ -91,10 +95,18 @@
   length: 60
   id: 14 
 
-- title: "Panel"
+- title: "Panel - The Numerical<br>Package Community"
+  speakers:
+    - "Jonathan Hu"
+    - "Sherry Li"
+    - "Richard Tran Mills"
+    - "Cameron Smith"
+    - "Ulrike Yang"
+    - "Mark Miller"
   start: "Tue Aug 4 1:45 PM"
   length: 45 
   vname: "Amphitheater"
+  has_synopsis: true
   id: 15 
 
 - title: "Telecon Transition"
@@ -109,7 +121,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 18 
@@ -118,6 +130,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 19 
 
 - title: "Time Integration"
@@ -127,7 +140,7 @@
   id: 20 
   has_synopsis: true
 
-- title: "Iterative Solvers & Preconditioners<br>with MeuLu"
+- title: "Iterative Solvers & Preconditioners<br>with MueLu"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -147,7 +160,7 @@
 
 - title: "Nonlinear Solvers"
   speakers:
-    - "Richard Mills"
+    - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 24 
@@ -156,6 +169,7 @@
   speakers:
     - "Alp Dener"
   vname: "Aurora"
+  has_synopsis: true
   id: 25 
 
 - title: "Time Integration"
@@ -168,7 +182,9 @@
 - title: "Direct Solvers"
   speakers:
     - "Sherry Li"
+    - "Pieter Ghysels"
   vname: "El-Capitan"
+  has_synopsis: true
   id: 27 
 
 - title: "Telecon Transition"
@@ -176,12 +192,13 @@
   length: 05
   id: 28 
 
-- title: "Wrap up"
+- title: "Numerical Packages in Practice"
   start: "Tue Aug 4 4:35 PM"
   length: 25 
   speakers:
     - "Ann Almgren"
   vname: "Amphitheater"
+  has_synopsis: true
   id: 29 
 
 - title: "**END OF OFFICIAL AGENDA**"
@@ -192,7 +209,8 @@
   length: 15
   id: 31 
 
-- title: "SME Speed Dating"
+- title: "SME Speed Dating<br>OPTIONAL ACTIVITY"
   start: "Tue Aug 4 5:15 PM"
   length: 80
+  has_synopsis: true
   id: 32

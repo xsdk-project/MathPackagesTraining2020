@@ -18,6 +18,7 @@ Scheduled for delivery in 2021, [Frontier]({{vroom.webinfo}}) will exceed 1.5 ex
 innovation in science and technology in high-performance computing and artificial intelligence. 
 
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
+<center style="font-size:24px"><a href="{{vroom.slack}}">Launch Slack Chat for This room</a></center>
 
 ## Events occuring in this space
 

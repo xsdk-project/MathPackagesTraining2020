@@ -5,7 +5,8 @@ subheadline: "Numerical Optimization"
 teaser: "Leveraging interoperability between PETSc/TAO and MFEM"
 permalink: "lessons/obstacle_tao/"
 use_math: true
-lesson: true
+lesson: false
+not_active: true
 header:
  image_fullwidth: "xsdk_logo_wide-fs8.png"
 ---

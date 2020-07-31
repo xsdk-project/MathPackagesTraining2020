@@ -21,6 +21,8 @@
     url: "https://docs.google.com/forms/d/e/1FAIpQLScNmuc4_RstcqAHHNy4FGNmYG0efyTxKaNmhmmMaQ7IjNHVxw/viewform?usp=sf_link"
   - title: "Women in Computing Game (opens 3:35PM)"
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe9PENDMfpOysjyvAKjAHOhUNFyerRM1fVfNopyqdTZwnMVYg/viewform?usp=sf_link"
+  - title: "Google Docs Folder - Instructors only please!"
+    url: "https://drive.google.com/drive/folders/1AaAZZ-uSXg6ofjRD4cEzuZYbxhPXK1VE"
 
 - title: Lessons
   audience: "public"
@@ -33,7 +35,7 @@
     url: "/lessons/pumi/"
   - title: "Unstructured Meshing & Discretization with MFEM"
     url: "/lessons/mfem_convergence/"
-  - title: "Meshing and Discretization with AMReX"
+  - title: "Structured Meshing & Discretization with AMReX"
     url: "/lessons/amrex/"
   - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg_muelu/"
@@ -43,12 +45,8 @@
     url: "/lessons/superlu_mfem/"
   - title: "Time Integration and Nonlinear Solvers with SUNDIALS"
     url: "/lessons/time_integrators/sundials"
-  - title: "Poisson Boundary Control with PETSc/Tao"
-    url: "/lessons/boundary_control_tao/"
   - title: "Numerical Optimization with PETSc/TAO"
-    url: "/lessons/obstacle_tao"
-  - title: "Using adjoint for PDE-constrained optimization"
-    url: "/lessons/adjoint/"
+    url: "/lessons/multidim_rosenbrock_tao/"
 
 - title: Packages
   audience: "public"

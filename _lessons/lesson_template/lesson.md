@@ -35,8 +35,6 @@ Example...
 
 ### To begin this lesson
 
-* [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLSet4PY6wpTjGwAbo-fywgo7muexTE_Q9blWBMTBVV0vVwzejQ/viewform?usp=sf_link){:target="_blank"}
-
 ## The Problem Being Solved
 
 Describe the problem(s) that will be solved in this lesson.

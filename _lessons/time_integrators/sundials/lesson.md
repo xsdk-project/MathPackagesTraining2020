@@ -7,8 +7,6 @@ use_math: true
 lesson: true
 header:
  image_fullwidth: "sundials-fs8.png"
-#answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSe9oHru75v6pjsuSUpZruSbqAIpY-8flx-g6ZP1STXEqcvTgg/viewform?usp=sf_link"
-#youtube: https://youtu.be/uuJaSjhi1dc
 ---
 ## At a glance
 

@@ -1,3 +1,35 @@
+TODO for ATPESC2020
+  - Have people set up new Zoom meetings
+  - Remove old Zoom test meetings
+  - Moderator instructions
+  - Test recording
+  - Moderator instructions for recording
+  - Setup instructions
+  - Send email/note to students regarding setup
+  - My logistics slides
+  - My work for CI example
+  - Instructions for Eddie/Cyrus
+  - Moderators to replace me
+  - PowerPoint practices
+  - Zoom practices
+  - fall back communications
+  - slide links added to site
+  - Tips for bandwidth control in Zoom
+  - Timers to activate forms at various times
+  - My hands on example
+  - How will students "raise hand"
+  - Unmuting to allow a student to ask a question (moderator role)
+  - Other software off while presenting/moderating
+  - Help with SME speed dating...how do we inform people of their selections?
+  - Share screen vs. share app.
+  - Lesson instructions match software locations
+  - Everyone presenting ensure they have tested screen sharing and audio ahead of time
+  - Everyone moderating ensure they have tested audio and familiarize with Zoom controls
+  - VIP content on site
+  - Slack channels and links
+  - Disable Zoom chat?
+
+
 TODO for ATPESC2019
     - Review hand-coded-heat lesson
     - Try running other's software according to lesson
