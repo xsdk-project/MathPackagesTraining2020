@@ -1,3 +1,5 @@
+PETSC_DIR=/lus/theta-fs0/projects/ATPESC2020/MathPackagesTraining2020/spack.a/opt/spack/linux-rhel7-haswell/gcc-8.2.0/petsc-3.13.3-zkhwzwtyqgrp5um7p27izmueoqm3rxfs
+
 CFLAGS		 =
 FFLAGS		 =
 CPPFLAGS         =
