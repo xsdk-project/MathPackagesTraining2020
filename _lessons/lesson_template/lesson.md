@@ -6,9 +6,14 @@ teaser: "Set your teaser here..."
 permalink: "lessons/lesson_template/"
 use_math: true
 lesson: true
+not_active: true 
 header:
  image_fullwidth: "matrices.png"
 ---
+
+<!--------------------------------------------------------------------------------------------------------------
+   IMPORTANT: Remove the "not_active: true" line in the metadata above to make the lesson appear on the website.
+--------------------------------------------------------------------------------------------------------------->
 
 ## At a Glance
 

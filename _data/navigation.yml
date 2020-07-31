@@ -41,11 +41,13 @@
     url: "/lessons/krylov_amg_muelu/"
   - title: "Krylov Solvers and Preconditioning with HYPRE"
     url: "/lessons/krylov_amg_hypre/"
-  - title: "Sparse, Direct Solvers"
+  - title: "Sparse, Direct Solvers with SuperLU"
     url: "/lessons/superlu_mfem/"
-  - title: "Time Integration and Nonlinear Solvers with SUNDIALS"
+  - title: "Nonlinear Solvers with PETSc"
+    url: "/lessons/nonlinear_solvers_petsc/"
+  - title: "Time Integration with SUNDIALS"
     url: "/lessons/time_integrators/sundials"
-  - title: "Numerical Optimization with PETSc/TAO"
+  - title: "Numerical Optimization with TAO"
     url: "/lessons/multidim_rosenbrock_tao/"
 
 - title: Packages
