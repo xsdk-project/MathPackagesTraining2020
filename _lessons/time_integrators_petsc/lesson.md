@@ -2,7 +2,7 @@
 layout: page-fullwidth
 title: "Time Integration & Non-Linear Solvers with PETSc"
 subheadline: "Role and Impact of Time Integrators in Time to Solution"
-permalink: "lessons/time_integrators/petsc"
+permalink: "lessons/time_integrators_petsc"
 use_math: true
 lesson: true
 not_active: true
