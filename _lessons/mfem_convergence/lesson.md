@@ -16,7 +16,6 @@ header:
 |What is _convergence_?|Understand how convergence and<br>convergence rate are calculated.|High order methods converge<br>faster for smooth solutions.|
 
 **Note:** To begin this lesson...
-- [Open the Answers Form](https://docs.google.com/forms/d/e/1FAIpQLScs9reOCfuD1CfbQ-m458MDyvwiTCRXEcp1XCQukaf5tP_uSQ/viewform?usp=sf_link){:target="_blank"}
 - Get into the directory containing the MFEM [convergence](https://github.com/mfem/mfem/blob/atpesc-dev/examples/atpesc/mfem/convergence.cpp) example:
 ```
 cd {{site.handson_root}}/mfem_convergence
