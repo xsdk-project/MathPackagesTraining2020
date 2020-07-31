@@ -24,7 +24,7 @@ make multidim_rosenbrock
 ./multidim_rosenbrock -tao_monitor
 ```
 
-## Brief Introduction to Optimization
+## Introduction to Optimization
 
 Optimization algorithms seek to find the input variables or parameters (referred to as "control", 
 "design" or "optimization" variables) that minimize (or maximize) a function of interest.
@@ -41,7 +41,7 @@ Solutions to this problem are found where the gradient of the objective function
 However, this is only a *necessary* but not sufficient condition for optimality given that other stationary points 
 (e.g. maxima) also satisfy this condition.
 
-## Sequential Quadratic Programming
+### Sequential Quadratic Programming (SQP)
 
 To find local minima for the above problems, we replace the original problem with a sequence of quadratic subproblems,
 
@@ -74,13 +74,16 @@ In this approach, different approximations to the search direction solution yiel
 + **Conjugate Gradient:** $$d_k = -g_k + \beta d_{k-1}$$ with $$\beta$$ defining different CG update formulas
 + **Gradient Descent:** $$d = g_k$$ with Hessian replaced with the identity matrix
 
-Further variations exist in combination with other globalization methods such as trust region and filter methods. In 
-the present lecture, however, we only consider line search versions.
+Truncated Newton is considered a second-order method because it utilizes full second-order derivative information in 
+the solution of the search direction. Meanwhile, Gradient Descent and Conjugate Gradient methods are clear first-order 
+methods as they only use the gradient of the objective. The Quasi-Newton method, although technically a first-order 
+method, typically exhibits performance closer to Newton's method by utilizing a Secant approximation to estimate 
+second-order information.
 
+{::options parse_block_html="true" /}
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
 <summary><h4 style="margin: 0 0 0 0; display: inline">Notes on PDE-constrained Optimization (Click to expand!)</h4></summary>
-
 Oftentimes we are interested in solving optimization problems where the evaluation of the objective function depends on 
 the solution of a partial-differential-equation (PDE). These problems are represented in the most general case by
 
@@ -104,21 +107,69 @@ evaluation of the objective function, as well as an adjoint solution to efficien
 
 For more detail on PDE-constrained optimization, please refer to the <a href="https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/">"Boundary Control with PETSc/TAO and AMReX" 
 lecture from ATPESC 2019</a>.
+</p>
 </details>
 </div>
+{::options parse_block_html="false" /}
 
-## Sensitivity Analysis
+### Sensitivity Analysis
 
+Sequential Quadratic Programming is a gradient-based approach -- i.e., it uses information about the sensitivity of the 
+objective function output to changes in the input (optimization) parameters to iteratively search for the nearest local 
+minimum. In order to use SQP algorithms, the applications must, at minimum, provide first-order derivative information.
 
+In the broadest sense, there are two generalized ways to compute gradients.
+
+**Numerical Differentiation** approximates the derivative of a function using numerical methods. In the current 
+lecture, we will evaluate the finite difference (FD) method and specifically use the forward difference formulation 
+given by
+
+$$
+\frac{df}{dp_i} = \frac{f(p + he_i) + f(p)}{h} + \mathcal{O}(h) \quad \forall \; i = 1, 2, \dots, N,
+$$
+
+where $$h$$ is the finite perturbation, $$e_i$$ is the standard basis vector for the $$i^{th}$$ coordinate, and 
+$$\mathcal{O}(h)$$ is truncation error for the approximation.
+
+The FD method allows us to compute the gradient for any function easily, using only the function output, without 
+requiring information about the function itself. However, computing each element of the gradient requires a separate 
+function evaluation, causing the computational cost of the method to scale up rapidly with increasing problem sizes.
+
+Furthermore, the FD method also presents a step size dilemma in choosing the numerical magnitude of the perturbation 
+$$h$$. The step size must be chosen sufficiently small to minimize truncation error, but also sufficiently large to 
+ensure that subtractive cancellation error does not dominate. Since this cancellation error is problem-dependent, 
+the ideal value of $$h$$ differs for each application and may leave the user no choice but to accept the presence of 
+a large error in the gradient.
+
+**Analytical Differentiation** computes the exact derivative by generating a stand-alone mathematical or algorithmic 
+expression for the gradient.
+
+<img src="analytical_deriv.png" alt="2D Rosenbrock Function" width="50%" style="display: block; margin-left: auto; margin-right: auto;">
+
+For simpler problems with objective functions that have human-readable closed-form expressions, this approach can be 
+thought of as manually differentiating the expression on paper and implementing a dedicated subroutine to evaluate it. 
+The hands-on example problem below is implemented with this approach.
+
+For problems where the objective function depends on a complex subroutine (e.g. the discretized residual for a partial 
+differential equation), algorithmic or automatic differentiation (AD) applies the chain rule to the sequence of 
+elementary operations performed by the function. This is typically done with an AD tool that transforms the source code 
+to generate a new subroutine for the derivative before compile time, or an AD library that overloads the elementary 
+operations in the source code at compile time to generate compiled code for the derivative.
+
+In either form, analytical differentiation produces accurate gradients at a computational cost that is largely 
+insensitive to the size of the optimization problem. However, symbolic differentiation is simply not applicable to 
+many practical scientific problems and automatic differentiation carries with it a greater implementation burden for 
+the application code. FD method remains an easy alternative for rapid prototyping and testing, especially when the 
+problem size is small and objective function evaluations are not expensive.
 
 ## Using TAO
 
 Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National 
 Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. It is 
-primarily intended for continuous gradient-based optimization, and supports PDE-constrained problems using the 
+primarily intended for continuous gradient-based optimization and supports PDE-constrained problems using the 
 reduced-space formulation.
 
-Below is a TAO main file template that can be adapted to any PDE-constrained problem:
+Below is a TAO main file template that can be adapted to any gradient-based optimization problem:
 
 ```c
 #include "petsc.h"
@@ -204,7 +255,7 @@ optimization algorithm needs to evaluate the objective, its gradient and Hessian
 any data the user has to preserve and propagate through for these computations.
 
 Applications where it is more efficient to evaluate the objective function together with the gradient can use 
-an alternative ``TaoSetObjectiveAndGradientRoutine()`` interface to provide TAO a single ``FormFunctionGradient()`` 
+an alternative [``TaoSetObjectiveAndGradientRoutine()``][5] interface to provide TAO a single ``FormFunctionGradient()`` 
 callback that evaluates both at the same time.
 
 TAO implements several bound-constrained algorithm types that can also solve unconstrained problems when there are no 
@@ -251,46 +302,35 @@ $$
 
 with a global minimum at $$p_i = 1$$.
 
+{::options parse_block_html="true" /}
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
 <summary><h4 style="margin: 0 0 0 0; display: inline">Gradient and Hessian Definitions (Click to expand!)</h4></summary>
 The gradient of the multidimensional Rosenbrock problem is given as
 
 $$
-\frac{df}{dp_1} = -400p_1(p_2 - p_1^2) -2(1 - p_1),
-$$
-
-$$
-\frac{df}{dp_j} = 200(p_j - p_{j-1}^2) - 400p_j(p_{j+1} - p_j^2) - 2(1 - p_j) \quad \forall \; j = 2, 3, \dots, N-1,
-$$
-
-$$
-\frac{df}{dp_N} = 200(p_N - p_{N-1}^2).
+\begin{align}
+  \frac{df}{dp_1} &= -400p_1(p_2 - p_1^2) -2(1 - p_1), \\
+  \frac{df}{dp_j} &= 200(p_j - p_{j-1}^2) - 400p_j(p_{j+1} - p_j^2) - 2(1 - p_j) \quad \forall \; j = 2, 3, \dots, N-1, \\
+  \frac{df}{dp_N} &= 200(p_N - p_{N-1}^2).
+\end{align}
 $$
 
 The Hessian is a tridiagonal sparse matrix with nonzero elements given as
 
 $$
-\frac{d^2f}{dp_1^2} = 1200p_1^2 - 400p_2 + 2,
+\begin{align}
+  \frac{d^2f}{dp_1^2} &= 1200p_1^2 - 400p_2 + 2, \\
+  \frac{d^2f}{dp_i dp_{i-1}} &= -400p_{i-1} \quad \forall \; i= 2, 3, \dots, N-1, \\
+  \frac{d^2f}{dp_i dp_i} &= 202 + 1200p_i^2 - 400p_{i+1} \quad \forall \; i= 2, 3, \dots, N-1, \\
+  \frac{d^2f}{dp_i dp_{i+1}} &= -400p_i \quad \forall \; i= 2, 3, \dots, N-1, \\
+  \frac{d^2f}{dp_N^2} &= 200.
+\end{align}
 $$
 
-$$
-\frac{d^2f}{dp_i dp_{i-1}} = -400p_{i-1} \quad \forall \; i= 2, 3, \dots, N-1,
-$$
-
-$$
-\frac{d^2f}{dp_i dp_i} = 202 + 1200p_i^2 - 400p_{i+1} \quad \forall \; i= 2, 3, \dots, N-1,
-$$
-
-$$
-\frac{d^2f}{dp_i dp_{i+1}} = -400p_i \quad \forall \; i= 2, 3, \dots, N-1,
-$$
-
-$$
-\frac{d^2f}{dp_N^2} = 200.
-$$
 </details>
 </div>
+{::options parse_block_html="false" /}
 
 The hands-on example implements the multidimensional Rosenbrock with an analytical gradient and Hessian. However, 
 TAO also provides [``TaoDefaultComputeGradient()``][2] and [``TaoDefaultComputeHessian()``][3] callbacks that utilize finite-differencing to generate the required sensitivities.
@@ -338,21 +378,46 @@ The problem can be modified with various option flags:
 
 ### Hands-on Activities
 
-1. Increase the problem size with the `-n <size>` argument (default size is 2) and evaluate its impact on convergence. 
-
-2. Solve the problem with the finite difference gradient using the `-fd` argument. Change problem size again and 
-evaluate both convergence and iteration speed.
-
-3. Change the TAO algorithm to nonlinear conjugate gradient method using `-tao_type bncg` and to truncated Newton 
+1. Change the TAO algorithm to nonlinear conjugate gradient method using `-tao_type bncg` and to truncated Newton 
 using `-tao_type bnls`. Compare convergence against the default quasi-Newton method (`-tao_type bqnls`). 
+
+2. Increase the problem size with the `-n <size>` argument (default size is 2) and evaluate its impact on convergence.
+  * Repeat Activity 1 with different TAO algorithms. Do they all exhibit the same scaling?
+
+3. Solve the problem with the finite difference gradient using the `-fd` argument. Evaluate convergence and solution 
+time with increasing problem size.
 
 4. Try running the problem in parallel with `mpirun -np <# of processes> ./multidim_rosenbrock ...`. Why does running 
 in parallel slow the solution down at small problem sizes? How large should the problem be to observe a speedup in 
 parallel runs?
+  * Repeat Activity 4 with different TAO algorithms. Are the break-even points in size vs. performance the same?
 
-5. Repeat Activity 4 with different TAO algorithms. Are the break-even points for size vs. performance the same?
+5. ADVANCED: Add bound constraints to the problem! You must first create two vectors of the same size/distribution as the 
+solution vector using `VecDuplicate()`. You can then set these vectors to be equal to the lower and upper bound values 
+using `VecSet()`. Once defined, these vectors can be given to the TAO solver as bound constraints using the 
+[`TaoSetVariableBounds()`][6] interface.
 
-6. Consider adding bounds to the problem using the ``TaoSetVariableBounds()` interface.
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Notes on Hands-on Activities (Click to expand!)</h4></summary>
+The original Rosenbrock function is a challenging optimization problem to solve despite its small size. The minimum 
+lies in a banana shaped valley that is easy to find for most methods but difficult to traverse through.
+
+The multidimensional variant presents an additional challenge because the numerical magnitude of the sensitivity terms 
+rapidly scale up with the size of the problem and lead to ill-conditioning in the Hessian. This property causes the 
+convergence of second-order methods to a-typically degrade at particularly large problem sizes.
+
+Similar pathologies present themselves often in practical applications. In many cases, simply adding second-order 
+information does not result in improved ``time-to-solution''. Even though second-order algorithms such as truncated 
+Newton methods may converge to the specified tolerance in fewer iterations, each iteration may take significantly 
+more time than first-order methods due to the expensive assembly and/or inversion of a Hessian matrix.
+
+The hands-on activities above are intended to reveal these interactions and trade-offs between problem size, 
+algorithm choice, application-specific pathologies, and parallelization.
+</details>
+</div>
+{::options parse_block_html="false" /}
 
 ## Take-Away Messages
 
@@ -375,3 +440,6 @@ parallel runs?
 [1]: https://en.wikipedia.org/wiki/Rosenbrock_function
 [2]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoDefaultComputeGradient.html)
 [3]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoDefaultComputeHessian.html)
+[4]: https://www.mcs.anl.gov/petsc
+[5]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoSetObjectiveAndGradientRoutine.html
+[6]: https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Tao/TaoSetVariableBounds.html
