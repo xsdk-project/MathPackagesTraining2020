@@ -3,15 +3,19 @@
 
 - name: El-Capitan 
   webinfo: https://www.llnl.gov/news/llnl-and-hpe-partner-amd-el-capitan-projected-worlds-fastest-supercomputer
+  slack: https://join.slack.com/share/zt-g8nka345-qOTKRXRQjwcpL0IC~3yiaA
 
 - name: Aurora
   webinfo: https://www.alcf.anl.gov/aurora
+  slack: https://join.slack.com/share/zt-gf30ta1t-eU5GmwaFLpdv6YOPRlyt0g
 
 - name: Perlmutter
   webinfo: https://www.nersc.gov/systems/perlmutter/
+  slack: https://join.slack.com/share/zt-gc4l10ic-oyu8PBXI8bNmbuNIvDA4gA
 
 - name: Frontier
   webinfo: https://www.olcf.ornl.gov/frontier/
+  slack: https://join.slack.com/share/zt-gf32e40x-q85bhwau9fDuSXbsfCGl5w
 
 - name: Volta
   webinfo: https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/
