@@ -64,6 +64,7 @@ logo: "logo.png"
 collections:
   lessons:
     output: true
+    sort_by: order
   packages:
     output: true
 

@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 10
 title: "Multidimensional Rosenbrock with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "A practical introduction to large-scale optimization"

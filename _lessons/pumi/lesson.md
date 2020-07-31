@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 4
 title: "Adaptive MFEM+PUMI Workflow"
 subheadline: "Conformal Unstructured Mesh Adaptation for Linear Elastic Tensial Loading"
 teaser: "MFEM with PUMI Conformal Unstructured Mesh Adaptation"

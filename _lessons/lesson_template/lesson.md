@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 0
 title: "Lesson Template"
 subheadline: "Outline of lesson"
 teaser: "Set your teaser here..."
