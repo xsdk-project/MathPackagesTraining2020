@@ -335,8 +335,7 @@ $$
 The hands-on example implements the multidimensional Rosenbrock with an analytical gradient and Hessian. However, 
 TAO also provides [``TaoDefaultComputeGradient()``][2] and [``TaoDefaultComputeHessian()``][3] callbacks that utilize finite-differencing to generate the required sensitivities.
 
-Get the [makefile](makefile) and [source](multidim_rosenbrock.c) files. Making sure that the `PETSC_DIR` and 
-`PETSC_ARCH` environment variables are set correctly, compile and run the problem as below to solve the default 2-dimensional case.
+Making sure that the `PETSC_DIR` environment variable is set correctly in the [makefile](makefile), compile and run the [source code](multidim_rosenbrock.c) as below to solve the default 2-dimensional case.
 ```
 $ make multidim_rosenbrock
 $ ./multidim_rosenbrock -tao_monitor
