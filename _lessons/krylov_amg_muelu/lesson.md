@@ -23,7 +23,7 @@ header:
 #### To begin this lesson
 
 <!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
-Make sure that you have followed the [setup instructions]({{site.url}}){{site.baseurl}}/setup_instructions/).
+Make sure that you have followed the [setup instructions]({{site.url}}/{{site.baseurl}}/setup_instructions/).
 
 Go to the directory for the Krylov application
 ```
