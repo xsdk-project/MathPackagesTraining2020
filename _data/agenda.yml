@@ -95,10 +95,18 @@
   length: 60
   id: 14 
 
-- title: "Panel"
+- title: "Panel - The Numerical<br>Package Community"
+  speakers:
+    - "Jonathan Hu"
+    - "Sherry Li"
+    - "Richard Tran Mills"
+    - "Cameron Smith"
+    - "Ulrike Yang"
+    - "Mark Miller"
   start: "Tue Aug 4 1:45 PM"
   length: 45 
   vname: "Amphitheater"
+  has_synopsis: true
   id: 15 
 
 - title: "Telecon Transition"
@@ -184,12 +192,13 @@
   length: 05
   id: 28 
 
-- title: "Wrap up"
+- title: "Numerical Packages in Practice"
   start: "Tue Aug 4 4:35 PM"
   length: 25 
   speakers:
     - "Ann Almgren"
   vname: "Amphitheater"
+  has_synopsis: true
   id: 29 
 
 - title: "**END OF OFFICIAL AGENDA**"
@@ -200,7 +209,8 @@
   length: 15
   id: 31 
 
-- title: "SME Speed Dating"
+- title: "SME Speed Dating<br>OPTIONAL ACTIVITY"
   start: "Tue Aug 4 5:15 PM"
   length: 80
+  has_synopsis: true
   id: 32
