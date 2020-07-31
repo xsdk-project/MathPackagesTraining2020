@@ -108,7 +108,6 @@ evaluation of the objective function, as well as an adjoint solution to efficien
 
 For more detail on PDE-constrained optimization, please refer to the <a href="https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/">"Boundary Control with PETSc/TAO and AMReX" 
 lecture from ATPESC 2019</a>.
-</p>
 </details>
 </div>
 {::options parse_block_html="false" /}
