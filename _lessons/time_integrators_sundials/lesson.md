@@ -21,7 +21,7 @@ header:
 **Note:** To begin this lesson...
 
 ```bash
-cd {{site.handson_root}}/time_integrators/sundials
+cd {{site.handson_root}}/time_integrators_sundials
 source source_cooley_plotfile_tools.sh
 ```
 
