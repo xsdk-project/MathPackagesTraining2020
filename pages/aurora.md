@@ -20,6 +20,8 @@ first supercomputer able to sustain 1 exaFLOP.
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
 <center style="font-size:24px"><a href="{{vroom.slack}}">Launch Slack Chat for This room</a></center>
 
+[app link](slack://channel?team={TMW2FLNCQ}&id={C01886F33FE})
+
 ## Events occuring in this room
 
 {% include agenda room_filter="Aurora" %}
