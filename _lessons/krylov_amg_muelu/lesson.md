@@ -309,9 +309,10 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 
 <img src="arrow.png" width="30"> Run
 ```
-mpiexec -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 1  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+<!-- mpiexec -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
+<!-- mpiexec -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
+<!-- mpiexec -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
 mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
@@ -329,26 +330,26 @@ like Jacobi or Gauss-Seidel.
   - The SpMV kernel is naturally parallelizable with many high-performance implementations.  There are limited opportunities for parallelism in Gauss-Seidel,
     e.g., coloring.
 
-We switch the smmother to Chebyshev.
+We switch the smother to Chebyshev.
 <img src="arrow.png" width="30"> Repeat the above experiment.
 ```
-./MueLu_Stratimikos.exe               --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 1 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+<!-- mpiexec -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
+<!-- mpiexec -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
+<!-- mpiexec -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
-{% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
+<!-- {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %} -->
 
-{% include qanda question='Can you explain your observations?' answer='First, when Gauss-Seidel is run with
-more than one MPI rank,
-the order in which unknowns are updated is different than in serial.
-Second, the Ifpack2 Gauss-Seidel implementation is additive. Each MPI rank simultaneously runs
-Gauss-Seidel on the process-local unknowns, and communication occurs only after all MPI ranks have completed their
-local solves.
-In a true multiplicative implementation, each MPI rank would solve its local unknowns in turn, with communication between
-each rank solve.  Third, Chebyshev is relatively unaffected by the number of MPI processes due its use of the SpMV kernel.' %}
+<!-- {% include qanda question='Can you explain your observations?' answer='First, when Gauss-Seidel is run with -->
+<!-- more than one MPI rank, -->
+<!-- the order in which unknowns are updated is different than in serial. -->
+<!-- Second, the Ifpack2 Gauss-Seidel implementation is additive. Each MPI rank simultaneously runs -->
+<!-- Gauss-Seidel on the process-local unknowns, and communication occurs only after all MPI ranks have completed their -->
+<!-- local solves. -->
+<!-- In a true multiplicative implementation, each MPI rank would solve its local unknowns in turn, with communication between -->
+<!-- each rank solve.  Third, Chebyshev is relatively unaffected by the number of MPI processes due its use of the SpMV kernel.' %} -->
 
 Choosing a smoother that is computationally inexpensive but with poor convergence properties can result in a large number of solver iterations.
 Choosing a smoother that is computationally expensive but with good convergence properties can result in a small number of solver iterations, but overall long
