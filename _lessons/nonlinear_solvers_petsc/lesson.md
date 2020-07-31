@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 8
 title: "Nonlinear Solvers with PETSc"
 subheadline: "--Insert Subheadline=="
 teaser: "--Insert Teaser--"

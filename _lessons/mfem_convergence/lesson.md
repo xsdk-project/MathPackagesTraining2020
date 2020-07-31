@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 3
 title: "Unstructured Meshing & Discretization with MFEM"
 subheadline: "Finite Elements and Convergence"
 permalink: "lessons/mfem_convergence/"

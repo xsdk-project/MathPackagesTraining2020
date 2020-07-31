@@ -1,7 +1,9 @@
 ---
 layout: page-fullwidth
+order: 9
+subheadline: "Time Integration"
 title: "Time Integration with SUNDIALS"
-subheadline: "Role and Impact of Time Integrators in Solution Accuracy and Computational Efficiency"
+teaser: "Role and Impact of Time Integrators in Solution Accuracy and Computational Efficiency"
 permalink: "lessons/time_integrators/sundials"
 use_math: true
 lesson: true

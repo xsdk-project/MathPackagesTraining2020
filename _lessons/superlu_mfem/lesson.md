@@ -1,7 +1,9 @@
 ---
 layout: page-fullwidth
-title: "Sparse, Direct Solvers"
-subheadline: "Role and Use of Direct Solvers in Ill-Conditioned Problems"
+order: 5
+subheadline: "Linear Solvers"
+title: "Sparse, Direct Solvers with SuperLU"
+teaser: "Role and Use of Direct Solvers in Ill-Conditioned Problems"
 permalink: "lessons/superlu_mfem/"
 use_math: true
 lesson: true

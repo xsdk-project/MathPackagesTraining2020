@@ -1,7 +1,9 @@
 ---
 layout: page-fullwidth
+order: 6
+subheadline: "Linear Solvers"
 title: "Krylov Solvers and Preconditioning with MueLu/Trilinos"
-subheadline: "Introduction to Krylov Solvers and Preconditioning, with emphasis on Multigrid"
+teaser: "Introduction to Krylov Solvers and Preconditioning, with emphasis on Multigrid"
 permalink: "lessons/krylov_amg_muelu/"
 use_math: true
 lesson: true

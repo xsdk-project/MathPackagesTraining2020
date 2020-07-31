@@ -1,5 +1,6 @@
 ---
 layout: page-fullwidth
+order: 1
 title: "Hand Coded Heat"
 subheadline: "Hello World for Numerical Packages"
 teaser: "Why use numerical packages..."
