@@ -33,6 +33,18 @@ rsync -a {{site.handson_install_root}}/{{site.handson_root}} .
   * **Note 1:** do not include a trailing slash, `/` in the path argument.
   * **Note 2:** You may be asked periodically throughout the day to re-execute
 this command to update your local copy if we discover changes are necessary.
+1. Setup to use appropriate MPI and GCC
+  * The above software is built with gcc-8.2 and corresponding MPI. Please update your `~/.soft.cooley to have
+```
++gcc-8.2.0
++mvapich2-2.2-gcc820
+@default
+```
+  * And run
+```
+resoft
+```
+
 1. Confirm you can compile and run an example
   * As a test case, use an example from hypre to confirm you can compile
     and run an example
