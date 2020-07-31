@@ -27,8 +27,11 @@
 
 - title: "Unstructured Discretization"
   speakers:
-    - "Mark Shephard"
     - "Aaron Fisher"
+    - "Mark Shephard"
+  slides:
+    - "https://drive.google.com/file/d/1r4Q6-xyEinXaV9aub5gEB0yUMyc4GuDA/view?usp=sharing"
+    - "https://drive.google.com/file/d/1Nys2IqY7Q7vfeEP3uLvBBv8rJROW-W6l/view?usp=sharing"
   vname: "Aurora"
   has_synopsis: true
   id: 5
@@ -37,7 +40,8 @@
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
-  slides: "https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing"
+  slides:
+    - "https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing"
   vname: "Perlmutter"
   has_synopsis: true
   id: 6
@@ -70,8 +74,11 @@
 
 - title: "Unstructured Discretization"
   speakers:
-    - "Mark Shephard"
     - "Aaron Fisher"
+    - "Mark Shephard"
+  slides:
+    - "https://drive.google.com/file/d/1r4Q6-xyEinXaV9aub5gEB0yUMyc4GuDA/view?usp=sharing"
+    - "https://drive.google.com/file/d/1Nys2IqY7Q7vfeEP3uLvBBv8rJROW-W6l/view?usp=sharing"
   vname: "Aurora"
   has_synopsis: true
   id: 11 
@@ -79,7 +86,8 @@
 - title: "Iterative Solvers & Preconditioners<br>with Hypre"
   speakers:
     - "Ulrike Yang"
-  slides: "https://drive.google.com/file/d/1gpLnYpRflYPTyBuRfV_kZtSzE-nfy2S2/view?usp=sharing"
+  slides:
+    - "https://drive.google.com/file/d/1gpLnYpRflYPTyBuRfV_kZtSzE-nfy2S2/view?usp=sharing"
   vname: "Perlmutter"
   has_synopsis: true
   id: 12 
@@ -116,6 +124,8 @@
 - title: "Nonlinear Solvers"
   speakers:
     - "Richard Tran Mills"
+  slides:
+    - "https://drive.google.com/file/d/1JxVnZ4fBpYnN2xgBu0RkOQHRZHR-zxbB/view?usp=sharing"
   vname: "Frontier"
   has_synopsis: true
   id: 18 
@@ -132,7 +142,6 @@
     - "Dan Reynolds"
   slides:
     - "https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing"
-    - "https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing"
   vname: "Perlmutter"
   id: 20 
   has_synopsis: true
@@ -141,7 +150,8 @@
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
-  slides: "https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing"
+  slides:
+    - "https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing"
   vname: "El-Capitan"
   has_synopsis: true
   id: 21 
@@ -159,6 +169,8 @@
 - title: "Nonlinear Solvers"
   speakers:
     - "Richard Tran Mills"
+  slides:
+    - "https://drive.google.com/file/d/1JxVnZ4fBpYnN2xgBu0RkOQHRZHR-zxbB/view?usp=sharing"
   vname: "Frontier"
   has_synopsis: true
   id: 24 
@@ -173,7 +185,8 @@
 - title: "Time Integration"
   speakers:
     - "Dan Reynolds"
-  slides: "https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing"
+  slides:
+    - "https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing"
   vname: "Perlmutter"
   has_synopsis: true
   id: 26 
