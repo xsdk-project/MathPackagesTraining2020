@@ -31,8 +31,6 @@
   dropdown:
   - title: "Hand Coded Heat"
     url: "/lessons/hand_coded_heat/"
-  - title: "Adaptive MFEM+PUMI Workflow"
-    url: "/lessons/pumi/"
   - title: "Unstructured Meshing & Discretization with MFEM"
     url: "/lessons/mfem_convergence/"
   - title: "Structured Meshing & Discretization with AMReX"
@@ -46,7 +44,7 @@
   - title: "Nonlinear Solvers with PETSc"
     url: "/lessons/nonlinear_solvers_petsc/"
   - title: "Time Integration with SUNDIALS"
-    url: "/lessons/time_integrators/sundials"
+    url: "/lessons/time_integrators_sundials"
   - title: "Numerical Optimization with TAO"
     url: "/lessons/multidim_rosenbrock_tao/"
 
