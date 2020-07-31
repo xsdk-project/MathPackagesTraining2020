@@ -18,6 +18,7 @@ permalink: "/el-capitan/"
 fully deployed in 2023 and is expected to exceed 2 exaFLOPS.
 
 <center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
+<center style="font-size:24px"><a href="{{vroom.slack}}">Launch Slack Chat for This room</a></center>
 
 ## Events occuring in this room
 
