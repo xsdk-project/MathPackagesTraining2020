@@ -23,6 +23,12 @@ TODO for ATPESC2020
   - Help with SME speed dating...how do we inform people of their selections?
   - Share screen vs. share app.
   - Lesson instructions match software locations
+  - Everyone presenting ensure they have tested screen sharing and audio ahead of time
+  - Everyone moderating ensure they have tested audio and familiarize with Zoom controls
+  - VIP content on site
+  - Slack channels and links
+  - Disable Zoom chat?
+
 
 TODO for ATPESC2019
     - Review hand-coded-heat lesson
