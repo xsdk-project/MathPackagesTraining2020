@@ -30,6 +30,7 @@ solvers to impose incompressibility on a flow around obstacles, and
 
 ### Unstructured Discretization
 ### Unstructured Discretization with MFEM and PUMI
+[Slides - Part 1](https://drive.google.com/file/d/1r4Q6-xyEinXaV9aub5gEB0yUMyc4GuDA/view?usp=sharing)<br>[Slides - Part 2](https://drive.google.com/file/d/1Nys2IqY7Q7vfeEP3uLvBBv8rJROW-W6l/view?usp=sharing)
 
 Unstructured meshes can yield required levels of accuracy using fewer degrees of
 freedom at the cost of more complex parallel data structures and algorithms. To
@@ -39,12 +40,12 @@ mesh simulation capabilities. This lecture will first introduce the highly exten
 MFEM high order finite element solver library and then overview the PUMI unstructured
 mesh tools developed to support mesh adaptation, load balancing and PIC calculations. 
 
-
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Nonlinear Solvers
 ### Nonlinear Solvers with PETSc
+[Slides](https://drive.google.com/file/d/1JxVnZ4fBpYnN2xgBu0RkOQHRZHR-zxbB/view?usp=sharing)
 
 We will begin with a quick overview of iterative solvers for nonlinear systems,
 and then take a deeper look into Newton-Krylov methods and how to use them via
@@ -60,6 +61,7 @@ handle particularly difficult nonlinearities.
 
 ### Time Integration
 ### Time Integration with SUNDIALS
+[Slides](https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing)
 
 In this lecture we discuss the role and impact of high order, adaptive, and
 flexible time integration libraries in solution accuracy and computational
@@ -79,11 +81,13 @@ exercises focus on time-dependent PDEs, and use the SUNDIALS' ARKODE
 library for time integration, along with the AMReX library for spatial
 semi-discretization.
 
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Iterative Solvers & Preconditioners with MueLu
 ### Iterative Solvers & Preconditioners with MueLu
+[Slides](https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing)
 
 In this session, you will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
@@ -99,6 +103,7 @@ model linear problem.
 
 ### Iterative Solvers & Preconditioners with Hypre
 ### Iterative Solvers & Preconditioners with Hypre
+[Slides](https://drive.google.com/file/d/1gpLnYpRflYPTyBuRfV_kZtSzE-nfy2S2/view?usp=sharing)
 
 We will present the basic concepts of iterative linear solvers with focus on
 Krylov solvers, including the generalized minimum residual method (GMRES),
