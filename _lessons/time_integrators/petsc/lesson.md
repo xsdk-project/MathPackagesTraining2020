@@ -4,8 +4,6 @@ title: "Time Integration & Non-Linear Solvers with PETSc"
 subheadline: "Role and Impact of Time Integrators in Time to Solution"
 permalink: "lessons/time_integrators/petsc"
 use_math: true
-youtube: "https://youtu.be/vAJ6kDf7Ifk"
-answers_google_form: "https://docs.google.com/forms/d/e/1FAIpQLSepKOxuQseZ-PycSwocahehWLjdMzPg76pjvNyNZfGxX5vpNQ/viewform?usp=sf_link"
 lesson: true
 not_active: true
 header:

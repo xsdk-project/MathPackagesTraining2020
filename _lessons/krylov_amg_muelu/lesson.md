@@ -20,10 +20,10 @@ header:
 
 #### To begin this lesson
 
-* [Open the Answers Form]({{page.answers_google_form}})
-* Go to the directory for the krylov application
+<!-- * [Open the Answers Form]({{page.answers_google_form}}) -->
+Go to the directory for the krylov application
 ```
-cd {{site.handson_root}}/krylov_amg
+cd {{site.handson_root}}/krylov_amg_muelu
 ```
 
 ## The Problem Being Solved
@@ -309,10 +309,10 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 
 <img src="arrow.png" width="30"> Run
 ```
-mpirun -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe as you add MPI ranks?'
@@ -333,10 +333,10 @@ We switch the smmother to Chebyshev.
 <img src="arrow.png" width="30"> Repeat the above experiment.
 ```
 ./MueLu_Stratimikos.exe               --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-mpirun -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-cheby.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
 ```
 
 {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %}
@@ -517,18 +517,22 @@ MueLu has specialized kernels that allow it to run on next-generation computing 
 using a [Kokkos](https://github.com/kokkos/kokkos) backend.
 If MueLu has been compiled with OpenMP or CUDA support, this code can be enabled at runtime by setting the parameter `use kokkos refactor` to true.
 
-Add the `openmpi-2.1.5` and `cuda-9.1` modules to your environment.
-Try running
+Add the `openmpi-2.1.5` and `cuda-10.0` modules to your environment.
 ```
+soft add +openmpi-2.1.5
+soft add +cuda-10.0
 export CUDA_LAUNCH_BLOCKING=1
 export CUDA_MANAGED_FORCE_DEVICE_ALLOC=1
-./MueLu_Stratimikos_gpu.exe
+```
+Try running
+```
+./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
 ```
 with the refactor option set.
 
 If you want to use both GPUs, run
 ```
-mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --kokkos-ndevices=2
+mpiexec -n 2 ./MueLu_Stratimikos_gpu.exe --xml=mg-gpu.xml
 ```
 
 ---
