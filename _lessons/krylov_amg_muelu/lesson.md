@@ -310,11 +310,11 @@ Now let's see the effect of running Gauss-Seidel with increasing numbers of MPI 
 <img src="arrow.png" width="30"> Run
 ```
 mpiexec -np 1  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+```
 <!-- mpiexec -np 2  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
 <!-- mpiexec -np 4  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
 <!-- mpiexec -np 8  ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
-mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-gs.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-```
 
 {% include qanda question='What do you observe as you add MPI ranks?'
 answer='The number of iterations changes slightly, while the solution time decreases.' %}
@@ -334,11 +334,11 @@ We switch the smother to Chebyshev.
 <img src="arrow.png" width="30"> Repeat the above experiment.
 ```
 mpiexec -np 1 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
+```
 <!-- mpiexec -np 2 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
 <!-- mpiexec -np 4 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
 <!-- mpiexec -np 8 ./MueLu_Stratimikos.exe  --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations" -->
-mpiexec -np 12 ./MueLu_Stratimikos.exe --xml=set3-mg-chebyshev.xml --timings --nx=1000 --ny=1000 |  egrep "total solve time|Number of Iterations"
-```
 
 <!-- {% include qanda question='What do you observe?' answer='The Gauss-Seidel smoother convergence degrades slightly as the number of MPI ranks is increased.  The Chebyshev smoother convergence is unaffected by the number of ranks.' %} -->
 
