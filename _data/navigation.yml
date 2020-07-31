@@ -44,7 +44,7 @@
   - title: "Nonlinear Solvers with PETSc"
     url: "/lessons/nonlinear_solvers_petsc/"
   - title: "Time Integration with SUNDIALS"
-    url: "/lessons/time_integrators_sundials"
+    url: "/lessons/time_integrators_sundials/"
   - title: "Numerical Optimization with TAO"
     url: "/lessons/multidim_rosenbrock_tao/"
 
