@@ -17,10 +17,10 @@ permalink: "/frontier/"
 Scheduled for delivery in 2021, [Frontier]({{vroom.webinfo}}) will exceed 1.5 exaFLOPS and accelerate
 innovation in science and technology in high-performance computing and artificial intelligence. 
 
-<center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room</a></center>
-<center style="font-size:24px"><a href="{{vroom.slack}}">Launch Slack Chat for This room</a></center>
+<center style="font-size:24px"><a href="{{vroom.zoom_link}}">Enter This Virtual Room Zoom Meeting</a></center>
+<center style="font-size:18px">Launch Slack for this room in<br><a href="{{vroom.slackweb}}" onclick="window.open(this.href,'newwindow','width=600,height=900'); return false;">new browser window</a> or <a href="{{vroom.slackapp}}">desktop app</a></center>
 
-## Events occuring in this space
+### Events occuring in this space
 
 {% include agenda room_filter="Frontier" %}
 
