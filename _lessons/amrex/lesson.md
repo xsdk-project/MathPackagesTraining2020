@@ -18,6 +18,7 @@ header:
 |Questions|Objectives|Key Points|
 |What can I do with AMReX?|Understand that "AMR" means more<br>than just "traditional AMR"|AMR + EB + Particles|
 |How do I get started?|Understand easy set-up|It's not hard to get started|
+|What time-stepping do I use?|Understand the difference between subcycling and not|It's a choice|
 |How do I visualize AMR results?|Use Visit and Paraview for AMReX vis|Visualization tools exist for AMR data.|
 
 ## Example: Multi-Level Scalar Advection
@@ -25,7 +26,7 @@ header:
 ### What Features Are We Using
 
 * Mesh data 
-* Dynamic AMR with subcycling
+* Dynamic AMR with and without subcycling
 
 ### The Problem
 
@@ -33,7 +34,7 @@ Consider a drop of dye (we'll define $$\phi$$ to be the concentration of dye)
 in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  We consider the dye to be a 
 passive tracer that is advected by the fluid velocity.  The fluid is thin enough that we can model
-this as two-dimensional motion.
+this as two-dimensional motion; here we have the option of solving in a 2D or 3D computational domain.
 
 In other words, we want to solve for $$\phi(x,y,t)$$ by evolving 
 
@@ -47,52 +48,81 @@ and defining
 
 $$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
 
+Note that because $$u$$ is defined as the curl of a scalar field, it is analytically divergence-free
+
 In this example we'll be using AMR to resolve the scalar field since the location of the dye is
 what we care most about.
 
-To update the solution at each level, we call an advance routine that computes fluxes ($${\bf u} \phi$$)
-on each face, and differences the fluxes to create the update to phi.  In this example the update happens in a Fortran
-subroutine that operates on one grid of data at a time.  Here "lo()" and "hi()" are the bounds of the
-one grid we are operating on, not of the entire domain.
+To update the solution in a patch at a given level, we compute fluxes ($${\bf u} \phi$$)
+on each face, and difference the fluxes to create the update to phi.   The update routine
+in the code looks like
 
-Knowing how to synchronize the solution at coarse/fine boundaries is essential in an AMR algorithm;
-here having the algorithm written in flux form allows straightforward "refluxing" at coarse-fine interfaces.
-
-At each level:
-```fortran
-  ! Do a conservative update
-  do    j = lo(2),hi(2)
-     do i = lo(1),hi(1)
-        phi_new(i,j) = phi_old(i,j) + &
-             ( (flxx(i,j) - flxx(i+1,j)) * dtdx(1) &
-             + (flxy(i,j) - flxy(i,j+1)) * dtdx(2) )
-     enddo
-  enddo
+```cplusplus
+  // Do a conservative update
+  {
+    phi_out(i,j,k) = phi_in(i,j,k) +
+                ( AMREX_D_TERM( (flxx(i,j,k) - flxx(i+1,j,k)) * dtdx[0],
+                              + (flxy(i,j,k) - flxy(i,j+1,k)) * dtdx[1],
+                              + (flxz(i,j,k) - flxz(i,j,k+1)) * dtdx[2] ) );
+  }
 ```
 
-If "timeStep(lev,...)" is the routine that creates the fluxes and advances the solution at level "lev",
- then the subcycling in time algorithm looks like:
+In this routine we use the macro AMREX_D_TERM so that we can write dimension-independent code; 
+in 3D this returns the flux differences in all three directions, but in 2D it does not include
+the z-fluxes.
+
+Knowing how to synchronize the solution at coarse/fine boundaries is essential in an AMR algorithm;
+here having the algorithm written in flux form allows us to either make the fluxes consistent between
+coarse and fine levels in a no-subcycling algorithm, or "reflux" after the update in a subcycling algorithm.
+
+The subcycling algorithm can be written as follows
 ```C++
+void
+AmrCoreAdv::timeStepWithSubcycling (int lev, Real time, int iteration)
+{
+
+    // Advance a single level for a single time step, and update flux registers
+    Real t_nph = 0.5 * (t_old[lev] + t_new[lev]);
+    DefineVelocityAtLevel(lev, t_nph);
+    AdvancePhiAtLevel(lev, time, dt[lev], iteration, nsubsteps[lev]);
+
+    ++istep[lev];
+
     if (lev < finest_level)
     {
         // recursive call for next-finer level
         for (int i = 1; i <= nsubsteps[lev+1]; ++i)
         {
-            timeStep(lev+1, time+(i-1)*dt[lev+1], i);
+            timeStepWithSubcycling(lev+1, time+(i-1)*dt[lev+1], i);
         }
 
         if (do_reflux)
         {
             // update lev based on coarse-fine flux mismatch
-            flux_reg[lev+1]->Reflux(*phi_new[lev], 1.0, 0, 0, phi_new[lev]->nComp(), geom[lev]);
+            flux_reg[lev+1]->Reflux(phi_new[lev], 1.0, 0, 0, phi_new[lev].nComp(), geom[lev]);
         }
 
         AverageDownTo(lev); // average lev+1 down to lev
     }
+
+}
 ```
 
-Note that if "nsubsteps" is greater than 1, we are "subcycling" in time, ie using a smaller dt at
-the finer levels.
+while the no-subcycling algorithm looks like
+```C++
+void
+AmrCoreAdv::timeStepNoSubcycling (Real time, int iteration)
+{
+    DefineVelocityAllLevels(time);
+    AdvancePhiAllLevels (time, dt[0], iteration);
+
+    // Make sure the coarser levels are consistent with the finer levels
+    AverageDown ();
+
+    for (int lev = 0; lev <= finest_level; lev++)
+        ++istep[lev];
+}
+```
 
 ### Running the Code
 
@@ -100,24 +130,30 @@ the finer levels.
 cd HandsOnLessons/amrex/AMReX_Amr_Advection
 ```
 
+Note that you can choose to work entirely in 2D or in 3D ... whichever you prefer.
+The instructions below will be written for 3D but you can substitute the 2D executable.
+
 In this directory you'll see
 
 ```
-main2d.gnu.MPI.ex -- the executable -- this has been built with MPI 
+main2d.gnu.MPI.ex -- the 2D executable -- this has been built with MPI 
 
-inputs -- an inputs file
+```
+main3d.gnu.MPI.ex -- the 3D executable -- this has been built with MPI 
+
+inputs -- an inputs file for both 2D and 3D
 ```
 
 To run in serial, 
 
 ```
-./main2d.gnu.MPI.ex inputs
+./main3d.gnu.MPI.ex inputs
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpiexec -n 4 ./main2d.gnu.MPI.ex inputs
+mpiexec -n 4 ./main3d.gnu.MPI.ex inputs
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs
@@ -128,26 +164,44 @@ amr.max_time       =  2.0                # the final time (if max_time < max_ste
 
 amr.max_steps      = 1000000             # the maximum number of steps (if max_steps * time_step < max_time))
 
-amr.n_cell         =  64   64   64       # number of cells at the coarsest AMR level in each coordinate direction
+amr.n_cell         =  32   32   8        # number of cells at the coarsest AMR level in each coordinate direction
 
-amr. max_grid_size = 32                  # the maximum number of cells in any direction in a single grid
+amr. max_grid_size = 16                  # the maximum number of cells in any direction in a single grid
 
 amr.plot_int       = 10                  # frequency of writing plotfiles
 
-adv.cfl            = 0.7                 # cfl number to be used for computing the time step
+adv.cfl            = 0.9                 # cfl number to be used for computing the time step
 
 adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
 
 ```
 
-The base grid here is a square of 64 x 64 cells, made up of 4 subgrids each of size 32x32 cells.  
-The problem is periodic in both the x-direction and y-direction.
+The base grid here is a square of 32 x 32 x 8 cells, made up of 4 subgrids each of size 16x16x8 cells.  
+The problem is periodic in all directions.
 
 We have hard-wired the code here to refine based on the magnitude of $$\phi$$.    Here we set the 
 threshold level by level.  If $$\phi > 1.01$$ then we want to refine at least once; if $$\phi > 1.1$$ we
 want to resolve $$\phi$$ with two levels of refinement, and if $$\phi > 1.5$$ we want even more refinement.
 
+Questions we want you to answer:
+
+```
+1.  How do the subcycling vs no-subycling calculations compare?
+    A.   How many steps did each take?
+    B.   What was the total run time for each calculation?  Was this what you expected?
+    C.   Was conservation enforced in each case?
+      C1.  If you set do_refluxing = 0 for the subcycling case, was conservation still enforced?
+      C2.  How in the algorithm is conservation enforced differently between subcycling and not?
+
+2.  How do the 2D and 3D results compare?   Did the 2D code run 8 times faster because it had 8 times fewer points?
+
+3. How did the runtimes vary with 1/2/4 MPI processes?  
+   (We suggest you use a big enough problem here; maybe try 128x128x128.)
+```
+
 ### Visualizing the Results
+
+Here is a sample 2D run with 64x64 cells at the coarsest level and three levels of refinement.
 
 ![Sample solution](advection.gif)
 
@@ -175,19 +229,12 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 8. Press the "Play" button
 ```
 
-### Topics to Explore
+### Additional Topics to Explore
 
 * What happens as you change the max grid size for decomposition?
 
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
   (You can edit these in inputs)  
-
-* How does runtime scale with number of processors? To give the problem sufficient work for 4 processors,
-  run it as, e.g:
-
-```
-mpiexec -n 4 ./main2d.gnu.MPI.ex inputs amr.n_cell=256 256 amr.max_level=3 max_step=50
-```
 
 ## Example: "Off to the Races"
 
