@@ -199,26 +199,24 @@ Here Sum(Phi) is the sum of $$\phi$$ over all the cells at the coarsest level.
 Questions we want you to answer:
 
 ```
-1.  How do the subcycling vs no-subycling calculations compare?
-    A.   How many steps did each take at the finest level?
-      A1.  Why might this not be the same?
-    B.   How many cells were at the finest level in each case?
-      B1.  Why might this number not be the same?
-    B.   What was the total run time for each calculation?  Was this what you expected?
-    C.   Was conservation enforced in each case?
-      C1.  If you set do_refluxing = 0 for the subcycling case, was conservation still enforced?
-      C2.  How in the algorithm is conservation enforced differently between subcycling and not?
+1. How do the subcycling vs no-subycling calculations compare?
+    a.   How many steps did each take at the finest level? Why might this not be the same?
+    b.   How many cells were at the finest level in each case? Why might this number not be the same?
 
-2.  How do the 2D and 3D results compare?   Did the 2D code run 8 times faster because it had 8 times fewer points?
+2  What was the total run time for each calculation?  Was this what you expected?
 
-3. How did the runtimes vary with 1/2/4 MPI processes?  
+3. Was phi conserved (over time) in each case?
+      a.  If you set do_refluxing = 0 for the subcycling case, was phi still conserved?
+      b.  How in the algorithm is conservation enforced differently between subcycling and not?
+
+4. How did the runtimes vary with 1 vs. 4 MPI processes?  
    We suggest you use a big enough problem here -- try running 
 
    mpiexec -n 1 ./main3d.ex inputs_for_scaling
 
    mpiexec -n 4 ./main3d.ex inputs_for_scaling
 
-4. Why could we check conservation by just adding up the values at the coarsest level?
+5. Why could we check conservation by just adding up the values at the coarsest level?
 ```
 
 ### Visualizing the Results
