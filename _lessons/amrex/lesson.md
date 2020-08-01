@@ -138,7 +138,6 @@ In this directory you'll see
 ```
 main2d.gnu.MPI.ex -- the 2D executable -- this has been built with MPI 
 
-```
 main3d.gnu.MPI.ex -- the 3D executable -- this has been built with MPI 
 
 inputs -- an inputs file for both 2D and 3D
