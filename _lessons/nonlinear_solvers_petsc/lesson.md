@@ -31,7 +31,7 @@ Blah blah blah.
 
 Blah blah blah.
 
-## Hands-on Examples: Solving the driven cavity problem with Newton's method
+## Hands-On: Solving the driven cavity problem with Newton's method
 
 In the first set of examples, we will use (inexact) Newton methods to solve the driven cavity problem, SNES `ex19`.
 
@@ -157,7 +157,83 @@ which we can quickly find by using the `grep` utility:
 ```
 grep Time\ \(sec\): log.txt
 ```
+(The first number returned is the total run time in seconds.)
 
+### Example 2: Exact vs. Inexact Newton
+
+The output from running `-snes_view` in the previous exercise shows us that PETSc defaults
+to an inexact Newton method. To run with exact Newton (and to check the execution time), we
+use `-pc_type lu`, which indicates to the KSP object (which controls the linear solver) that
+the underlying preconditioner should be an full LU decomposition:
+```
+./ex19 -da_refine 2 -grashof 1e2 -pc_type lu
+grep Time\ \(sec\): log.txt
+```
+(Remember, the above command assumes that you have set `PETSC_OPTIONS` as specified in the
+preceding section.)
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output on my laptop (Dell XPS 13 with Intel Core i7-10710U CPU)</h4></summary>
+```
+rmills@encke:~/proj/petsc/src/snes/tutorials (master=)$ ./ex19 -da_refine 2 -grashof 1e2 -pc_type lu
+lid velocity = 100., prandtl # = 1., grashof # = 100.
+  0 SNES Function norm 7.681163231938e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  1 SNES Function norm 6.581690463182e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  2 SNES Function norm 5.291809327801e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  3 SNES Function norm 3.772079270664e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  4 SNES Function norm 3.040001036822e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  5 SNES Function norm 2.518761157519e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  6 SNES Function norm 9.230363584762e-03 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+  7 SNES Function norm 6.155757710494e-09 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 7
+Number of SNES iterations = 7
+rmills@encke:~/proj/petsc/src/snes/tutorials (master=)$ grep Time\ \(sec\): log.txt
+Time (sec):           6.728e-01     1.000   6.728e-01
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+The work required to solve the inner, linear interation so precisely is likely wasted.
+Let's try using the default iterative solver with some different tolerances. Start with
+```
+./ex19 -da_refine 2 -grashof 1e2 -ksp_rtol 1e-8
+```
+and then try some larger values for relative convergence tolerance, `-ksp_rtol`.
+Try `-ksp_rtol 1e-5` (the PETSc default) next, and try increasing it by an order of
+magnitude each time.
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">What happens to the SNES iteration count? When does the SNES solve diverge?</h4></summary>
+The SNES iteration count is 7 initially, then increases to 8 at a tolerance of 1e-3, and then 10 at a tolerance of 1e-2. The SNES solve diverges at 1e-1.
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">What yields the shortest execution time?</h4></summary>
+On my laptop, the loosest tolerance I tried, `-ksp_rtol 1e-2` turns out to be fastest, able
+to solve the problem in 1.31 seconds. Though it requires more Newton iterations, it performs
+far fewer linear solver iterations. Running with the default tolerance of 1e-5 requires more
+than 2 seconds.
+Using LU factorization turns out to not be too bad for this small problem (around 1.7
+seconds), but it is difficult for LU to scale up to large problems.
+</details>
+</div>
+{::options parse_block_html="false" /}
 
 ## Take-Away Messages
 
