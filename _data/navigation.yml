@@ -9,6 +9,8 @@
     url: "/setup_instructions/"
   - title: "Today's Agenda"
     url: "/agenda/"
+  - title: "Virtual Meeting Rooms"
+    url: "/virtual_rooms/"
   - title: "Getting help"
     url: "/getting-help/"
   - title: "Panel Question Submissions"
