@@ -216,7 +216,7 @@ magnitude each time.
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
 <summary><h4 style="margin: 0 0 0 0; display: inline">What happens to the SNES iteration count? When does the SNES solve diverge?</h4></summary>
-The SNES iteration count is 7 initially, then increases to 8 at a tolerance of 1e-3, and then 10 at a tolerance of 1e-2. The SNES solve diverges at 1e-1.
+The SNES iteration count is 7 initially, then increases to 8 at a relative tolerance of 1e-3 for the linear solver, and then 10 at a tolerance of 1e-2. The SNES solve diverges when run with a linear solver tolerance of 1e-1.
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -225,11 +225,12 @@ The SNES iteration count is 7 initially, then increases to 8 at a tolerance of 1
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
 <summary><h4 style="margin: 0 0 0 0; display: inline">What yields the shortest execution time?</h4></summary>
-On my laptop, the loosest tolerance I tried, `-ksp_rtol 1e-2` turns out to be fastest, able
-to solve the problem in 1.31 seconds. Though it requires more Newton iterations, it performs
-far fewer linear solver iterations. Running with the default tolerance of 1e-5 requires more
-than 2 seconds.
-Using LU factorization turns out to not be too bad for this small problem (around 1.7
+On my laptop, the loosest tolerance I tried, `-ksp_rtol 1e-2`, turns out to be fastest, able
+to solve the problem in 0.43 seconds. Though it requires more Newton iterations, it performs
+far fewer linear solver iterations. Running with the default tolerance of 1e-5 requires 
+0.60 seconds. A tolerance of 1e-8 is far too high, resulting in many linear solver iterations
+and an execution time of over 1.2 seconds.
+Using LU factorization turns out to not be too bad for this small problem (around 0.68 
 seconds), but it is difficult for LU to scale up to large problems.
 </details>
 </div>
