@@ -2,7 +2,7 @@
   start: "Tue Aug 4 9:30 AM"
   length: 55
   speakers:
-    - "Lois Curfman-McInnes"
+    - "Lois Curfman McInnes"
     - "Mark Miller"
   vname: "Amphitheater"
   id: 1
@@ -17,7 +17,7 @@
   length: 60
   id: 3
 
-- title: "Structured Discretization"
+- title: "Structured Discretization<br>(with AMReX)"
   speakers:
     - "Ann Almgren"
     - "Don Willcox"
@@ -25,7 +25,7 @@
   has_synopsis: true
   id: 4
 
-- title: "Unstructured Discretization"
+- title: "Unstructured Discretization<br>(with MFEM/PUMI)"
   speakers:
     - "Aaron Fisher"
     - "Mark Shephard"
@@ -33,7 +33,7 @@
   has_synopsis: true
   id: 5
 
-- title: "Iterative Solvers & Preconditioners<br>with MueLu"
+- title: "Iterative Solvers & Preconditioners<br>(with MueLu)"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -41,7 +41,7 @@
   has_synopsis: true
   id: 6
 
-- title: "Direct Solvers"
+- title: "Direct Solvers<br>(with SuperLU/Strumpack)"
   speakers:
     - "Sherry Li"
     - "Pieter Ghysels"
@@ -49,7 +49,7 @@
   has_synopsis: true
   id: 7
 
-- title: "**Break**<br>*SME selections*<br>*Panel Questions*"
+- title: "**Break**<br>*Subject Matter Expert (SME) selections*<br>*Panel Questions*"
   start: "Tue Aug 4 11:30 AM"
   length: 15
   id: 8
@@ -59,7 +59,7 @@
   length: 60
   id: 9
 
-- title: "Structured Discretization"
+- title: "Structured Discretization<br>(with AMReX)"
   speakers:
     - "Ann Almgren"
     - "Don Willcox"
@@ -67,7 +67,7 @@
   has_synopsis: true
   id: 10 
 
-- title: "Unstructured Discretization"
+- title: "Unstructured Discretization<br>(with MFEM/PUMI)"
   speakers:
     - "Aaron Fisher"
     - "Mark Shephard"
@@ -75,14 +75,14 @@
   has_synopsis: true
   id: 11 
 
-- title: "Iterative Solvers & Preconditioners<br>with Hypre"
+- title: "Iterative Solvers & Algebraic Multigrid<br>(with hypre)"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
   has_synopsis: true
   id: 12 
 
-- title: "Direct Solvers"
+- title: "Direct Solvers<br>(with SuperLU/Strumpack)"
   speakers:
     - "Sherry Li"
     - "Pieter Ghysels"
@@ -119,28 +119,28 @@
   length: 50
   id: 17 
 
-- title: "Nonlinear Solvers"
+- title: "Nonlinear Solvers<br>(with PETSc)"
   speakers:
     - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 18 
 
-- title: "Optimization"
+- title: "Optimization<br>(with TAO)"
   speakers:
     - "Alp Dener"
   vname: "Aurora"
   has_synopsis: true
   id: 19 
 
-- title: "Time Integration"
+- title: "Time Integration<br>(with SUNDIALS)"
   speakers:
     - "Dan Reynolds"
   vname: "Perlmutter"
   id: 20 
   has_synopsis: true
 
-- title: "Iterative Solvers & Preconditioners<br>with MueLu"
+- title: "Iterative Solvers & Preconditioners<br>(with MueLu)"
   speakers:
     - "Jonathan Hu"
     - "Christian Glusa"
@@ -158,28 +158,28 @@
   length: 50
   id: 23 
 
-- title: "Nonlinear Solvers"
+- title: "Nonlinear Solvers<br>(with PETSc)"
   speakers:
     - "Richard Tran Mills"
   vname: "Frontier"
   has_synopsis: true
   id: 24 
 
-- title: "Optimization"
+- title: "Optimization<br>(with TAO)"
   speakers:
     - "Alp Dener"
   vname: "Aurora"
   has_synopsis: true
   id: 25 
 
-- title: "Time Integration"
+- title: "Time Integration<br>(with SUNDIALS)"
   speakers:
     - "Dan Reynolds"
   vname: "Perlmutter"
   has_synopsis: true
   id: 26 
 
-- title: "Direct Solvers"
+- title: "Direct Solvers<br>(with SuperLU/Strumpack)"
   speakers:
     - "Sherry Li"
     - "Pieter Ghysels"
