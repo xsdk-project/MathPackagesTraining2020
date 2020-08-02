@@ -95,7 +95,7 @@
   length: 60
   id: 14 
 
-- title: "Panel - The Numerical<br>Package Community"
+- title: "Panel - Contributing to the<br>Numerical Package Community"
   speakers:
     - "Jonathan Hu"
     - "Sherry Li"
@@ -192,7 +192,7 @@
   length: 05
   id: 28 
 
-- title: "Numerical Packages in Practice"
+- title: "Working with Numerical<br>Packages in Practice"
   start: "Tue Aug 4 4:35 PM"
   length: 25 
   speakers:

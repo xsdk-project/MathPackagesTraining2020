@@ -156,8 +156,8 @@ different emphasis...
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Numerical Packages in Practice
-### Numerical Packages in Practice
+### Working with Numerical Packages in Practice
+### Working with Numerical Packages in Practice
 
 Developing quality, large-scale scientific computing applications in science and
 engineering involves expertise in many areas. Typically, no one person or group has
@@ -170,8 +170,8 @@ breifly discuss key tradeoffs in using numerical packages in practice.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Panel - The Numerical Package Community
-### Panel - The Numerical Package Community
+### Panel - Contributing to the Numerical Package Community
+### Panel - Contributing to the Numerical Package Community
 
 This will be a 45 minute panel question and answer period for ATPESC learners to ask
 questions about working with numerical package and the community of numerical package
