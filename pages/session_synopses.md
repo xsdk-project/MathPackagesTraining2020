@@ -87,7 +87,7 @@ semi-discretization.
 
 ### Iterative Solvers & Preconditioners (with MueLu)
 ### Iterative Solvers & Preconditioners (with MueLu)
-[Slides](https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing)
+[Slides](https://drive.google.com/file/d/1qKC7RhqfwDJ-rNB6arOLLBYjD7hY_C14/view?usp=sharing)
 
 In this session, attendees will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
