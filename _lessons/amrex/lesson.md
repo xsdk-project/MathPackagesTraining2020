@@ -127,9 +127,8 @@ AmrCoreAdv::timeStepNoSubcycling (Real time, int iteration)
 ### Running the Code
 
 ```
-cd HandsOnLessons/amrex/AMReX_Amr101
+cd HandsOnLessons/amrex/AMReX_Amr101/Exec
 ```
-
 Note that you can choose to work entirely in 2D or in 3D ... whichever you prefer.
 The instructions below will be written for 3D but you can substitute the 2D executable.
 
@@ -293,10 +292,10 @@ To solve this variable coefficient Poisson equation, we use the native AMReX geo
 ### Running the code
 
 ```
-cd HandsOnLessons/amrex/Amr102
+cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](macproj.gif)
+![Sample solution](NEWMOVIE.gif)
 
 In this directory you'll see
 
