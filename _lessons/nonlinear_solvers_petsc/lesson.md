@@ -236,6 +236,94 @@ seconds), but it is difficult for LU to scale up to large problems.
 </div>
 {::options parse_block_html="false" /}
 
+### Example 3: Scaling up the grid size and running in parallel
+
+Let's explore what happens as we scale up the grid size for our model problem.
+
+For this exercise, we will run in parallel because experiments may take too long otherwise.
+We will use a fixed number of MPI ranks, even though this number is really too large for
+the smaller grids, to eliminate effects due to varying the size of the domains used by the
+default parallel preconditioner (block Jacobi with ILU(0) applied on each block).
+We also use BiCGStab `-ksp_type bcgs` instead of the default linear solver, GMRES(30), will
+fail for some cases.
+
+Using the linear solver defaults, increase the size of the grid (that is, decrease the
+grid spacing) and observe what happens to iteration counts and execution times:
+```
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -da_refine 2
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -da_refine 3
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -da_refine 4 
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `-da_refine 4` case</h4></summary>
+```
+$ mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -da_refine 4
+lid velocity = 100., prandtl # = 1., grashof # = 100.
+  0 SNES Function norm 1.545962539057e+03 
+  Linear solve converged due to CONVERGED_RTOL iterations 125
+  1 SNES Function norm 9.782056791818e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 128
+  2 SNES Function norm 6.621936395441e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 389
+  3 SNES Function norm 3.155672307430e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 470
+  4 SNES Function norm 8.129969608884e-03 
+  Linear solve converged due to CONVERGED_RTOL iterations 425
+  5 SNES Function norm 8.852310456001e-08 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 5
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+You should observe that the Newton solver shows "mesh independence" -- that is, as we
+refine the grid spacing, we see roughly the same convergence behavior for the Newton
+iterates.
+This is **not** true, however, for the linear solver, which shows unsustainable growth in
+the number of iterations it requires.
+
+What happens if we employ a Newton-Krylov-multigrid method?
+Add `-pc_type mg` to use a geometric multigrid preconditioner (defaults to a V-cycle, but
+check out the `-help` output to see how to use other types):
+
+```
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 2
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 3
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 4 
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `-pc_type mg -da_refine 4` case</h4></summary>
+```
+mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 4
+lid velocity = 100., prandtl # = 1., grashof # = 100.
+  0 SNES Function norm 1.545962539057e+03 
+  Linear solve converged due to CONVERGED_RTOL iterations 6
+  1 SNES Function norm 9.778196290981e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 6
+  2 SNES Function norm 6.609659458090e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 7
+  3 SNES Function norm 2.791922927549e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 6
+  4 SNES Function norm 4.973591997243e-03 
+  Linear solve converged due to CONVERGED_RTOL iterations 6
+  5 SNES Function norm 3.241555827567e-05 
+  Linear solve converged due to CONVERGED_RTOL iterations 9
+  6 SNES Function norm 9.883136583477e-10 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 6
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+The takeaway here is that the combination of the fast convergence of a globalized
+Newton method and a multigrid preconditioner for the inner, linear solve can be a powerful
+and highly scalable solver.
 ## Take-Away Messages
 
 * Important
