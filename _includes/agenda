@@ -28,7 +28,7 @@
              {%- endif -%}
            {%- endfor -%}
         {%- endif -%}
-|{{start|date: "%I:%M"}}|{{length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"}})
+|{{start|date: "%I:%M"}}|{{length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"|replace: "(", ""|replace: ")", ""|replace: "/", ""}})
 
 {%- else -%}{{agitm.title}}{%- endif -%}|{%- for s in agitm.speakers -%}[{{s}}]{%- if s != agitm.speakers.last -%}<br>{%- endif -%}{%- endfor -%}|{%- if agitm.vname -%}[{{agitm.vname|split: " "|join: "<br>"}}]{%- endif -%}|{{newline}}
         {%- break -%}
@@ -51,14 +51,14 @@
            {%- endif -%}
          {%- endfor -%}
       {%- endif -%}
-|{{start|date: "%I:%M"}}|{{length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"}})
+|{{start|date: "%I:%M"}}|{{length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"|replace: "(", ""|replace: ")", ""|replace: "/", ""}})
 
 {%- else -%}{{agitm.title}}{%- endif -%}|{%- for s in agitm.speakers -%}[{{s}}]{%- if s != agitm.speakers.last -%}<br>{%- endif -%}{%- endfor -%}|{%- if agitm.vname -%}[{{agitm.vname|split: " "|join: "<br>"}}]{%- endif -%}|{{newline}}
     {%- endif -%}
   {%- endfor -%}
 {%- else -%}
   {%- for agitm in site.data.agenda -%}
-|{{agitm.start|date: "%I:%M"}}|{{agitm.length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"}})
+|{{agitm.start|date: "%I:%M"}}|{{agitm.length}}|{%- if agitm.has_synopsis -%}[{{agitm.title}}]({{site.url}}{{site.baseurl}}/session_synopses/#{{agitm.title|downcase|replace: " ", "-"|replace: "&", ""|replace: "<br>", "-"|replace: "(", ""|replace: ")", ""|replace: "/", ""}})
 
 {%- else -%}{{agitm.title}}{%- endif -%}|{%- for s in agitm.speakers -%}[{{s}}]{%- if s != agitm.speakers.last -%}<br>{%- endif -%}{%- endfor -%}|{%- if agitm.vname -%}[{{agitm.vname|split: " "|join: "<br>"}}]{%- endif -%}|{{newline}}
   {%- endfor -%}
