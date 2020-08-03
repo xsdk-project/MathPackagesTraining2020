@@ -21,7 +21,7 @@ header:
 |What time-stepping do I use?|Understand the difference between subcycling and not|It's a choice|
 |How do I visualize AMR results?|Use Visit and Paraview for AMReX vis|Visualization tools exist for AMR data.|
 
-## Example: Multi-Level Scalar Advection
+## Example: AMR101: Multi-Level Scalar Advection
 
 ### What Features Are We Using
 
@@ -127,7 +127,7 @@ AmrCoreAdv::timeStepNoSubcycling (Real time, int iteration)
 ### Running the Code
 
 ```
-cd HandsOnLessons/amrex/AMReX_Amr_Advection
+cd HandsOnLessons/amrex/AMReX_Amr101
 ```
 
 Note that you can choose to work entirely in 2D or in 3D ... whichever you prefer.
@@ -256,7 +256,7 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
   (You can edit these in inputs)  
 
-## Example: "Off to the Races"
+## Example: "AMR102: Advection of Particles Around Obstacles"
 
 ### What Features Are We Using
 
@@ -268,26 +268,32 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 
 Challenge: 
 
-Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $$u = 1$$. 
+Recall our previous problem of the drop of dye in a thin incompressible fluid that is spinning 
+clock-wise then counter-clockwise with a prescribed motion.  
 
-If there are no obstacles in the channel, the fluid will flow with speed 1 from left to right.
+Now instead of advecting the dye as a scalar quantity defined on the mesh (the continuum representation),
+we define the dye as a collection of particles that are advected by the fluid velocity.  
+Again the fluid is thin enough that we can model this as two-dimensional motion; again we have the option of 
+solving in a 2D or 3D computational domain.
 
-If you place obstacles in the channel, the fluid must flow around them.
+To make things more interesting, there is now an object in the flow, in this case a cylinder.
+It would be very difficult to analytically specify the flow field around the object, so instead 
+we project the velocity field so that the resulting field represents incompressible-flow around the object.
 
-Suppose your goal is to accelerate the fluid so that a tracer released near the inflow reaches the right side
-as fast as possible.
+Mathematically, projecting the specified velocity field means solving  
 
-You are given nine cylinders that you can place (or not) at specified locations.
+$$\nabla \cdot (\beta \nabla \xi)  = \nabla \cdot \bf{u^{spec}}$$
 
-You can use particles released near the inflow to measure the fastest configuration.
+and setting 
 
-How many cylinders should you use, and where should you put them?
+$$\bf{u} =  \bf{u^{spec}} - \nabla \xi$$
 
+To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
 ### Running the code
 
 ```
-cd HandsOnLessons/amrex/AMReX_EB_MacProj
+cd HandsOnLessons/amrex/Amr102
 ```
 
 ![Sample solution](macproj.gif)
@@ -295,99 +301,61 @@ cd HandsOnLessons/amrex/AMReX_EB_MacProj
 In this directory you'll see
 
 ```
-main3d.ex -- the executable -- this has been built with MPI 
+main2d.gnu.MPI.ex -- the 2D executable -- this has been built with MPI 
 
-inputs_3d -- domain size, size of grids, how many time steps, which obstacles...
+main3d.gnu.MPI.ex -- the 3D executable -- this has been built with MPI 
 
-initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
+inputs -- an inputs file for both 2D and 3D
 ```
 
-To run in serial, 
+As before, to run the 3D code in serial: 
 
 ```
-./main3d.ex inputs_3d
+./main3d.gnu.MPI.ex inputs
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d
+mpiexec -n 4 ./main3d.gnu.MPI.ex inputs
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
+Similar to the last example, the following parameters can be set at run-time -- these are currently set in the inputs file.
 
 ```
-n_cell = 128                             # number of cells in x-direction; we double this in the y-direction
-max_grid_size = 64                       # the maximum number of cells in any direction in a single grid
+n_cell = 64                              # number of cells in x- and y-directions; z-dir has 1/8 n_cell (if 3D)
+
+max_grid_size = 32                       # the maximum number of cells in any direction in a single grid
 
 plot_int = 10                            # frequency of writing plotfiles
 
-particle_file = initial_particles_3d     # name of file where we specify the input positions of the particles
+max_time =  2.0                          # the final time (if max_time < max_steps * time_step)
 
-time_step = 0.001                        # we advance the particles with a fixed time step of this size
-
-max_time = 10.0                          # the final time (if max_time < max_steps * time_step)
-
-max_steps = 10000                        # the maximum number of steps (if max_steps * time_step < max_time))
-
-obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
-```
-
-We define the cylinders with this numbering scheme
-
-![Numbering](numbering.png)
-
-You can also set the parameters on the command line; for example,  
+max_steps = 200                          # the maximum number of steps (if max_steps * time_step < max_time))
 
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
+
+The size, orientation and location of the cylinder are specified in the inputs file as well:
+
+cylinder.direction = 2                  # cylinder axis aligns with z-axis
+cylinder.radius    = 0.1                # cylinder radius
+cylinder.center    = 0.7 0.5 0.5        # location of cylinder center (in domain that is unit box in xy plane)
+
+cylinder.internal_flow = false          # we are computing flow around the cylinder, not inside it
+
+Here you can play around with changing the size and location of the cylinder
+
 ```
+1. Note that at the very end we print the time spent creating the geometrical information. 
+   How does this compare to the total run time?
 
-will run the problem with only six obstacles 
+2.  Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
+    the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
+    What probably accounts for the difference?
 
-The output from your run should look something like this:
-
+3. Note that for the purposes of visualization, we deposited the particle information onto the grid.
+   Was phi conserved using this approach?
 ```
-********************************************************************
- You specified 9 objects in the domain: 0 1 2 3 4 5 6 7 8
- ********************************************************************
-
-********************************************************************
- First let's project the initial velocity to find
-   the flow field around the obstacles ...
-********************************************************************
-
-
-********************************************************************
- Done!  Now let's advect the particles ...
-********************************************************************
-
-Timestep 0, Time = 0.001 and leading particle now at 0.101179325
-Timestep 100, Time = 0.101 and leading particle now at 0.2444506795
-Timestep 200, Time = 0.201 and leading particle now at 0.4330191808
-Timestep 300, Time = 0.301 and leading particle now at 0.5611955983
-Timestep 400, Time = 0.401 and leading particle now at 0.7422046938
-Timestep 500, Time = 0.501 and leading particle now at 0.8955689091
-Timestep 600, Time = 0.601 and leading particle now at 1.044585496
-Timestep 700, Time = 0.701 and leading particle now at 1.225885881
-Timestep 800, Time = 0.801 and leading particle now at 1.34851225
-Timestep 900, Time = 0.901 and leading particle now at 1.45538891
-Timestep 1000, Time = 1.001 and leading particle now at 1.558181566
-Timestep 1100, Time = 1.101 and leading particle now at 1.659474158
-Timestep 1200, Time = 1.201 and leading particle now at 1.760129699
-Timestep 1300, Time = 1.301 and leading particle now at 1.860489498
-Timestep 1400, Time = 1.401 and leading particle now at 1.960718531
-
-********************************************************************
-We have a winner...and the winning time is 1.431
-********************************************************************
-```
-
-Note that if you want to figure out which is the fastest configuration, you'll 
-need to run the code multiple times with different configurations and compare the
-"winning times."   This is a good example of how we often don't run the 
-simulation code in a "one and done" mode -- the simulation is often only one component 
-of a science investigation or design process.
 
 ### Visualizing the Results
 
