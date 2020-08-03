@@ -324,6 +324,114 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 6
 The takeaway here is that the combination of the fast convergence of a globalized
 Newton method and a multigrid preconditioner for the inner, linear solve can be a powerful
 and highly scalable solver.
+
+### Increasing the strength of the nonlinearity
+
+Let's explore what happens as we increase the strength of the nonlinearity for raising the
+Grashof number. Try running
+
+```
+./ex19 -da_refine 2 -grashof 1e2
+./ex19 -da_refine 2 -grashof 1e3
+./ex19 -da_refine 2 -grashof 1e4
+./ex19 -da_refine 2 -grashof 1.3e4
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e`</h4></summary>
+```
+./ex19 -da_refine 2 -grashof 1.3e4
+lid velocity = 100., prandtl # = 1., grashof # = 13000.
+  0 SNES Function norm 7.971152173639e+02 
+  Linear solve did not converge due to DIVERGED_ITS iterations 10000
+Nonlinear solve did not converge due to DIVERGED_LINEAR_SOLVE iterations 0
+```
+
+Oops! At a Grashof number of 1.3e4, we get a failure in the linear solver. Let's see if a
+stronger preconditioner can help us:
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+```
+./ex19 -da_refine 2 -grashof 1.3e4 -pc_type mg
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e4 -pc_type mg`</h4></summary>
+```
+./ex19 -da_refine 2 -grashof 1.3e4 -pc_type mg
+lid velocity = 100., prandtl # = 1., grashof # = 13000.
+  ...
+  4 SNES Function norm 3.209967262833e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 9
+  5 SNES Function norm 2.121900163587e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 9
+  6 SNES Function norm 1.139162432910e+01 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  7 SNES Function norm 4.048269317796e-01 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  8 SNES Function norm 3.264993685206e-04 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  9 SNES Function norm 1.154893029612e-08 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 9
+```
+
+Success! But what if we increase the Grashof number a little more? Try
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+```
+./ex19 -da_refine 2 -grashof 1.3373e4 -pc_type mg
+```
+
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3373e4 -pc_type mg`</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 13373.
+...
+ 48 SNES Function norm 3.124919801005e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 17
+ 49 SNES Function norm 3.124919800338e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 17
+ 50 SNES Function norm 3.124919799645e+02 
+Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 50
+```
+
+No good! Let's try brute force and employ `-pc_type lu`:
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3373e4 -pc_type lu`</h4></summary>
+```
+./ex19 -da_refine 2 -grashof 1.3373e4 -pc_type lu
+...
+ 48 SNES Function norm 3.193724239842e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+ 49 SNES Function norm 3.193724232621e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+ 50 SNES Function norm 3.193724181714e+02 
+Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 50
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+We eventually reach a point that seems to be beyond the capabilities of our Newton solver.
+What now?
+
 ## Take-Away Messages
 
 * Important
