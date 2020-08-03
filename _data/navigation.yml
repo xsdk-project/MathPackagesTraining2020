@@ -7,6 +7,8 @@
     url: "/setup_instructions/"
   - title: "Today's Agenda"
     url: "/agenda/"
+  - title: "VIP Talks"
+    url: "/vip_talks/"
   - title: "Virtual Meeting Rooms"
     url: "/virtual_rooms/"
   - title: "Getting help"

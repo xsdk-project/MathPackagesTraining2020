@@ -139,7 +139,7 @@ permalink: "/presenters/"
 ### Jack Dongarra
 
 |:---:|:---:|
-|![](https://www.eecs.utk.edu/wp-content/uploads/2015/12/Dongarra_EECS.jpg){:width="200px"}|Presentation on Adaptive<br>Linear Solvers and Eigensolvers <br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]|
+|![](http://www.netlib.org/utk/people/JackDongarra/images/jack-2019-small.jpg){:width="200px"}|Presentation on Adaptive<br>Linear Solvers and Eigensolvers <br><br>Affiliation: [UTK][utk]/[EECS][utk-eecs]|
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
