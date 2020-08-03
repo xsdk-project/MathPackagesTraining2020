@@ -18,9 +18,10 @@ header:
 |2. Question 2?|Goal 2|Info 2|
 |3. Question 3?|Goal 3|Info 3|
 
-**Note:** To run the application in this lesson
+**Note:** To build the executable used in this lesson do
 ```
-Insert quick-reference code here...
+cd {{site.handson_root}}/nonlinear_solvers_petsc
+make ex19
 ```
 
 ## Introduction
