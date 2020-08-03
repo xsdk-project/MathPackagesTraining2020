@@ -289,6 +289,9 @@ $$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
 
 To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
+Note that for this example we are solving everything at a single level for convenience,
+but linear solvers, EB and particles all have full multi-level functionality.
+
 ### Running the code
 
 ```
