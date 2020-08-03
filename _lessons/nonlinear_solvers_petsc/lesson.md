@@ -31,6 +31,9 @@ Blah blah blah.
 
 ## Hands-On: Solving the driven cavity problem with PETSc SNES
 
+
+<img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
+
 We will use the nonlinear solvers provided by the PETSc Scalable Nonlinear Equation Solvers
 (SNES) component to solve the steady-state nonisothermal driven cavity problem as implemented
 in SNES example `ex19`.
