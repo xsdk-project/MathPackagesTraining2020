@@ -329,7 +329,7 @@ reverse this procedure by summing up the number of physical dye particles in
 each grid cell and dividing by the grid cell volume. This recovers the number
 density $$\phi(x,y,z)$$.
 
-$$\phi(i,j,k) = \sum_p S_x \cdot S_y \cdot S_z \cdot \dfrac{w_p}{dx dy dz}$$
+$$\phi(i,j,k) = \dfrac{1}{dx dy dz} \cdot \sum_p S_x \cdot S_y \cdot S_z \cdot w_p$$
 
 This approach is the basis for Particle-In-Cell (PIC) methods in a variety of
 fields, and in this tutorial you can experiment with the number of particles
