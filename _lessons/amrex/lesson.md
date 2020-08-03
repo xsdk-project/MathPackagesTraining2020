@@ -38,9 +38,9 @@ this as two-dimensional motion; here we have the option of solving in a 2D or 3D
 
 In other words, we want to solve for $$\phi(x,y,t)$$ by evolving 
 
-$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
+$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u^{spec}} \phi)  = 0$$
 
-in time ($$t$$), where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
+in time ($$t$$), where the velocity $${\bf{u^{spec}}} = (u,v)$$ is a divergence-free field computed by defining
 
 $$\psi(i,j) = \sin^2(\pi x) \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
 
@@ -48,12 +48,12 @@ and defining
 
 $$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
 
-Note that because $$u$$ is defined as the curl of a scalar field, it is analytically divergence-free
+Note that because $${\bf{u^{spec}}$$ is defined as the curl of a scalar field, it is analytically divergence-free
 
 In this example we'll be using AMR to resolve the scalar field since the location of the dye is
 what we care most about.
 
-To update the solution in a patch at a given level, we compute fluxes ($${\bf u} \phi$$)
+To update the solution in a patch at a given level, we compute fluxes ($${\bf u^{spec}} \phi$$)
 on each face, and difference the fluxes to create the update to phi.   The update routine
 in the code looks like
 
@@ -272,13 +272,13 @@ Recall our previous problem of the drop of dye in a thin incompressible fluid th
 clock-wise then counter-clockwise with a prescribed motion.  
 
 Now instead of advecting the dye as a scalar quantity defined on the mesh (the continuum representation),
-we define the dye as a collection of particles that are advected by the fluid velocity.  
-Again the fluid is thin enough that we can model this as two-dimensional motion; again we have the option of 
-solving in a 2D or 3D computational domain.
+we define the dye as a collection of particles that are advected by the fluid velocity.  Again the fluid 
+is thin enough that we can model this as two-dimensional motion; again we have the option of solving 
+in a 2D or 3D computational domain.
 
 To make things more interesting, there is now an object in the flow, in this case a cylinder.
 It would be very difficult to analytically specify the flow field around the object, so instead 
-we project the velocity field so that the resulting field represents incompressible-flow around the object.
+we project the velocity field so that the resulting field represents incompressible flow around the object.
 
 Mathematically, projecting the specified velocity field means solving  
 
@@ -286,7 +286,7 @@ $$\nabla \cdot (\beta \nabla \xi)  = \nabla \cdot \bf{u^{spec}}$$
 
 and setting 
 
-$$\bf{u} =  \bf{u^{spec}} - \nabla \xi$$
+$$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
 
 To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
@@ -337,11 +337,13 @@ max_steps = 200                          # the maximum number of steps (if max_s
 
 The size, orientation and location of the cylinder are specified in the inputs file as well:
 
+```
 cylinder.direction = 2                  # cylinder axis aligns with z-axis
 cylinder.radius    = 0.1                # cylinder radius
 cylinder.center    = 0.7 0.5 0.5        # location of cylinder center (in domain that is unit box in xy plane)
 
 cylinder.internal_flow = false          # we are computing flow around the cylinder, not inside it
+```
 
 Here you can play around with changing the size and location of the cylinder
 
