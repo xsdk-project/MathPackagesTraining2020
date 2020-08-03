@@ -196,7 +196,7 @@ Coarse STEP 8 ends. TIME = 0.007031485953 DT = 0.0008789650903 Sum(Phi) = 540755
 
 Here Sum(Phi) is the sum of $$\phi$$ over all the cells at the coarsest level.
 
-Questions we want you to answer:
+Questions to answer:
 
 ```
 1. How do the subcycling vs no-subycling calculations compare?
@@ -347,15 +347,20 @@ cylinder.internal_flow = false          # we are computing flow around the cylin
 
 Here you can play around with changing the size and location of the cylinder
 
+Questions to answer:
+
 ```
-1. Note that at the very end we print the time spent creating the geometrical information. 
+1. How does the solution in the absence compare to our previous solution (where phi was advected
+   as a mesh variable)?
+
+2. Note that at the very end we print the time spent creating the geometrical information. 
    How does this compare to the total run time?
 
-2.  Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
+3.  Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
     the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
     What probably accounts for the difference?
 
-3. Note that for the purposes of visualization, we deposited the particle information onto the grid.
+4. Note that for the purposes of visualization, we deposited the particle information onto the grid.
    Was phi conserved using this approach?
 ```
 
@@ -628,38 +633,6 @@ if you have run with 4 processes then you will see the particles displayed with 
 
 Also note -- if you want to clean up your run directory before doing another run, you can
 type "make pltclean" to remove the plt* and *.png files.
-
-### Follow-up Questions
-
-1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
-but not in the "Pachinko" example?
-  * In the "Race" example we use multigrid to solve for the flow field.
-
-2. How different is the Pachinko code itself for 2D vs 3D?
-  * Not very!  Search for the test on `AMREX_SPACEDIM` in the source files to see how few lines are different.
-
-3. How could I make the parallel decomposition in the Pachinko example load balance
-the particle work?
-  * Use a cost function based on number of particles instead of number of grid cells.
-
-### Suggested Evening Activities
-
-1. In the "AMR 101" example, 
-  * what quantities could I choose as refinement criteria besides the magnitude of phi?
-  * what factors besides the refinement criteria define the size and shape of the grids?
-    ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
-
-2. In the "Off to the Races" example, 
-  * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
-  * does making the grid finer make the particles not get "stuck" on the obstacles?
-  * would a different linear solver be faster?
-        ( Hint: try adding "use_hypre = 1" to the inputs_3d file )
-
-3. In the Pachinko example, 
- * how well can I control the final distribution of particles from the initial particle positions?
- * if I made the number of grids in the domain be different, how would that change the domain decomposition?
- * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
-   have a way of doing that? 
 
 ### Further Reading
 
