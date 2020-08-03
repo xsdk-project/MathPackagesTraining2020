@@ -424,7 +424,7 @@ algorithm choice, application-specific pathologies, and parallelization.
 * PETSc/TAO offers parallel optimization algorithms for large-scale problems.
 * Applications should provide efficient gradient evaluations for best results (e.g., algorithmic differentiation).
 * Second-order optimization methods don't always achieve faster/better solutions. Sometimes "less is more".
-* When applications only provide function evaluations, PETSc/TAO can automatically compute gradients with finite differencing.
+* When applications provide only function evaluations, PETSc/TAO can automatically compute gradients with finite differencing.
 * PETSc/TAO can also use finite differencing to validate application-provided gradients and Hessians.
 
 ## Further Reading
