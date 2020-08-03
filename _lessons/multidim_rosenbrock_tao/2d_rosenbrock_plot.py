@@ -32,6 +32,6 @@ ax.set_zlim([0, 2500])
 # set axis labels and save
 plt.xlabel("x")
 plt.ylabel("y")
-plt.savefig("2d_rosenbrock.png", bbox_inches="tight")
+plt.savefig("2d_rosenbrock.png")
 
 plt.show()

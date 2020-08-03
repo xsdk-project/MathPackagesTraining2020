@@ -106,8 +106,9 @@ This eliminates the PDE constraint, converting the problem to an unconstrained v
 popular unconstrained optimization algorithms. This comes at the cost of performing a complete PDE solution for every 
 evaluation of the objective function, as well as an adjoint solution to efficiently compute gradients.
 
-For more detail on PDE-constrained optimization, please refer to the <a href="https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/">"Boundary Control with PETSc/TAO and AMReX" 
-lecture from ATPESC 2019</a>.
+For more detail on PDE-constrained optimization, please refer to the 
+<a href="https://xsdk-project.github.io/MathPackagesTraining/lessons/boundary_control_tao/">"Boundary Control with 
+PETSc/TAO and AMReX" lecture from ATPESC 2019</a>.
 </details>
 </div>
 {::options parse_block_html="false" /}
