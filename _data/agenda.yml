@@ -75,7 +75,7 @@
   has_synopsis: true
   id: 11 
 
-- title: "Iterative Solvers & Algebraic Multigrid<br>(with hypre)"
+- title: "Iterative Solvers & Algebraic<br>Multigrid (with hypre)"
   speakers:
     - "Ulrike Yang"
   vname: "Perlmutter"
