@@ -23,8 +23,6 @@
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe9PENDMfpOysjyvAKjAHOhUNFyerRM1fVfNopyqdTZwnMVYg/viewform?usp=sf_link"
   - title: "Submit a Show Your Work"
     url: "https://docs.google.com/forms/d/e/1FAIpQLSfDF8xk0mHEVnAfWzXs2vCZSKeaUmUAhAD6BbXRqghh7h7FWQ/viewform?usp=sf_link"
-  - title: "Google Docs Folder - Instructors only please!"
-    url: "https://drive.google.com/drive/folders/1AaAZZ-uSXg6ofjRD4cEzuZYbxhPXK1VE"
 
 - title: Lessons
   audience: "public"
@@ -41,6 +39,8 @@
     url: "/lessons/pumi/"
   - title: "Sparse, Direct Solvers with SuperLU"
     url: "/lessons/superlu_mfem/"
+  - title: "Rank-Structured Solvers with STRUMPACK"
+    url: "/lessons/strumpack/"
   - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg_muelu/"
   - title: "Krylov Solvers and Preconditioning with HYPRE"

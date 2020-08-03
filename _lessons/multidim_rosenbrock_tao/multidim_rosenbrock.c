@@ -22,13 +22,11 @@ PetscErrorCode FormHessian(Tao,Vec,Mat,Mat,void*);
 int main(int argc,char **argv)
 {
   PetscErrorCode     ierr;                  /* used to check for function return/error codes */
-  Vec                x;                     /* solution vector */
+  Vec                x, diff;                     /* solution vector */
   Mat                H;                     /* Hessian matrix */
   Tao                tao;                   /* Tao solver context */
-  PetscBool          flg, use_fd = PETSC_FALSE, sol_check = PETSC_TRUE;
-  PetscReal          error, thresh = 1e-05;
-  PetscInt           i, n;
-  const PetscScalar *xx;
+  PetscBool          flg, use_fd = PETSC_FALSE;
+  PetscReal          error, abs_tol = 1e-05;
   double             start, end;
   AppCtx             user;                  /* user-defined application context */
 
@@ -76,7 +74,7 @@ int main(int argc,char **argv)
   /* Check for TAO command line options */
   ierr = TaoSetMaximumFunctionEvaluations(tao, 1000000);CHKERRQ(ierr);
   ierr = TaoSetMaximumIterations(tao, 100000);CHKERRQ(ierr);
-  ierr = TaoSetTolerances(tao, 1e-05, 0.0, 0.0);CHKERRQ(ierr);
+  ierr = TaoSetTolerances(tao, abs_tol, 0.0, 0.0);CHKERRQ(ierr);
   ierr = TaoSetFromOptions(tao);CHKERRQ(ierr);
 
   /* Solve the problem */
@@ -86,19 +84,15 @@ int main(int argc,char **argv)
   ierr = PetscPrintf(PETSC_COMM_WORLD, "\nTaoSolve() time: %f\n", end-start);CHKERRQ(ierr);
 
   /* Check solution */
-  ierr = VecGetArrayRead(x, &xx);CHKERRQ(ierr);
-  ierr = VecGetLocalSize(x, &n);CHKERRQ(ierr);
-  for (i = 0; i < n; i++) {
-    error = PetscAbs(xx[i] - 1.0);
-    if (error > thresh) {
-      sol_check = PETSC_FALSE;
-      break;
-    }
-  }
-  if (sol_check) {
+  ierr = VecDuplicate(x, &diff);CHKERRQ(ierr);
+  ierr = VecSet(diff, 1.0);CHKERRQ(ierr);
+  ierr = VecAXPY(diff, -1.0, x);CHKERRQ(ierr);
+  ierr = VecNorm(diff, NORM_2, &error);CHKERRQ(ierr);
+
+  if (error <= abs_tol) {
     ierr = PetscPrintf(PETSC_COMM_WORLD, "\nSolution correct!\n");CHKERRQ(ierr);
   } else {
-    ierr = PetscPrintf(PETSC_COMM_WORLD, "\nSolution wrong at index %i...\n", i);CHKERRQ(ierr);
+    ierr = PetscPrintf(PETSC_COMM_WORLD, "\nSolution wrong! ||error|| = %e\n", error);CHKERRQ(ierr);
   }
   
   /* Clean up PETSc objects */

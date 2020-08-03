@@ -301,7 +301,7 @@ Final L2 norm of residual: 5.99013e-18
 Here, we'll re-run the above except on 16 tasks and just grep the output form some key values of interest.
 
 ```
-$ ${MPIEXEC_OMPI} -n 16 ./convdiff --refine 3 --velocity 1000 -slu --slu-colperm 4 >& run6.out
+$ mpiexec -n 12 ./convdiff --refine 3 --velocity 1000 -slu --slu-colperm 4 >& run6.out
 Options used:
    --refine 3
    --order 1
@@ -355,7 +355,7 @@ Here, we solve a different linear system but with the same coefficient matrix A.
 Notice the improvement in solve time when re-using the factors.
 
 ```
-$ mpiexec -n 16 ./convdiff --refine 3 --velocity 1000 -slu -cp 4 -2rhs
+$ mpiexec -n 12 ./convdiff --refine 3 --velocity 1000 -slu -cp 4 -2rhs
 Options used:
    --refine 3
    --order 1
