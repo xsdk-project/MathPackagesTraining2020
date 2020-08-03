@@ -3,7 +3,7 @@ layout: page-fullwidth
 order: 10
 title: "Multidimensional Rosenbrock with PETSc/TAO"
 subheadline: "Numerical Optimization"
-teaser: "A practical introduction to large-scale optimization"
+teaser: "A practical introduction to large-scale gradient-based optimization"
 permalink: "lessons/multidim_rosenbrock_tao/"
 use_math: true
 lesson: true
@@ -15,7 +15,7 @@ header:
 
 |**Questions**|**Objectives**|**Key Points**|
 |1. What is optimization?|Understand the basic principles|Optimization seeks the inputs of a function that minimizes it|
-|2. Why use gradient-based methods?|Learn about trade-offs in algorithm choice|Gradient-based methods find local minimums with the fewest number of function evaluations|
+|2. Why use gradient-based methods?|Learn about trade-offs in algorithm choice|Gradient-based methods find local minima with the fewest number of function evaluations|
 |3. How can we compute gradients?|Evaluate different sensitivity analysis methods|Applications should provide analytical gradients whenever they can|
 
 **Note:** To run the application in this lesson
@@ -40,7 +40,7 @@ about the sensitivity of the objective function with respect to its inputs.
 
 Solutions to this problem are found where the gradient of the objective function is zero, $$\nabla_p f(p) = 0$$. 
 However, this is only a *necessary* but not sufficient condition for optimality given that other stationary points 
-(e.g. maxima) also satisfy this condition.
+(e.g., maxima) also satisfy this condition.
 
 ### Sequential Quadratic Programming (SQP)
 
@@ -70,7 +70,7 @@ The SQP class of algorithms can be summarized with the pseudocode:
 
 In this approach, different approximations to the search direction solution yield different members of the SQP family:
 
-+ **Truncated Newton:** $$d = -H_k^{-1} g_k$$ with Hessian inverted iteratively (e.g. Krylov methods) using dynamic tolerances
++ **Truncated Newton:** $$d = -H_k^{-1} g_k$$ with Hessian inverted iteratively (e.g., Krylov methods) using dynamic tolerances
 + **Quasi-Newton:** $$d = -B_k g_k$$ where $$B_k \approx H_k^{-1}$$ with low-rank updates based on the Secant condition
 + **Conjugate Gradient:** $$d_k = -g_k + \beta d_{k-1}$$ with $$\beta$$ defining different CG update formulas
 + **Gradient Descent:** $$d = g_k$$ with Hessian replaced with the identity matrix
@@ -93,7 +93,7 @@ $$
 $$
 
 where $$u \in \mathbb{R}^m$$ are the state or solution variables for the PDE and 
-$$R: \mathbb{R}^{n+m} \rightarrow \mathbb{R}^m$$ are the state equations (e.g. discretized PDE residual).
+$$R: \mathbb{R}^{n+m} \rightarrow \mathbb{R}^m$$ are the state equations (e.g., discretized PDE residual).
 
 A common and convenient way to recast this problem is to represent the state variables as implicit functions of the 
 optimization variables,
@@ -148,24 +148,23 @@ expression for the gradient.
 
 For simpler problems with objective functions that have human-readable closed-form expressions, this approach can be 
 thought of as manually differentiating the expression on paper and implementing a dedicated subroutine to evaluate it. 
-The hands-on example problem below is implemented with this approach.
+Although the hands-on example problem below is implemented with this approach, it is not suitable for most real-world 
+applications. Practical problems in many scientific disciplines are too complex to be differentiated by hand.
 
-For problems where the objective function depends on a complex subroutine (e.g. the discretized residual for a partial 
+For problems where the objective function depends on a complex subroutine (e.g., the discretized residual for a partial 
 differential equation), algorithmic or automatic differentiation (AD) applies the chain rule to the sequence of 
 elementary operations performed by the function. This is typically done with an AD tool that transforms the source code 
 to generate a new subroutine for the derivative before compile time, or an AD library that overloads the elementary 
 operations in the source code at compile time to generate compiled code for the derivative.
 
-In either form, analytical differentiation produces accurate gradients at a computational cost that is largely 
-insensitive to the size of the optimization problem. However, symbolic differentiation is simply not applicable to 
-many practical scientific problems and automatic differentiation carries with it a greater implementation burden for 
-the application code. FD method remains an easy alternative for rapid prototyping and testing, especially when the 
-problem size is small and objective function evaluations are not expensive.
+This approach produces accurate gradients at a computational cost that is largely insensitive to the size of the 
+optimization problem. However, the FD methods remain an easy alternative for rapid prototyping and testing, especially 
+when the problem size is small and objective function evaluations are not expensive.
 
 ## Using TAO
 
 Toolkit for Advanced Optimization (TAO) is a package of optimization algorithms and tools developed at Argonne National 
-Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. It is 
+Laboratory and distributed with the [Portable Extensible Toolkit for Scientific Computing (PETSc)][4] library. TAO is 
 primarily intended for continuous gradient-based optimization and supports PDE-constrained problems using the 
 reduced-space formulation.
 
@@ -378,10 +377,11 @@ The problem can be modified with various option flags:
 ### Hands-on Activities
 
 1. Change the TAO algorithm to nonlinear conjugate gradient method using `-tao_type bncg` and to truncated Newton 
-using `-tao_type bnls`. Compare convergence against the default quasi-Newton method (`-tao_type bqnls`). 
+using `-tao_type bnls`. Compare convergence against the default quasi-Newton method (`-tao_type bqnls`).
 
 2. Increase the problem size with the `-n <size>` argument (default size is 2) and evaluate its impact on convergence.
-  * Repeat Activity 1 with different TAO algorithms. Do they all exhibit the same scaling?
+  * Repeat Activity 1 with different TAO algorithms. Do they all exhibit the same scaling?  
+
 
 3. Solve the problem with the finite difference gradient using the `-fd` argument. Evaluate convergence and solution 
 time with increasing problem size.
@@ -389,7 +389,8 @@ time with increasing problem size.
 4. Try running the problem in parallel with `mpirun -np <# of processes> ./multidim_rosenbrock ...`. Why does running 
 in parallel slow the solution down at small problem sizes? How large should the problem be to observe a speedup in 
 parallel runs?
-  * Repeat Activity 4 with different TAO algorithms. Are the break-even points in size vs. performance the same?
+  * Repeat Activity 4 with different TAO algorithms. Are the break-even points in size vs. performance the same?  
+
 
 5. ADVANCED: Add bound constraints to the problem! You must first create two vectors of the same size/distribution as the 
 solution vector using `VecDuplicate()`. You can then set these vectors to be equal to the lower and upper bound values 
@@ -421,10 +422,10 @@ algorithm choice, application-specific pathologies, and parallelization.
 ## Take-Away Messages
 
 * PETSc/TAO offers parallel optimization algorithms for large-scale problems.
-* Analytical derivatives are ideal for best results.
-* Second-order methods don't always achieve faster/better solutions.
-* When analytical derivatives are not available, PETSc/TAO can compute gradients automatically with finite differencing.
-* PETSc/TAO can validate your analytical derivatives using finite differencing.
+* Applications should provide efficient gradient evaluations for best results (e.g., algorithmic differentiation).
+* Second-order optimization methods don't always achieve faster/better solutions. Sometimes "less is more".
+* When applications only provide function evaluations, PETSc/TAO can automatically compute gradients with finite differencing.
+* PETSc/TAO can also use finite differencing to validate application-provided gradients and Hessians.
 
 ## Further Reading
 
