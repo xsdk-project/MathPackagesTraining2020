@@ -21,7 +21,7 @@ header:
 |What time-stepping do I use?|Understand the difference between subcycling and not|It's a choice|
 |How do I visualize AMR results?|Use Visit and Paraview for AMReX vis|Visualization tools exist for AMR data.|
 
-## Example: Multi-Level Scalar Advection
+## Example: AMR101: Multi-Level Scalar Advection
 
 ### What Features Are We Using
 
@@ -38,9 +38,9 @@ this as two-dimensional motion; here we have the option of solving in a 2D or 3D
 
 In other words, we want to solve for $$\phi(x,y,t)$$ by evolving 
 
-$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u} \phi)  = 0$$
+$$\frac{\partial \phi}{\partial t} + \nabla \cdot (\bf{u^{spec}} \phi)  = 0$$
 
-in time ($$t$$), where the velocity $${\bf{u}} = (u,v)$$ is a divergence-free field computed by defining
+in time ($$t$$), where the velocity $${\bf{u^{spec}}} = (u,v)$$ is a divergence-free field computed by defining
 
 $$\psi(i,j) = \sin^2(\pi x) \sin^2(\pi y)  \cos (\pi t / 2) / \pi $$
 
@@ -48,12 +48,12 @@ and defining
 
 $$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
 
-Note that because $$u$$ is defined as the curl of a scalar field, it is analytically divergence-free
+Note that because $${\bf{u^{spec}}$$ is defined as the curl of a scalar field, it is analytically divergence-free
 
 In this example we'll be using AMR to resolve the scalar field since the location of the dye is
 what we care most about.
 
-To update the solution in a patch at a given level, we compute fluxes ($${\bf u} \phi$$)
+To update the solution in a patch at a given level, we compute fluxes ($${\bf u^{spec}} \phi$$)
 on each face, and difference the fluxes to create the update to phi.   The update routine
 in the code looks like
 
@@ -127,9 +127,8 @@ AmrCoreAdv::timeStepNoSubcycling (Real time, int iteration)
 ### Running the Code
 
 ```
-cd HandsOnLessons/amrex/AMReX_Amr_Advection
+cd HandsOnLessons/amrex/AMReX_Amr101/Exec
 ```
-
 Note that you can choose to work entirely in 2D or in 3D ... whichever you prefer.
 The instructions below will be written for 3D but you can substitute the 2D executable.
 
@@ -196,7 +195,7 @@ Coarse STEP 8 ends. TIME = 0.007031485953 DT = 0.0008789650903 Sum(Phi) = 540755
 
 Here Sum(Phi) is the sum of $$\phi$$ over all the cells at the coarsest level.
 
-Questions we want you to answer:
+Questions to answer:
 
 ```
 1. How do the subcycling vs no-subycling calculations compare?
@@ -256,7 +255,7 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 * What happens as you change the refinement criteria (i.e. use different values of $$\phi$$)?
   (You can edit these in inputs)  
 
-## Example: "Off to the Races"
+## Example: "AMR102: Advection of Particles Around Obstacles"
 
 ### What Features Are We Using
 
@@ -268,126 +267,101 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 
 Challenge: 
 
-Imagine incompressible flow in a channel from left to right.  The inflow velocity on the left is $$u = 1$$. 
+Recall our previous problem of the drop of dye in a thin incompressible fluid that is spinning 
+clock-wise then counter-clockwise with a prescribed motion.  
 
-If there are no obstacles in the channel, the fluid will flow with speed 1 from left to right.
+Now instead of advecting the dye as a scalar quantity defined on the mesh (the continuum representation),
+we define the dye as a collection of particles that are advected by the fluid velocity.  Again the fluid 
+is thin enough that we can model this as two-dimensional motion; again we have the option of solving 
+in a 2D or 3D computational domain.
 
-If you place obstacles in the channel, the fluid must flow around them.
+To make things more interesting, there is now an object in the flow, in this case a cylinder.
+It would be very difficult to analytically specify the flow field around the object, so instead 
+we project the velocity field so that the resulting field represents incompressible flow around the object.
 
-Suppose your goal is to accelerate the fluid so that a tracer released near the inflow reaches the right side
-as fast as possible.
+Mathematically, projecting the specified velocity field means solving  
 
-You are given nine cylinders that you can place (or not) at specified locations.
+$$\nabla \cdot (\beta \nabla \xi)  = \nabla \cdot \bf{u^{spec}}$$
 
-You can use particles released near the inflow to measure the fastest configuration.
+and setting 
 
-How many cylinders should you use, and where should you put them?
+$$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
 
+To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
 ### Running the code
 
 ```
-cd HandsOnLessons/amrex/AMReX_EB_MacProj
+cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](macproj.gif)
+![Sample solution](NEWMOVIE.gif)
 
 In this directory you'll see
 
 ```
-main3d.ex -- the executable -- this has been built with MPI 
+main2d.gnu.MPI.ex -- the 2D executable -- this has been built with MPI 
 
-inputs_3d -- domain size, size of grids, how many time steps, which obstacles...
+main3d.gnu.MPI.ex -- the 3D executable -- this has been built with MPI 
 
-initial_particles_3d -- initial particle locations  (this name is given in the inputs_3d file)
+inputs -- an inputs file for both 2D and 3D
 ```
 
-To run in serial, 
+As before, to run the 3D code in serial: 
 
 ```
-./main3d.ex inputs_3d
+./main3d.gnu.MPI.ex inputs
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d
+mpiexec -n 4 ./main3d.gnu.MPI.ex inputs
 ```
 
-The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
+Similar to the last example, the following parameters can be set at run-time -- these are currently set in the inputs file.
 
 ```
-n_cell = 128                             # number of cells in x-direction; we double this in the y-direction
-max_grid_size = 64                       # the maximum number of cells in any direction in a single grid
+n_cell = 64                              # number of cells in x- and y-directions; z-dir has 1/8 n_cell (if 3D)
+
+max_grid_size = 32                       # the maximum number of cells in any direction in a single grid
 
 plot_int = 10                            # frequency of writing plotfiles
 
-particle_file = initial_particles_3d     # name of file where we specify the input positions of the particles
+max_time =  2.0                          # the final time (if max_time < max_steps * time_step)
 
-time_step = 0.001                        # we advance the particles with a fixed time step of this size
-
-max_time = 10.0                          # the final time (if max_time < max_steps * time_step)
-
-max_steps = 10000                        # the maximum number of steps (if max_steps * time_step < max_time))
-
-obstacles = 0 1 2 3 4 5 6 7 8            # this is how we choose which obstacles to include
-```
-
-We define the cylinders with this numbering scheme
-
-![Numbering](numbering.png)
-
-You can also set the parameters on the command line; for example,  
+max_steps = 200                          # the maximum number of steps (if max_steps * time_step < max_time))
 
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d obstacles = 1 3 4 5 6 8
-```
 
-will run the problem with only six obstacles 
-
-The output from your run should look something like this:
+The size, orientation and location of the cylinder are specified in the inputs file as well:
 
 ```
-********************************************************************
- You specified 9 objects in the domain: 0 1 2 3 4 5 6 7 8
- ********************************************************************
+cylinder.direction = 2                  # cylinder axis aligns with z-axis
+cylinder.radius    = 0.1                # cylinder radius
+cylinder.center    = 0.7 0.5 0.5        # location of cylinder center (in domain that is unit box in xy plane)
 
-********************************************************************
- First let's project the initial velocity to find
-   the flow field around the obstacles ...
-********************************************************************
-
-
-********************************************************************
- Done!  Now let's advect the particles ...
-********************************************************************
-
-Timestep 0, Time = 0.001 and leading particle now at 0.101179325
-Timestep 100, Time = 0.101 and leading particle now at 0.2444506795
-Timestep 200, Time = 0.201 and leading particle now at 0.4330191808
-Timestep 300, Time = 0.301 and leading particle now at 0.5611955983
-Timestep 400, Time = 0.401 and leading particle now at 0.7422046938
-Timestep 500, Time = 0.501 and leading particle now at 0.8955689091
-Timestep 600, Time = 0.601 and leading particle now at 1.044585496
-Timestep 700, Time = 0.701 and leading particle now at 1.225885881
-Timestep 800, Time = 0.801 and leading particle now at 1.34851225
-Timestep 900, Time = 0.901 and leading particle now at 1.45538891
-Timestep 1000, Time = 1.001 and leading particle now at 1.558181566
-Timestep 1100, Time = 1.101 and leading particle now at 1.659474158
-Timestep 1200, Time = 1.201 and leading particle now at 1.760129699
-Timestep 1300, Time = 1.301 and leading particle now at 1.860489498
-Timestep 1400, Time = 1.401 and leading particle now at 1.960718531
-
-********************************************************************
-We have a winner...and the winning time is 1.431
-********************************************************************
+cylinder.internal_flow = false          # we are computing flow around the cylinder, not inside it
 ```
 
-Note that if you want to figure out which is the fastest configuration, you'll 
-need to run the code multiple times with different configurations and compare the
-"winning times."   This is a good example of how we often don't run the 
-simulation code in a "one and done" mode -- the simulation is often only one component 
-of a science investigation or design process.
+Here you can play around with changing the size and location of the cylinder
+
+Questions to answer:
+
+```
+1. How does the solution in the absence compare to our previous solution (where phi was advected
+   as a mesh variable)?
+
+2. Note that at the very end we print the time spent creating the geometrical information. 
+   How does this compare to the total run time?
+
+3.  Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
+    the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
+    What probably accounts for the difference?
+
+4. Note that for the purposes of visualization, we deposited the particle information onto the grid.
+   Was phi conserved using this approach?
+```
 
 ### Visualizing the Results
 
@@ -658,38 +632,6 @@ if you have run with 4 processes then you will see the particles displayed with 
 
 Also note -- if you want to clean up your run directory before doing another run, you can
 type "make pltclean" to remove the plt* and *.png files.
-
-### Follow-up Questions
-
-1. Why might it be important to have `n_cell` be a power of 2 in the "Race" example
-but not in the "Pachinko" example?
-  * In the "Race" example we use multigrid to solve for the flow field.
-
-2. How different is the Pachinko code itself for 2D vs 3D?
-  * Not very!  Search for the test on `AMREX_SPACEDIM` in the source files to see how few lines are different.
-
-3. How could I make the parallel decomposition in the Pachinko example load balance
-the particle work?
-  * Use a cost function based on number of particles instead of number of grid cells.
-
-### Suggested Evening Activities
-
-1. In the "AMR 101" example, 
-  * what quantities could I choose as refinement criteria besides the magnitude of phi?
-  * what factors besides the refinement criteria define the size and shape of the grids?
-    ( Hint: you might want to read this first: https://amrex-codes.github.io/amrex/docs_html/GridCreation.html )
-
-2. In the "Off to the Races" example, 
-  * what is the configuration of obstacles in which the first particle reaches the end-line in the shortest time?
-  * does making the grid finer make the particles not get "stuck" on the obstacles?
-  * would a different linear solver be faster?
-        ( Hint: try adding "use_hypre = 1" to the inputs_3d file )
-
-3. In the Pachinko example, 
- * how well can I control the final distribution of particles from the initial particle positions?
- * if I made the number of grids in the domain be different, how would that change the domain decomposition?
- * how could I modify the code to make the particles bounce off each other as well?  Does AMReX 
-   have a way of doing that? 
 
 ### Further Reading
 
