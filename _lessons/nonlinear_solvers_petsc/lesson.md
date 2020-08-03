@@ -28,13 +28,23 @@ make ex19
 
 Blah blah blah.
 
-## Other Stuff?
 
-Blah blah blah.
+## Hands-On: Solving the driven cavity problem with PETSc SNES
 
-## Hands-On: Solving the driven cavity problem with Newton's method
-
-In the first set of examples, we will use (inexact) Newton methods to solve the driven cavity problem, SNES `ex19`.
+We will use the nonlinear solvers provided by the PETSc Scalable Nonlinear Equation Solvers
+(SNES) component to solve the steady-state nonisothermal driven cavity problem as implemented
+in SNES example `ex19`.
+This is a classic CFD benchmark that simulates a fluid-filled 2D box with a lid that moves at
+constant tangential velocity (imagine a conveyor belt).
+Flow is driven by both the lid motion and buoyancy effects.
+Our example uses a velocity-vorticity formulation, in which the governing equations can
+be expressed as
+$$ \begin{align}
+        - \Delta U - \partial_y \Omega &= 0 \\
+        - \Delta V + \partial_x \Omega &= 0 \\
+        - \Delta \Omega + \nabla \cdot ([U \Omega, V \Omega]) - \mathrm{Gr}\ \partial_x T &= 0 \\
+        - \Delta T + \mathrm{Pr}\ \nabla \cdot ([U T, V T]) &= 0
+   \end{align} $$
 
 ### Example 1: Initial exploration and understanding PETSc options
 
