@@ -21,7 +21,6 @@ header:
 
 #### To begin this lesson
 
-* [Open the Answers Form]({{page.answers_google_form}})
 * Go to the directory for the hand-coded `heat` application
 ```
 cd {{ site.handson_root }}/hand_coded_heat
