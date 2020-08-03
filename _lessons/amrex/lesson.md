@@ -54,6 +54,8 @@ Note that because $${\bf{u^{spec}}}$$ is defined as the curl of a scalar field, 
 In this example we'll be using AMR to resolve the scalar field since the location of the dye is
 what we care most about.
 
+### The AMR Algorithm
+
 To update the solution in a patch at a given level, we compute fluxes ($${\bf u^{spec}} \phi$$)
 on each face, and difference the fluxes to create the update to phi.   The update routine
 in the code looks like
@@ -282,6 +284,8 @@ To make things even more interesting, there is now an object in the flow, in thi
 It would be very difficult to analytically specify the flow field around the object, so instead 
 we project the velocity field so that the resulting field represents incompressible flow around the object.
 
+### Projecting the Velocity for Incompressible Flow around the Cylinder
+
 Mathematically, projecting the specified velocity field means solving  
 
 $$\nabla \cdot (\beta \nabla \xi)  = \nabla \cdot \bf{u^{spec}}$$
@@ -292,9 +296,11 @@ $$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
 
 To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
-With this solver, we can advect the particles through this velocity field in
+With the velocity projection, we can advect the particles through this velocity field in
 each timestep, interpolate the particles onto the mesh to determine
-$$\phi(x,y,z)$$, and calculate the velocity for taking the next timestep.
+$$\phi(x,y,z)$$, and project the new velocity for taking the next timestep.
+
+### Particle-In-Cell Algorithm for Advecting $$\phi$$
 
 We achieve conservation by interpreting the scalar $$\phi$$ as the number
 density of physical dye particles in the fluid, and we represent these physical
