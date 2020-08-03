@@ -7,6 +7,8 @@ header:
 permalink: "/agenda/"
 ---
 
+[Be sure to see these VIP talks]({{site.url}}{{site.baseurl}}/vip_talks/)
+
 {% include agenda %}
 
 {% include link-shortcuts %}

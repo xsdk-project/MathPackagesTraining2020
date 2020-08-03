@@ -3,7 +3,7 @@ layout: page
 show_meta: false
 title: "VIPs of Extreme-Scale<br>Numerical Software"
 header:
-   image_fullwidth: "q_center_main.jpg"
+   image_fullwidth: "q_center_c.jpg"
 permalink: "/vip_talks/"
 ---
 During a *normal*, in-person, year, you would have the opportunity to hear and meet
