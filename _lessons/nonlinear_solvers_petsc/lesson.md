@@ -39,12 +39,16 @@ constant tangential velocity (imagine a conveyor belt).
 Flow is driven by both the lid motion and buoyancy effects.
 Our example uses a velocity-vorticity formulation, in which the governing equations can
 be expressed as
-$$ \begin{align}
+
+$$ \begin{align*}
         - \Delta U - \partial_y \Omega &= 0 \\
         - \Delta V + \partial_x \Omega &= 0 \\
         - \Delta \Omega + \nabla \cdot ([U \Omega, V \Omega]) - \mathrm{Gr}\ \partial_x T &= 0 \\
         - \Delta T + \mathrm{Pr}\ \nabla \cdot ([U T, V T]) &= 0
-   \end{align} $$
+   \end{align*} $$
+
+where $U$ and $V$ are velocities, $T$ is temperature, $\Omega$ is vorticity, Gr is the
+Grashof number and Pr is the Prandtl number.
 
 ### Example 1: Initial exploration and understanding PETSc options
 
