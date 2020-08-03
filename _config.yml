@@ -38,7 +38,7 @@ handson_root: 'HandsOnLessons'
 # List only 'public' to generate a site that does NOT include all the
 # additional pages for development
 #
-audience: ['private','public']
+audience: ['public']
 
 #
 # Controls whether lesson answer expansions are hidden or not
