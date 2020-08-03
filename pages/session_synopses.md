@@ -9,8 +9,8 @@ permalink: "/session_synopses/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Structured Discretization
-### Structured Discretization with AMReX
+### Structured Discretization (with AMReX)
+### Structured Discretization (with AMReX)
 
 Block-structured adaptive mesh refinement (AMR) provides a natural framework
 in which to focus computing power on the most critical parts of the problem in
@@ -28,8 +28,8 @@ solvers to impose incompressibility on a flow around obstacles, and
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Unstructured Discretization
-### Unstructured Discretization with MFEM and PUMI
+### Unstructured Discretization (with MFEM/PUMI)
+### Unstructured Discretization (with MFEM/PUMI)
 [Slides - Part 1](https://drive.google.com/file/d/1r4Q6-xyEinXaV9aub5gEB0yUMyc4GuDA/view?usp=sharing)<br>[Slides - Part 2](https://drive.google.com/file/d/1Nys2IqY7Q7vfeEP3uLvBBv8rJROW-W6l/view?usp=sharing)
 
 Unstructured meshes can yield required levels of accuracy using fewer degrees of
@@ -43,8 +43,8 @@ mesh tools developed to support mesh adaptation, load balancing and PIC calculat
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Nonlinear Solvers
-### Nonlinear Solvers with PETSc
+### Nonlinear Solvers (with PETSc)
+### Nonlinear Solvers (with PETSc)
 [Slides](https://drive.google.com/file/d/1JxVnZ4fBpYnN2xgBu0RkOQHRZHR-zxbB/view?usp=sharing)
 
 We will begin with a quick overview of iterative solvers for nonlinear systems,
@@ -59,8 +59,8 @@ handle particularly difficult nonlinearities.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Time Integration
-### Time Integration with SUNDIALS
+### Time Integration (with SUNDIALS)
+### Time Integration (with SUNDIALS)
 [Slides](https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing)
 
 In this lecture we will discuss the role and impact of high order, adaptive, and
@@ -85,8 +85,8 @@ semi-discretization.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Iterative Solvers & Preconditioners with MueLu
-### Iterative Solvers & Preconditioners with MueLu
+### Iterative Solvers & Preconditioners (with MueLu)
+### Iterative Solvers & Preconditioners (with MueLu)
 [Slides](https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing)
 
 In this session, attendees will learn about linear solvers and preconditioners
@@ -101,8 +101,8 @@ model linear problem.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Iterative Solvers & Preconditioners with Hypre
-### Iterative Solvers & Preconditioners with Hypre
+### Iterative Solvers & Algebraic Multigrid (with Hypre)
+### Iterative Solvers & Algebraic Multigrid (with Hypre)
 [Slides](https://drive.google.com/file/d/1gpLnYpRflYPTyBuRfV_kZtSzE-nfy2S2/view?usp=sharing)
 
 This session will present the basic concepts of iterative linear solvers with focus on
@@ -118,9 +118,8 @@ from the hypre library applied to several test problems.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Optimization
-### Optimization with PETSc/Tao
-
+### Optimization (with Tao)
+### Optimization (with Tao)
 This lecture will provide an introduction to numerical optimization with a
 theoretical focus on simulation-based problems. We will introduce the user
 interfaces for the Toolkit for Advanced Optimization (Tao) package within
@@ -132,9 +131,8 @@ parallel environment.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Direct Solvers
-### Direct Solvers with SuperLU and Strumpack
-
+### Direct Solvers (with SuperLU/Strumpack)
+### Direct Solvers (with SuperLU/Strumpack)
 Direct Solvers are presented in three different time slots, each with a slightly
 different emphasis...
 
