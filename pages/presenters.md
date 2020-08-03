@@ -67,7 +67,7 @@ permalink: "/presenters/"
 ### Alp Dener
 
 |:---:|:---:|
-|![](https://avatars2.githubusercontent.com/u/7097165?s=400&v=4){:width="200px"}|Key Expertise: [PETSc/TAO][petsc]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][ad-m]<br><br>GitHub: [Profile][ad-g]|
+|![](https://www.anl.gov/sites/www/files/styles/profile_teaser_square_350px/public/Dener%20Alp%2032848D037.png?itok=rHQjqgg4){:width="200px"}|Key Expertise: [PETSc/TAO][petsc]<br><br>Affiliation: [ANL][anl]/[MCS][anl-mcs]<br><br>Contact: [email][ad-m]<br><br>Links: [Profile][ad-p] and [GitLab][ad-g]| 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -281,7 +281,8 @@ permalink: "/presenters/"
 [dr-g]: https://github.com/drreynolds
 [aa-g]: https://github.com/asalmgren
 [dw-g]: https://github.com/dwillcox
-[ad-g]: https://github.com/denera
+[ad-g]: https://gitlab.com/adener
+[ad-p]: https://alp.dener.me
 [cg-g]: https://github.com/cgcgcg
 [jh-g]: https://github.com/jhux2
 [bs-b]: https://www.mcs.anl.gov/~bsmith
