@@ -505,7 +505,11 @@ passionate about.
 
 ----
 
-## Optional Homework
+## Optional Exercises
+
+For any of these optional exercises, we encourage you to submit a
+[show your work](https://docs.google.com/forms/d/e/1FAIpQLSfDF8xk0mHEVnAfWzXs2vCZSKeaUmUAhAD6BbXRqghh7h7FWQ/viewform?usp=sf_link) upload of your work for review and feedback. It may take us a few
+days to respond but we would be happy to follow up.
 
 ### Short / Quick Follow-on Questions
 
@@ -517,6 +521,22 @@ passionate about.
    question='What is the Optimum thickness of an Adobe Brick Wall?'
    answer='0.3-0.4 meters' %}
 
+### Are the assumptions correct?
+
+A common pitfal in numerical modeling is neglecting to ensure fundamental
+assumptions still hold. In this exercise, to make the problem tractable and
+a short lesson, we made a number of *simplifying assumptions*. If the picture
+below was a more accurate representation of the situation, the wall is
+composed more of water (in the pipe) than it is of wall
+
+![Wall and Pipe::](wall_and_pipe2.png){:width="400px"}
+
+and our numerical model would fail.
+
+{% include qanda
+   question='Did this in fact happen in our example, above?'
+   answer='Maybe. Certainly the pipe is wider than the original picture suggests.' %}
+
 ### Determine Optimum Wall Thicknesses
 
 What are the minimum thicknesses of walls of Wood, Adobe and Common brick
@@ -525,7 +545,14 @@ to prevent the pipes from freezing?
 When you are done, go to `Intro->Submit A Show Your Work` using the hands-on
 activity name _Optimized Walls_ and upload evidence of your completed solution.
 
-### Compare FTCS, Crank-Nicholson and Upwind15 Algorithms (5 points)
+### Compare various precisions
+
+The `heat` application can be made to run using *half*, *single*, *double* and *long double*
+precision. Try each of these and compare time and space performance as well as quality
+of the results. How do the various precisions compare in terms of # of operations, time to
+solution, memory used and quality of results?
+
+### Compare FTCS, Crank-Nicholson and Upwind15 Algorithms
 
 #### [Crank-Nicolson](https://en.wikipedia.org/wiki/Crank–Nicolson_method) Discretization
 
@@ -564,7 +591,7 @@ explanations for them and in comparison with the FTCS method.
 When you are done, go to `Intro->Submit A Show Your Work` using the hands-on
 activity name _Crank-Nicholson_ and upload evidence of your completed solution.
 
-### Use The Application to Solve The Pipeline Problem (5 points)
+### Use The Application to Solve The Pipeline Problem
 
 ![Pipeline Problem::](pipeline.png){:width="500"}
 
@@ -581,7 +608,7 @@ diameter.
 When you are done, go to `Intro->Submit A Show Your Work` using the hands-on
 activity name _Pipeline_ and upload evidence of your completed solution.
 
-### Modify the Application to Support Two Materials (10 points)
+### Modify the Application to Support Two Materials
 
 Using [other research](http://www.ams.org/journals/mcom/1960-14-072/S0025-5718-60-99228-0/S0025-5718-60-99228-0.pdf),
 modify the application to work for a composite wall composed of two materials.
