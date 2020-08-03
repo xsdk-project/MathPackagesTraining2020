@@ -325,9 +325,9 @@ The takeaway here is that the combination of the fast convergence of a globalize
 Newton method and a multigrid preconditioner for the inner, linear solve can be a powerful
 and highly scalable solver.
 
-### Increasing the strength of the nonlinearity
+### Example 4: Increasing the strength of the nonlinearity
 
-Let's explore what happens as we increase the strength of the nonlinearity for raising the
+Let's explore what happens as we increase the strength of the nonlinearity by raising the
 Grashof number. Try running
 
 ```
@@ -411,6 +411,10 @@ No good! Let's try brute force and employ `-pc_type lu`:
 </div>
 {::options parse_block_html="false" /}
 
+```
+./ex19 -da_refine 2 -grashof 1.3373e4 -pc_type lu
+```
+
 {::options parse_block_html="true" /}
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
@@ -431,6 +435,182 @@ Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 50
 
 We eventually reach a point that seems to be beyond the capabilities of our Newton solver.
 What now?
+
+### Example 5: Nonlinear Richardson Preconditioned with Newton
+
+```
+./ex19 -da_refine 2 -grashof 1.3373e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type mg
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 13373.
+Nonlinear solve did not converge due to DIVERGED_INNER iterations 0
+Number of SNES iterations = 0
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+```
+./ex19 -da_refine 2 -grashof 1.3373e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type lu
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 13373.
+  0 SNES Function norm 7.987708558131e+02 
+  1 SNES Function norm 8.467169687854e+02 
+  2 SNES Function norm 7.300096001529e+02 
+  3 SNES Function norm 5.587232361127e+02 
+  4 SNES Function norm 3.071143076019e+03 
+  5 SNES Function norm 3.347748537471e+02 
+  6 SNES Function norm 1.383297972324e+01 
+  7 SNES Function norm 1.209841384629e-02 
+  8 SNES Function norm 8.660606193428e-09 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 8
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+So nonlinear Richardson preconditioned with Newton has let us go further than Newton alone.
+
+```
+./ex19 -da_refine 2 -grashof 1.4e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type lu
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 14000.
+...
+ 37 SNES Function norm 5.992348444448e+02 
+ 38 SNES Function norm 5.992348444290e+02 
+Nonlinear solve did not converge due to DIVERGED_INNER iterations 38
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+We've hit another barrier. What about switching things up?
+Let's try preconditioning Newton with nonlinear Richardson.
+
+### Example 6: Newton Preconditioned with Nonlinear Richardson
+
+```
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 1 -snes_max_it 1000
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+...
+352 SNES Function norm 2.145588832260e-02 
+  Linear solve converged due to CONVERGED_RTOL iterations 7
+353 SNES Function norm 1.288292314235e-05 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+354 SNES Function norm 3.219155715396e-10 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 354
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+```
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 3
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+...
+ 23 SNES Function norm 4.796734188970e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 7
+ 24 SNES Function norm 2.083806106198e-01 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+ 25 SNES Function norm 1.368771861149e-04 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+ 26 SNES Function norm 1.065794992653e-08 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 26
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+```
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 4
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 5
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 6
+./ex19 -da_refine 2 -grashof 1.4e4 -pc_type mg -npc_snes_type nrichardson -npc_snes_max_it 7
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 14000.
+  0 SNES Function norm 8.016512665033e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 11
+  1 SNES Function norm 7.961475922316e+03 
+  Linear solve converged due to CONVERGED_RTOL iterations 10
+  2 SNES Function norm 3.238304139699e+03 
+  Linear solve converged due to CONVERGED_RTOL iterations 10
+  3 SNES Function norm 4.425107973263e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 9
+  4 SNES Function norm 2.010474128858e+02 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  5 SNES Function norm 2.936958163548e+01 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  6 SNES Function norm 1.183847022611e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 8
+  7 SNES Function norm 6.662829301594e-03 
+  Linear solve converged due to CONVERGED_RTOL iterations 7
+  8 SNES Function norm 6.170083332176e-07 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 8
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
+
+Newton preconditioned with nonlinear Richardson can be pushed quite far! Try
+
+```
+./ex19 -da_refine 2 -grashof 1e6 -pc_type lu -npc_snes_type nrichardson -npc_snes_max_it 7 -snes_max_it 1000
+```
+
+{::options parse_block_html="true" /}
+<div style="border: solid #8B8B8B 2px; padding: 10px;">
+<details>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output</h4></summary>
+```
+lid velocity = 100., prandtl # = 1., grashof # = 1e+06
+...
+ 69 SNES Function norm 4.241700887134e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+ 70 SNES Function norm 3.238739735055e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+ 71 SNES Function norm 1.781881532852e+00 
+  Linear solve converged due to CONVERGED_RTOL iterations 1
+ 72 SNES Function norm 1.677710773493e-05 
+Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 72
+```
+</details>
+</div>
+{::options parse_block_html="false" /}
 
 ## Take-Away Messages
 
