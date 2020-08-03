@@ -29,11 +29,19 @@ using the Hierarchically Off-Diagonal Low Rank format.
 
 |T|
 |:---:|
-|[<img src="mfem-superlu0000.png" width="400">](T.png)|
+|[<img src="T.png" width="400">](T.png)|
 
 The matrix _T_ is constant along the diagonals and values decay
 rapidly going further away from the main diagonal. Off-diagonal blocks
-can be approximated well using low-rank.
+can be approximated well using low-rank. A 4-level HODLR representation
+looks schematically as follows:
+
+|HODLR matrix representation|
+|:---:|
+|[<img src="HODLR.png" width="400">](HODLR.png)|
+
+where the smallest diagonal blocks are stored as dense, and all
+off-diagonal blocks are compressed using low-rank.
 
 
 ## Running the Example
@@ -81,6 +89,12 @@ $ ./run_testHODLR 20000 --hodlr_leaf_size 128 | tail -n 3
  BPACK_CheckError: fnorm: 2.3231555E+00 2.3231554E+00 acc:  1.69E-06 time:  9.30E-03
 # H has max rank 12 and takes 46.2892 MByte (compared to 3200 MByte for dense storage)
 ```
+
+Check also the impact of the leaf size, the smallest blocks on the
+diagonal of the HODLR representation.
+
+You can run with the _--help_ command line option to see further
+tunable parameters.
 
 ---
 
@@ -205,9 +219,9 @@ Now we switch to parallel, and enable Hierarchically Semi-Separable
 (HSS) or Hierarchically Off-Diagonal Low Rank approximations.
 
 ```
-mpiexec -n 12 ./run_testPoisson3dMPIDist 60 --sp_compression HSS \
+$ mpiexec -n 12 ./run_testPoisson3dMPIDist 60 --sp_compression HSS \
    --sp_compression_min_sep_size 1000 --hss_rel_tol 1e-2
-mpiexec -n 12 ./run_testPoisson3dMPIDist 40 --sp_compression HODLR \
+$ mpiexec -n 12 ./run_testPoisson3dMPIDist 40 --sp_compression HODLR \
 --sp_compression_min_sep_size 1000 --hodlr_leaf_size 128
 ```
 
