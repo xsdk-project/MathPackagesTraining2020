@@ -13,6 +13,7 @@ header:
 ---
 
 ## At a Glance
+
 <!-- (Expected # minutes to complete) %% temporarily omit -->
 
 |Questions|Objectives|Key Points|
