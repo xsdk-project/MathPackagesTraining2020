@@ -41,6 +41,8 @@
     url: "/lessons/pumi/"
   - title: "Sparse, Direct Solvers with SuperLU"
     url: "/lessons/superlu_mfem/"
+  - title: "Rank-Structured Solvers with STRUMPACK"
+    url: "/lessons/strumpack/"
   - title: "Krylov Solvers and Preconditioning with Trilinos/MueLu"
     url: "/lessons/krylov_amg_muelu/"
   - title: "Krylov Solvers and Preconditioning with HYPRE"
