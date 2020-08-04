@@ -391,8 +391,8 @@ The problem can be modified with various option flags:
 using `-tao_type bnls`. Compare convergence against the default quasi-Newton method (`-tao_type bqnls`).
 
 2. Increase the problem size with the `-n <size>` argument (default size is 2) and evaluate its impact on convergence.
-  * Repeat Activity 1 with different TAO algorithms. Do they all exhibit the same scaling?  
-
+  * Repeat Activity 2 with different TAO algorithms. Do they all exhibit the same scaling?  
+<br>
 
 3. Solve the problem with the finite difference gradient using the `-fd` argument. Evaluate convergence and solution 
 time with increasing problem size.
@@ -401,7 +401,7 @@ time with increasing problem size.
 in parallel slow the solution down at small problem sizes? How large should the problem be to observe a speedup in 
 parallel runs?
   * Repeat Activity 4 with different TAO algorithms. Are the break-even points in size vs. performance the same?  
-
+<br>
 
 5. ADVANCED: Add bound constraints to the problem! You must first create two vectors of the same size/distribution as the 
 solution vector using `VecDuplicate()`. You can then set these vectors to be equal to the lower and upper bound values 
