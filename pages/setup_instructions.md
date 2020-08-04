@@ -8,6 +8,12 @@ header:
 permalink: "/setup_instructions/"
 ---
 
+In the introductory talk, tomorrow, August 4th, we'll provide additional details
+about this web site and Zoom rooms and Slack channels for our parallel sessions.
+Here, now, we provide instructions for setting up your Cooley login enviornment,
+reserving one node for the day for hands-on lessons and setting up visualization
+tools.
+
 Instructions here are divided into _required_ and _optional_ steps.
 We expect everyone to, minimally, complete all _required_ steps here.
 The _optional_ steps are likely to improve your experience by simplifying
@@ -146,6 +152,8 @@ With this - the first time you login cooley.alcf.anl.gov - you need to provide p
 **The instructions beyond this point are not necessary and are for experts only**
 
 ---
+
+## Optional Steps
 
 ### Using Remote Visualization Tools Through VNC
 If you don't want to bother with installing anything locally or if you run into problems with
