@@ -132,13 +132,13 @@ from the hypre library applied to several test problems.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Optimization (with Tao)
-### Optimization (with Tao)
+### Optimization (with TAO)
+### Optimization (with TA))
 [Slides](../files/ATPESC-2020-Track-5-Talk-9-Dener-OptimizationTAO.pdf)
 
 This lecture will provide an introduction to numerical optimization with a
 theoretical focus on simulation-based problems. We will introduce the user
-interfaces for the Toolkit for Advanced Optimization (Tao) package within
+interfaces for the Toolkit for Advanced Optimization (TAO) package within
 the PETSc library and exercise several gradient-based algorithms on scalable
 synthetic test problems. We will observe and discuss the relative convergence
 of different classes of algorithms and sensitivity analysis methods in a
