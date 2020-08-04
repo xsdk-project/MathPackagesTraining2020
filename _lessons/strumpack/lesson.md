@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-order: 5
+order: 6
 subheadline: "Rank Structured Solvers"
 title: "Rank-Structured Solvers with STRUMPACK"
 teaser: "Using STRUMPACK for dense and sparse linear systems"
@@ -56,14 +56,14 @@ $ ./run_testHODLR 20000 | tail -n 3
 ```
 
 Check the maximum off-diagonal block rank, the memory usage and the
-accuray.
+accuracy.
 
 ---
 
-### Run 2: change the leaf size, and the compression tolerance
+### Run 2: Change the leaf size, and the compression tolerance
 
-Change the compression tolerance, used for the low-rank approximation
-of the off-diagonal blocks
+Change the relative compression tolerance, used for the low-rank
+approximation of the off-diagonal blocks
 
 ```
 $ ./run_testHODLR 20000 --hodlr_rel_tol 1e-2 | tail -n 3
@@ -91,10 +91,11 @@ $ ./run_testHODLR 20000 --hodlr_leaf_size 128 | tail -n 3
 ```
 
 Check also the impact of the leaf size, the smallest blocks on the
-diagonal of the HODLR representation.
+diagonal of the HODLR representation, on the memory use and the
+compression quality.
 
-You can run with the _--help_ command line option to see further
-tunable parameters.
+You can run with the --help command line option to see further tunable
+parameters.
 
 ---
 
@@ -105,7 +106,8 @@ Next we solve the 3-dimensional Poisson equation
 
 $$\nabla^2 u = f$$
 
-on a regular 3-dimemsional grid using an approximate sparse
+on a regular 3-dimensional grid with Dirichlet boundary conditions and
+a random right hand-side _f_, using an approximate sparse
 factorization solver.
 
 ### Run 1: Exact sparse solver
@@ -147,7 +149,7 @@ Note the factorization statistics, such as memory usage and time. The
 solve performs forward and backward substitution with the lower and
 upper sparse triangular factors respectively. Since no low-rank
 compression is used, the solver converges in a single iteration of
-iterative refinement, i.e., it acts as a direct solver.
+iterative refinement, i.e., it acts as an exact direct solver.
 
 
 ### Run 2: Enable Block Low Rank (BLR) compression
@@ -195,7 +197,7 @@ Now with Block Low Rank compression enabled, note again the
 factorization info, and see how the time and memory usage is reduced
 compared to the direct solver.
 
-However, since the sparse triangular factorization is longer exact,
+However, since the sparse triangular factorization is no longer exact,
 the approximate factorization is now used as a preconditioner for the
 GMRES iterative solver. With the current settings, GMRES converges in
 only 2 iterations, illustrating the robustness of the preconditioner.
@@ -213,6 +215,10 @@ $ ./run_testPoisson3d 40 --sp_compression BLR --blr_leaf_size 512
 $ ./run_testPoisson3d 40 --sp_compression BLR --blr_rel_tol 1e-6 --help
 ```
 
+Observe how the compression tolerance influences the GMRES
+convergence, the memory usage and the factorization and solve time.
+
+
 ### Run 3: Enable HSS or HODLR compression, run in parallel
 
 Now we switch to parallel, and enable Hierarchically Semi-Separable
@@ -221,16 +227,19 @@ Now we switch to parallel, and enable Hierarchically Semi-Separable
 ```
 $ mpiexec -n 12 ./run_testPoisson3dMPIDist 60 --sp_compression HSS \
    --sp_compression_min_sep_size 1000 --hss_rel_tol 1e-2
-$ mpiexec -n 12 ./run_testPoisson3dMPIDist 40 --sp_compression HODLR \
---sp_compression_min_sep_size 1000 --hodlr_leaf_size 128
+$ mpiexec -n 12 ./run_testPoisson3dMPIDist 60 --sp_compression HODLR \
+   --sp_compression_min_sep_size 1000 --hodlr_leaf_size 128
 ```
 
-This will run a larger problem and enable HSS compression.  HSS
-compression is applied to dense sub-blocks, called frontal matrices,
-in the sparse triangular factors. However, this compression is only
-beneficial for large enough blocks, and for has too much overhead for
-smaller blocks. This minimum size can be tuned with the
-_--sp_compression_min_sep_size 1000_ parameter.
+This will run a larger problem and enable HSS or HODLR compression.
+HSS compression is applied to dense sub-blocks, called frontal
+matrices, in the sparse triangular factors. However, this compression
+is only beneficial for large enough blocks, and for has too much
+overhead for smaller blocks. This minimum size can be tuned with the
+_--sp_compression_min_sep_size 1000_ parameter. Look in the output for
+the number of HSS or HODLR fronts. If this is 0, then no fronts are
+compressed. You can also experiment with other HSS or HODLR settings,
+such as relative and absolute compression tolerance and leaf size.
 
 
 ---
@@ -240,16 +249,22 @@ _--sp_compression_min_sep_size 1000_ parameter.
 In this lesson, we have used
 [STRUMPACK](https://github.com/pghysels/STRUMPACK) to illustrate
 compression of dense rank-structured matrices. The example used was a
-Toeplitz matrix. Other applications are dense linear systems arising
-from the boundary element method for integral equations, covariance
-matrices, kernel matrices, etc.
+Toeplitz matrix. Other applications include dense linear systems
+arising from the boundary element method for integral equations,
+covariance matrices, kernel matrices, etc.
 
 We also illustrated the use of rank-structured matrix compression,
 such as block low rank (BLR), hierarchically off-diagonal low rank
 (HODLR) and hierarchically semi-separable (HSS) in sparse
-factorization based solvers solver. This compression asymptotically
+factorization based sparse solvers. This compression asymptotically
 reduces the memory requirements and number of floating point
 operations in sparse direct solver. However, the resulting
 factorization is inexact, and is typically used as a preconditioner.
 
 
+
+### Further Reading
+
+A good overview if rank-structured matrix formats and their use in
+sparse solvers can be found in [Theo Mary's Ph.D
+thesis](https://tel.archives-ouvertes.fr/tel-01929478/document).

@@ -8,6 +8,12 @@ header:
 permalink: "/setup_instructions/"
 ---
 
+In the introductory talk, tomorrow, August 4th, we'll provide additional details
+about this web site and Zoom rooms and Slack channels for our parallel sessions.
+Here, now, we provide instructions for setting up your Cooley login enviornment,
+reserving one node for the day for hands-on lessons and setting up visualization
+tools.
+
 Instructions here are divided into _required_ and _optional_ steps.
 We expect everyone to, minimally, complete all _required_ steps here.
 The _optional_ steps are likely to improve your experience by simplifying
@@ -16,7 +22,7 @@ or improving performance of certain operations.
 ## Required Steps
 
 Please complete the following _required_ steps prior to the beginning of the session
-on Tuesday, August 6th.
+on Tuesday, August 4th.
 
 1. Log Into Cooley
   * Use secure shell with compression, and trusted X forwarding enabled
@@ -36,6 +42,8 @@ this command to update your local copy if we discover changes are necessary.
 1. Setup to use appropriate MPI and GCC
   * The above software is built with gcc-8.2 and corresponding MPI. Please update your `~/.soft.cooley to have
 ```
+@visit
+@paraview
 +gcc-8.2.0
 +mvapich2-2.2-gcc820
 @default
@@ -49,7 +57,7 @@ resoft
   * As a test case, use an example from hypre to confirm you can compile
     and run an example
 ```
-qsub -I -n 1 -t 5 -A ATPESC2020 -q debug
+qsub -I -n 1 -t 5 -A ATPESC2020 -q training
 cd HandsOnLessons/hand_coded_heat
 make mpi_test
 mpicc mpi_test.c -o mpi_test
@@ -64,19 +72,22 @@ exit
     You may have to wait a moment for the interactive prompt on the reserved node to return.
   * The above commands produce makefile and execution output. In particular
     the last `echo` command should produce a `0` response.
-1. As soon after 9:30am, Tuesday , August 6th as possible, allocate an interactive node on
+1. As soon after 9:30am, Tuesday , August 4th as possible, allocate an interactive node on
    cooley. The following command allocates a single Cooley node (`-n 1`) for 480 minutes
-   (`-t 480`) using the ATPESC2020 allocation (`-A ATPESC2020`) and the queue reservation (`-q R.ATPESC2020_0806_1`):
+   (`-t 480`) using the ATPESC2020 allocation (`-A ATPESC2020`) and the queue reservation (`-q training`):
 ```
-qsub -I -n 1 -t 480 -A ATPESC2020 -q R.ATPESC2020_0806_1 
+qsub -I -n 1 -t 480 -A ATPESC2020 -q training
 ```
 The command blocks until the node is ready.  Until the allocation expires (480 minutes in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
-  * **Note 1:** The special `-q R.ATPESC2020_0806_1` will not be functional until 9:30 am, August 6th and will go away at 5:30pm that same day. Another queue, `-q R.ATPESC2020_0806_2` will be used for *evening* hands-on lessons from 6:30pm to 9:30pm.
-  * **Note 2:** Please **DO NOT** run MPI jobs on the login nodes. Instead, run them on an allocated compute node.
-  * **Note 3:** Be aware, however, that any running job will be terminated when your allocation expires.
-  * **Note 4:** To enable X windows for visualization on the compute node, you can open a new terminal and login to the allocated compute node by doing `ssh -Y cc0xx` (`cc0xx` is your node id)
+  * **Note 1:** Please **DO NOT** run MPI jobs on the login nodes. Instead, run them on an allocated compute node.
+  * **Note 2:** Be aware, however, that any running job will be terminated when your allocation expires.
+  * **Note 4:** To enable X windows for visualization on the compute node, you can open a new terminal and login to the allocated compute node by doing `ssh -Y cc0xx` (`cc0xx` is your compute node id)
 
 ## Visualization Tool Setup
+
+By far, where visualization tools are concerned, the easiest thing to do is to install the
+tools on your local laptop/desktop and then using them in *client/server* mode to connect
+to and display data from Cooley.
 
 ### Local Installations
 
@@ -91,18 +102,22 @@ installing these tools locally are provided here...
 * For [ParaView][paraview], go [here](https://www.paraview.org/download/)  to
   find a suitable bundled executable installation for your system and then download and install it.
 
-<!---
-  Alternatively, you may use [Spack][spack] to install [GLVis][glvis] and MFEM as like so
-```
-git clone https://github.com/spack/spack.git
-. spack/share/spack/setup-env.sh
-spack install mfem glvis
-```
--->
-
 Once you have installed these tools, you can run them in client/server mode to connect to cooley
-and visualize here data there or you may move data from cooley to your local machine and 
-visualize it locally.  But, manually logging in to move data files each time you need to
+and visualize here data there or you may manually transfer data between Cooley and your
+desktop/laptop system. These two modes of use are described briefly in the remaining two sections.
+
+#### Using Local Installations in Client-Server Mode
+A benefit from installing these tools locally is that once you have them installed locally, you
+can also configure them to run _client-server_ where you run an instance locally but use that
+instance to log into a remote resource, such as cooley, and visualize data there without having
+to manually transfer it locally. To setup these tools for client-server operation...
+* Follow [these instructions](https://www.alcf.anl.gov/user-guides/visit-cooley) to setup and run [VisIt][visit] client-server to Cooley.
+  * **Note:** VisIt versions 3.0, 3.1 and 3.2 are also installed even though the above instructions don't mention that.
+* Follow [these instructions](https://www.alcf.anl.gov/user-guides/paraview-cooley) to setup and run [ParaView][paraview] client-server to Cooley.
+
+#### Using Local Installations and Manually Moving Data
+
+Manually logging in to move data files each time you need to
 can become combersome. You can use a single `scp` command to copy many files using either
 file [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) or the `-r` recursive
 command-line option to copy whole directory trees as for example...
@@ -134,13 +149,11 @@ Host cooley.alcf.anl.gov
 ```
 With this - the first time you login cooley.alcf.anl.gov - you need to provide passwd. But subsequent ssh/scp/sftp will go through this control master - and not ask for passwd
 
-### Using Local Installations in Client-Server Mode
-A benefit from installing these tools locally is that once you have them installed locally, you
-can also configure them to run _client-server_ where you run an instance locally but use that
-instance to log into a remote resource, such as cooley, and visualize data there without having
-to manually transfer it locally. To setup these tools for client-server operation...
-* Follow [these instructions](https://www.alcf.anl.gov/user-guides/visit-cooley) to setup and run [VisIt][visit] client-server to Cooley.
-* Follow [these instructions](https://www.alcf.anl.gov/user-guides/paraview-cooley) to setup and run [ParaView][paraview] client-server to Cooley.
+**The instructions beyond this point are not necessary and are for experts only**
+
+---
+
+## Optional Steps
 
 ### Using Remote Visualization Tools Through VNC
 If you don't want to bother with installing anything locally or if you run into problems with

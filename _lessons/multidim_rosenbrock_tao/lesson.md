@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-order: 10
+order: 11
 title: "Multidimensional Rosenbrock with PETSc/TAO"
 subheadline: "Numerical Optimization"
 teaser: "A practical introduction to large-scale gradient-based optimization"
@@ -333,9 +333,12 @@ $$
 {::options parse_block_html="false" /}
 
 The hands-on example implements the multidimensional Rosenbrock with an analytical gradient and Hessian. However, 
-TAO also provides [``TaoDefaultComputeGradient()``][2] and [``TaoDefaultComputeHessian()``][3] callbacks that utilize finite-differencing to generate the required sensitivities.
+TAO also provides [``TaoDefaultComputeGradient()``][2] and [``TaoDefaultComputeHessian()``][3] callbacks that utilize 
+finite-differencing to generate the required sensitivities.
 
-Making sure that the `PETSC_DIR` environment variable is set correctly in the [makefile](makefile), compile and run the [source code](multidim_rosenbrock.c) as below to solve the default 2-dimensional case.
+Compile and run the [source code](multidim_rosenbrock.c) as below to solve the default two-dimensional case. If running 
+on a different machine than ALCF Cooley, the `PETSC_DIR` variable in the [makefile](makefile) must be changed to 
+reflect the local PETSc/TAO installation.
 ```
 $ make multidim_rosenbrock
 $ ./multidim_rosenbrock -tao_monitor

@@ -1,10 +1,11 @@
-- title: "Intro. to Numerical Libraries"
+- title: "Introduction to<br>Numerical Software"
   start: "Tue Aug 4 9:30 AM"
   length: 55
   speakers:
     - "Lois Curfman McInnes"
     - "Mark Miller"
-  vname: "Amphitheater"
+  vname: "Main-Room"
+  has_synopsis: true
   id: 1
 
 - title: "Telecon Transition"
@@ -105,7 +106,7 @@
     - "Mark Miller"
   start: "Tue Aug 4 1:45 PM"
   length: 45 
-  vname: "Amphitheater"
+  vname: "Main-Room"
   has_synopsis: true
   id: 15 
 
@@ -197,7 +198,7 @@
   length: 25 
   speakers:
     - "Ann Almgren"
-  vname: "Amphitheater"
+  vname: "Main-Room"
   has_synopsis: true
   id: 29 
 

@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-order: 8
+order: 9
 title: "Nonlinear Solvers with PETSc"
 subheadline: "Nonlinear Solvers"
 teaser: "Introduction to Nonlinear Solvers: Newton-Krylov Methods and Nonlinear Preconditioning"
@@ -14,23 +14,35 @@ header:
 ## At a Glance
 
 |**Questions**|**Objectives**|**Key Points**|
-|1. Question 1?|Goal 1|Info 1|
-|2. Question 2?|Goal 2|Info 2|
-|3. Question 3?|Goal 3|Info 3|
+|1. What are the tradeoffs between exactness and inexactness in Newton methods?|Observe trade-offs between inner and outer iterations as linear solver tolerance is varied|An inexact linear solver may be less robust but can result in significantly faster nonlinear solver|
+|2. What makes a scalable inexact Newton method?|Observe execution time and convergence behavior as mesh spacing is decreased|Newton methods exhibit mesh independent convergence, but need to be combined with scalable linear solvers|
+|3. How and when do nonlinear solvers fail?|Explore limits of nonlinear solvers by systematically increasinging problem nonlinearity|Nonlinear solvers can fail in a variety of ways, and some workarounds exist|
+|4. Can we improve the robustness of Newton's method by combining it with other solvers?|Explore nonlinear preconditioning for highly nonlinear problems|Nonlinear analogs of ideas from iterative linear solvers can significantly improve nonlinear solvers|
 
 **Note:** To build the executable used in this lesson do
 ```
 cd {{site.handson_root}}/nonlinear_solvers_petsc
+# The ex19 executable should already exist, but if it needs to be rebuilt, do
 make ex19
 ```
 
 ## Introduction
 
-Blah blah blah.
+Systems of nonlinear equations
 
+$$
+F(x) = b \quad \mathrm{where} \quad F : \mathbb{R}^N \to \mathbb{R}^N
+$$
 
-## Hands-On: Solving the driven cavity problem with PETSc SNES
+arise in countless settings in computational science.
+Unlike their linear counterparts, direct methods for general nonlinear systems do not exist.
+Iterative methods are required!
 
+In this lesson, we will do some hands-on exploration, solving a model nonlinear problem using the nonlinear solvers from the PETSc library.
+We will focus on variants on Newton's method, exploring exact vs. inexact Newton methods, Newton-Krylov, and Newton-Krylov-multigrid methods.
+We will end with some exploration of a topic that is relatively unexplored both theoretically and experimentally: nonlinear preconditioning.
+
+## The Problem We Are Solving: the driven cavity CFD benchmark
 
 <img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
 
@@ -38,7 +50,7 @@ We will use the nonlinear solvers provided by the PETSc Scalable Nonlinear Equat
 (SNES) component to solve the steady-state nonisothermal driven cavity problem as implemented
 in SNES example `ex19`.
 This is a classic CFD benchmark that simulates a fluid-filled 2D box with a lid that moves at
-constant tangential velocity (imagine a conveyor belt).
+constant tangential velocity (probably employing a conveyor belt).
 Flow is driven by both the lid motion and buoyancy effects.
 Our example uses a velocity-vorticity formulation, in which the governing equations can
 be expressed as
@@ -50,8 +62,8 @@ $$ \begin{align*}
         - \Delta T + \mathrm{Pr}\ \nabla \cdot ([U T, V T]) &= 0
    \end{align*} $$
 
-where $U$ and $V$ are velocities, $T$ is temperature, $\Omega$ is vorticity, Gr is the
-Grashof number and Pr is the Prandtl number.
+where $$U$$ and $$V$$ are velocities, $$T$$ is temperature, $$\Omega$$ is vorticity, $$\mathrm{Gr}$$ is the
+Grashof number and $$\mathrm{Pr}$$ is the Prandtl number.
 
 ### Example 1: Initial exploration and understanding PETSc options
 
@@ -177,6 +189,10 @@ grep Time\ \(sec\): log.txt
 ```
 (The first number returned is the total run time in seconds.)
 
+**IMPORTANT**: When you finish these hands-on lessons, be sure to clear your `PETSC_OPTIONS` environment variable
+(do "`unset PETSC_OPTIONS`") if you will be doing hands-on exercises in another session.
+Otherwise, you may get unexpected behavior if running executables that are linked against PETSc.
+
 ### Example 2: Exact vs. Inexact Newton
 
 The output from running `-snes_view` in the previous exercise shows us that PETSc defaults
@@ -262,7 +278,7 @@ For this exercise, we will run in parallel because experiments may take too long
 We will use a fixed number of MPI ranks, even though this number is really too large for
 the smaller grids, to eliminate effects due to varying the size of the domains used by the
 default parallel preconditioner (block Jacobi with ILU(0) applied on each block).
-We also use BiCGStab `-ksp_type bcgs` instead of the default linear solver, GMRES(30), will
+We also use BiCGStab (`-ksp_type bcgs`) instead of the default linear solver, GMRES(30), will
 fail for some cases.
 
 Using the linear solver defaults, increase the size of the grid (that is, decrease the
@@ -305,7 +321,8 @@ the number of iterations it requires.
 
 What happens if we employ a Newton-Krylov-multigrid method?
 Add `-pc_type mg` to use a geometric multigrid preconditioner (defaults to a V-cycle, but
-check out the `-help` output to see how to use other types):
+check out the `-help` output to see how to use other types; you may also want to try
+`-snes_view` to see the multigrid hierarchy):
 
 ```
 mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 2
@@ -358,7 +375,7 @@ Grashof number. Try running
 {::options parse_block_html="true" /}
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
-<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e`</h4></summary>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e4`</h4></summary>
 ```
 ./ex19 -da_refine 2 -grashof 1.3e4
 lid velocity = 100., prandtl # = 1., grashof # = 13000.
@@ -456,6 +473,9 @@ What now?
 
 ### Example 5: Nonlinear Richardson Preconditioned with Newton
 
+Since our Newton solver is unable to make progress on its own, let's try combining it with another nonlinear solver.
+We will try nonlinear Richardson iteration, preconditioned with Newton's method:
+
 ```
 ./ex19 -da_refine 2 -grashof 1.3373e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type mg
 ```
@@ -498,7 +518,8 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 8
 </div>
 {::options parse_block_html="false" /}
 
-So nonlinear Richardson preconditioned with Newton has let us go further than Newton alone.
+So nonlinear Richardson preconditioned with Newton has managed to get us further than Newton alone.
+Let's try increasing the Grashof number a little more:
 
 ```
 ./ex19 -da_refine 2 -grashof 1.4e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type lu
@@ -541,6 +562,9 @@ Let's try preconditioning Newton with nonlinear Richardson.
 354 SNES Function norm 3.219155715396e-10 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 354
 ```
+
+Well, this did eventually work, but it's pretty slow. Why don't we try upping the number of iterations
+of the inner, nonlinear Richardson solver?
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -564,6 +588,8 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 354
  26 SNES Function norm 1.065794992653e-08 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 26
 ```
+
+Much improved! Can we do even better?
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -626,22 +652,44 @@ lid velocity = 100., prandtl # = 1., grashof # = 1e+06
  72 SNES Function norm 1.677710773493e-05 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 72
 ```
+
+Wow! The solver converges with a Grashof number of **one million**.
+If you want to explore further, see how much further you can push this!
 </details>
 </div>
 {::options parse_block_html="false" /}
 
 ## Take-Away Messages
 
-* Important
-* Items
-* To
-* Remember
+PETSc provides a wide assortment of nonlinear solvers through the `SNES` component.
+With it, users can build sophisticated solvers from composable algorithmic components:
+* Inner, linear solves can employ full range of solvers and preconditioners provided by PETSc `KSP` and `PC`
+  * Multigrid solvers particularly important for mesh size-independent convergence
+* Composite nonlinear solvers can be built analogously, using building blocks from PETSc `SNES`
+
+Newton-Krylov methods are predominant, but there is a large design space of "composed" nonlinear solvers to explore:
+* Not well-explored theoretically or experimentally (interesting research opportunities!)
+* Composed nonlinear solvers can be very powerful, though frustratingly fragile
+  *As a rule of thumb, nonlinear Richardson, Gauss-Seidel, or NGMRES with Newton often improves robustness
+
+Further items to explore include
+* Nonlinear domain decomposition (`SNESASPIN`/`SNESNASM`) and nonlinear multigrid (or Full Approximation Scheme, `SNESFAS`) methods
+* PETSc timesteppers use `SNES` to solve nonlinear problems at each time step
+  * Pseudo-transient continuation (`TSPSEUDO`) can solve highly nonlinear steady-state problems
+
+## An Important Reminder About Cleaning Up Your PETSc Options
+
+IMPORTANT: If you will be doing hands-on lessons from other ATPESC sessions, remember to clear your `PETSC_OPTIONS` environment variable:
+```
+unset PETSC_OPTIONS
+```
+Otherwise, you may get unexpected behavior from executables that link against PETSc.
 
 ## Further Reading
 
 - [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manual.pdf)
 - [PETSc/TAO website](https://www.mcs.anl.gov/petsc)
-- More links?
+- [*Composing Scalable Nonlinear Algebraic Solvers*](https://arxiv.org/abs/1607.04254)
 
 ## Previous Nonlinear Solvers Lectures
 - [ATPESC 2019](https://xsdk-project.github.io/MathPackagesTraining/lessons/time_integrators/sundials)

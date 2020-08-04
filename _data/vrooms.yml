@@ -1,36 +1,45 @@
-- name: Amphitheater
+- name: Main-Room
+  zoom_link: https://anl.app.box.com/notes/696906305267
   webinfo: https://qcenter.com/home-guest/
   slackweb: https://join.slack.com/share/zt-g2iz7j9z-DlNMA~iDqAg9Q4AbaU6Lmg
   slackapp: slack://channel?team=TMW2FLNCQ&id=C017XRBLL4R
 
 - name: El-Capitan 
+  zoom_link: https://exascaleproject.zoomgov.com/j/1619052930?pwd=Njl2am9kakpiWm9zc2VPVW5PSVBBdz09
   webinfo: https://www.llnl.gov/news/llnl-and-hpe-partner-amd-el-capitan-projected-worlds-fastest-supercomputer
   slackweb: https://join.slack.com/share/zt-g8nka345-qOTKRXRQjwcpL0IC~3yiaA
   slackapp: slack://channel?team=TMW2FLNCQ&id=C018EKEHU49
 
 - name: Aurora
+  zoom_link: https://exascaleproject.zoomgov.com/j/1611926707?pwd=WlF3RnRxV3NpZ2wwRHVtYTFTTjQ1dz09
   webinfo: https://www.alcf.anl.gov/aurora
   slackweb: https://join.slack.com/share/zt-gf30ta1t-eU5GmwaFLpdv6YOPRlyt0g
   slackapp: slack://channel?team=TMW2FLNCQ&id=C01886F33FE
 
 - name: Perlmutter
+  zoom_link: https://exascaleproject.zoomgov.com/j/1608565017?pwd=TEhTMTg3eTdqQVMyY2ZZc01tV01jZz09
   webinfo: https://www.nersc.gov/systems/perlmutter/
   slackweb: https://join.slack.com/share/zt-gc4l10ic-oyu8PBXI8bNmbuNIvDA4gA
   slackapp: slack://channel?team=TMW2FLNCQ&id=C018EKE2JJD
 
 - name: Frontier
+  zoom_link: https://exascaleproject.zoomgov.com/j/1608560391?pwd=USsvL2dyU0F6ZU5pUy93Mzhmd2xTUT09
   webinfo: https://www.olcf.ornl.gov/frontier/
   slackweb: https://join.slack.com/share/zt-gf32e40x-q85bhwau9fDuSXbsfCGl5w
   slackapp: slack://channel?team=TMW2FLNCQ&id=C018EKBQ30R
 
 - name: Volta
+  zoom_link: https://exascaleproject.zoomgov.com/j/1604440149?pwd=MkpIbXlpWGhYVkpOcXl0eUZrdnh3Zz09
   webinfo: https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/
 
 - name: Ampere
+  zoom_link: https://exascaleproject.zoomgov.com/j/1601957076?pwd=MzdUbVd5em9IYWRHelJEcnlybUlUQT09
   webinfo: https://blogs.nvidia.com/blog/2020/05/14/double-precision-tensor-cores/
 
 - name: Navi
+  zoom_link: https://exascaleproject.zoomgov.com/j/1616314516?pwd=SWswdmJ3Q0xTdEZKcjlUSitHbGpJdz09
   webinfo: https://en.wikipedia.org/wiki/Radeon_RX_5000_series
 
 - name: Vega
+  zoom_link: https://exascaleproject.zoomgov.com/j/1611345716?pwd=dHR6YWZCWEQyOVAxMWZhZWNJMW5YQT09
   webinfo: https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units#Radeon_RX_Vega_series

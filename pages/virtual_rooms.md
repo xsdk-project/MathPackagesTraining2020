@@ -8,7 +8,7 @@ permalink: "/virtual_rooms/"
 ---
 
 ### Main Meeting Room
-* [Amphitheater]
+* [Main-Room]
 
 ### Parallel Session Rooms
 * [Aurora]
@@ -21,7 +21,6 @@ permalink: "/virtual_rooms/"
 * [Ampere]
 * [Volta]
 * [Navi] (morning sessions only; viz-tool issues only)
-* [Vega] (morning sessions only; viz-tool issues only)
 
 {% include link-shortcuts %}
 

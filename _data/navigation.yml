@@ -23,6 +23,8 @@
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe9PENDMfpOysjyvAKjAHOhUNFyerRM1fVfNopyqdTZwnMVYg/viewform?usp=sf_link"
   - title: "Submit a Show Your Work"
     url: "https://docs.google.com/forms/d/e/1FAIpQLSfDF8xk0mHEVnAfWzXs2vCZSKeaUmUAhAD6BbXRqghh7h7FWQ/viewform?usp=sf_link"
+  - title: "ATPESC 2020 Agenda Page"
+    url: "https://extremecomputingtraining.anl.gov/agenda-2020/"
 
 - title: Lessons
   audience: "public"
@@ -35,8 +37,6 @@
     url: "/lessons/amrex/"
   - title: "Unstructured Meshing & Discretization with MFEM"
     url: "/lessons/mfem_convergence/"
-  - title: "Adaptive MFEM+PUMI Workflow"
-    url: "/lessons/pumi/"
   - title: "Sparse, Direct Solvers with SuperLU"
     url: "/lessons/superlu_mfem/"
   - title: "Rank-Structured Solvers with STRUMPACK"
