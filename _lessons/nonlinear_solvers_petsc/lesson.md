@@ -14,21 +14,35 @@ header:
 ## At a Glance
 
 |**Questions**|**Objectives**|**Key Points**|
-|1. Question 1?|Goal 1|Info 1|
-|2. Question 2?|Goal 2|Info 2|
-|3. Question 3?|Goal 3|Info 3|
+|1. What are the tradeoffs between exactness and inexactness in Newton methods?|Observe trade-offs between inner and outer iterations as linear solver tolerance is varied|An inexact linear solver may be less robust but can result in significantly faster nonlinear solver|
+|2. What makes a scalable inexact Newton method?|Observe execution time and convergence behavior as mesh spacing is decreased|Newton methods exhibit mesh independent convergence, but need to be combined with scalable linear solvers|
+|3. How and when do nonlinear solvers fail?|Explore limits of nonlinear solvers by systematically increasinging problem nonlinearity|Nonlinear solvers can fail in a variety of ways, and some workarounds exist|
+|4. Can we improve the robustness of Newton's method by combining it with other solvers?|Explore nonlinear preconditioning for highly nonlinear problems|Nonlinear analogs of ideas from iterative linear solvers can significantly improve nonlinear solvers|
 
 **Note:** To build the executable used in this lesson do
 ```
 cd {{site.handson_root}}/nonlinear_solvers_petsc
+# The ex19 executable should already exist, but if it needs to be rebuilt, do
 make ex19
 ```
 
 ## Introduction
 
-Blah blah blah.
+Systems of nonlinear equations
 
-## Hands-On: Solving the driven cavity problem with PETSc SNES
+\(
+F(x) = b \quad \mathrm{where} \quad F : \mathbb{R}^N \to \mathbb{R}^N
+\)
+
+arise in countless settings in computational science.
+Unlike their linear counterparts, direct methods for general nonlinear systems do not exist!
+Iterative methods are required!
+
+In this lesson, we will do some hands-on exploration, solving a model nonlinear problem using the nonlinear solvers from the PETSc library.
+We will focus on variants on Newton's method, exploring exact vs. inexact Newton methods, Newton-Krylov, and Newton-Krylov-multigrid methods.
+We will end with some exploration of a topic that is relatively unexplored both theoretically and experimentally: nonlinear preconditioning.
+
+## The Problem We Are Solving: the driven cavity CFD benchmark
 
 <img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
 
