@@ -39,8 +39,6 @@
     url: "/lessons/amrex/"
   - title: "Unstructured Meshing & Discretization with MFEM"
     url: "/lessons/mfem_convergence/"
-  - title: "Adaptive MFEM+PUMI Workflow"
-    url: "/lessons/pumi/"
   - title: "Sparse, Direct Solvers with SuperLU"
     url: "/lessons/superlu_mfem/"
   - title: "Rank-Structured Solvers with STRUMPACK"
