@@ -133,7 +133,7 @@ from the hypre library applied to several test problems.
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Optimization (with TAO)
-### Optimization (with TA))
+### Optimization (with TAO)
 [Slides](../files/ATPESC-2020-Track-5-Talk-9-Dener-OptimizationTAO.pdf)
 
 This lecture will provide an introduction to numerical optimization with a
