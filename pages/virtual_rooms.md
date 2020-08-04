@@ -8,7 +8,7 @@ permalink: "/virtual_rooms/"
 ---
 
 ### Main Meeting Room
-* [Amphitheater]
+* [Main-Room]
 
 ### Parallel Session Rooms
 * [Aurora]
