@@ -375,7 +375,7 @@ Grashof number. Try running
 {::options parse_block_html="true" /}
 <div style="border: solid #8B8B8B 2px; padding: 10px;">
 <details>
-<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e`</h4></summary>
+<summary><h4 style="margin: 0 0 0 0; display: inline">Sample output for `./ex19 -da_refine 2 -grashof 1.3e4`</h4></summary>
 ```
 ./ex19 -da_refine 2 -grashof 1.3e4
 lid velocity = 100., prandtl # = 1., grashof # = 13000.
@@ -689,7 +689,7 @@ Otherwise, you may get unexpected behavior from executables that link against PE
 
 - [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manual.pdf)
 - [PETSc/TAO website](https://www.mcs.anl.gov/petsc)
-- More links?
+- [*Composing Scalable Nonlinear Algebraic Solvers*](https://arxiv.org/abs/1607.04254)
 
 ## Previous Nonlinear Solvers Lectures
 - [ATPESC 2019](https://xsdk-project.github.io/MathPackagesTraining/lessons/time_integrators/sundials)
