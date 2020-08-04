@@ -1,6 +1,6 @@
 ---
 layout: page-fullwidth
-order: 8
+order: 9
 title: "Nonlinear Solvers with PETSc"
 subheadline: "Nonlinear Solvers"
 teaser: "Introduction to Nonlinear Solvers: Newton-Krylov Methods and Nonlinear Preconditioning"
