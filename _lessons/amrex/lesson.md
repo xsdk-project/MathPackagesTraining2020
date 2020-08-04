@@ -375,8 +375,8 @@ mpiexec -n 4 ./main3d.gnu.MPI.ex inputs
 Similar to the last example, the following parameters can be set at run-time -- these are currently set in the inputs file.
 
 ```
-stop_time =  2.0                         # the final time (if max_time < max_steps * time_step)
-max_step  = 200                          # the maximum number of steps (if max_steps * time_step < max_time))
+stop_time =  2.0                         # the final time (if we have not exceeded number of steps)
+max_step  = 200                          # the maximum number of steps (if we have not exceeded stop_time)
 
 n_cell = 64                              # number of cells in x- and y-directions; z-dir has 1/8 n_cell (if 3D)
 
