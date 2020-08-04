@@ -342,29 +342,36 @@ reflect the local PETSc/TAO installation.
 ```
 $ make multidim_rosenbrock
 $ ./multidim_rosenbrock -tao_monitor
-  0 TAO,  Function value: 1.,  Residual: 2. 
-  1 TAO,  Function value: 0.774343,  Residual: 6.13432 
-  2 TAO,  Function value: 0.650088,  Residual: 3.17699 
-  3 TAO,  Function value: 0.559353,  Residual: 5.42469 
-  4 TAO,  Function value: 0.3851,  Residual: 3.23695 
-  5 TAO,  Function value: 0.282163,  Residual: 1.71921 
-  6 TAO,  Function value: 0.244212,  Residual: 4.48633 
-  7 TAO,  Function value: 0.13797,  Residual: 7.96088 
-  8 TAO,  Function value: 0.0828213,  Residual: 0.422896 
-  9 TAO,  Function value: 0.0552284,  Residual: 0.722561 
- 10 TAO,  Function value: 0.0387923,  Residual: 2.7757 
- 11 TAO,  Function value: 0.0245732,  Residual: 3.24021 
- 12 TAO,  Function value: 0.00930132,  Residual: 0.106282 
- 13 TAO,  Function value: 0.00549438,  Residual: 2.74682 
- 14 TAO,  Function value: 0.00220124,  Residual: 0.288169 
- 15 TAO,  Function value: 0.000797288,  Residual: 0.138221 
- 16 TAO,  Function value: 0.000118687,  Residual: 0.447673 
- 17 TAO,  Function value: 7.30857e-06,  Residual: 0.0158896 
- 18 TAO,  Function value: 4.98542e-08,  Residual: 0.00401749 
- 19 TAO,  Function value: 3.33403e-11,  Residual: 0.000194926 
- 20 TAO,  Function value: 7.51502e-15,  Residual: 3.26958e-06 
+  0 TAO,  Function value: 404.,  Residual: 898.007 
+  1 TAO,  Function value: 42.0053,  Residual: 137.579 
+  2 TAO,  Function value: 21.4395,  Residual: 93.4591 
+  3 TAO,  Function value: 1.29526,  Residual: 8.84583 
+  4 TAO,  Function value: 1.10483,  Residual: 2.10624 
+  5 TAO,  Function value: 1.09413,  Residual: 2.09722 
+  6 TAO,  Function value: 0.679131,  Residual: 1.61169 
+  7 TAO,  Function value: 0.619293,  Residual: 5.66362 
+  8 TAO,  Function value: 0.544341,  Residual: 3.59878 
+  9 TAO,  Function value: 0.40599,  Residual: 7.09875 
+ 10 TAO,  Function value: 0.28305,  Residual: 1.78344 
+ 11 TAO,  Function value: 0.207769,  Residual: 6.58653 
+ 12 TAO,  Function value: 0.171403,  Residual: 1.03714 
+ 13 TAO,  Function value: 0.120615,  Residual: 1.16209 
+ 14 TAO,  Function value: 0.0900102,  Residual: 3.77324 
+ 15 TAO,  Function value: 0.0570418,  Residual: 3.63326 
+ 16 TAO,  Function value: 0.0314325,  Residual: 1.75564 
+ 17 TAO,  Function value: 0.0147773,  Residual: 1.4513 
+ 18 TAO,  Function value: 0.0113421,  Residual: 3.18789 
+ 19 TAO,  Function value: 0.00505631,  Residual: 1.1248 
+ 20 TAO,  Function value: 0.00128326,  Residual: 0.471036 
+ 21 TAO,  Function value: 0.000277795,  Residual: 0.461864 
+ 22 TAO,  Function value: 0.000125482,  Residual: 0.0790872 
+ 23 TAO,  Function value: 3.07726e-06,  Residual: 0.0430425 
+ 24 TAO,  Function value: 5.0341e-08,  Residual: 0.00861699 
+ 25 TAO,  Function value: 1.45626e-10,  Residual: 0.000355917 
+ 26 TAO,  Function value: 6.57342e-13,  Residual: 1.75767e-05 
+ 27 TAO,  Function value: 6.67913e-20,  Residual: 4.6819e-09 
 
-TaoSolve() time: 0.021143
+TaoSolve() time: 0.001774
 
 Solution correct!
 ```
