@@ -13,6 +13,7 @@ header:
 ---
 
 ## At a Glance
+
 <!-- (Expected # minutes to complete) %% temporarily omit -->
 
 |Questions|Objectives|Key Points|
@@ -48,10 +49,12 @@ and defining
 
 $$u = -\frac{\partial \psi}{\partial y},  v = \frac{\partial \psi}{\partial x}.$$
 
-Note that because $${\bf{u^{spec}}$$ is defined as the curl of a scalar field, it is analytically divergence-free
+Note that because $${\bf{u^{spec}}}$$ is defined as the curl of a scalar field, it is analytically divergence-free
 
 In this example we'll be using AMR to resolve the scalar field since the location of the dye is
 what we care most about.
+
+### The AMR Algorithm
 
 To update the solution in a patch at a given level, we compute fluxes ($${\bf u^{spec}} \phi$$)
 on each face, and difference the fluxes to create the update to phi.   The update routine
@@ -260,7 +263,7 @@ To do the same thing with the VisIt client-server interface to Cooley, here are 
 
 * Mesh data with EB 
 * Linear solvers (multigrid)
-* Tracer Particles
+* Particle-Mesh interpolation
 
 ### The Problem
 
@@ -269,14 +272,18 @@ Challenge:
 Recall our previous problem of the drop of dye in a thin incompressible fluid that is spinning 
 clock-wise then counter-clockwise with a prescribed motion.  
 
-Now instead of advecting the dye as a scalar quantity defined on the mesh (the continuum representation),
-we define the dye as a collection of particles that are advected by the fluid velocity.  Again the fluid 
-is thin enough that we can model this as two-dimensional motion; again we have the option of solving 
-in a 2D or 3D computational domain.
+Now instead of advecting the dye as a scalar quantity defined on the mesh (the
+continuum representation), we define the dye as a collection of particles that
+are advected by the fluid velocity.
 
-To make things more interesting, there is now an object in the flow, in this case a cylinder.
+Again the fluid is thin enough that we can model this as two-dimensional
+motion; again we have the option of solving in a 2D or 3D computational domain.
+
+To make things even more interesting, there is now an object in the flow, in this case a cylinder.
 It would be very difficult to analytically specify the flow field around the object, so instead 
 we project the velocity field so that the resulting field represents incompressible flow around the object.
+
+### Projecting the Velocity for Incompressible Flow around the Cylinder
 
 Mathematically, projecting the specified velocity field means solving  
 
@@ -291,13 +298,59 @@ To solve this variable coefficient Poisson equation, we use the native AMReX geo
 Note that for this example we are solving everything at a single level for convenience,
 but linear solvers, EB and particles all have full multi-level functionality.
 
+With the velocity projection, we can advect the particles through this velocity field in
+each timestep, interpolate the particles onto the mesh to determine
+$$\phi(x,y,z)$$, and project the new velocity for taking the next timestep.
+
+### Particle-In-Cell Algorithm for Advecting $$\phi$$
+
+We achieve conservation by interpreting the scalar $$\phi$$ as the number
+density of physical dye particles in the fluid, and we represent these physical
+particles by "computational" particles $$p$$. Each particle $$p$$ stores a
+weight $$w_p$$ equal to the number of physical dye particles it represents.
+
+This allows us to define particle-mesh interpolation that converts
+$$\phi(x,y,z)$$ to a set of particles with weights $$w_p$$. First, we
+interpolate $$\phi(x,y,z)$$ to $$\phi_p$$ at each particle location by
+calculating:
+
+$$\phi_p = \sum_i \sum_j \sum_k S_x \cdot S_y \cdot S_z \cdot \phi(i,j,k)$$
+
+where in the above, $$S_{x,y,z}$$ are called shape factors, determined by the
+particle-in-cell interpolation scheme we wish to use.
+
+The simplest interpolation is nearest grid point (NGP), where $$S_{x,y,z} = 1$$
+if the particle $$p$$ is within cell $$(i,j,k)$$ and $$S_{x,y,z} = 0$$
+otherwise. An alternative is linear interpolation called cloud-in-cell (CIC),
+where the shape factors are determined by volume-weighting the particle's
+contribution to/from the nearest 8 cells (in 3D).
+
+Once we have interpolated $$\phi(x,y,z)$$ to the particle to get $$\phi_p$$, we
+scale it by the volume per particle to get the number of physical dye particles
+that our computational particle represents. Here, $$n_{ppc}$$ is the number of
+computational particles per cell.
+
+$$w_p = \phi_p \cdot \dfrac{dx dy dz}{n_{ppc}}$$
+
+To go back from the particle representation to the grid representation, we
+reverse this procedure by summing up the number of physical dye particles in
+each grid cell and dividing by the grid cell volume. This recovers the number
+density $$\phi(x,y,z)$$.
+
+$$\phi(i,j,k) = \dfrac{1}{dx dy dz} \cdot \sum_p S_x \cdot S_y \cdot S_z \cdot w_p$$
+
+This approach is the basis for Particle-In-Cell (PIC) methods in a variety of
+fields, and in this tutorial you can experiment with the number of particles
+per cell and interpolation scheme to see how well you can resolve the dye
+advection.
+
 ### Running the code
 
 ```
 cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](NEWMOVIE.gif)
+![Sample solution](amr102.gif)
 
 In this directory you'll see
 
@@ -346,12 +399,24 @@ cylinder.center    = 0.7 0.5 0.5        # location of cylinder center (in domain
 cylinder.internal_flow = false          # we are computing flow around the cylinder, not inside it
 ```
 
-Here you can play around with changing the size and location of the cylinder
+Here you can play around with changing the size and location of the cylinder.
+
+The number of particles per cell and particle-mesh interpolation type are also specified in the inputs file:
+
+```
+n_ppc = 100                              # number of particles per cell for representing the fluid
+
+pic_interpolation = 1                    # Particle In Cell interpolation scheme:
+                                         # 0 = Nearest Grid Point
+                                         # 1 = Cloud In Cell
+```
+
+You can vary the number of particles per cell and interpolation to see how they influence the smoothness of the phi field.
 
 Questions to answer:
 
 ```
-1. How does the solution in the absence compare to our previous solution (where phi was advected
+1. How does the solution in the absence of the cylinder compare to our previous solution (where phi was advected
    as a mesh variable)?
 
 2. Note that at the very end we print the time spent creating the geometrical information. 
@@ -361,7 +426,7 @@ Questions to answer:
     the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
     What probably accounts for the difference?
 
-4. Note that for the purposes of visualization, we deposited the particle information onto the grid.
+4. Note that for the purposes of visualization, we deposited the particle weights onto the grid.
    Was phi conserved using this approach?
 ```
 
@@ -382,11 +447,11 @@ see the note below on how to set up the client-server interface for this tutoria
 
 There are three types of data from the simulation that we want to load:
 
-1. the EB representation of the cylinders
+1. the EB representation of the cylinder
 2. the mesh data, which includes the velocity field and the processor ID
 3. the particle motion
 
-Because the EB data and mesh data don't change, we load these separately from the particles.
+Because the EB data doesn't change, we load it separately from the particles.
 
 Instructions to visualize the EB representation of the cylinders:
 

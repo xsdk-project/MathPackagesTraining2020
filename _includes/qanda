@@ -20,9 +20,10 @@
 *
 {% endcomment %}
 <div class="qanda">
+<br>
   {% assign qanda_id = qanda_id | plus: 1 %}
   <input id="qanda_toggle{{ qanda_id }}" type="checkbox" unchecked>
-  <label class="qanda" for="qanda_toggle{{ qanda_id }}" style="font-size:150%">{{ include.question | markdownify | remove: '<p>' | remove: '</p>' }}</label>
+  <label class="qanda" for="qanda_toggle{{ qanda_id }}" style="font-size:150%">Q: {{ include.question | markdownify | remove: '<p>' | remove: '</p>' }}</label>
   <div id="qanda_expand{{ qanda_id }}">
     <style>
       #qanda_toggle{{ qanda_id }}:checked ~ #qanda_expand{{ qanda_id }} {
@@ -46,8 +47,9 @@
               Answer expansions are currently disabled.
           {% endif %}
       {% else %}
-          {{ include.answer | markdownify }}
+          {{ include.answer | markdownify | replace: "”", '"' }}
       {% endif %}
     </section>
   </div>
+<br>
 </div>
