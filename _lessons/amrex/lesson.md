@@ -161,13 +161,12 @@ The following parameters can be set at run-time -- these are currently set in th
 file but you can also set them on the command line.  
 
 ```
-amr.max_time       =  2.0                # the final time (if max_time < max_steps * time_step)
+stop_time          =  2.0                # the final time (if we have not exceeded number of steps)
+max_step           = 1000000             # the maximum number of steps (if we have not exceeded stop_time)
 
-amr.max_steps      = 1000000             # the maximum number of steps (if max_steps * time_step < max_time))
+amr.n_cell         =  64  64   8         # number of cells at the coarsest AMR level in each coordinate direction
 
-amr.n_cell         =  32   32   8        # number of cells at the coarsest AMR level in each coordinate direction
-
-amr. max_grid_size = 16                  # the maximum number of cells in any direction in a single grid
+amr.max_grid_size  = 16                  # the maximum number of cells in any direction in a single grid
 
 amr.plot_int       = 10                  # frequency of writing plotfiles
 
@@ -296,9 +295,10 @@ $$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
 
 To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
 
-With the velocity projection, we can advect the particles through this velocity field in
-each timestep, interpolate the particles onto the mesh to determine
-$$\phi(x,y,z)$$, and project the new velocity for taking the next timestep.
+Note that for this example we are solving everything at a single level for convenience,
+but linear solvers, EB and particles all have full multi-level functionality.
+
+In each timestep we compute the projected velocity field, advect the particles with this velocity, then interpolate the particles onto the mesh to determine $$\phi(x,y,z)$$.
 
 ### Particle-In-Cell Algorithm for Advecting $$\phi$$
 
@@ -375,15 +375,14 @@ mpiexec -n 4 ./main3d.gnu.MPI.ex inputs
 Similar to the last example, the following parameters can be set at run-time -- these are currently set in the inputs file.
 
 ```
+stop_time =  2.0                         # the final time (if we have not exceeded number of steps)
+max_step  = 200                          # the maximum number of steps (if we have not exceeded stop_time)
+
 n_cell = 64                              # number of cells in x- and y-directions; z-dir has 1/8 n_cell (if 3D)
 
 max_grid_size = 32                       # the maximum number of cells in any direction in a single grid
 
 plot_int = 10                            # frequency of writing plotfiles
-
-max_time =  2.0                          # the final time (if max_time < max_steps * time_step)
-
-max_steps = 200                          # the maximum number of steps (if max_steps * time_step < max_time))
 
 ```
 
