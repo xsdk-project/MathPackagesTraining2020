@@ -544,7 +544,7 @@ cd HandsOnLessons/amrex/AMReX_EB_Pachinko
 In this directory you'll see
 
 ```
-main3d.ex            -- the executable -- this has been built with MPI 
+main3d.gnu.MPI.ex    -- the executable -- this has been built with MPI
 
 inputs_3d            -- domain size, size of grids, how many time steps, which obstacles...
 
@@ -565,13 +565,13 @@ initial_particles_3d file.
 To run in serial, 
 
 ```
-./main3d.ex inputs_3d
+./main3d.gnu.MPI.ex inputs_3d
 ```
 
 To run in parallel, for example on 4 ranks:
 
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d
+mpiexec -n 4 ./main3d.gnu.MPI.ex inputs_3d
 ```
 
 The following parameters can be set at run-time -- these are currently set in the inputs_3d file.
@@ -593,7 +593,7 @@ max_steps = 100000                    # the maximum number of steps (if max_step
 
 You can also set values on the command line; for example,
 ```
-mpiexec -n 4 ./main3d.ex inputs_3d particle_file=my_file
+mpiexec -n 4 ./main3d.gnu.MPI.ex inputs_3d particle_file=my_file
 ```
 
 will read the particles from a file called "my_file"
