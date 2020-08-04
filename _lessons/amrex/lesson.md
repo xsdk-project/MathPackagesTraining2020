@@ -257,6 +257,7 @@ Notes:
 To do the same thing with ParaView 5.8 manually (if, e.g. you have the plotfiles on your local machine and want to experiment or if you connected ParaView 5.8 in client-server mode to Cooley):
 
 ```
+0. Start Paraview 5.8
 1. File --> Open ... and select the collection of directories named "plt.." --> [OK]
 2. From the "Open Data With..." dialog that pops up, select "AMReX/BoxLib Grid Reader" --> [OK]
 3. Check the "phi" box in the "Cell Array Status" menu that appears
@@ -450,86 +451,65 @@ Questions to answer:
 
 ### Visualizing the Results
 
-We'll use Paraview to visualize the results for this example. 
+#### Make a Movie with the ParaView 5.8 Script
 
-To use the Paraview python script, simply do:
+To use the ParaView 5.8 python script, simply do the following to generate `amr102_3D.gif`:
 
 ```
-$ make movie
+$ make movie3D
 ```
 
-(You will need `+ffmpeg` in your `.soft.cooley` file)
+If you run the 2D executable, make the 2D movie using:
 
-To do the same thing with the ParaView client-server interface to Cooley,
-see the note below on how to set up the client-server interface for this tutorial.
+```
+$ make movie2D
+```
+
+Notes:
+
+- To delete old plotfiles before a new run, do `rm -rf plt*`
+
+- You will need `+ffmpeg` in your `~/.soft.cooley` file. If you do not already have it, do `soft add +ffmpeg` and then `resoft` to load it.
+
+- You can do `realpath amr102_3D.gif` to get the movie's path on Cooley and then copy it to your local machine by doing `scp [username]@cooley.alcf.anl.gov:[path-to-gif] .`
+
+#### Using ParaView 5.8 Manually
+
+To do the same thing with ParaView 5.8 manually (if, e.g. you have the plotfiles on your local machine and want to experiment or if you connected ParaView 5.8 in client-server mode to Cooley):
 
 There are three types of data from the simulation that we want to load:
 
-1. the EB representation of the cylinder
-2. the mesh data, which includes the velocity field and the processor ID
-3. the particle motion
+1. the mesh data, which includes the interpolated phi field, velocity field and the processor ID
+2. the EB representation of the cylinder
+3. the particle locations and weights
 
-Because the EB data doesn't change, we load it separately from the particles.
+To load the mesh data, follow steps 0-9 for plotting $$\phi$$ in the AMR 101 tutorial, then continue as below to add the EB representation of the cylinder and the particle data.
 
-Instructions to visualize the EB representation of the cylinders:
-
-```
-1. Start paraview
-2. File --> Open ... select "eb.pvtp" (highlight it then click OK) 
-3. Click green Apply button 
-```
-
-You should see cylinders with their axes in the z-direction.
-
-Now to add the mesh field:
+Instructions to visualize the EB representation of the cylinder:
 
 ```
-1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and double click on "plt.."
-2. In the "Files of type:" window at the bottom select "All Files(*)"
-3. Now highlight "Header" and click OK
-4. You now have to select "VisitBoxlib3DReader" from the drop-down menu titled "Open Data With..." -- then click OK
-5.  Click green Apply button 
-```
-
-This will display an outline of the grids (boxes)
-
-```
-1. With "Header" highlighted in the "Pipeline Browser" menu,
-   click on "proc" and "vel" in the "Cell Arrays" menu 
+1. File --> Open ... select "eb.pvtp" (highlight it then click OK)
 2. Click green Apply button
-3. Click on the "slice" icon -- three to the right of the calculator.
-   This will create "Slice 1" in the Pipeline Browser which will be highlighted.
-4. Click on "Z Normal"
-5. Unclick the "Show Plane" button
-6. Click green Apply button
-7. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "vel"
-(We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
 ```
+
+You should see 1 cylinder with its axis in the z-direction.
 
 Now to load the particles:
 
 ```
-1. File --> Open ... make sure you are in the "AMReX_EB_MacProj" directory and highlight "plt.." 
-   then click OK
-2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
+1. File --> Open ... and select the collection of directories named "plt.." --> [OK]
+2. From the "Open Data With..." dialog that pops up, this time select "AMReX/BoxLib Particles Reader" --> [OK]
+8. Click green Apply button to read in the particle data
 3. Click the "glyph" button (6 to the right of the calculator)
-4. Under "Glyph Source" 
-   * select "Sphere" instead of "Arrow"
-   * set "Radius" to 0.01
-6. Under "Scale" (down below "Glyph Source") set "Scale Factor" to 1 
-7. Under "Masking" (down below "Scale") change "Glyph Mode" from "Uniform Spatial Distribution"
-   to "All Points" 
-8.  Click green Apply button 
+4. Under "Glyph Source" select "Sphere" instead of "Arrow"
+6. Under "Scale" set "Scale Factor" to 0.01
+7. Under "Masking" change "Glyph Mode" from "Uniform Spatial Distribution" to Every Nth Point
+8. Under "Masking", set the stride to 100. The default inputs use 100 particles per cell, which is quite a lot of particles in 3D, so we only plot 1 out of every 100 particles.
+9. Change the drop-down menu option (above the calculator row) from "Solid Color" to "real_comp3" to color the particles by their weights.
+10.  Click green Apply button
 ```
 
 You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
-
-For fun: if you want to color the particles, make sure "Glyph1" is highlighted, then 
-change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "cpu" --
-if you have run with 4 processes then you will see the particles displayed with different colors.
-
-Also note -- if you want to clean up your run directory before doing another run, you can
-type "make pltclean" to remove the plt* and *.png files.  
 
 ## Example: AMReX-Pachinko
 
