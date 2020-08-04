@@ -348,7 +348,7 @@ advection.
 cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](amr102.gif)
+![Sample solution](amr102_3D.gif)
 
 In this directory you'll see
 
