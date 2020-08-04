@@ -189,6 +189,10 @@ grep Time\ \(sec\): log.txt
 ```
 (The first number returned is the total run time in seconds.)
 
+**IMPORTANT**: When you finish these hands-on lessons, be sure to clear your `PETSC_OPTIONS` environment variable
+(do "`unset PETSC_OPTIONS`") if you will be doing hands-on exercises in another session.
+Otherwise, you may get unexpected behavior if running executables that are linked against PETSc.
+
 ### Example 2: Exact vs. Inexact Newton
 
 The output from running `-snes_view` in the previous exercise shows us that PETSc defaults
@@ -468,6 +472,9 @@ What now?
 
 ### Example 5: Nonlinear Richardson Preconditioned with Newton
 
+Since our Newton solver is unable to make progress on its own, let's try combining it with another nonlinear solver.
+We will try nonlinear Richardson iteration, preconditioned with Newton's method:
+
 ```
 ./ex19 -da_refine 2 -grashof 1.3373e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type mg
 ```
@@ -510,7 +517,8 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 8
 </div>
 {::options parse_block_html="false" /}
 
-So nonlinear Richardson preconditioned with Newton has let us go further than Newton alone.
+So nonlinear Richardson preconditioned with Newton has managed to get us further than Newton alone.
+Let's try increasing the Grashof number a little more:
 
 ```
 ./ex19 -da_refine 2 -grashof 1.4e4 -snes_type nrichardson -npc_snes_type newtonls -npc_snes_max_it 4 -npc_pc_type lu
@@ -553,6 +561,9 @@ Let's try preconditioning Newton with nonlinear Richardson.
 354 SNES Function norm 3.219155715396e-10 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 354
 ```
+
+Well, this did eventually work, but it's pretty slow. Why don't we try upping the number of iterations
+of the inner, nonlinear Richardson solver?
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -576,6 +587,8 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 354
  26 SNES Function norm 1.065794992653e-08 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 26
 ```
+
+Much improved! Can we do even better?
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -638,6 +651,9 @@ lid velocity = 100., prandtl # = 1., grashof # = 1e+06
  72 SNES Function norm 1.677710773493e-05 
 Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 72
 ```
+
+Wow! The solver converges with a Grashof number of **one million**.
+If you want to explore further, see how much further you can push this!
 </details>
 </div>
 {::options parse_block_html="false" /}
@@ -659,6 +675,14 @@ Further items to explore include
 * Nonlinear domain decomposition (`SNESASPIN`/`SNESNASM`) and nonlinear multigrid (or Full Approximation Scheme, `SNESFAS`) methods
 * PETSc timesteppers use `SNES` to solve nonlinear problems at each time step
   * Pseudo-transient continuation (`TSPSEUDO`) can solve highly nonlinear steady-state problems
+
+## An Important Reminder About Cleaning Up Your PETSc Options
+
+IMPORTANT: If you will be doing hands-on lessons from other ATPESC sessions, remember to clear your `PETSC_OPTIONS` environment variable:
+```
+unset PETSC_OPTIONS
+```
+Otherwise, you may get unexpected behavior from executables that link against PETSc.
 
 ## Further Reading
 
