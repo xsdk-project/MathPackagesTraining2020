@@ -213,9 +213,9 @@ Questions to answer:
 4. How did the runtimes vary with 1 vs. 4 MPI processes?  
    We suggest you use a big enough problem here -- try running 
 
-   mpiexec -n 1 ./main3d.ex inputs_for_scaling
+   mpiexec -n 1 ./main3d.gnu.MPI.ex inputs_for_scaling
 
-   mpiexec -n 4 ./main3d.ex inputs_for_scaling
+   mpiexec -n 4 ./main3d.gnu.MPI.ex inputs_for_scaling
 
 5. Why could we check conservation by just adding up the values at the coarsest level?
 ```
