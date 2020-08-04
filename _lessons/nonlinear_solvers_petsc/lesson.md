@@ -31,7 +31,6 @@ Blah blah blah.
 
 ## Hands-On: Solving the driven cavity problem with PETSc SNES
 
-
 <img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
 
 We will use the nonlinear solvers provided by the PETSc Scalable Nonlinear Equation Solvers
@@ -632,10 +631,21 @@ Nonlinear solve converged due to CONVERGED_FNORM_RELATIVE iterations 72
 
 ## Take-Away Messages
 
-* Important
-* Items
-* To
-* Remember
+PETSc provides a wide assortment of nonlinear solvers through the `SNES` component.
+With it, users can build sophisticated solvers from composable algorithmic components:
+* Inner, linear solves can employ full range of solvers and preconditioners provided by PETSc `KSP` and `PC`
+  * Multigrid solvers particularly important for mesh size-independent convergence
+* Composite nonlinear solvers can be built analogously, using building blocks from PETSc `SNES`
+
+Newton-Krylov methods are predominant, but there is a large design space of "composed" nonlinear solvers to explore:
+* Not well-explored theoretically or experimentally (interesting research opportunities!)
+* Composed nonlinear solvers can be very powerful, though frustratingly fragile
+  *As a rule of thumb, nonlinear Richardson, Gauss-Seidel, or NGMRES with Newton often improves robustness
+
+Further items to explore include
+* Nonlinear domain decomposition (`SNESASPIN`/`SNESNASM`) and nonlinear multigrid (or Full Approximation Scheme, `SNESFAS`) methods
+* PETSc timesteppers use `SNES` to solve nonlinear problems at each time step
+  * Pseudo-transient continuation (`TSPSEUDO`) can solve highly nonlinear steady-state problems
 
 ## Further Reading
 
