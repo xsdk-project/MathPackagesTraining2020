@@ -161,6 +161,7 @@ different emphasis...
 
 ### Working with Numerical Packages in Practice
 ### Working with Numerical Packages in Practice
+[Slides](https://drive.google.com/file/d/14YQXN7LDNwkS46ZnylL6Oyb3kbtZ6_WK/view?usp=sharing)
 
 Developing high-quality, large-scale scientific computing applications in science and
 engineering involves expertise in many areas. Typically, no one person or group has
