@@ -33,8 +33,6 @@
   dropdown:
   - title: "Hand Coded Heat"
     url: "/lessons/hand_coded_heat/"
-  - title: "Adaptive MFEM+PUMI Workflow"
-    url: "/lessons/pumi/"
   - title: "Structured Meshing & Discretization with AMReX"
     url: "/lessons/amrex/"
   - title: "Unstructured Meshing & Discretization with MFEM"
