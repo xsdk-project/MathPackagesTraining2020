@@ -49,7 +49,7 @@ $$ \begin{align*}
         - \Delta T + \mathrm{Pr}\ \nabla \cdot ([U T, V T]) &= 0
    \end{align*} $$
 
-where $U$ and $V$ are velocities, $T$ is temperature, $\Omega$ is vorticity, Gr is the
+where $$U$$ and $$V$$ are velocities, $$T$$ is temperature, $$\Omega$$ is vorticity, Gr is the
 Grashof number and Pr is the Prandtl number.
 
 ### Example 1: Initial exploration and understanding PETSc options
