@@ -30,9 +30,9 @@ make ex19
 
 Systems of nonlinear equations
 
-\(
+$$ \(
 F(x) = b \quad \mathrm{where} \quad F : \mathbb{R}^N \to \mathbb{R}^N
-\)
+\) $$
 
 arise in countless settings in computational science.
 Unlike their linear counterparts, direct methods for general nonlinear systems do not exist!
