@@ -440,9 +440,9 @@ Questions to answer:
 2. Note that at the very end we print the time spent creating the geometrical information. 
    How does this compare to the total run time?
 
-3.  Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
-    the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
-    What probably accounts for the difference?
+3. Go back and run the AMR101 example with the same size box and amr.max_level = 1.  How does
+   the total run time of the AMR101 code compare with the AMR102 code for 200 steps?
+   What probably accounts for the difference?
 
 4. Note that for the purposes of visualization, we deposited the particle weights onto the grid.
    Was phi conserved using this approach?
