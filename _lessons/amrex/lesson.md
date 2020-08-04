@@ -616,7 +616,7 @@ That took 1.145916707 seconds.
 
 ### Visualizing the Results
 
-Again we'll use Paraview to visualize the results. 
+Again we'll use Paraview 5.8 to visualize the results. 
 
 As before, to use the Paraview python script, simply do:
 
@@ -625,9 +625,6 @@ $ make movie
 ```
 
 (You will need `+ffmpeg` in your `.soft.cooley` file)
-
-To do the same thing with the ParaView client-server interface to Cooley,
-see the note below on how to set up the client-server interface for this tutorial.
 
 Remember there are three types of data from the simulation that we want to load:
 
@@ -695,9 +692,6 @@ For fun: if you want to color the particles, make sure "Glyph1" is highlighted, 
 change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "cpu" --
 if you have run with 4 processes then you will see the particles displayed with different colors.
 
-Also note -- if you want to clean up your run directory before doing another run, you can
-type "make pltclean" to remove the plt* and *.png files.
-
 ### Further Reading
 
 Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
@@ -705,27 +699,6 @@ Download AMReX from github [here](https://www.github.com/AMReX-codes/amrex).
 Look at the AMReX documentation/tutorials [here](https://amrex-codes.github.io/amrex/)
 
 Read the Journal of Open Source Software (JOSS) paper [here](http://joss.theoj.org/papers/10.21105/joss.01370)
-
-### Starting the ParaView Server on Cooley
-
-To work with AMReX plotfiles locally you can use ParaView 5.6.1 with the instructions above.
-
-On Cooley, to use ParaView 5.6.1 in client-server mode with AMReX plotfiles, we will need to start the ParaView server from the following path:
-
-```
-$ cd /projects/ATPESC2019/MathPackagesTraining/ParaView-5.6.1-MPI-Linux-64bit/bin
-$ mpiexec -f $COBALT_NODEFILE -np 1 ./pvserver --server-port=8000
-```
-
-After the ParaView server starts, it will report which node and port it is listening on.
-
-```
-Waiting for client...
-Connection URL: cs://cc054:8000
-Accepting connection(s): cc054:8000
-```
-
-You can then connect to this ParaView server from your local ParaView 5.6.1 client using the Manual/Forward directions [here](https://www.alcf.anl.gov/user-guides/paraview-cooley)
 
 <!-- Insert space, horizontal line, and link to HandsOnLesson table -->
 
