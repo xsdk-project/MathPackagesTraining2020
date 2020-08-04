@@ -73,12 +73,12 @@ exit
   * The above commands produce makefile and execution output. In particular
     the last `echo` command should produce a `0` response.
 1. As soon after 9:30am, Tuesday , August 4th as possible, allocate an interactive node on
-   cooley. The following command allocates a single Cooley node (`-n 1`) for 480 minutes
-   (`-t 480`) using the ATPESC2020 allocation (`-A ATPESC2020`) and the queue reservation (`-q training`):
+   cooley. The following command allocates a single Cooley node (`-n 1`) for 300 minutes
+   (`-t 300`) using the ATPESC2020 allocation (`-A ATPESC2020`) and the queue reservation (`-q training`):
 ```
-qsub -I -n 1 -t 480 -A ATPESC2020 -q training
+qsub -I -n 1 -t 300 -A ATPESC2020 -q training
 ```
-The command blocks until the node is ready.  Until the allocation expires (480 minutes in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
+The command blocks until the node is ready.  Until the allocation expires (300 minutes in this example), all commands executed in the returned session will run on the allocated compute node; `mpiexec` can be used directly instead of going through `qsub`.
   * **Note 1:** Please **DO NOT** run MPI jobs on the login nodes. Instead, run them on an allocated compute node.
   * **Note 2:** Be aware, however, that any running job will be terminated when your allocation expires.
   * **Note 4:** To enable X windows for visualization on the compute node, you can open a new terminal and login to the allocated compute node by doing `ssh -Y cc0xx` (`cc0xx` is your compute node id)
