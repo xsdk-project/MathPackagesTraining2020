@@ -158,13 +158,12 @@ The following parameters can be set at run-time -- these are currently set in th
 file but you can also set them on the command line.  
 
 ```
-amr.max_time       =  2.0                # the final time (if max_time < max_steps * time_step)
+stop_time          =  2.0                # the final time (if we have not exceeded number of steps)
+max_step           = 1000000             # the maximum number of steps (if we have not exceeded stop_time)
 
-amr.max_steps      = 1000000             # the maximum number of steps (if max_steps * time_step < max_time))
+amr.n_cell         =  64  64   8         # number of cells at the coarsest AMR level in each coordinate direction
 
-amr.n_cell         =  32   32   8        # number of cells at the coarsest AMR level in each coordinate direction
-
-amr. max_grid_size = 16                  # the maximum number of cells in any direction in a single grid
+amr.max_grid_size  = 16                  # the maximum number of cells in any direction in a single grid
 
 amr.plot_int       = 10                  # frequency of writing plotfiles
 
