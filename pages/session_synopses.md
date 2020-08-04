@@ -9,6 +9,20 @@ permalink: "/session_synopses/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+### Introduction to Numerical Numerical Packages
+### Introduction to Numerical Numerical Packages
+[Slides]()
+
+In the first hour of our day with you we will give a brief introduction
+to numerical algorithms, overview the various numerical packages you will
+learn about as well as outline various logistics for the day. In addition,
+we will do a hands-on exercise that amounts to the `Hello World` of numerical
+packages, the one-dimensional heat equation, and answer a very simple
+science question.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 ### Structured Discretization (with AMReX)
 ### Structured Discretization (with AMReX)
 [Slides](https://drive.google.com/file/d/1Wy02JMhyrb3dDcZVxgdzkWmBb6wk0Mmw/view?usp=sharing)
