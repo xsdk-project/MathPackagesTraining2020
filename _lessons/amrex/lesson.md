@@ -370,8 +370,6 @@ advection.
 cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](amr102_3D.gif)
-
 In this directory you'll see
 
 ```
@@ -450,6 +448,8 @@ Questions to answer:
 ```
 
 ### Visualizing the Results
+
+![Sample solution](amr102_3D.gif)
 
 #### Make a Movie with the ParaView 5.8 Script
 
