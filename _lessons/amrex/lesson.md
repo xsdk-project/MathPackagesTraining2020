@@ -176,7 +176,7 @@ adv.phierr = 1.01  1.1  1.5              # regridding criteria  at each level
 
 ```
 
-The base grid here is a square of 32 x 32 x 8 cells, made up of 4 subgrids each of size 16x16x8 cells.  
+The base grid here is a square of 64 x 64 x 8 cells, made up of 16 subgrids each of size 16x16x8 cells.  
 The problem is periodic in all directions.
 
 We have hard-wired the code here to refine based on the magnitude of $$\phi$$.    Here we set the 
@@ -313,9 +313,10 @@ $$\nabla \cdot (\beta \nabla \xi)  = \nabla \cdot \bf{u^{spec}}$$
 
 and setting 
 
-$$\bf{u} = \bf{u^{spec}} - \nabla \xi$$
+$$\bf{u} = \bf{u^{spec}} - \beta \nabla \xi$$
 
 To solve this variable coefficient Poisson equation, we use the native AMReX geometric multigrid solver.
+In our case $\beta = 1 / \rho = 1$ since we are assuming constant density $\rho.$
 
 Note that for this example we are solving everything at a single level for convenience,
 but linear solvers, EB and particles all have full multi-level functionality.
