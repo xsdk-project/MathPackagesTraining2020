@@ -121,13 +121,13 @@ The function, `solution_update_ftcs`, is defined in `ftcs.C` without its body.
 static bool             // false if unstable, true otherwise
 solution_update_ftcs(
     int n,              // # of temperature samples in space
-    Double *uk1,        // new temperatures @ t = k+1
-    Double const *uk0,  // old/last temperatures @ t = k
-    Double alpha,       // thermal diffusivity
-    Double dx,          // spacing in space, x
-    Double dt,          // spacing in time, t
-    Double bc_0,        // boundary condition @ x=0
-    Double bc_1         // boundary condition @ x=Lx
+    Number *uk1,        // new temperatures @ t = k+1
+    Number const *uk0,  // old/last temperatures @ t = k
+    Number alpha,       // thermal diffusivity
+    Number dx,          // spacing in space, x
+    Number dt,          // spacing in time, t
+    Number bc_0,        // boundary condition @ x=0
+    Number bc_1         // boundary condition @ x=Lx
 )
 {
 ```
@@ -135,7 +135,7 @@ solution_update_ftcs(
     question='Using eq. 5, implement the body of this function'
     answer='
 ```
-    Double const r = alpha * dt / (dx * dx);
+    Number const r = alpha * dt / (dx * dx);
 
     // Sanity check for stability
     if (r > 0.5) return false;
