@@ -14,9 +14,10 @@ header:
 ## At a Glance
 
 |**Questions**|**Objectives**|**Key Points**|
-|1. Question 1?|Goal 1|Info 1|
-|2. Question 2?|Goal 2|Info 2|
-|3. Question 3?|Goal 3|Info 3|
+|1. What are the tradeoffs between exactness and inexactness in Newton methods?|Observe trade-offs between inner and outer iterations as linear solver tolerance is varied|An inexact linear solver may be less robust but can result in significantly faster nonlinear solver|
+|2. What makes a scalable inexact Newton method?|Observe execution time and convergence behavior as mesh spacing is decreased|Newton methods exhibit mesh independent convergence, but need to be combined with scalable linear solvers|
+|3. How and when do nonlinear solvers fail?|Explore limits of nonlinear solvers by systematically increasinging problem nonlinearity|Nonlinear solvers can fail in a variety of ways, and some workarounds exist|
+|4. Can we improve the robustness of Newton's method by combining it with other solvers?|Explore nonlinear preconditioning for highly nonlinear problems|Nonlinear analogs of ideas from iterative linear solvers can significantly improve nonlinear solvers|
 
 **Note:** To build the executable used in this lesson do
 ```
