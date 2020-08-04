@@ -298,9 +298,9 @@ To solve this variable coefficient Poisson equation, we use the native AMReX geo
 Note that for this example we are solving everything at a single level for convenience,
 but linear solvers, EB and particles all have full multi-level functionality.
 
-With the velocity projection, we can advect the particles through this velocity field in
-each timestep, interpolate the particles onto the mesh to determine
-$$\phi(x,y,z)$$, and project the new velocity for taking the next timestep.
+In each timestep we compute the projected velocity field,  
+advect the particles with this velocity, then interpolate the particles onto the 
+mesh to determine $$\phi(x,y,z)$$.
 
 ### Particle-In-Cell Algorithm for Advecting $$\phi$$
 
