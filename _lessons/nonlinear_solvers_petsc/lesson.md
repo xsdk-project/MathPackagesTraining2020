@@ -28,7 +28,6 @@ make ex19
 
 Blah blah blah.
 
-
 ## Hands-On: Solving the driven cavity problem with PETSc SNES
 
 <img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
@@ -49,8 +48,8 @@ $$ \begin{align*}
         - \Delta T + \mathrm{Pr}\ \nabla \cdot ([U T, V T]) &= 0
    \end{align*} $$
 
-where $U$ and $V$ are velocities, $T$ is temperature, $\Omega$ is vorticity, Gr is the
-Grashof number and Pr is the Prandtl number.
+where $$U$$ and $$V$$ are velocities, $$T$$ is temperature, $$\Omega$$ is vorticity, $$\mathrm{Gr}$$ is the
+Grashof number and $$\mathrm{Pr}$$ is the Prandtl number.
 
 ### Example 1: Initial exploration and understanding PETSc options
 
