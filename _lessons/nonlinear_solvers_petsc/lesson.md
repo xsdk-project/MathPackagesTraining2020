@@ -35,7 +35,7 @@ F(x) = b \quad \mathrm{where} \quad F : \mathbb{R}^N \to \mathbb{R}^N
 $$
 
 arise in countless settings in computational science.
-Unlike their linear counterparts, direct methods for general nonlinear systems do not exist!
+Unlike their linear counterparts, direct methods for general nonlinear systems do not exist.
 Iterative methods are required!
 
 In this lesson, we will do some hands-on exploration, solving a model nonlinear problem using the nonlinear solvers from the PETSc library.
@@ -50,7 +50,7 @@ We will use the nonlinear solvers provided by the PETSc Scalable Nonlinear Equat
 (SNES) component to solve the steady-state nonisothermal driven cavity problem as implemented
 in SNES example `ex19`.
 This is a classic CFD benchmark that simulates a fluid-filled 2D box with a lid that moves at
-constant tangential velocity (imagine a conveyor belt).
+constant tangential velocity (probably employing a conveyor belt).
 Flow is driven by both the lid motion and buoyancy effects.
 Our example uses a velocity-vorticity formulation, in which the governing equations can
 be expressed as
@@ -278,7 +278,7 @@ For this exercise, we will run in parallel because experiments may take too long
 We will use a fixed number of MPI ranks, even though this number is really too large for
 the smaller grids, to eliminate effects due to varying the size of the domains used by the
 default parallel preconditioner (block Jacobi with ILU(0) applied on each block).
-We also use BiCGStab `-ksp_type bcgs` instead of the default linear solver, GMRES(30), will
+We also use BiCGStab (`-ksp_type bcgs`) instead of the default linear solver, GMRES(30), will
 fail for some cases.
 
 Using the linear solver defaults, increase the size of the grid (that is, decrease the
@@ -321,7 +321,8 @@ the number of iterations it requires.
 
 What happens if we employ a Newton-Krylov-multigrid method?
 Add `-pc_type mg` to use a geometric multigrid preconditioner (defaults to a V-cycle, but
-check out the `-help` output to see how to use other types):
+check out the `-help` output to see how to use other types; you may also want to try
+`-snes_view` to see the multigrid hierarchy):
 
 ```
 mpirun -n 12 ./ex19 -ksp_type bcgs -grashof 1e2 -pc_type mg -da_refine 2
