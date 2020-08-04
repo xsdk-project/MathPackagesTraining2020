@@ -257,17 +257,17 @@ Notes:
 To do the same thing with ParaView 5.8 manually (if, e.g. you have the plotfiles on your local machine and want to experiment or if you connected ParaView 5.8 in client-server mode to Cooley):
 
 ```
-0. Start Paraview 5.8
-1. File --> Open ... and select the collection of directories named "plt.." --> [OK]
-2. From the "Open Data With..." dialog that pops up, select "AMReX/BoxLib Grid Reader" --> [OK]
-3. Check the "phi" box in the "Cell Array Status" menu that appears
-4. Click green Apply button
-5. Click on the "slice" icon -- three to the right of the calculator
+1. Start Paraview 5.8
+2. File --> Open ... and select the collection of directories named "plt.." --> [OK]
+3. From the "Open Data With..." dialog that pops up, select "AMReX/BoxLib Grid Reader" --> [OK]
+4. Check the "phi" box in the "Cell Array Status" menu that appears
+5. Click green Apply button
+6. Click on the "slice" icon -- three to the right of the calculator
    This will create "Slice 1" in the Pipeline Browser which will be highlighted.
-6. Click on "Z Normal"
-7. Unclick the "Show Plane" button
-8. Click green Apply button
-9. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "phi"
+7. Click on "Z Normal"
+8. Unclick the "Show Plane" button
+9. Click green Apply button
+10. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "phi"
 ```
 
 You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
@@ -483,7 +483,7 @@ There are three types of data from the simulation that we want to load:
 2. the EB representation of the cylinder
 3. the particle locations and weights
 
-To load the mesh data, follow steps 0-9 for plotting $$\phi$$ in the AMR 101 tutorial, then continue as below to add the EB representation of the cylinder and the particle data.
+To load the mesh data, follow steps 1-10 for plotting $$\phi$$ in the AMR 101 tutorial, then continue as below to add the EB representation of the cylinder and the particle data.
 
 Instructions to visualize the EB representation of the cylinder:
 
@@ -637,7 +637,7 @@ Because the EB data and mesh data don't change, we load these separately from th
 Instructions to visualize the EB representation of the cylinders:
 
 ```
-1. Start paraview
+1. Start Paraview 5.8
 2. File --> Open ... select "eb.pvtp" (highlight it then click OK) 
 3. Click green Apply button 
 ```
@@ -647,43 +647,29 @@ You should see cylinders with their axes in the z-direction.
 Now to add the mesh field:
 
 ```
-1. File --> Open ... make sure you are in the "AMReX_EB_Pachinko" directory and double click on "plt.."
-2. In the "Files of type:" window at the bottom select "All Files(*)"
-3. Now highlight "Header" and click OK
-4. You now have to select "VisitBoxlib3DReader" from the drop-down menu titled "Open Data With..." -- then click OK
-5.  Click green Apply button 
-```
-
-This will display an outline of the grids (boxes)
-
-```
-1. With "Header" highlighted in the "Pipeline Browser" menu,
-   click on "proc" in the "Cell Arrays" menu 
-2. Click green Apply button
-3. Click on the "slice" icon -- three to the right of the calculator.
+1. File --> Open ... and this time select only the directory named "plt00000" --> [OK]
+2. From the "Open Data With..." dialog that pops up, select "AMReX/BoxLib Grid Reader" --> [OK]
+3. Check the "proc" and "vfrac" boxes in the "Cell Array Status" menu that appears
+4. Click green Apply button
+5. Click on the "slice" icon -- three to the right of the calculator
    This will create "Slice 1" in the Pipeline Browser which will be highlighted.
-4. Click on "Z Normal"
-5. Unclick the "Show Plane" button
-6. Click green Apply button
-7. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "proc"
-(We could also color the grid by "proc" -- the integer id of the processor owning that grid.)
+6. Click on "Z Normal"
+7. Unclick the "Show Plane" button
+8. Click green Apply button
+9. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "proc"
 ```
 
 Now to load the particles:
 
 ```
-1. File --> Open ... make sure you are in the "AMReX_EB_Pachinko" directory and highlight "plt.." 
-   then click OK
-2. With "plt0*" highlighted in the Pipeline Browser menu, click green Apply button
+1. File --> Open ... and select the collection of directories named "plt.." --> [OK]
+2. From the "Open Data With..." dialog that pops up, this time select "AMReX/BoxLib Particles Reader" --> [OK]
+8. Click green Apply button to read in the particle data
 3. Click the "glyph" button (6 to the right of the calculator)
-4. Under "Glyph Source" 
-   * select "Sphere" instead of "Arrow"
-   * set "Radius" to 0.02 (or whatever you have set the particle_radius to in the inputs file
-                           if you changed it)   
-6. Under "Scale" (down below "Glyph Source") set "Scale Factor" to 1 
-7. Under "Masking" (down below "Scale") change "Glyph Mode" from "Uniform Spatial Distribution"
-   to "All Points" 
-8. Click green Apply button 
+4. Under "Glyph Source" select "Sphere" instead of "Arrow"
+6. Under "Scale" set "Scale Factor" to 0.05
+7. Under "Masking" change "Glyph Mode" from "Uniform Spatial Distribution" to "All Points"
+8. Click green Apply button
 ```
 
 You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
