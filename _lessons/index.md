@@ -8,8 +8,9 @@ header:
 permalink: /lessons/
 ---
 
+{% assign ordered_lessons = site.lessons | sort:"order" %}
 <table>
-{% for item in site.lessons %}
+{% for item in ordered_lessons %}
     {% if item.not_active %}
         {% continue %}
     {% endif %}

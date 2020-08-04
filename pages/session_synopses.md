@@ -25,7 +25,7 @@ science question.
 
 ### Structured Discretization (with AMReX)
 ### Structured Discretization (with AMReX)
-[Slides](https://drive.google.com/file/d/1Wy02JMhyrb3dDcZVxgdzkWmBb6wk0Mmw/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-2-AlmgrenAndWilcox-StructuredDiscretizationAMReX.pdf)
 
 Block-structured adaptive mesh refinement (AMR) provides a natural framework
 in which to focus computing power on the most critical parts of the problem in
@@ -45,7 +45,7 @@ solvers to impose incompressibility on a flow around obstacles, and
 
 ### Unstructured Discretization (with MFEM/PUMI)
 ### Unstructured Discretization (with MFEM/PUMI)
-[Slides](https://drive.google.com/file/d/1VhgUGHaWFkTQyd8uojtVOnl4HiXD-ALO/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-3-FisherAndShepherd-MFEM+PUMI.pdf)
 
 Unstructured meshes can yield required levels of accuracy using fewer degrees of
 freedom at the cost of more complex parallel data structures and algorithms. To
@@ -60,7 +60,7 @@ mesh tools developed to support mesh adaptation, load balancing and PIC calculat
 
 ### Nonlinear Solvers (with PETSc)
 ### Nonlinear Solvers (with PETSc)
-[Slides](https://drive.google.com/file/d/1JxVnZ4fBpYnN2xgBu0RkOQHRZHR-zxbB/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-7-Mills-NonlinearSolversPETSc.pdf)
 
 We will begin with a quick overview of iterative solvers for nonlinear systems,
 and then take a deeper look into Newton-Krylov methods and how to use them via
@@ -76,7 +76,7 @@ handle particularly difficult nonlinearities.
 
 ### Time Integration (with SUNDIALS)
 ### Time Integration (with SUNDIALS)
-[Slides](https://drive.google.com/file/d/1moq42mWch96fhNH9EADURhv0JHXECvUE/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-8-Reynolds-TimeIntegrationSUNDIALS.pdf)
 
 In this lecture we will discuss the role and impact of high order, adaptive, and
 flexible time integration libraries in solution accuracy and computational
@@ -102,7 +102,7 @@ semi-discretization.
 
 ### Iterative Solvers & Preconditioners (with MueLu)
 ### Iterative Solvers & Preconditioners (with MueLu)
-[Slides](https://drive.google.com/file/d/1qKC7RhqfwDJ-rNB6arOLLBYjD7hY_C14/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-5-HuAndGlusa-IterativeSolversPreconditioners.pdf)
 
 In this session, attendees will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
@@ -118,7 +118,7 @@ model linear problem.
 
 ### Iterative Solvers & Algebraic Multigrid (with Hypre)
 ### Iterative Solvers & Algebraic Multigrid (with Hypre)
-[Slides](https://drive.google.com/file/d/1gpLnYpRflYPTyBuRfV_kZtSzE-nfy2S2/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-6-Yang-IterativeSolversHYPRE.pdf)
 
 This session will present the basic concepts of iterative linear solvers with focus on
 Krylov solvers, including the generalized minimum residual method (GMRES),
@@ -135,7 +135,7 @@ from the hypre library applied to several test problems.
 
 ### Optimization (with Tao)
 ### Optimization (with Tao)
-[Slides](https://drive.google.com/file/d/1HtK0mlh4W0z-uu8Lr_1jzxCauVc93O88/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-9-Dener-OptimizationTAO.pdf)
 
 This lecture will provide an introduction to numerical optimization with a
 theoretical focus on simulation-based problems. We will introduce the user
@@ -150,7 +150,7 @@ parallel environment.
 
 ### Direct Solvers (with SuperLU/Strumpack)
 ### Direct Solvers (with SuperLU/Strumpack)
-[Slides](https://drive.google.com/file/d/1k8iuuHwa_Qu98RJnS1cYtTW0tiZd9J4x/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-4-LiAndGhysels-DirectSolvers.pdf)
 
 Direct Solvers are presented in three different time slots, each with a slightly
 different emphasis...
@@ -175,7 +175,7 @@ different emphasis...
 
 ### Working with Numerical Packages in Practice
 ### Working with Numerical Packages in Practice
-[Slides](https://drive.google.com/file/d/14YQXN7LDNwkS46ZnylL6Oyb3kbtZ6_WK/view?usp=sharing)
+[Slides](../files/ATPESC-2020-Track-5-Talk-1-McInnesAndMiller-IntroToNumericalSoftware.pdf)
 
 Developing high-quality, large-scale scientific computing applications in science and
 engineering involves expertise in many areas. Typically, no one person or group has

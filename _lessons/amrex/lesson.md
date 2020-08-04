@@ -222,33 +222,54 @@ Questions to answer:
 
 ### Visualizing the Results
 
-Here is a sample 2D run with 64x64 cells at the coarsest level and three levels of refinement.
+Here is a sample slice through a 3D run with 64x64x8 cells at the coarsest level and three finer levels (4 total levels).
 
-![Sample solution](advection.gif)
+![Sample solution](amr101_3D.gif)
 
-After you run the code you will have a series of plotfiles.  To visualize these we will use the
-VisIt package.
+After you run the code you will have a series of plotfiles.  To visualize these
+we will use ParaView 5.8, which has native support for AMReX Grid, Particle,
+and Embedded Boundary data (in the AMR 101 exercise we only have grid data).
 
-To use the VisIt python script, simply do the following to generate `amr_advection.mp4`:
+#### Make a Movie with the ParaView 5.8 Script
 
-```
-$ make movie
-```
-
-(You will need `+ffmpeg` in your `.soft.cooley` file, and this assumes that `python2` is the Python 2 interpreter. If `python` is the Python 2 interpreter, you can do `make movie PYTHON2=python`).
-
-To do the same thing with the VisIt client-server interface to Cooley, here are the instructions:
+To use the ParaView 5.8 python script, simply do the following to generate `amr101_3D.gif`:
 
 ```
-1. On Cooley, in the tutorial directory, run the command, "ls -1 plt*/Header | tee movie.visit"
-2. Start VisIt and connect to Cooley. 
-3. File --> Open file ... go to Cooley and select movie.visit 
-4. In the Plots pane, go to Add/Pseudocolor and select the field phi
-5. In the Plots pane, go to Add/Subset and select "patches"
-6. Open the options for the "patches" subset object and select "Wireframe"
-7. Go to Controls/Animation and select "Cache animation ..."
-8. Press the "Play" button
+$ make movie3D
 ```
+
+If you run the 2D executable, make the 2D movie using:
+
+```
+$ make movie2D
+```
+
+Notes:
+
+- To delete old plotfiles before a new run, do `rm -rf plt*`
+
+- You will need `+ffmpeg` in your `~/.soft.cooley` file. If you do not already have it, do `soft add +ffmpeg` and then `resoft` to load it.
+
+- You can do `realpath amr101_3D.gif` to get the movie's path on Cooley and then copy it to your local machine by doing `scp [username]@cooley.alcf.anl.gov:[path-to-gif] .`
+
+#### Using ParaView 5.8 Manually
+
+To do the same thing with ParaView 5.8 manually (if, e.g. you have the plotfiles on your local machine and want to experiment or if you connected ParaView 5.8 in client-server mode to Cooley):
+
+```
+1. File --> Open ... and select the collection of directories named "plt.." --> [OK]
+2. From the "Open Data With..." dialog that pops up, select "AMReX/BoxLib Grid Reader" --> [OK]
+3. Check the "phi" box in the "Cell Array Status" menu that appears
+4. Click green Apply button
+5. Click on the "slice" icon -- three to the right of the calculator
+   This will create "Slice 1" in the Pipeline Browser which will be highlighted.
+6. Click on "Z Normal"
+7. Unclick the "Show Plane" button
+8. Click green Apply button
+9. Change the drop-down menu option (above the calculator row) from "vtkBlockColors" to "phi"
+```
+
+You are now ready to play the movie!  See the "VCR-like" controls at the top. Click the play button.
 
 ### Additional Topics to Explore
 
@@ -348,7 +369,7 @@ advection.
 cd HandsOnLessons/amrex/Amr102/Exec
 ```
 
-![Sample solution](amr102.gif)
+![Sample solution](amr102_3D.gif)
 
 In this directory you'll see
 
