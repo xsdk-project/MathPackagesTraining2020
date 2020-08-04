@@ -11,6 +11,7 @@ permalink: "/session_synopses/"
 
 ### Structured Discretization (with AMReX)
 ### Structured Discretization (with AMReX)
+[Slides](https://drive.google.com/file/d/1Wy02JMhyrb3dDcZVxgdzkWmBb6wk0Mmw/view?usp=sharing)
 
 Block-structured adaptive mesh refinement (AMR) provides a natural framework
 in which to focus computing power on the most critical parts of the problem in
@@ -30,7 +31,7 @@ solvers to impose incompressibility on a flow around obstacles, and
 
 ### Unstructured Discretization (with MFEM/PUMI)
 ### Unstructured Discretization (with MFEM/PUMI)
-[Slides - Part 1](https://drive.google.com/file/d/1r4Q6-xyEinXaV9aub5gEB0yUMyc4GuDA/view?usp=sharing)<br>[Slides - Part 2](https://drive.google.com/file/d/1Nys2IqY7Q7vfeEP3uLvBBv8rJROW-W6l/view?usp=sharing)
+[Slides](https://drive.google.com/file/d/1VhgUGHaWFkTQyd8uojtVOnl4HiXD-ALO/view?usp=sharing)
 
 Unstructured meshes can yield required levels of accuracy using fewer degrees of
 freedom at the cost of more complex parallel data structures and algorithms. To
@@ -87,7 +88,7 @@ semi-discretization.
 
 ### Iterative Solvers & Preconditioners (with MueLu)
 ### Iterative Solvers & Preconditioners (with MueLu)
-[Slides](https://drive.google.com/file/d/1kw0e4vAvVkt7OXiW5-suKztvNRIMfwc5/view?usp=sharing)
+[Slides](https://drive.google.com/file/d/1qKC7RhqfwDJ-rNB6arOLLBYjD7hY_C14/view?usp=sharing)
 
 In this session, attendees will learn about linear solvers and preconditioners
 available in the Trilinos project.  We will focus on Krylov solvers such
@@ -120,6 +121,8 @@ from the hypre library applied to several test problems.
 
 ### Optimization (with Tao)
 ### Optimization (with Tao)
+[Slides](https://drive.google.com/file/d/1HtK0mlh4W0z-uu8Lr_1jzxCauVc93O88/view?usp=sharing)
+
 This lecture will provide an introduction to numerical optimization with a
 theoretical focus on simulation-based problems. We will introduce the user
 interfaces for the Toolkit for Advanced Optimization (Tao) package within
@@ -133,6 +136,8 @@ parallel environment.
 
 ### Direct Solvers (with SuperLU/Strumpack)
 ### Direct Solvers (with SuperLU/Strumpack)
+[Slides](https://drive.google.com/file/d/1k8iuuHwa_Qu98RJnS1cYtTW0tiZd9J4x/view?usp=sharing)
+
 Direct Solvers are presented in three different time slots, each with a slightly
 different emphasis...
 
