@@ -9,6 +9,19 @@ permalink: "/session_synopses/"
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+### Introduction to Numerical Software
+### Introduction to Numerical Software
+[Slides](../files/ATPESC-2020-Track-5-Talk-1-McInnesAndMiller-IntroToNumericalSoftware.pdf)
+
+In the first hour of our day with you we will give a brief introduction
+to our agenda and logistics and an overview of the various numerical packages
+you will learn about. In addition, we will do a hands-on exercise that amounts
+to the `Hello World` of numerical software, the one-dimensional heat equation,
+and use it to help answer a very simple science question.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 ### Structured Discretization (with AMReX)
 ### Structured Discretization (with AMReX)
 [Slides](../files/ATPESC-2020-Track-5-Talk-2-AlmgrenAndWilcox-StructuredDiscretizationAMReX.pdf)
