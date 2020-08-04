@@ -22,14 +22,27 @@ header:
 **Note:** To build the executable used in this lesson do
 ```
 cd {{site.handson_root}}/nonlinear_solvers_petsc
+# The ex19 executable should already exist, but if it needs to be rebuilt, do
 make ex19
 ```
 
 ## Introduction
 
-Blah blah blah.
+Systems of nonlinear equations
 
-## Hands-On: Solving the driven cavity problem with PETSc SNES
+\(
+F(x) = b \quad \mathrm{where} \quad F : \mathbb{R}^N \to \mathbb{R}^N
+\)
+
+arise in countless settings in computational science.
+Unlike their linear counterparts, direct methods for general nonlinear systems do not exist!
+Iterative methods are required!
+
+In this lesson, we will do some hands-on exploration, solving a model nonlinear problem using the nonlinear solvers from the PETSc library.
+We will focus on variants on Newton's method, exploring exact vs. inexact Newton methods, Newton-Krylov, and Newton-Krylov-multigrid methods.
+We will end with some exploration of a topic that is relatively unexplored both theoretically and experimentally: nonlinear preconditioning.
+
+## The Problem We Are Solving: the driven cavity CFD benchmark
 
 <img src="DrivenCavitySolution.jpg" alt="Driven cavity steady-state solution" width="40%" style="display: block; margin-left: auto; margin-right: auto;">
 
