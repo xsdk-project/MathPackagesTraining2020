@@ -397,7 +397,7 @@ using `-tao_type bnls`. Compare convergence against the default quasi-Newton met
 3. Solve the problem with the finite difference gradient using the `-fd` argument. Evaluate convergence and solution 
 time with increasing problem size.
 
-4. Try running the problem in parallel with `mpiexec -np <# of processes> ./multidim_rosenbrock ...`. Why does running 
+4. Try running the problem in parallel with `mpiexec -n <# of processes> ./multidim_rosenbrock ...`. Why does running 
 in parallel slow the solution down at small problem sizes? How large should the problem be to observe a speedup in 
 parallel runs?
   * Repeat Activity 4 with different TAO algorithms. Are the break-even points in size vs. performance the same?  
