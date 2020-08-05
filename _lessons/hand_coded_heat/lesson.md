@@ -499,8 +499,8 @@ engineering challenges.
 * More sophsticated software design and implementation
   * Documented, sustainable, maintaiable, portable, efficient, scalable, ...
 
-By employing numerical packages, we can *some* of the heavy lifting for others and
-focus more of our effort on the science and the parts of the problem we are most
+By employing numerical packages, we can leave *some* of the heavy lifting for others and
+focus more of our effort on the science and/or the parts of the problem we are most
 passionate about.
 
 ----
