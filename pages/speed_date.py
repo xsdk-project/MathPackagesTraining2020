@@ -6,9 +6,9 @@ from datetime import datetime
 # Usage...
 #   1. Export a csv file from the Google spreadsheet backing up the SME selection form.
 #   2. Name the exported file `sme_choices.csv`
-#   3. Edit `maxSlots = XXX` line in this python file for the number of slots you want
-#   4. Run the command python speed_date.py > foo.md to produce a mardown file
-#   5. Examin the markdown file for errors that you may need to patch up manually
+#   3. Edit `maxSlots = XXX` line in this python file for the number of slots (meeting times) you want
+#   4. Run the command python speed_date.py > foo.md to produce a markdown file
+#   5. Examine the markdown file for errors that you may need to patch up manually
 #   6. Publish the markdown file as the schedule and include the starting times of each slot.
 #
   
@@ -45,8 +45,8 @@ for req in requests:
 
 print('### Errors')
 
-
 #
+# Create empty schedule.
 # Any SME's not at all selected?
 #
 schedule = {}
@@ -79,13 +79,13 @@ for i in range(1,4):
             schedule[sme][slot] != ''):
             slot += 1
         if slot == maxSlots:
-            print('* Unable to schedule student "%s" %d choice of "%s"'%(student,i,sme))
+            print('* Unable to schedule student "%s" choice %d of "%s"'%(student,i,sme))
             continue
         if assignments[student][slot]:
             schedule[sme][slot] = student
             assignments[student][slot] = False
         else:
-            print('* Slot not available for student "%s" %d choice of "%s"'%(student,i,sme))
+            print('* Slot not available for student "%s" choice %d of "%s"'%(student,i,sme))
 
 #
 # Output markdown for the schedule
