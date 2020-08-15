@@ -1,6 +1,16 @@
 from __future__ import print_function
 import csv, re
 from datetime import datetime
+
+#
+# Usage...
+#   1. Export a csv file from the Google spreadsheet backing up the SME selection form.
+#   2. Name the exported file `sme_choices.csv`
+#   3. Edit `maxSlots = XXX` line in this python file for the number of slots you want
+#   4. Run the command python speed_date.py > foo.md to produce a mardown file
+#   5. Examin the markdown file for errors that you may need to patch up manually
+#   6. Publish the markdown file as the schedule and include the starting times of each slot.
+#
   
 #
 # Read the exported csv file named 'sme_choices.csv' from the Google
